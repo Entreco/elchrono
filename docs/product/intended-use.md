@@ -9,7 +9,7 @@
 | Required reviewers | Regulatory reviewer: unassigned; software-safety reviewer: unassigned |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#2](https://github.com/Entreco/elchrono/issues/2); market selection follow-up in [#3](https://github.com/Entreco/elchrono/issues/3) |
-| Review PR | [PR #12](https://github.com/Entreco/elchrono/pull/12) |
+| Review PR | [PR #13](https://github.com/Entreco/elchrono/pull/13) |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [Lifecycle and approval](../governance/document-control.md#lifecycle-and-approval).

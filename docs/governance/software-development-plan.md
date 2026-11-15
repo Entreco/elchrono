@@ -9,7 +9,7 @@
 | Required reviewers | Software development/lifecycle reviewer: unassigned; software-safety reviewer for risk-process scope: unassigned; other review scopes as assigned below |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#7](https://github.com/Entreco/elchrono/issues/7) |
-| Review PR | To be linked when the review PR is opened |
+| Review PR | [PR #20](https://github.com/Entreco/elchrono/pull/20) |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [Lifecycle and approval](document-control.md#lifecycle-and-approval).

@@ -3,13 +3,13 @@
 | Field | Value |
 |---|---|
 | Document ID | M1-DOC-002 |
-| Revision | 0.2 |
+| Revision | 0.3 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Regulatory reviewer: unassigned; software-safety reviewer: unassigned |
 | Approver | @Entreco, after required reviews and findings resolution |
-| Related issue | [#2](https://github.com/Entreco/elchrono/issues/2) |
-| Review PR | [PR #10](https://github.com/Entreco/elchrono/pull/10) |
+| Related issue | [#2](https://github.com/Entreco/elchrono/issues/2); market selection follow-up in [#3](https://github.com/Entreco/elchrono/issues/3) |
+| Review PR | Pending |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [Lifecycle and approval](../governance/document-control.md#lifecycle-and-approval).
@@ -47,10 +47,11 @@ patient data is part of this proposed use.
 ## Care environments and supported situations
 
 The proposed situation is an ordinary waiting period in a context where a
-caregiver can set and explain the timer. No particular facility, care setting,
-or target jurisdiction has been selected. Do not infer use in a clinical,
-educational, residential, or other specific institution until the product owner
-and qualified reviewers confirm the scope against the selected markets.
+caregiver can set and explain the timer. No particular facility or care setting
+has been selected. The selected assessment markets are the EU and United
+States; do not infer use in a clinical, educational, residential, or other
+specific institution until the product owner and qualified reviewers confirm
+the scope.
 
 The app is not intended to provide a clock, time-of-day display, appointment
 schedule, deadline guarantee, or authoritative indication that a person may
@@ -107,10 +108,13 @@ escalate and resolve the conflict before affected work continues.
 
 ## Target markets
 
-Target jurisdictions have **not been selected**. No distribution territory,
-market-specific qualification conclusion, or applicable legal obligation is
-assumed in this record. Selection by the product owner and review by a competent
-regulatory reviewer are blocking evidence for merge and closure of issue #2.
+The European Union and United States are selected for qualification assessment.
+The EU scope is the EU Member States; other EEA or European jurisdictions are
+not included unless separately selected. The United States scope is federal;
+launch states, territories, distribution channels, and launch decisions have
+not been specified. Selection for assessment does not authorize distribution
+or establish regulatory qualification. A competent regulatory reviewer must
+review the exact intended-use revision and the market-specific assessment.
 
 ## Sources and traceability
 
@@ -133,8 +137,13 @@ established.
   and required specialist review evidence remains unresolved. Reconcile the
   prerequisite review evidence before merging this record; lifecycle status
   does not prove those reviews happened.
-- Target jurisdictions and the intended care settings require explicit
-  selection and review.
+- The EU and United States are selected for assessment in revision 0.3.
+  Specific launch states, channels, and any non-EU European markets remain
+  unspecified.
+- Revision 0.3 is a candidate follow-up to closed issue #2. The target-market
+  selection and required exact-revision approval/review evidence have not been
+  reconciled by that issue's closure; do not treat closure or PR #10 as proof
+  of approval.
 - Regulatory and software-safety reviewers remain unassigned in the document
   controls. Their review scopes and competence must be recorded before this
   record can be merged. An open PR makes the branch In review even when these
@@ -150,4 +159,4 @@ established.
 |---|---|
 | 0.1 | Initial proposed intended-use statement and explicit evidence gaps for issue #2 |
 | 0.2 | Replace stored lifecycle labels with branch/PR-derived status, link PR #10, and distinguish prerequisite lifecycle from unresolved review evidence |
-
+| 0.3 | Select the EU and United States for qualification assessment and preserve unresolved launch-scope and approval evidence |

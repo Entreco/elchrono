@@ -232,8 +232,8 @@ this revision.
 | ID | Record / planned path | Issue | Current evidence |
 |---|---|---|---|
 | M1-DOC-001 | [Document controls](document-control.md) | [#1](https://github.com/Entreco/elchrono/issues/1) | Owner @Entreco; revision 0.6; issue #1 closed and [PR #9](https://github.com/Entreco/elchrono/pull/9) merged; [PR #10](https://github.com/Entreco/elchrono/pull/10) contains subsequent changes; historical acceptance identity/SHA and required specialist review evidence unresolved |
-| M1-DOC-002 | [Intended use](../product/intended-use.md) | [#2](https://github.com/Entreco/elchrono/issues/2) | Owner @Entreco; revision 0.2; [PR #10](https://github.com/Entreco/elchrono/pull/10); target jurisdictions unselected; prerequisite review evidence unresolved |
-| M1-DOC-003 | `docs/regulatory/qualification-and-classification.md` | [#3](https://github.com/Entreco/elchrono/issues/3) | Not created |
+| M1-DOC-002 | [Intended use](../product/intended-use.md) | [#2](https://github.com/Entreco/elchrono/issues/2) | Owner @Entreco; revision 0.3 candidate; EU and United States selected for assessment; exact-revision approval/review evidence unresolved; see [PR #10](https://github.com/Entreco/elchrono/pull/10) for prior changes |
+| M1-DOC-003 | [Qualification and classification](../regulatory/qualification-and-classification.md) | [#3](https://github.com/Entreco/elchrono/issues/3) | Owner @Entreco; revision 0.1 candidate; market conclusions and qualified review pending |
 | M1-DOC-004 | `docs/safety/initial-risk-assessment.md` | [#4](https://github.com/Entreco/elchrono/issues/4) | Not created |
 | M1-DOC-005 | `docs/safety/software-safety-classification.md` | [#5](https://github.com/Entreco/elchrono/issues/5) | Not created |
 | M1-DOC-006 | `docs/governance/applicability-matrix.md` | [#6](https://github.com/Entreco/elchrono/issues/6) | Not created |

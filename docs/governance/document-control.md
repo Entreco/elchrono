@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M1-DOC-001 |
-| Revision | 0.4 |
+| Revision | 0.5 |
 | Status | Draft |
 | Product owner | @Entreco |
 | Document owner and approver | @Entreco |
@@ -76,7 +76,7 @@ assumptions, evidence gaps, findings, limitations, and revision history.
 
 - Reserve document IDs in the foundation index below before creating records.
   IDs stay unchanged through renames and supersession and are never reused.
-- Use numeric document revisions: this draft is `0.4`; subsequent reviewable
+- Use numeric document revisions: this draft is `0.5`; subsequent reviewable
   drafts increment the minor revision. The first approved candidate may be
   `1.0`, with later candidates incrementing the revision. A version number never
   implies approval.
@@ -193,8 +193,8 @@ or approved M1 record exists at this revision.
 
 | ID | Record / planned path | Issue | Current evidence |
 |---|---|---|---|
-| M1-DOC-001 | [Document controls](document-control.md) | [#1](https://github.com/Entreco/elchrono/issues/1) | Owner @Entreco; Draft 0.4; [PR #9](https://github.com/Entreco/elchrono/pull/9); human acceptance pending |
-| M1-DOC-002 | `docs/product/intended-use.md` | [#2](https://github.com/Entreco/elchrono/issues/2) | Not created |
+| M1-DOC-001 | [Document controls](document-control.md) | [#1](https://github.com/Entreco/elchrono/issues/1) | Owner @Entreco; Draft 0.5; issue #1 closed and [PR #9](https://github.com/Entreco/elchrono/pull/9) merged; acceptance and required specialist review evidence pending |
+| M1-DOC-002 | [Intended use](../product/intended-use.md) | [#2](https://github.com/Entreco/elchrono/issues/2) | Draft 0.1; target jurisdictions unselected; prerequisite approval evidence unresolved |
 | M1-DOC-003 | `docs/regulatory/qualification-and-classification.md` | [#3](https://github.com/Entreco/elchrono/issues/3) | Not created |
 | M1-DOC-004 | `docs/safety/initial-risk-assessment.md` | [#4](https://github.com/Entreco/elchrono/issues/4) | Not created |
 | M1-DOC-005 | `docs/safety/software-safety-classification.md` | [#5](https://github.com/Entreco/elchrono/issues/5) | Not created |
@@ -209,14 +209,15 @@ Document owners keep the index consistent with the records.
 ## Initial process walkthrough
 
 This is a draft-author walkthrough of this record, not a human review or approval.
-The candidate is draft 0.4 for [PR #9](https://github.com/Entreco/elchrono/pull/9).
-Publication of this revision and fresh human approval are pending. This
-walkthrough cannot satisfy #1's completed-review gate.
+Draft 0.4 was submitted in [PR #9](https://github.com/Entreco/elchrono/pull/9),
+which is merged. The PR body still lists the accepting human and reviewed head
+SHA as pending. The merge and issue closure do not establish approval of this
+record or satisfy the required specialist reviews.
 
 | Step / criterion from #1 | Observed result | Remaining evidence |
 |---|---|---|
 | Identify accountable owner and approver | @Entreco designated by the user for both roles | Confirm specialist appointments and competence |
-| Identify candidate and status | M1-DOC-001, draft 0.4, PR #9, no acceptance claimed | Published final candidate and completed human acceptance checklist |
+| Identify candidate and status | M1-DOC-001, draft 0.4, merged PR #9; acceptance identity and reviewed SHA are pending | Verify the exact candidate and required human/specialist review evidence |
 | Exercise lifecycle | This draft stops before In review because required reviewers are unassigned | Real reviewer checks and findings/dispositions |
 | Trace records and planned risks/requirements | Index reserves eight documents and distinguishes missing records; risk and requirement IDs are not presented as established | Populate actual records and cross-links when created |
 | Exercise approval/change handling | Procedure binds acceptance to exact content and requires impact assessment and re-review after changes | Human review of this procedure and explicit approval |
@@ -226,13 +227,15 @@ walkthrough cannot satisfy #1's completed-review gate.
 | Finding | Disposition | Resolution owner / evidence needed |
 |---|---|---|
 | M1-DOC-001-F01: Required regulatory and software-safety reviewers are unassigned | Blocking; open | @Entreco appoints reviewers; reviewers confirm competence and scope |
-| M1-DOC-001-F02: Final candidate and human acceptance checklist are missing | Blocking; open | @Entreco coordinates candidate publication, human review, findings resolution, and checks acceptance for the final SHA |
+| M1-DOC-001-F02: The merged PR does not identify an accepting human or reviewed full head SHA | Blocking; open | @Entreco verifies candidate identity, required reviews, findings resolution, and acceptance evidence for the final SHA |
 | M1-DOC-001-F03: Applicability matrix and milestone approver are not established | Later dependency; cannot waive later gates | @Entreco coordinates #6 and appointment before #8; re-review these controls if the matrix changes them |
 | M1-DOC-001-F04: Required main protections have not been verified | Blocking; open | @Entreco configures protections and links effective-settings verification in PR #9 |
 
 The first completed worked example will link this record's actual candidate,
-verification, human findings resolution, and the PR acceptance checklist. Until then,
-#1 remains open and this document remains a proposal.
+verification, human findings resolution, and the PR acceptance checklist. Issue
+#1 is closed in GitHub, but this document remains a proposal until its required
+review and approval evidence is verified; issue closure and merge alone do not
+establish an approved baseline.
 
 ## Revision history
 
@@ -242,3 +245,4 @@ verification, human findings resolution, and the PR acceptance checklist. Until 
 | 0.2 | Link the dedicated draft review record, historical baseline, requested human checks, and remaining evidence | Pending |
 | 0.3 | Replace duplicate review evidence with human PR approvals; specify protected-main workflow and enforcement verification | Pending |
 | 0.4 | Permit author self-review using a human acceptance checkbox and reviewed head SHA; distinguish the manual gate from GitHub protection | Pending |
+| 0.5 | Add the M1-DOC-002 evidence-index entry and distinguish issue #1 closure/merge from its pending approval evidence | Pending |

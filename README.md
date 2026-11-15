@@ -1,13 +1,13 @@
 # El Chrono
 
 A visual remaining-time timer for people with cognitive or intellectual
-disabilities. Caregivers configure duration, one of five themes, and optional
+disabilities. Caregivers configure duration, an available theme, and optional
 music; patients can adjust volume. The current application is a starter UI,
 not an implemented timer.
 
 ## Product positioning
 
-El Chrono is intended as a **non-medical-device app** for visual waiting-time
+El Chrono 🦒 is intended as a **non-medical-device app** for visual waiting-time
 support. We will not make medical claims: it is not intended for diagnosis,
 treatment, monitoring a medical condition, or safety-critical medical timing.
 

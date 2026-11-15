@@ -1,0 +1,101 @@
+# Product requirements
+
+| Field | Value |
+|---|---|
+| Document ID | M2-DOC-001 |
+| Revision | 0.3 |
+| Document owner | @Entreco |
+| Author | Copilot; human accountability remains with the owner |
+| Required reviewers | Product requirements and accessibility reviewers: unassigned |
+| Approver | @Entreco, after required reviews and findings resolution |
+| Related issue | [#22](https://github.com/Entreco/elchrono/issues/22) |
+| Review PR | Pending |
+
+Lifecycle status is derived from the branch and PR context, not stored in this
+table. See [document controls](../governance/document-control.md#lifecycle-and-approval).
+
+## Purpose and limits
+
+This is the candidate requirements register for El Chrono's proposed
+non-medical visual support for ordinary waiting. It records the product
+requirements that guide design and implementation. Acceptance criteria and
+verification procedures belong in the test protocol; requirement, risk,
+design, usability, and test relationships belong in the traceability matrix.
+The current application is a starter screen, not an implemented timer.
+
+The [intended-use record, M1-DOC-002 revision 0.9](intended-use.md) is a
+candidate whose review/approval gaps remain open. This register does not
+approve that source record, resolve its gaps, expand the intended use, or claim
+medical-device qualification, legal conformance, or certification.
+Requirement-to-source and requirement-to-risk links are maintained in the
+requirements traceability matrix. Resolve prerequisite review and
+applicability gates before relying on this register for affected work or
+closing issue #22.
+
+## Requirement identification
+
+Requirement IDs use the form `REQ-NNN`. Earlier revisions used the
+`ELC-REQ-NNN` prefix; this revision drops `ELC` while retaining the numeric
+suffixes. IDs are stable across revisions and retired IDs are not reused.
+REQ-007 (previously ELC-REQ-007) was retired before approval. The requirements
+in this revision are proposed until the required human and specialist reviews,
+findings resolution, and acceptance are recorded.
+
+| ID | Requirement |
+|---|---|
+| REQ-001 | A caregiver shall be able to configure every whole-minute waiting duration from 00:01 through 24:00 using two numeric fields, Hours and Minutes, populated by sequential digits. The first digit enters the minute ones place, the second the minute tens place, and each subsequent digit shifts the existing digits left, moving them into the hour field. |
+| REQ-002 | A caregiver shall be able to start the countdown after configuring a valid duration. |
+| REQ-003 | A patient shall be able to see the timer's remaining-time presentation while it is running, paused, or interrupted. Each available visualization shall specify whether it shows numeric remaining time, visual progress, or both; no visualization shall show a clock face or time of day. |
+| REQ-004 | The product shall provide Main, Settings, and About screens. Main shall contain the selected timer visualization and accessible volume control; Settings shall provide caregiver controls for duration, theme, and optional music; About shall contain the company logo, version/build details, support information, privacy policy, relevant licences, intended use, and limitations. |
+| REQ-005 | Only a caregiver shall be able to access Settings and its duration, theme, and music controls. A patient shall be able to change volume from Main without accessing Settings. |
+| REQ-006 | A caregiver shall be able to select a theme from the themes available in Settings. |
+| REQ-008 | Timer operation and remaining-time presentation shall not depend on music or internet connectivity. Audio failure shall not interrupt the timer or be represented as successful playback. |
+| REQ-009 | Product screens and user-facing claims shall describe ordinary waiting-time support only; they shall not present El Chrono as a clock, deadline guarantee, medical function, or safety-critical timer. |
+| REQ-010 | When the countdown reaches zero, the timer shall reset immediately to the configured duration and optional music playback shall stop. The product shall not display a completed timer state. |
+
+## Decisions that remain open
+
+The following are decision records, not implied defaults or additional
+requirements. Resolve them through product, risk, and UX review before the
+affected behavior is designed for implementation:
+
+| ID | Decision | Current disposition |
+|---|---|---|
+| D-01 | Caregiver protection mechanism | Open. Settings are caregiver-only by REQ-005; the protection mechanism remains undecided. |
+| D-02 | Patient-accessible and caregiver-configured volume limits | Open. |
+| D-03 | Music start behavior and whether to provide any completion sound | Open. Music remains optional; no completion sound is authorized by this record. Provider-specific details remain for later platform review. |
+| D-04 | Manual pause and reset behavior | Open. Automatic reset on completion is specified in REQ-010; manual pause/reset behavior is not selected here. |
+| D-05 | Interruption detection and recovery after backgrounding, sleep, process termination, restart, or wall-clock changes | Open. No recovery behavior is selected here. |
+
+Requirement REQ-007 was retired before approval at the product owner's
+direction; it must not be reused. No WCAG conformance baseline is selected by
+this register. This does not remove applicable accessibility laws or the
+project's general accessibility and usability expectations.
+
+The test protocol, not this register, defines acceptance criteria and planned
+verification. The requirements traceability matrix maintained under
+[issue #25](https://github.com/Entreco/elchrono/issues/25) is the authoritative
+record linking requirements to intended use, risks, design/usability evidence,
+and test cases/results. No implementation, verification result,
+representative-user finding, or requirement approval is claimed by this
+candidate.
+
+Legal accessibility applicability remains unresolved in
+[M1-DOC-006](../governance/applicability-matrix.md). This register selects no
+accessibility standard or conformance baseline. Accessibility and usability
+review under the project's general requirements remains necessary before
+approval and implementation.
+
+Other evidence gaps include the exact-revision approval of the intended-use
+record, the required review of the risk assessment, appointment of competent
+requirements/accessibility reviewers, and decisions D-01 through D-05. Keep
+these gaps visible in review and downstream traceability; issue closure or
+document lifecycle does not establish that they were resolved.
+
+## Revision history
+
+| Revision | Change |
+|---|---|
+| 0.1 | Establish the initial proposed requirements and explicit open decisions for issue #22; define the ELC-REQ-NNN identifier scheme and record initial accessibility criteria as a voluntary project baseline without claiming legal applicability or conformance. |
+| 0.2 | Make duration entry whole-minute and digit-based; clarify caregiver start, patient visibility, Settings access, and theme selection; propose immediate timer reset and music stop at completion; retire ELC-REQ-007 and remove the WCAG baseline at the product owner's direction. |
+| 0.3 | Use REQ-NNN identifiers and keep the requirements register to requirement statements; assign acceptance criteria to the test protocol and requirement-risk-test links to the traceability matrix. |

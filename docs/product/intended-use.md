@@ -3,13 +3,13 @@
 | Field | Value |
 |---|---|
 | Document ID | M1-DOC-002 |
-| Revision | 0.7 |
+| Revision | 0.9 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Regulatory qualification reviewer: @Entreco for M1-DOC-003; software-safety reviewer for this intended-use record: unassigned |
 | Approver | @Entreco, after required reviews and findings resolution |
-| Related issue | [#2](https://github.com/Entreco/elchrono/issues/2); market selection follow-up in [#3](https://github.com/Entreco/elchrono/issues/3) |
-| Review PR | [PR #13](https://github.com/Entreco/elchrono/pull/13); [PR #16](https://github.com/Entreco/elchrono/pull/16) |
+| Related issue | [#2](https://github.com/Entreco/elchrono/issues/2); market selection follow-up in [#3](https://github.com/Entreco/elchrono/issues/3); duration update in [#22](https://github.com/Entreco/elchrono/issues/22) |
+| Review PR | [PR #13](https://github.com/Entreco/elchrono/pull/13); [PR #16](https://github.com/Entreco/elchrono/pull/16); issue #22 update PR pending |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [Lifecycle and approval](../governance/document-control.md#lifecycle-and-approval).
@@ -68,8 +68,8 @@ begin or stop another activity.
 ## Supported role of visual time and optional audio
 
 The visual experience is intended to communicate progress through a configured
-waiting duration. The planned duration range is 5 minutes to 24 hours in
-5-minute increments. Remaining-time meaning must stay consistent across themes
+waiting duration. The planned duration range is 1 minute to 24 hours in
+1-minute increments. Remaining-time meaning must stay consistent across themes
 and platforms and must not rely on colour alone. The presentation must not
 imply a clock face or time of day. These behaviours are requirements, not
 verified capabilities of the current starter application.
@@ -135,9 +135,11 @@ Selection for assessment does not authorize distribution.
 - [M1 milestone scope and completion gate](https://github.com/Entreco/elchrono/milestone/1)
 - [Foundation evidence index](../governance/document-control.md#foundation-evidence-index)
 
-No approved requirement or risk identifiers exist at this revision. Link actual
-identifiers and source sections when the applicable controlled records are
-established.
+M2-DOC-001 proposes requirement identifiers REQ-001 through REQ-010, with
+REQ-007 retired and not reusable; they remain candidates until reviewed and
+approved. M1-DOC-004 proposes risk identifiers RISK-001 through RISK-006; their
+review remains pending. Link applicable identifiers and source sections from
+the traceability matrix without presenting proposed identifiers as approved.
 
 ## Review evidence gaps
 
@@ -150,10 +152,12 @@ established.
 - The EU and United States are selected for assessment in revision 0.3.
   Specific launch states, channels, and any non-EU European markets remain
   unspecified.
-- Revision 0.6 is a candidate follow-up to closed issue #2. The EU/US
-  qualification decision is recorded in M1-DOC-003 by
-  @Entreco as qualified regulatory reviewer; approval evidence for this
-  intended-use revision remains pending.
+- Revisions 0.6 and 0.7 are candidates from closed issue #2. Revision 0.8
+  updates the proposed duration range to 1 minute through 24 hours in
+  1-minute increments; the corresponding sequential Hours/Minutes entry
+  behavior is specified in M2-DOC-001. The EU/US qualification decision is
+  recorded in M1-DOC-003 by @Entreco as qualified regulatory reviewer;
+  approval evidence for this intended-use revision remains pending.
 - @Entreco is assigned as regulatory qualification reviewer for M1-DOC-003.
   @Entreco is also assigned as competent software-safety reviewer for
   M1-DOC-005; that separate appointment does not constitute a software-safety
@@ -176,3 +180,5 @@ established.
 | 0.5 | Link the qualified review conclusion and clarify the scope of the non-device determination |
 | 0.6 | Use a revision-independent reference to the qualification record to avoid cyclic revision references |
 | 0.7 | Clarify the scope of the M1-DOC-005 software-safety reviewer appointment; preserve this record's separate review gap |
+| 0.8 | Update the proposed waiting duration range to 1 minute through 24 hours in 1-minute increments, consistent with the M2 product requirements candidate |
+| 0.9 | Align the proposed requirement identifier prefix with REQ-NNN and direct trace links to the M2 requirements traceability matrix |

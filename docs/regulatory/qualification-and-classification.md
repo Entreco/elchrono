@@ -226,9 +226,15 @@ changes:
 
 ## Sources
 
-Sources were checked on 2026-11-15. Statutory text controls over guidance.
-This list supports the screening performed here and is not a complete survey of
-all market-access obligations.
+Source research was performed on 2026-11-15. The European Commission index was
+checked for the MDR consolidation link and MDCG guidance version/publication
+date; FDA determination, software-policy, and classification pages were
+retrieved. Direct retrieval of the EUR-Lex legal texts, MDCG PDF text, eCFR,
+and FTC source was unavailable in this session. The appointed reviewer must
+verify the current legal text, any amendments since the linked consolidation,
+the guidance analysis, and each conditional obligation before approval.
+Statutory text controls over guidance. This list supports preliminary screening
+and is not a complete survey of all market-access obligations.
 
 1. [Regulation (EU) 2017/745, consolidated text dated 2025-01-10](https://eur-lex.europa.eu/eli/reg/2017/745/2025-01-10), especially Article 2(1), Article 2(12), Article 10, Article 20, Article 52, and Annex VIII Rule 11.
 2. European Commission, [MDCG 2019-11 rev.1, Qualification and classification of software](https://health.ec.europa.eu/document/download/b45335c5-1679-4c71-a91c-fc7a4d37f12b_en?filename=mdcg_2019_11_en.pdf), June 2025; listed in the Commission's [MDCG guidance index](https://health.ec.europa.eu/medical-devices-sector/new-regulations/guidance-mdcg-endorsed-documents-and-other-guidance_en).

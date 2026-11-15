@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-003 |
-| Revision | 1.3 |
+| Revision | 1.4 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Requirements and software-safety reviewers: unassigned |
@@ -33,7 +33,7 @@ actual evidence is recorded.
 | [M2-DOC-001, product requirements](../product/requirements.md) | 0.3 candidate | Requirements traced below |
 | [M1-DOC-004, risk assessment](risk-assessment.md) | 0.4 candidate | RISK-001 through RISK-006 traced below |
 | [M2-DOC-002, product test protocol](../testing/test-protocol.md) | 0.1 candidate | Test procedures and acceptance criteria traced below |
-| [M2-DOC-004, accessible screen flows and theme prototypes](../design/accessible-screen-flows-and-theme-prototypes.md) | 1.2 candidate | Proposed Main, Settings, About, state, and timer visualizations, including prototype-only independent remaining/progress controls and a fixed-edge fan sweep; usability and specialist review pending |
+| [M2-DOC-004, accessible screen flows and theme prototypes](../design/accessible-screen-flows-and-theme-prototypes.md) | 1.3 candidate | Proposed Main, Settings, About, state, and timer visualizations, including prototype-only independent remaining/details controls with duration-based subdivisions; usability and specialist review pending |
 | Usability plan/findings, issue #24 | Not yet available | Add actual records, findings, and limitations when created |
 
 ## Traceability
@@ -83,3 +83,4 @@ test procedures or acceptance criteria in this matrix.
 | 1.1 | Align traceability to M2-DOC-004 revision 1.0 and its larger disk labels and fixed-radius angular fan; keep usability and verification evidence pending. |
 | 1.2 | Align traceability to M2-DOC-004 revision 1.1 and its unified prototype settings and shape selector; keep usability and verification evidence pending. |
 | 1.3 | Align traceability to M2-DOC-004 revision 1.2 and independent remaining/progress controls; keep usability and verification evidence pending. |
+| 1.4 | Align traceability to M2-DOC-004 revision 1.3 and the Off/2–12-section details slider; keep usability and verification evidence pending. |

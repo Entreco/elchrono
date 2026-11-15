@@ -20,7 +20,8 @@
   const backgroundColorPicker = document.getElementById("background-color-picker");
   const backgroundSwatches = [...document.querySelectorAll("[data-background-color]")];
   const showRemainingInput = document.getElementById("show-remaining");
-  const showProgressInput = document.getElementById("show-progress");
+  const detailsInput = document.getElementById("show-details");
+  const detailsValue = document.getElementById("details-value");
   const swatches = [...document.querySelectorAll("[data-color]")];
   const ringThicknessControl = document.getElementById("ring-thickness-control");
   const ringThicknessInput = document.getElementById("ring-thickness");
@@ -31,7 +32,9 @@
   const digitalFill = document.getElementById("digital-fill");
   const fanPanel = document.getElementById("fan-panel");
   const fanClip = document.getElementById("fan-clip");
-  const ringWrap = document.querySelector(".ring-wrap");
+  const fanRibs = document.getElementById("fan-ribs");
+  const ringSeparators = document.getElementById("ring-separators");
+  const batterySeparators = document.getElementById("battery-separators");
   const ring = document.querySelector(".progress-ring");
   const ringCircles = [...ring.querySelectorAll("circle")];
   const root = document.documentElement;
@@ -43,9 +46,8 @@
     font: "sans",
     ringThickness: 15,
     showRemaining: true,
-    showProgress: true,
+    detailSections: 6,
   };
-  const minuteLabels = [];
   let deadline = null;
   let timerInterval = null;
 
@@ -91,20 +93,53 @@
     return `${parts.join(" ")} remaining`;
   }
 
-  function createMinuteLabels() {
-    for (const [container, radius] of [[diskProgress, 50], [ringWrap, 118 / 280 * 100]]) {
-      for (let minute = 0; minute < 60; minute += 5) {
-        const label = document.createElement("span");
-        label.className = "minute-label";
-        label.textContent = String(container === diskProgress ? (60 - minute) % 60 : minute);
-        const angle = (minute * 6 - 90) * Math.PI / 180;
-        label.style.left = `calc(${50 + Math.cos(angle) * radius}% + ${Math.cos(angle) * 32}px)`;
-        label.style.top = `calc(${50 + Math.sin(angle) * radius}% + ${Math.sin(angle) * 32}px)`;
-        label.setAttribute("aria-hidden", "true");
-        container.append(label);
-        minuteLabels.push(label);
+  function updateDetails() {
+    const sections = preferences.detailSections;
+    const description = sections === 0 ? "Off" : `${sections} sections`;
+    detailsInput.value = String(sections === 0 ? 0 : sections - 1);
+    detailsInput.setAttribute("aria-valuetext", description);
+    detailsValue.value = description;
+    detailsValue.textContent = description;
+
+    const diskLabels = document.getElementById("disk-labels");
+    diskLabels.replaceChildren();
+    for (let index = 0; index < sections; index++) {
+      const label = document.createElement("span");
+      label.className = "minute-label";
+      const fraction = (sections - index) % sections / sections;
+      const seconds = Math.round(durationSeconds * fraction);
+      label.textContent = durationSeconds < 3600
+        ? `${seconds}s`
+        : seconds % 60 === 0
+          ? String(seconds / 60)
+          : `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
+      const angle = index / sections * 2 * Math.PI - Math.PI / 2;
+      label.style.left = `calc(${50 + Math.cos(angle) * 50}% + ${Math.cos(angle) * 32}px)`;
+      label.style.top = `calc(${50 + Math.sin(angle) * 50}% + ${Math.sin(angle) * 32}px)`;
+      label.setAttribute("aria-hidden", "true");
+      diskLabels.append(label);
+    }
+
+    const ringLines = [];
+    const fanLines = [];
+    const innerRadius = Math.max(0, 118 - preferences.ringThickness);
+    batterySeparators.replaceChildren();
+    for (let index = 0; index < sections; index++) {
+      const angle = index / sections * 2 * Math.PI;
+      ringLines.push(
+        `M${140 + innerRadius * Math.cos(angle)} ${140 + innerRadius * Math.sin(angle)}`
+        + ` L${140 + 118 * Math.cos(angle)} ${140 + 118 * Math.sin(angle)}`,
+      );
+      if (index > 0) {
+        const fanAngle = -Math.PI + index / sections * Math.PI;
+        fanLines.push(`M150 150 L${150 + 145 * Math.cos(fanAngle)} ${150 + 145 * Math.sin(fanAngle)}`);
+        const separator = document.createElement("span");
+        separator.style.left = `${index / sections * 100}%`;
+        batterySeparators.append(separator);
       }
     }
+    ringSeparators.setAttribute("d", ringLines.join(" "));
+    fanRibs.setAttribute("d", fanLines.join(" "));
   }
 
   function currentRemainingSeconds() {
@@ -148,6 +183,7 @@
     durationMs = durationSeconds * 1000;
     timerHeading.textContent = formatDuration(durationSeconds);
     startButton.textContent = `Start demo (${formatDuration(durationSeconds)})`;
+    updateDetails();
     updateProgress(currentRemainingSeconds());
   }
 
@@ -193,9 +229,8 @@
     textColorPicker.value = preference.textColor;
     backgroundColorPicker.value = preference.backgroundColor;
     showRemainingInput.checked = preference.showRemaining;
-    showProgressInput.checked = preference.showProgress;
     const hasVisibleText = preference.showRemaining
-      || (preference.showProgress && ["disk", "ring"].includes(preference.shape));
+      || (preference.detailSections > 0 && preference.shape === "disk");
     fontControl.hidden = !hasVisibleText;
     textColorControl.hidden = !hasVisibleText;
     ringThicknessInput.value = String(preference.ringThickness);
@@ -215,10 +250,7 @@
     for (const visualization of visualizations) {
       visualization.hidden = visualization.dataset.view !== selectedView;
       visualization.classList.toggle("show-remaining", preference.showRemaining);
-      visualization.classList.toggle("show-progress", preference.showProgress);
-    }
-    for (const label of minuteLabels) {
-      label.hidden = !preference.showProgress;
+      visualization.classList.toggle("show-details", preference.detailSections > 0);
     }
     for (const swatch of swatches) {
       swatch.setAttribute("aria-pressed", String(swatch.dataset.color === preference.foregroundColor));
@@ -229,6 +261,7 @@
         String(swatch.dataset.backgroundColor === preference.backgroundColor),
       );
     }
+    updateDetails();
     updateProgress(currentRemainingSeconds());
   }
 
@@ -284,8 +317,9 @@
     updateAppearanceControls();
   });
 
-  showProgressInput.addEventListener("change", () => {
-    preferences.showProgress = showProgressInput.checked;
+  detailsInput.addEventListener("input", () => {
+    const level = Number(detailsInput.value);
+    preferences.detailSections = level === 0 ? 0 : level + 1;
     updateAppearanceControls();
   });
 
@@ -324,7 +358,6 @@
     if (timerInterval !== null) window.clearInterval(timerInterval);
   });
 
-  createMinuteLabels();
   updateAppearanceControls();
   updateDuration();
   updateProgress(durationSeconds);

@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-004 |
-| Revision | 1.2 |
+| Revision | 1.3 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Product design, accessibility, and usability reviewers: unassigned |
@@ -24,19 +24,27 @@ implemented timer.
 
 An interactive, browser-based demonstration is available in the
 [local demo](demo/README.md). It has one configurable countdown, defaulting to
-two hours, and a single Shape selector: Disk, Battery, Hand fan, or Ring.
-The former digital circle is merged into Disk. Changing shape preserves
+two hours, and a single Shape selector: Clock (formerly Disk), Battery, Hand fan, or Ring.
+The former digital circle is merged into Clock. Changing shape preserves
 the countdown, shared background/foreground/text colors, font, and text
 visibility. Ring thickness appears only for Ring and is retained when changing
-shape. Independent Show remaining and Show progress checkboxes control the
-duration display and additional markers respectively. Progress adds 0–55
-numerals outside Disk/Ring, eight battery divisions, or fixed fan separators.
-The base fill remains visible. Font and text color controls appear when time
-or circular numerals are visible, without
+shape. Show remaining independently controls the duration display. A Show
+details slider steps through Off, then 2–12 equal sections, defaulting to six.
+Details add duration-based labels outside Clock only, Ring section
+boundaries, battery divisions, or fixed fan separators. Clock keeps a continuous
+fill regardless of details; only its outer labels change. Ring details add no
+intermediate text; Show remaining still controls its central duration. One hour with two
+sections shows 0 and 30. Configured durations below one hour use whole seconds
+with an `s` suffix (five minutes with twelve sections: 0s, 275s, 250s, ..., 25s
+clockwise). Durations of one hour or more use minutes, with minutes:seconds for
+partial-minute boundaries. Units do not change as the countdown runs.
+The base fill remains visible. Shapes have no explanatory captions.
+Font and text color controls appear when time
+or Clock numerals are visible, without
 clearing their values when hidden. Each shape uses only the selected colors;
 unselected colors are not added as decorative highlights or outlines. The
-disk's optional 0–55 numerals use 36 px text outside its progress area, with
-reserved space for the larger labels. Disk uses a radial remaining-time
+disk's optional duration numerals use 36 px text outside its progress area, with
+reserved space for the larger labels. Clock uses a radial remaining-time
 treatment, Battery drains linearly, and the hand-fan
 shape empties over 180 degrees toward a fixed left edge, like a disk sweep,
 keeping its radius and separator positions fixed rather than folding them. The
@@ -223,3 +231,4 @@ and limitations explicit.
 | 1.0 | Triple optional disk numeral size to 36 px with surrounding space; replace horizontal fan scaling with a fixed-radius angular opening from 180 degrees to zero. |
 | 1.1 | Unify the demo into one shape selector and shared settings; merge Circle into Disk; retain hidden text preferences and ring thickness across shape changes. |
 | 1.2 | Separate remaining-time visibility from shape-specific progress markers; add ring numerals and battery divisions; replace fan folding with a fixed-edge sweep and clipped stationary separators. |
+| 1.3 | Replace Show progress with an Off/2–12-section Show details slider; subdivide Battery/Fan/Ring, keep Clock fill continuous, and label Clock only; remove shape explanations. Rename prototype Disk to Clock and use seconds below one configured hour, minutes otherwise; no time-of-day display or product-boundary change. |

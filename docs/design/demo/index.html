@@ -50,9 +50,9 @@
                  aria-label="Time remaining" aria-valuemin="0" aria-valuemax="100"
                  aria-valuenow="100" aria-valuetext="2 hours remaining">
               <span class="disk-center" aria-hidden="true"></span>
+              <div id="disk-labels" class="circular-labels" aria-hidden="true"></div>
             </div>
             <p id="disk-time" class="visual-time">02:00:00 remaining</p>
-            <p class="visual-caption">The disk gradually empties</p>
           </div>
 
           <div id="view-digital" class="visualization view-digital" data-view="digital" hidden>
@@ -60,7 +60,7 @@
                  aria-label="Time remaining" aria-valuemin="0" aria-valuemax="100"
                  aria-valuenow="100" aria-valuetext="2 hours remaining">
               <span id="digital-fill" class="digital-fill"></span>
-              <span class="battery-separators" aria-hidden="true"></span>
+              <span id="battery-separators" class="battery-separators" aria-hidden="true"></span>
               <svg class="digital-fan" viewBox="0 0 300 160" aria-hidden="true">
                 <defs>
                   <clipPath id="fan-progress-clip">
@@ -68,12 +68,11 @@
                   </clipPath>
                 </defs>
                 <path id="fan-panel" class="fan-panel" d="M150 150 L5 150 A145 145 0 0 1 295 150 Z"></path>
-                <path class="fan-ribs" clip-path="url(#fan-progress-clip)" d="M150 150 L24.4 77.5 M150 150 L77.5 24.4 M150 150 L150 5 M150 150 L222.5 24.4 M150 150 L275.6 77.5"></path>
+                <path id="fan-ribs" class="fan-ribs" clip-path="url(#fan-progress-clip)"></path>
                 <circle class="fan-pivot" cx="150" cy="150" r="8"></circle>
               </svg>
               <span id="digital-time" class="digital-time">02:00:00</span>
             </div>
-            <p class="visual-caption">A clear duration countdown</p>
           </div>
 
           <div id="view-ring" class="visualization view-ring" data-view="ring" hidden>
@@ -83,13 +82,13 @@
                    aria-valuenow="100" aria-valuetext="2 hours remaining">
                 <circle class="ring-track" cx="140" cy="140" r="118"></circle>
                 <circle id="ring-progress" class="ring-progress" cx="140" cy="140" r="118"></circle>
+                <path id="ring-separators" class="ring-separators" aria-hidden="true"></path>
               </svg>
               <div class="ring-center">
                 <span id="ring-time" class="ring-time">2h 00m</span>
                 <span class="ring-label">remaining</span>
               </div>
             </div>
-            <p class="visual-caption">Progress with time left</p>
           </div>
         </div>
 
@@ -112,7 +111,7 @@
         <div class="setting-control">
           <label for="shape-select">Shape</label>
           <select id="shape-select">
-            <option value="disk">Disk</option>
+            <option value="disk">Clock</option>
             <option value="battery">Battery</option>
             <option value="fan">Hand fan</option>
             <option value="ring">Ring</option>
@@ -181,18 +180,24 @@
         <fieldset class="setting-control visibility-control">
           <legend>Display options</legend>
           <label><input id="show-remaining" type="checkbox" checked> Show remaining</label>
-          <label><input id="show-progress" type="checkbox" checked> Show progress</label>
-          <p class="setting-hint">Remaining shows the time left. Progress adds 0–55 markers to Disk/Ring, battery divisions, or fan separators.</p>
         </fieldset>
+
+        <div class="setting-control">
+          <label for="show-details">Show details</label>
+          <output id="details-value" for="show-details">6 sections</output>
+          <input id="show-details" type="range" min="0" max="11" step="1" value="5"
+                 aria-describedby="details-hint" aria-valuetext="6 sections">
+          <p id="details-hint" class="setting-hint">Off, then 2–12 equal sections. Clock labels use seconds (s) below one hour; otherwise minutes (minutes:seconds for partial minutes). Other shapes show separators only.</p>
+        </div>
 
         <div class="settings-divider"></div>
         <div class="settings-footnote">
           <span class="footnote-mark" aria-hidden="true">i</span>
-          <p>Remaining time and progress markers can be toggled independently. Circular numerals are exploratory and do not change the product's no-clock design boundary.</p>
+          <p>Remaining time and detail level are independent. Off hides all extra markers and separators, not the remaining-time fill. Circular numerals are exploratory and do not change the product's no-clock design boundary.</p>
         </div>
         <div class="settings-footnote">
           <span class="footnote-mark" aria-hidden="true">i</span>
-          <p>Colors, font, and display options are shared across shapes. Thickness appears only for Ring and is remembered when you switch away. Font and text color appear when time or circular numerals are visible. Contrast and final options need review.</p>
+          <p>Colors, font, and display options are shared across shapes. Thickness appears only for Ring and is remembered when you switch away. Font and text color appear when remaining time or Clock numerals are visible. Contrast and final options need review.</p>
         </div>
         <div class="settings-footnote">
           <span class="footnote-mark" aria-hidden="true">i</span>

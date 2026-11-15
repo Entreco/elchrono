@@ -9,7 +9,7 @@
 | Required reviewers | Designated M1 milestone approver (unassigned); competent reviewer for risk evidence (unassigned) |
 | Approver | Designated M1 milestone approver (unassigned) |
 | Related issue | [#8](https://github.com/Entreco/elchrono/issues/8) |
-| Review PR | This draft PR for #8; link added when GitHub assigns its number |
+| Review PR | [PR #21](https://github.com/Entreco/elchrono/pull/21) |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](document-control.md#lifecycle-and-approval).

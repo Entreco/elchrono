@@ -110,24 +110,53 @@ requires explicit review and disposition; this screening method cannot waive
 that review. The software-safety reviewer must confirm or revise the criteria
 and ratings and explain changes.
 
-## Risk entries
+## Hazards
 
-The **Risk** column records potential harm and the provisional initial
-assessment before controls. All controls are proposed and unverified. Reduced
-risk and acceptability remain undetermined; the **Reduced Risk** column is the
-post-control S, L, and score. Each proposed control and its intended effect is
-identified in the [control tables](#risk-controls). Supporting evidence,
+These identifiers describe the potential sources of harm in the risk analysis.
+They are proposed for this assessment and require competent review.
+
+| ID | Description |
+|---|---|
+| HAZ-01 | Incorrect remaining-time information. |
+| HAZ-02 | Interruption or lost state goes undetected or appears as reliable progress. |
+| HAZ-03 | Unexpected sensory event or falsely signaled playback or timer status. |
+| HAZ-04 | A caregiver-configured setting changes without the caregiver's knowledge. |
+| HAZ-05 | The presentation is interpreted differently from the configured remaining time or actual state. |
+| HAZ-06 | An ordinary-waiting timer is treated as an authoritative or safety-critical timing system. |
+
+## Harms
+
+These identifiers group the potential consequences described in the risk
+analysis; they do not imply that a consequence has occurred or that its
+likelihood or severity has been verified.
+
+| ID | Description |
+|---|---|
+| HARM-01 | Confusion, distress, or conflict associated with the waiting experience. |
+| HARM-02 | Disruption of an ordinary wait, including unnecessary extension, interruption, or premature action. |
+| HARM-03 | Discomfort or distress from unexpected or excessive audio. |
+| HARM-04 | Serious harm from reliance on the timer for a consequential or safety-critical purpose outside its intended use. |
+
+## Risk analysis
+
+The **Risk** column contains the provisional pre-control score; the adjacent
+**Description** describes potential harm. Pre-control severity and likelihood
+are shown separately. **Reduced Risk** is the post-control score, with
+post-control severity, likelihood, and description separately recorded.
+All controls are proposed and unverified; reduced risk and acceptability remain
+undetermined. Each proposed control and its intended effect is identified in
+the [control tables](#risk-controls). Supporting evidence,
 ownership, intended-use trace, and planned verification are in the
 [risk traceability matrix](risk-traceability-matrix.md).
 
-| ID | Scenario | Hazard | Hazardous Situation | Risk | Risk Controls | Reduced Risk | Acceptability |
-|---|---|---|---|---|---|---|---|
-| RISK-001 | A timing defect, inaccurate elapsed-time source, wall-clock change, duration-boundary error, or inconsistent visual mapping causes progress or completion to be early, late, frozen, or misleading. | Incorrect remaining-time information. | The person waiting or caregiver relies on the incorrect display or completion state to judge whether the wait has ended or how much remains. | Confusion, distress, conflict, or an unnecessarily extended or interrupted ordinary wait; more serious consequences are possible if misused for a consequential purpose outside intended use. **Pre-control:** S=2 × L=2 = 4 (Medium), provisional. | [RC-001-1 to RC-001-4](#risk-controls). | **Post-control:** S=pending; L=pending; score=pending. Controls unverified. | Undetermined; qualified review required. |
-| RISK-002 | Backgrounding, sleep, process termination, or device restart results in resumption, reset, lost state, or a displayed state inconsistent with elapsed time. | Interruption or lost state goes undetected or appears as reliable progress. | The person waiting or caregiver relies on an apparently running, paused, or completed timer without knowing timing continuity is uncertain. | Confusion, distress, an unexpectedly extended wait, or premature action. **Pre-control:** S=2 × L=2 = 4 (Medium), provisional. | [RC-002-1 to RC-002-2](#risk-controls). | **Post-control:** S=pending; L=pending; score=pending. Controls unverified. | Undetermined; qualified review required. |
-| RISK-003 | Optional music or a future completion sound starts unexpectedly, is too loud, stops or fails while playback appears successful, or distracts from the timer. | Unexpected sensory event or falsely signaled playback or timer status. | The person waiting is startled, distressed, or distracted, or the caregiver believes failed audio is playing and misinterprets the experience. | Discomfort, distress, interruption of the wait, or confusion about timer operation. **Pre-control:** S=2 × L=2 = 4 (Medium), provisional. | [RC-003-1 to RC-003-3](#risk-controls). | **Post-control:** S=pending; L=pending; score=pending. Controls unverified. | Undetermined; qualified review required. |
-| RISK-004 | The person waiting reaches caregiver controls or unintentionally changes duration, theme, or music settings. | A caregiver-configured setting changes without the caregiver's knowledge. | The person waiting or caregiver relies on a timer whose configuration no longer matches the intended wait. | Confusion, distress, or an unexpectedly shortened or extended ordinary wait. **Pre-control:** S=2 × L=2 = 4 (Medium), provisional. | [RC-004-1 to RC-004-2](#risk-controls). | **Post-control:** S=pending; L=pending; score=pending. Controls unverified. | Undetermined; qualified review required. |
-| RISK-005 | Progress or timer states cannot be distinguished because of color-only information, ambiguous shapes or motion, insufficient contrast, or inaccessible labels. | The presentation is interpreted differently from the configured remaining time or actual state. | The person waiting or caregiver incorrectly believes the wait has ended, remains running, or has been interrupted. | Confusion, distress, unnecessary waiting, or premature action in an ordinary wait. **Pre-control:** S=2 × L=2 = 4 (Medium), provisional. | [RC-005-1 to RC-005-3](#risk-controls). | **Post-control:** S=pending; L=pending; score=pending. Controls unverified. | Undetermined; qualified review required. |
-| RISK-006 | A user relies on the timer for medication, a procedure, emergency response, a deadline guarantee, or another consequential action despite the exclusion. | An ordinary-waiting timer is treated as an authoritative or safety-critical timing system. | A user acts, delays action, or omits another required timing or safety system based on the display or completion state. | Serious harm is plausible in this out-of-scope use. **Pre-control:** S=3 × L=2 = 6 (High), provisional. | [RC-006-1 to RC-006-2](#risk-controls). | **Post-control:** S=pending; L=pending; score=pending. Controls unverified. | Undetermined; qualified review and disposition required. |
+| ID | Scenario | Hazard | Hazardous Situation | Harm | Pre-control S | Pre-control L | Risk | Description | Risk Controls | Post-control S | Post-control L | Reduced Risk | Reduced Risk Description | Acceptability |
+|---|---|---|---|---|---:|---:|---|---|---|---|---|---|---|---|
+| RISK-001 | A timing defect, inaccurate elapsed-time source, wall-clock change, duration-boundary error, or inconsistent visual mapping causes progress or completion to be early, late, frozen, or misleading. | [HAZ-01](#hazards) | The person waiting or caregiver relies on the incorrect display or completion state to judge whether the wait has ended or how much remains. | [HARM-01](#harms), [HARM-02](#harms), [HARM-04](#harms) | 2 | 2 | 4 (Medium) | Confusion, distress, conflict, or an unnecessarily extended or interrupted ordinary wait; more serious consequences are possible if misused for a consequential purpose outside intended use. | [RC-001-1 to RC-001-4](#risk-controls). | Pending | Pending | Pending | Not assessed; controls unverified. | Undetermined; qualified review required. |
+| RISK-002 | Backgrounding, sleep, process termination, or device restart results in resumption, reset, lost state, or a displayed state inconsistent with elapsed time. | [HAZ-02](#hazards) | The person waiting or caregiver relies on an apparently running, paused, or completed timer without knowing timing continuity is uncertain. | [HARM-01](#harms), [HARM-02](#harms) | 2 | 2 | 4 (Medium) | Confusion, distress, an unexpectedly extended wait, or premature action. | [RC-002-1 to RC-002-2](#risk-controls). | Pending | Pending | Pending | Not assessed; controls unverified. | Undetermined; qualified review required. |
+| RISK-003 | Optional music or a future completion sound starts unexpectedly, is too loud, stops or fails while playback appears successful, or distracts from the timer. | [HAZ-03](#hazards) | The person waiting is startled, distressed, or distracted, or the caregiver believes failed audio is playing and misinterprets the experience. | [HARM-01](#harms), [HARM-02](#harms), [HARM-03](#harms) | 2 | 2 | 4 (Medium) | Discomfort, distress, interruption of the wait, or confusion about timer operation. | [RC-003-1 to RC-003-3](#risk-controls). | Pending | Pending | Pending | Not assessed; controls unverified. | Undetermined; qualified review required. |
+| RISK-004 | The person waiting reaches caregiver controls or unintentionally changes duration, theme, or music settings. | [HAZ-04](#hazards) | The person waiting or caregiver relies on a timer whose configuration no longer matches the intended wait. | [HARM-01](#harms), [HARM-02](#harms) | 2 | 2 | 4 (Medium) | Confusion, distress, or an unexpectedly shortened or extended ordinary wait. | [RC-004-1 to RC-004-2](#risk-controls). | Pending | Pending | Pending | Not assessed; controls unverified. | Undetermined; qualified review required. |
+| RISK-005 | Progress or timer states cannot be distinguished because of color-only information, ambiguous shapes or motion, insufficient contrast, or inaccessible labels. | [HAZ-05](#hazards) | The person waiting or caregiver incorrectly believes the wait has ended, remains running, or has been interrupted. | [HARM-01](#harms), [HARM-02](#harms) | 2 | 2 | 4 (Medium) | Confusion, distress, unnecessary waiting, or premature action in an ordinary wait. | [RC-005-1 to RC-005-3](#risk-controls). | Pending | Pending | Pending | Not assessed; controls unverified. | Undetermined; qualified review required. |
+| RISK-006 | A user relies on the timer for medication, a procedure, emergency response, a deadline guarantee, or another consequential action despite the exclusion. | [HAZ-06](#hazards) | A user acts, delays action, or omits another required timing or safety system based on the display or completion state. | [HARM-04](#harms) | 3 | 2 | 6 (High) | Serious harm is plausible in this out-of-scope use. | [RC-006-1 to RC-006-2](#risk-controls). | Pending | Pending | Pending | Not assessed; controls unverified. | Undetermined; qualified review and disposition required. |
 
 ## Risk controls
 

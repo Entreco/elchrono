@@ -19,7 +19,8 @@
   const textColorPicker = document.getElementById("text-color-picker");
   const backgroundColorPicker = document.getElementById("background-color-picker");
   const backgroundSwatches = [...document.querySelectorAll("[data-background-color]")];
-  const showNumbersSelect = document.getElementById("show-numbers");
+  const showRemainingInput = document.getElementById("show-remaining");
+  const showProgressInput = document.getElementById("show-progress");
   const swatches = [...document.querySelectorAll("[data-color]")];
   const ringThicknessControl = document.getElementById("ring-thickness-control");
   const ringThicknessInput = document.getElementById("ring-thickness");
@@ -29,7 +30,8 @@
   const digitalProgress = document.getElementById("digital-progress");
   const digitalFill = document.getElementById("digital-fill");
   const fanPanel = document.getElementById("fan-panel");
-  const fanRibs = document.getElementById("fan-ribs");
+  const fanClip = document.getElementById("fan-clip");
+  const ringWrap = document.querySelector(".ring-wrap");
   const ring = document.querySelector(".progress-ring");
   const ringCircles = [...ring.querySelectorAll("circle")];
   const root = document.documentElement;
@@ -40,7 +42,8 @@
     textColor: "#23322f",
     font: "sans",
     ringThickness: 15,
-    showText: true,
+    showRemaining: true,
+    showProgress: true,
   };
   const minuteLabels = [];
   let deadline = null;
@@ -89,16 +92,18 @@
   }
 
   function createMinuteLabels() {
-    for (let minute = 0; minute < 60; minute += 5) {
-      const label = document.createElement("span");
-      label.className = "minute-label";
-      label.textContent = String(minute);
-      const angle = (minute * 6 - 90) * Math.PI / 180;
-      label.style.left = `calc(${50 + Math.cos(angle) * 50}% + ${Math.cos(angle) * 32}px)`;
-      label.style.top = `calc(${50 + Math.sin(angle) * 50}% + ${Math.sin(angle) * 32}px)`;
-      label.setAttribute("aria-hidden", "true");
-      diskProgress.append(label);
-      minuteLabels.push(label);
+    for (const [container, radius] of [[diskProgress, 50], [ringWrap, 118 / 280 * 100]]) {
+      for (let minute = 0; minute < 60; minute += 5) {
+        const label = document.createElement("span");
+        label.className = "minute-label";
+        label.textContent = String(container === diskProgress ? (60 - minute) % 60 : minute);
+        const angle = (minute * 6 - 90) * Math.PI / 180;
+        label.style.left = `calc(${50 + Math.cos(angle) * radius}% + ${Math.cos(angle) * 32}px)`;
+        label.style.top = `calc(${50 + Math.sin(angle) * radius}% + ${Math.sin(angle) * 32}px)`;
+        label.setAttribute("aria-hidden", "true");
+        container.append(label);
+        minuteLabels.push(label);
+      }
     }
   }
 
@@ -108,24 +113,14 @@
   }
 
   function updateFan(fractionRemaining) {
-    const openingAngle = Math.PI * fractionRemaining;
-    const startAngle = -Math.PI / 2 - openingAngle / 2;
-    const points = Array.from({ length: 7 }, (_, index) => {
-      const angle = startAngle + openingAngle * index / 6;
-      return `${150 + 145 * Math.cos(angle)} ${150 + 145 * Math.sin(angle)}`;
-    });
-    fanPanel.setAttribute(
-      "d",
-      fractionRemaining === 0
-        ? ""
-        : `M150 150 L${points[0]} A145 145 0 0 1 ${points[6]} Z`,
-    );
-    fanRibs.setAttribute(
-      "d",
-      fractionRemaining === 0
-        ? ""
-        : points.map((point) => `M150 150 L${point}`).join(" "),
-    );
+    const endAngle = -Math.PI + Math.PI * fractionRemaining;
+    const endX = 150 + 145 * Math.cos(endAngle);
+    const endY = 150 + 145 * Math.sin(endAngle);
+    const path = fractionRemaining === 0
+      ? ""
+      : `M150 150 L5 150 A145 145 0 0 1 ${endX} ${endY} Z`;
+    fanPanel.setAttribute("d", path);
+    fanClip.setAttribute("d", path);
   }
 
   function updateDuration() {
@@ -197,9 +192,12 @@
     colorPicker.value = preference.foregroundColor;
     textColorPicker.value = preference.textColor;
     backgroundColorPicker.value = preference.backgroundColor;
-    showNumbersSelect.value = preference.showText ? "yes" : "no";
-    fontControl.hidden = !preference.showText;
-    textColorControl.hidden = !preference.showText;
+    showRemainingInput.checked = preference.showRemaining;
+    showProgressInput.checked = preference.showProgress;
+    const hasVisibleText = preference.showRemaining
+      || (preference.showProgress && ["disk", "ring"].includes(preference.shape));
+    fontControl.hidden = !hasVisibleText;
+    textColorControl.hidden = !hasVisibleText;
     ringThicknessInput.value = String(preference.ringThickness);
     ringThicknessValue.value = formatRingThickness(preference.ringThickness);
     ringThicknessValue.textContent = formatRingThickness(preference.ringThickness);
@@ -216,10 +214,11 @@
     digitalProgress.dataset.shape = preference.shape;
     for (const visualization of visualizations) {
       visualization.hidden = visualization.dataset.view !== selectedView;
-      visualization.classList.toggle("show-numbers", preference.showText);
+      visualization.classList.toggle("show-remaining", preference.showRemaining);
+      visualization.classList.toggle("show-progress", preference.showProgress);
     }
     for (const label of minuteLabels) {
-      label.hidden = !preference.showText;
+      label.hidden = !preference.showProgress;
     }
     for (const swatch of swatches) {
       swatch.setAttribute("aria-pressed", String(swatch.dataset.color === preference.foregroundColor));
@@ -280,8 +279,13 @@
     });
   }
 
-  showNumbersSelect.addEventListener("change", () => {
-    preferences.showText = showNumbersSelect.value === "yes";
+  showRemainingInput.addEventListener("change", () => {
+    preferences.showRemaining = showRemainingInput.checked;
+    updateAppearanceControls();
+  });
+
+  showProgressInput.addEventListener("change", () => {
+    preferences.showProgress = showProgressInput.checked;
     updateAppearanceControls();
   });
 

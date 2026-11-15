@@ -352,6 +352,23 @@ main {
   stroke-width: 3;
 }
 
+.battery-separators {
+  position: absolute;
+  inset: 10px;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to right,
+    transparent 0 calc(12.5% - 3px),
+    var(--visualization-background) calc(12.5% - 3px) 12.5%
+  );
+}
+
+.digital-battery[data-shape="fan"] .battery-separators,
+.visualization:not(.show-progress) .battery-separators,
+.visualization:not(.show-progress) .fan-ribs {
+  display: none;
+}
+
 .fan-pivot {
   fill: var(--visualization-background);
 }
@@ -383,7 +400,7 @@ main {
   transform: translate(-50%, -50%);
 }
 
-.view-digital:not(.show-numbers) .digital-time {
+.view-digital:not(.show-remaining) .digital-time {
   display: none;
 }
 
@@ -391,17 +408,18 @@ main {
   padding-right: 14px;
 }
 
-.visualization:not(.show-numbers) .visual-time,
-.visualization:not(.show-numbers) .visual-caption {
+.visualization:not(.show-remaining) .visual-time,
+.visualization:not(.show-remaining) .visual-caption {
   display: none;
 }
 
-.visualization:not(.show-numbers) .ring-center {
+.visualization:not(.show-remaining) .ring-center {
   visibility: hidden;
 }
 
 .ring-wrap {
-  width: 245px;
+  width: min(245px, calc(100% - 112px));
+  margin: 52px 0 38px;
   aspect-ratio: 1;
   position: relative;
   color: var(--visualization-foreground);
@@ -425,6 +443,19 @@ main {
 
 .setting-control[hidden] {
   display: none;
+}
+
+.visibility-control label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+}
+
+.visibility-control input {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--accent);
 }
 
 .ring-track {

@@ -60,9 +60,15 @@
                  aria-label="Time remaining" aria-valuemin="0" aria-valuemax="100"
                  aria-valuenow="100" aria-valuetext="2 hours remaining">
               <span id="digital-fill" class="digital-fill"></span>
+              <span class="battery-separators" aria-hidden="true"></span>
               <svg class="digital-fan" viewBox="0 0 300 160" aria-hidden="true">
+                <defs>
+                  <clipPath id="fan-progress-clip">
+                    <path id="fan-clip"></path>
+                  </clipPath>
+                </defs>
                 <path id="fan-panel" class="fan-panel" d="M150 150 L5 150 A145 145 0 0 1 295 150 Z"></path>
-                <path id="fan-ribs" class="fan-ribs" d="M150 150 L5 150 M150 150 L24.4 77.5 M150 150 L77.5 24.4 M150 150 L150 5 M150 150 L222.5 24.4 M150 150 L275.6 77.5 M150 150 L295 150"></path>
+                <path class="fan-ribs" clip-path="url(#fan-progress-clip)" d="M150 150 L24.4 77.5 M150 150 L77.5 24.4 M150 150 L150 5 M150 150 L222.5 24.4 M150 150 L275.6 77.5"></path>
                 <circle class="fan-pivot" cx="150" cy="150" r="8"></circle>
               </svg>
               <span id="digital-time" class="digital-time">02:00:00</span>
@@ -172,23 +178,21 @@
           <input id="text-color-picker" class="background-color-picker" type="color" value="#23322f">
         </div>
 
-        <div class="setting-control">
-          <label for="show-numbers">Show text</label>
-          <select id="show-numbers">
-            <option value="yes">Yes</option>
-            <option value="no">No</option>
-          </select>
-          <p class="setting-hint">When enabled, shows the duration; the disk also shows 0–55 minute markers.</p>
-        </div>
+        <fieldset class="setting-control visibility-control">
+          <legend>Display options</legend>
+          <label><input id="show-remaining" type="checkbox" checked> Show remaining</label>
+          <label><input id="show-progress" type="checkbox" checked> Show progress</label>
+          <p class="setting-hint">Remaining shows the time left. Progress adds 0–55 markers to Disk/Ring, battery divisions, or fan separators.</p>
+        </fieldset>
 
         <div class="settings-divider"></div>
         <div class="settings-footnote">
           <span class="footnote-mark" aria-hidden="true">i</span>
-          <p>When text is off, the visualization shows no text or markers. The disk numerals are exploratory and do not change the product's no-clock design boundary.</p>
+          <p>Remaining time and progress markers can be toggled independently. Circular numerals are exploratory and do not change the product's no-clock design boundary.</p>
         </div>
         <div class="settings-footnote">
           <span class="footnote-mark" aria-hidden="true">i</span>
-          <p>Colors, font, and text visibility are shared across shapes. Thickness appears only for Ring and is remembered when you switch away. Font and text color appear when text is enabled. Contrast and final options need review.</p>
+          <p>Colors, font, and display options are shared across shapes. Thickness appears only for Ring and is remembered when you switch away. Font and text color appear when time or circular numerals are visible. Contrast and final options need review.</p>
         </div>
         <div class="settings-footnote">
           <span class="footnote-mark" aria-hidden="true">i</span>

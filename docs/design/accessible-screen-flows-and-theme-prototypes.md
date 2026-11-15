@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-004 |
-| Revision | 1.1 |
+| Revision | 1.2 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Product design, accessibility, and usability reviewers: unassigned |
@@ -28,14 +28,18 @@ two hours, and a single Shape selector: Disk, Battery, Hand fan, or Ring.
 The former digital circle is merged into Disk. Changing shape preserves
 the countdown, shared background/foreground/text colors, font, and text
 visibility. Ring thickness appears only for Ring and is retained when changing
-shape. Font and text color controls appear only when text is enabled, without
+shape. Independent Show remaining and Show progress checkboxes control the
+duration display and additional markers respectively. Progress adds 0–55
+numerals outside Disk/Ring, eight battery divisions, or fixed fan separators.
+The base fill remains visible. Font and text color controls appear when time
+or circular numerals are visible, without
 clearing their values when hidden. Each shape uses only the selected colors;
 unselected colors are not added as decorative highlights or outlines. The
 disk's optional 0–55 numerals use 36 px text outside its progress area, with
 reserved space for the larger labels. Disk uses a radial remaining-time
 treatment, Battery drains linearly, and the hand-fan
-shape reduces its opening angle from 180 degrees to zero with elapsed time,
-keeping its radius and ribs fixed in length rather than scaling horizontally. The
+shape empties over 180 degrees toward a fixed left edge, like a disk sweep,
+keeping its radius and separator positions fixed rather than folding them. The
 optional disk numerals
 are an exploratory client-feedback variant only; the product design remains
 without clock-face numerals or markings. These are prototype controls only,
@@ -218,3 +222,4 @@ and limitations explicit.
 | 0.9 | Place optional disk numerals outside the progress area; make the digital circle drain radially and the hand fan fold closed with elapsed time. |
 | 1.0 | Triple optional disk numeral size to 36 px with surrounding space; replace horizontal fan scaling with a fixed-radius angular opening from 180 degrees to zero. |
 | 1.1 | Unify the demo into one shape selector and shared settings; merge Circle into Disk; retain hidden text preferences and ring thickness across shape changes. |
+| 1.2 | Separate remaining-time visibility from shape-specific progress markers; add ring numerals and battery divisions; replace fan folding with a fixed-edge sweep and clipped stationary separators. |

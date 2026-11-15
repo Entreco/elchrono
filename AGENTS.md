@@ -137,8 +137,18 @@ that outcome conflicts with the product direction and requires escalation.
 If risks do not support Class A, escalate and revise the voluntary process before
 continuing affected work. Never claim certification or invent clinical evidence.
 
-Product documents and review records belong under `docs/`. Keep pending reviews
-and approvals explicit; never fabricate qualified human review or approval.
+Product documents belong under `docs/`. Human GitHub PR approval is review and
+approval evidence; do not create duplicate Markdown evidence files or require
+separate signatures. Link the PR from the document and record review scopes,
+checks, findings resolution, and limitations in the PR. Keep pending reviews
+explicit; never fabricate qualified human review or approval.
+
+All changes must enter `main` through a PR with human approval before merge.
+Require protected-main enforcement, dismissal of stale approvals after new
+commits, resolution of review conversations, and no bypasses, force pushes, or
+branch deletion. Verify effective GitHub protections before claiming enforcement.
+Approval must cover the final candidate and required scopes; merging alone is
+not approval. See [document controls](docs/governance/document-control.md).
 
 Maintain controlled, versioned records as applicable:
 

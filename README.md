@@ -84,7 +84,10 @@ requirements, voluntary documentation controls, and development instructions.
 
 ## Documentation
 
-Product documents and review records live under `docs/`. Start with the
+Product documents live under `docs/`; human GitHub PR approvals provide review
+evidence without duplicate Markdown evidence files or separate signatures.
+Changes must enter `main` through a protected PR workflow with human approval
+before merge. Start with the
 [document controls and M1 evidence index](docs/governance/document-control.md).
 These controls are a draft awaiting qualified human review and approval, not
 an approved safety baseline or a certification claim.

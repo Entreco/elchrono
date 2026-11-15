@@ -1,9 +1,8 @@
 (() => {
   let durationMs = 2 * 60 * 60 * 1000;
   let durationSeconds = durationMs / 1000;
-  const views = ["disk", "digital", "ring"];
-  const buttons = [...document.querySelectorAll("[data-select-view]")];
   const visualizations = [...document.querySelectorAll("[data-view]")];
+  const shapeSelect = document.getElementById("shape-select");
   const stateLabel = document.getElementById("timer-state");
   const startButton = document.getElementById("start-button");
   const timerHeading = document.getElementById("timer-heading");
@@ -14,12 +13,12 @@
   const personalizationPanel = document.getElementById("personalization-panel");
   const personalizationToggle = document.getElementById("personalization-toggle");
   const fontSelect = document.getElementById("font-select");
+  const fontControl = document.getElementById("font-control");
+  const textColorControl = document.getElementById("text-color-control");
   const colorPicker = document.getElementById("color-picker");
   const textColorPicker = document.getElementById("text-color-picker");
   const backgroundColorPicker = document.getElementById("background-color-picker");
   const backgroundSwatches = [...document.querySelectorAll("[data-background-color]")];
-  const digitalShapeControl = document.getElementById("digital-shape-control");
-  const digitalShapeSelect = document.getElementById("digital-shape");
   const showNumbersSelect = document.getElementById("show-numbers");
   const swatches = [...document.querySelectorAll("[data-color]")];
   const ringThicknessControl = document.getElementById("ring-thickness-control");
@@ -34,22 +33,16 @@
   const ring = document.querySelector(".progress-ring");
   const ringCircles = [...ring.querySelectorAll("circle")];
   const root = document.documentElement;
-  const preferences = Object.fromEntries(
-    views.map((view) => [
-      view,
-      {
-        foregroundColor: "#267b68",
-        backgroundColor: "#ffffff",
-        textColor: "#23322f",
-        font: "sans",
-        ringThickness: 15,
-        showNumbers: true,
-        digitalShape: "battery",
-      },
-    ]),
-  );
+  const preferences = {
+    shape: "disk",
+    foregroundColor: "#267b68",
+    backgroundColor: "#ffffff",
+    textColor: "#23322f",
+    font: "sans",
+    ringThickness: 15,
+    showText: true,
+  };
   const minuteLabels = [];
-  let selectedView = "disk";
   let deadline = null;
   let timerInterval = null;
 
@@ -167,19 +160,16 @@
     const percentage = Math.max(0, Math.min(100, (remainingSeconds / durationSeconds) * 100));
     const fillAngle = `${(percentage * 3.6).toFixed(2)}deg`;
     const accessibleTime = formatAccessibleTime(remainingSeconds);
-    const ringRadius = Math.max(1, (236 - preferences.ring.ringThickness) / 2);
+    const ringRadius = Math.max(1, (236 - preferences.ringThickness) / 2);
     const ringCircumference = 2 * Math.PI * ringRadius;
 
     diskProgress.style.setProperty("--fill-angle", fillAngle);
     diskProgress.style.setProperty("--start-angle", `${(360 - percentage * 3.6).toFixed(2)}deg`);
-    diskProgress.style.setProperty("--visualization-background", preferences.disk.backgroundColor);
     diskProgress.setAttribute("aria-valuenow", percentage.toFixed(1));
     diskProgress.setAttribute("aria-valuetext", accessibleTime);
     document.getElementById("disk-time").textContent = `${formatDigital(remainingSeconds)} remaining`;
 
     document.getElementById("digital-time").textContent = formatDigital(remainingSeconds);
-    digitalProgress.style.setProperty("--digital-fill-angle", fillAngle);
-    digitalProgress.style.setProperty("--digital-start-angle", `${(360 - percentage * 3.6).toFixed(2)}deg`);
     updateFan(percentage / 100);
     digitalFill.style.width = `${percentage}%`;
     digitalProgress.setAttribute("aria-valuenow", percentage.toFixed(1));
@@ -193,13 +183,9 @@
   }
 
   function updateAppearanceControls() {
-    const preference = preferences[selectedView];
+    const preference = preferences;
     root.style.setProperty("--accent", preference.foregroundColor);
     root.style.setProperty("--visualization-background", preference.backgroundColor);
-    diskProgress.style.setProperty(
-      "--visualization-background",
-      preferences.disk.backgroundColor,
-    );
     root.style.setProperty("--visualization-foreground", preference.foregroundColor);
     root.style.setProperty("--visualization-text", preference.textColor);
     document.body.classList.remove("font-rounded", "font-serif", "font-mono");
@@ -211,25 +197,29 @@
     colorPicker.value = preference.foregroundColor;
     textColorPicker.value = preference.textColor;
     backgroundColorPicker.value = preference.backgroundColor;
-    showNumbersSelect.value = preference.showNumbers ? "yes" : "no";
+    showNumbersSelect.value = preference.showText ? "yes" : "no";
+    fontControl.hidden = !preference.showText;
+    textColorControl.hidden = !preference.showText;
     ringThicknessInput.value = String(preference.ringThickness);
     ringThicknessValue.value = formatRingThickness(preference.ringThickness);
     ringThicknessValue.textContent = formatRingThickness(preference.ringThickness);
     ring.style.setProperty("--ring-thickness", `${preference.ringThickness}px`);
     const ringRadius = Math.max(1, (236 - preference.ringThickness) / 2);
-    const circumference = 2 * Math.PI * ringRadius;
     for (const circle of ringCircles) {
       circle.setAttribute("r", String(ringRadius));
     }
-    ringProgress.style.strokeDasharray = `${circumference}`;
-    ringProgress.style.strokeDashoffset = `${circumference * (1 - Number(ring.getAttribute("aria-valuenow")) / 100)}`;
-    ringThicknessControl.hidden = selectedView !== "ring";
-    digitalShapeSelect.value = preference.digitalShape;
-    digitalShapeControl.hidden = selectedView !== "digital";
-    digitalProgress.dataset.shape = preference.digitalShape;
-    document.getElementById(`view-${selectedView}`).classList.toggle("show-numbers", preference.showNumbers);
+    ringThicknessControl.hidden = preference.shape !== "ring";
+    shapeSelect.value = preference.shape;
+    const selectedView = preference.shape === "battery" || preference.shape === "fan"
+      ? "digital"
+      : preference.shape;
+    digitalProgress.dataset.shape = preference.shape;
+    for (const visualization of visualizations) {
+      visualization.hidden = visualization.dataset.view !== selectedView;
+      visualization.classList.toggle("show-numbers", preference.showText);
+    }
     for (const label of minuteLabels) {
-      label.hidden = !preference.showNumbers;
+      label.hidden = !preference.showText;
     }
     for (const swatch of swatches) {
       swatch.setAttribute("aria-pressed", String(swatch.dataset.color === preference.foregroundColor));
@@ -240,17 +230,7 @@
         String(swatch.dataset.backgroundColor === preference.backgroundColor),
       );
     }
-  }
-
-  function selectView(view) {
-    selectedView = view;
-    for (const button of buttons) {
-      button.setAttribute("aria-pressed", String(button.dataset.selectView === view));
-    }
-    for (const visualization of visualizations) {
-      visualization.hidden = visualization.dataset.view !== view;
-    }
-    updateAppearanceControls();
+    updateProgress(currentRemainingSeconds());
   }
 
   function tick() {
@@ -261,56 +241,52 @@
     updateProgress(currentRemainingSeconds());
   }
 
-  for (const button of buttons) {
-    button.addEventListener("click", () => selectView(button.dataset.selectView));
-  }
+  shapeSelect.addEventListener("change", () => {
+    preferences.shape = shapeSelect.value;
+    updateAppearanceControls();
+  });
 
   fontSelect.addEventListener("change", () => {
-    preferences[selectedView].font = fontSelect.value;
+    preferences.font = fontSelect.value;
     updateAppearanceControls();
   });
 
   for (const swatch of swatches) {
     swatch.addEventListener("click", () => {
-      preferences[selectedView].foregroundColor = swatch.dataset.color;
+      preferences.foregroundColor = swatch.dataset.color;
       updateAppearanceControls();
     });
   }
 
   colorPicker.addEventListener("input", () => {
-    preferences[selectedView].foregroundColor = colorPicker.value;
+    preferences.foregroundColor = colorPicker.value;
     updateAppearanceControls();
   });
 
   textColorPicker.addEventListener("input", () => {
-    preferences[selectedView].textColor = textColorPicker.value;
+    preferences.textColor = textColorPicker.value;
     updateAppearanceControls();
   });
 
   backgroundColorPicker.addEventListener("input", () => {
-    preferences[selectedView].backgroundColor = backgroundColorPicker.value;
+    preferences.backgroundColor = backgroundColorPicker.value;
     updateAppearanceControls();
   });
 
   for (const swatch of backgroundSwatches) {
     swatch.addEventListener("click", () => {
-      preferences[selectedView].backgroundColor = swatch.dataset.backgroundColor;
+      preferences.backgroundColor = swatch.dataset.backgroundColor;
       updateAppearanceControls();
     });
   }
 
-  digitalShapeSelect.addEventListener("change", () => {
-    preferences[selectedView].digitalShape = digitalShapeSelect.value;
-    updateAppearanceControls();
-  });
-
   showNumbersSelect.addEventListener("change", () => {
-    preferences[selectedView].showNumbers = showNumbersSelect.value === "yes";
+    preferences.showText = showNumbersSelect.value === "yes";
     updateAppearanceControls();
   });
 
   ringThicknessInput.addEventListener("input", () => {
-    preferences[selectedView].ringThickness = Number(ringThicknessInput.value);
+    preferences.ringThickness = Number(ringThicknessInput.value);
     updateAppearanceControls();
   });
 
@@ -345,7 +321,7 @@
   });
 
   createMinuteLabels();
-  selectView(selectedView);
+  updateAppearanceControls();
   updateDuration();
   updateProgress(durationSeconds);
 })();

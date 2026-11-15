@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-004 |
-| Revision | 1.0 |
+| Revision | 1.1 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Product design, accessibility, and usability reviewers: unassigned |
@@ -22,17 +22,18 @@ application implementation, a usability finding, or approval of product
 requirements. The current application remains a starter screen, not an
 implemented timer.
 
-An interactive, browser-based demonstration of the three visualizations is
-available in the [local demo](demo/README.md). It starts a configurable
-countdown, defaulting to two hours, on user action; the visualizations share
-the same running time and can be switched without restarting it. The disk
-sweep direction, background, foreground and text colors, digital shape,
-numeric-ring thickness, and whether numbers are shown can be previewed. Each
-visualization uses only its selected background, foreground, and text colors;
+An interactive, browser-based demonstration is available in the
+[local demo](demo/README.md). It has one configurable countdown, defaulting to
+two hours, and a single Shape selector: Disk, Battery, Hand fan, or Ring.
+The former digital circle is merged into Disk. Changing shape preserves
+the countdown, shared background/foreground/text colors, font, and text
+visibility. Ring thickness appears only for Ring and is retained when changing
+shape. Font and text color controls appear only when text is enabled, without
+clearing their values when hidden. Each shape uses only the selected colors;
 unselected colors are not added as decorative highlights or outlines. The
 disk's optional 0–55 numerals use 36 px text outside its progress area, with
-reserved space for the larger labels. The digital circle
-uses the same radial remaining-time treatment as the disk, and its hand-fan
+reserved space for the larger labels. Disk uses a radial remaining-time
+treatment, Battery drains linearly, and the hand-fan
 shape reduces its opening angle from 180 degrees to zero with elapsed time,
 keeping its radius and ribs fixed in length rather than scaling horizontally. The
 optional disk numerals
@@ -174,10 +175,10 @@ inform the concepts but are not copied into the repository.
 The local demo makes these concepts interactive without establishing
 requirements or product behavior. Its configurable countdown runs from a user
 action, uses the browser monotonic clock, and immediately resets to the chosen
-duration at completion without a completed state. View switching does not reset
+duration at completion without a completed state. Shape switching does not reset
 countdown progress. It does not implement pause, restart controls, persistence,
-audio, or interruption recovery. Styling previews remain separate per view for
-the current page session only.
+audio, or interruption recovery. Styling previews are shared across shapes for
+the current page session only; nothing is saved across reloads.
 
 ## Open decisions and evidence gaps
 
@@ -216,3 +217,4 @@ and limitations explicit.
 | 0.8 | Separate background, foreground, and text color controls and limit each visualization to those three selected colors. |
 | 0.9 | Place optional disk numerals outside the progress area; make the digital circle drain radially and the hand fan fold closed with elapsed time. |
 | 1.0 | Triple optional disk numeral size to 36 px with surrounding space; replace horizontal fan scaling with a fixed-radius angular opening from 180 degrees to zero. |
+| 1.1 | Unify the demo into one shape selector and shared settings; merge Circle into Disk; retain hidden text preferences and ring thickness across shape changes. |

@@ -21,7 +21,7 @@
     <section class="intro" aria-labelledby="page-title">
       <p class="eyebrow">A CUSTOMIZABLE COUNTDOWN</p>
       <h1 id="page-title">Time, made visible.</h1>
-      <p class="intro-copy">Explore three ways to see the same waiting time. Switch views while the countdown runs.</p>
+      <p class="intro-copy">One countdown, your choice of shape. Personalize it without losing your settings.</p>
     </section>
 
     <div class="demo-layout">
@@ -87,24 +87,6 @@
           </div>
         </div>
 
-        <div class="visualization-picker">
-          <p class="control-label" id="visualization-label">CHOOSE A VISUALIZATION</p>
-          <div class="visualization-options" role="group" aria-labelledby="visualization-label">
-            <button class="view-option" type="button" data-select-view="disk" aria-pressed="true">
-              <span class="option-glyph glyph-disk" aria-hidden="true"></span>
-              <span>Remaining disk<small>Proposed default</small></span>
-            </button>
-            <button class="view-option" type="button" data-select-view="digital" aria-pressed="false">
-              <span class="option-glyph glyph-digital" aria-hidden="true">01</span>
-              <span>Digital<small>Duration text</small></span>
-            </button>
-            <button class="view-option" type="button" data-select-view="ring" aria-pressed="false">
-              <span class="option-glyph glyph-ring" aria-hidden="true"></span>
-              <span>Numeric ring<small>Progress + time</small></span>
-            </button>
-          </div>
-        </div>
-
         <div class="timer-actions">
           <button id="start-button" class="start-button" type="button">Start 2-hour demo</button>
           <p class="timer-note">Reload this page to start a fresh demo.</p>
@@ -119,7 +101,17 @@
             <h2 id="personalization-heading">Personalization</h2>
           </div>
         </div>
-        <p class="settings-intro">These preview settings belong to the selected visualization.</p>
+        <p class="settings-intro">One set of preview settings, preserved when you change shape. Reloading clears them.</p>
+
+        <div class="setting-control">
+          <label for="shape-select">Shape</label>
+          <select id="shape-select">
+            <option value="disk">Disk</option>
+            <option value="battery">Battery</option>
+            <option value="fan">Hand fan</option>
+            <option value="ring">Ring</option>
+          </select>
+        </div>
 
         <fieldset id="duration-control" class="setting-control duration-control">
           <legend>Duration</legend>
@@ -146,15 +138,6 @@
           <label for="ring-thickness">Ring thickness</label>
           <output id="ring-thickness-value" for="ring-thickness">15 px</output>
           <input id="ring-thickness" type="range" min="1" max="234" step="1" value="15">
-        </div>
-
-        <div id="digital-shape-control" class="setting-control" hidden>
-          <label for="digital-shape">Digital shape</label>
-          <select id="digital-shape">
-            <option value="battery">Battery</option>
-            <option value="circle">Circle</option>
-            <option value="fan">Hand fan</option>
-          </select>
         </div>
 
         <div class="setting-control">
@@ -184,13 +167,13 @@
           </div>
         </fieldset>
 
-        <div class="setting-control">
+        <div id="text-color-control" class="setting-control">
           <label for="text-color-picker">Text color</label>
           <input id="text-color-picker" class="background-color-picker" type="color" value="#23322f">
         </div>
 
         <div class="setting-control">
-          <label for="show-numbers">Show numbers</label>
+          <label for="show-numbers">Show text</label>
           <select id="show-numbers">
             <option value="yes">Yes</option>
             <option value="no">No</option>
@@ -201,11 +184,11 @@
         <div class="settings-divider"></div>
         <div class="settings-footnote">
           <span class="footnote-mark" aria-hidden="true">i</span>
-          <p>When numbers are off, the visualization shows no text or markers. The disk numerals are exploratory and do not change the product's no-clock design boundary.</p>
+          <p>When text is off, the visualization shows no text or markers. The disk numerals are exploratory and do not change the product's no-clock design boundary.</p>
         </div>
         <div class="settings-footnote">
           <span class="footnote-mark" aria-hidden="true">i</span>
-          <p>Font changes apply to the selected visualization's time value. Ring thickness and digital shape appear only for their relevant views. Contrast and final options need review.</p>
+          <p>Colors, font, and text visibility are shared across shapes. Thickness appears only for Ring and is remembered when you switch away. Font and text color appear when text is enabled. Contrast and final options need review.</p>
         </div>
         <div class="settings-footnote">
           <span class="footnote-mark" aria-hidden="true">i</span>

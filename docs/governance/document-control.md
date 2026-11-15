@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M1-DOC-001 |
-| Revision | 2.19 |
+| Revision | 2.20 |
 | Product owner | @Entreco |
 | Document owner and approver | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
@@ -271,8 +271,8 @@ M1-DOC-003 records the qualified EU/US regulatory qualification conclusion.
 | M1-DOC-009 | [Risk traceability matrix](../safety/risk-traceability-matrix.md) | [#4](https://github.com/Entreco/elchrono/issues/4) | Owner @Entreco; revision 0.5 candidate aligns planned verification with the proposed 1-minute duration range and digit entry; M2 requirement-risk-test links are maintained in M2-DOC-003; [PR #14](https://github.com/Entreco/elchrono/pull/14) is prior review evidence; planned verification and test evidence pending; software-safety reviewer unassigned |
 | M2-DOC-001 | [Product requirements](../product/requirements.md) | [#22](https://github.com/Entreco/elchrono/issues/22) | Owner @Entreco; revision 0.3 candidate; nine proposed requirements using REQ-NNN IDs, including whole-minute durations from 1 minute to 24 hours and sequential Hours/Minutes entry; REQ-007 is retired and not reusable; source-record approval and requirements reviewer remain pending |
 | M2-DOC-002 | [Product test protocol](../testing/test-protocol.md) | [#25](https://github.com/Entreco/elchrono/issues/25) | Owner @Entreco; revision 0.1 candidate; planned test procedures and acceptance criteria for REQ-001 through REQ-006 and REQ-008 through REQ-010; test execution and review pending |
-| M2-DOC-003 | [Requirements traceability matrix](../safety/requirements-traceability-matrix.md) | [#25](https://github.com/Entreco/elchrono/issues/25) | Owner @Entreco; revision 1.1 candidate; links requirements to intended use, risks, design/usability evidence (including the interactive preview), test cases, and verification evidence; mappings and evidence remain pending |
-| M2-DOC-004 | [Accessible screen flows and theme prototypes](../design/accessible-screen-flows-and-theme-prototypes.md) | [#23](https://github.com/Entreco/elchrono/issues/23) | Owner @Entreco; revision 1.0 candidate; revision 0.2 reviewed in merged [PR #28](https://github.com/Entreco/elchrono/pull/28); includes a local interactive duration and visualization demo with per-view background, foreground, and text colors, larger outside-disk numerals, digital circle/fixed-radius angular fan shapes, disk direction, ring thickness, and panel visibility previews; current revision and usability/specialist reviews pending |
+| M2-DOC-003 | [Requirements traceability matrix](../safety/requirements-traceability-matrix.md) | [#25](https://github.com/Entreco/elchrono/issues/25) | Owner @Entreco; revision 1.2 candidate; links requirements to intended use, risks, design/usability evidence (including the interactive preview), test cases, and verification evidence; mappings and evidence remain pending |
+| M2-DOC-004 | [Accessible screen flows and theme prototypes](../design/accessible-screen-flows-and-theme-prototypes.md) | [#23](https://github.com/Entreco/elchrono/issues/23) | Owner @Entreco; revision 1.1 candidate; revision 0.2 reviewed in merged [PR #28](https://github.com/Entreco/elchrono/pull/28); local prototype has one shape selector (Disk, Battery, Hand fan, Ring), shared duration/colors/font/text settings, retained conditional thickness, outside-disk numerals, and panel visibility controls; current revision and usability/specialist reviews pending |
 
 For each created record, replace its reserved path with a working link and record
 its owner, revision, review PR, and commit-pinned merged baseline when available.
@@ -358,3 +358,4 @@ merge, or the Approved and effective lifecycle status.
 | 2.17 | Index separate background, foreground, and text colors for each visualization |
 | 2.18 | Index outside disk numerals and radial-circle and folding-fan digital shapes |
 | 2.19 | Index 36 px disk numerals and fixed-radius angular fan closure |
+| 2.20 | Index unified prototype shape selection and shared settings with retained conditional options |

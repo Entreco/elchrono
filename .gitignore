@@ -25,3 +25,18 @@ replay_pid*
 
 # Kotlin Gradle plugin data, see https://kotlinlang.org/docs/whatsnew20.html#new-directory-for-kotlin-data-in-gradle-projects
 .kotlin/
+
+# Toolchain output and local workspace state
+build/
+.DS_Store
+*.iml
+# IDE project models, caches, device state and local launch configurations
+.idea/*
+!.idea/codeStyles/
+!.idea/inspectionProfiles/
+xcuserdata/
+**/module.xcodeproj/*
+!**/module.xcodeproj/project.pbxproj
+!**/module.xcodeproj/xcshareddata/
+!**/module.xcodeproj/project.xcworkspace/
+**/xcshareddata/WorkspaceSettings.xcsettings

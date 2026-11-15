@@ -1,0 +1,15 @@
+product:
+  type: kmp/lib
+  platforms: [ jvm, android, iosArm64, iosSimulatorArm64, wasmJs ]
+
+dependencies:
+  - $compose.runtime
+  - $compose.material3
+  - $compose.components.resources
+
+settings:
+  compose:
+    enabled: true
+    resources:
+      packageName: nl.entreco.elchrono.core.design.resources
+      exposedAccessors: true

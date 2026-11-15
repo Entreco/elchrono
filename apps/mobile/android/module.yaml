@@ -1,0 +1,13 @@
+product: android/app
+
+dependencies:
+  - //apps/common
+  - $libs.androidx.activity.compose
+  - $compose.preview
+  - $compose.uiTooling
+
+settings:
+  compose: enabled
+  android:
+    namespace: nl.entreco.elchrono
+    applicationId: nl.entreco.elchrono

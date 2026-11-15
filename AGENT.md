@@ -1,0 +1,248 @@
+# El Chrono - Project instructions
+
+## Purpose
+
+El Chrono is a visual remaining-time timer for people with cognitive or
+intellectual disabilities. It helps patients understand how much waiting time
+remains without showing a clock face or the time of day. Caregivers configure
+the experience; patients have simple, accessible controls.
+
+- Repository: https://github.com/Entreco/elchrono
+- Project: https://github.com/users/Entreco/projects/4
+- Milestones: https://github.com/Entreco/elchrono/milestones
+
+## Product requirements
+
+- Caregivers select a duration from 5 minutes to 24 hours, in 5-minute increments.
+- Caregivers choose from five approved timer themes. Include quiet experiences
+  and explore geometric experiences such as triangles; final designs require
+  usability review rather than assumptions about patient preferences.
+- Caregivers optionally connect YouTube or Spotify for background music through
+  supported provider integrations.
+- Patients can change volume without gaining access to caregiver settings.
+- The timer must work without music or internet connectivity.
+- Audio failures must not interrupt the timer or silently appear successful.
+- Keep visual remaining-time semantics consistent across themes and platforms.
+
+Minimum screens:
+
+1. **Main:** themed countdown, accessible volume control, and distinguishable
+   running, paused, completed, and interrupted states; no clock presentation.
+2. **Settings:** duration, theme, optional music, and caregiver timer controls.
+3. **About:** company logo, version/build details, support information, privacy
+   policy, relevant licences, intended use, and limitations.
+
+Caregiver protection, volume limits, completion sounds, pause/reset behaviour,
+and interruption recovery require documented requirements and risk/UX review.
+Do not introduce these behavioural decisions implicitly during implementation.
+
+## Platform targets
+
+| Target | Platforms | Current scaffold |
+|---|---|---|
+| Web | Browser | `apps/browser`, Kotlin/Wasm |
+| Mobile | Android, iOS | `apps/mobile/android`, `apps/mobile/ios` |
+| Desktop | Desktop operating systems agreed in the support matrix | `apps/desktop`, JVM |
+| TV | Android TV, Apple TV | Reserved at `apps/television`; no target configured |
+| Watch | Wear OS, watchOS | Reserved at `apps/watch`; no target configured |
+
+Do not claim TV/watch support merely because Android/iOS code compiles.
+Validate platform tooling, packaging, input, lifecycle, and provider support.
+Document minimum supported OS/browser versions and desktop OS scope. Watches
+may require a companion app; do not assume standalone audio or feature parity.
+
+## Existing implementation and conventions
+
+The project uses Kotlin Multiplatform and Compose Multiplatform, built with the
+Kotlin Toolchain wrappers `kotlin` and `kotlin.bat`. The current UI is a starter
+screen, not an implemented timer.
+
+- `project.yaml` declares modules; each module uses `module.yaml`.
+- `libs.versions.toml` is the dependency version catalog.
+- `apps/common` composes shared feature UI and owns the application shell.
+- `features/{timer,settings,music}` are CMP library scaffolds, not implemented
+  product features. Feature UI and feature-owned logic belong here.
+- `core/design` owns the shared theme/components and design resources.
+- `core/localization` owns string resources and translations; use generated
+  Compose resource accessors rather than hard-coded visible text.
+- Each module's `src` contains common Kotlin code; `src@<platform>` contains
+  platform-specific implementations; `test` and `test@<platform>` contain tests.
+- `composeResources` belongs to its owning module. Design and localization have
+  distinct generated resource packages with exposed cross-module accessors.
+- Application modules contain their platform entry points and configuration.
+- Use the existing `nl.entreco.elchrono` package hierarchy and Compose resources.
+- Platform launchers depend on the common shell; the shell depends on
+  features/core; features depend on core. Core never depends on features/apps,
+  other features do not depend on one another, and platform SDK code stays
+  outside core.
+- Register nested paths in `project.yaml` and use root-relative module dependency
+  paths such as `//apps/common`. CLI selectors use unique leaf module names.
+
+See `docs/architecture/module-layout.md` for the restructure rationale.
+
+Reuse this structure. Do not introduce a parallel Gradle build or replace the
+toolchain/framework without an approved architecture decision.
+Keep timer logic independent of rendering and music integrations. Share domain
+behaviour where feasible; isolate platform lifecycle, persistence, playback,
+and system-volume APIs behind narrow, testable boundaries.
+
+## Accessibility and timer reliability
+
+- Prefer predictable layouts, readable contrast, large controls, and low sensory
+  load. Never communicate remaining time through colour alone.
+- Avoid flashing, sudden loud audio, and unnecessary motion. Validate theme
+  choices with caregivers and representative patients under appropriate
+  consent and safeguarding arrangements.
+- Provide accessible labels/semantics and verify applicable screen-reader,
+  keyboard, touch, TV remote/D-pad, and watch interactions.
+- Derive elapsed time from an appropriate monotonic time source during active
+  execution; do not treat animation frames or callback counts as elapsed time.
+- Define and verify recovery across backgrounding, sleep, process termination,
+  restart, and wall-clock changes. Monotonic timestamps alone do not provide
+  persistence across device restarts.
+- Test every allowed duration, including 5 minutes and 24 hours, invalid
+  configuration, pause/resume, completion boundaries, and interruption paths.
+- Inject controllable time sources for deterministic tests rather than waiting
+  real minutes/hours. Prevent negative remaining time and duplicate completion.
+- Surface errors explicitly without exposing patient data or credentials.
+
+## Medical-device documentation and safety
+
+Develop against the approved applicability matrix for IEC 62304:2006 with
+Amendment 1:2015, with software safety Class A as the proposed classification.
+Class A is not a regulatory medical-device class, and documentation alone does
+not demonstrate compliance or certification.
+
+M1 must establish intended use, medical-device qualification, target-market
+obligations, and a justified software safety classification with qualified
+review. If risks do not support Class A, escalate and revise the process before
+continuing affected work. Never claim certification or invent clinical evidence.
+
+Maintain controlled, versioned records as applicable:
+
+- Intended use, classification rationale, development plan, responsibilities,
+  and standards/documentation applicability.
+- Requirements with stable IDs and measurable acceptance criteria.
+- Risks, controls, usability findings, and verification of those controls.
+- Architecture/design decisions and third-party dependency/SOUP assessments.
+- Verification plans, results, and requirements-to-risk-to-test traceability.
+- Configuration/change records, unresolved anomalies, release approvals,
+  instructions, limitations, and maintenance/incident assessment procedures.
+
+These project controls are not a claim that every listed document is explicitly
+required for Class A. Follow the approved applicability matrix.
+Update affected records with each change. Separate observed evidence from
+assumptions; record missing evidence and review status honestly.
+
+## Privacy and music integrations
+
+Avoid patient accounts and identifiable patient data unless approved requirements
+make them necessary. Do not add telemetry by default.
+Document provider data flows, consent where applicable, token storage,
+retention, and disconnection behaviour. Never commit credentials, signing keys,
+tokens, patient data, or identifiable logs/screenshots.
+
+Use official provider APIs/SDKs and supported authentication/playback mechanisms.
+Verify licensing, subscriptions, autoplay, embedding, and platform limitations.
+Do not scrape providers, bypass playback restrictions, or promise unsupported
+system-volume control. Display meaningful errors and preserve timer operation.
+
+## Build, checks, and tests
+
+Run commands from the repository root. Use the existing wrapper rather than
+assuming globally installed Kotlin or Gradle:
+
+```sh
+./kotlin build -m common
+./kotlin test -m common -m localization
+./kotlin check -m common -m localization
+./kotlin build -m android
+./kotlin run -m android --device-id <adb-serial>
+./kotlin run -m desktop
+./kotlin run -m ios -p iosSimulatorArm64 --device-id <simulator-uuid>
+./kotlin run -m browser
+```
+
+Use `./kotlin --help` and subcommand help to discover supported options;
+`./kotlin show --help` exposes discovery commands. Scope validation to affected
+modules/platforms first, then broaden when shared changes warrant it.
+Use `./kotlin build`, `./kotlin test`, and `./kotlin check` for whole-project
+validation when needed. Report missing SDKs, unavailable targets, absent tests,
+or failed checks as limitations, never as passing verification.
+Documentation-only changes need no compilation unless documentation tooling
+requires it; check links, command accuracy, and the diff.
+
+## Required engineering skills and Android CLI guidance
+
+Relevant competencies are Kotlin/Compose Multiplatform, deterministic timer
+testing, accessibility/usability, platform lifecycle management, supported media
+integration, and controlled medical-device software documentation.
+Use agent skills only when actually available; do not invent skill names or
+assume a dedicated Android CLI skill is installed.
+
+For Android work, know Android SDK command-line tools, ADB, emulator management,
+manifest/permissions, audio focus, lifecycle, and remote/D-pad navigation for TV.
+Use an installed SDK and discover available tools before installing anything.
+Typical inspection commands, when those tools are available on PATH:
+
+```sh
+sdkmanager --list_installed
+avdmanager list avd
+emulator -list-avds
+adb devices -l
+```
+
+When multiple devices are connected, explicitly select an authorized test device:
+
+```sh
+adb -s <serial> shell am start -n nl.entreco.elchrono/.MainActivity
+adb -s <serial> shell input keyevent KEYCODE_DPAD_CENTER
+```
+
+Install/start the app through `./kotlin run -m android --device-id <serial>`.
+Discover actual APK paths and available CLI options; never guess build outputs.
+Scope diagnostics to the app/test device and redact sensitive data from logs.
+Do not wipe emulators, uninstall apps, modify a personal device, accept SDK
+licences, or alter SDK packages without approval. Never work around unavailable
+Apple TV/watch toolchains by labelling mobile builds as those products.
+
+## Milestones and GitHub workflow
+
+1. **M1:** Intended use and safety foundation.
+2. **M2:** Requirements and accessible UX.
+3. **M3:** Architecture and engineering foundation.
+4. **M4:** Reliable timer engine.
+5. **M5:** Browser MVP with five themes.
+6. **M6:** Music and volume.
+7. **M7:** Mobile and desktop releases.
+8. **M8:** TV and watch releases.
+9. **M9:** Release baseline and maintenance.
+
+Follow the dependencies and completion gates in the repository milestones.
+Matching project Backlog cards are drafts, not development issues. When asked
+to create issues, assign the repository milestone and add them to the project;
+include scope, acceptance criteria, dependencies, relevant requirement/risk IDs,
+and documentation evidence. Do not invent deadlines or approval decisions.
+
+An issue is Done only after implementation/documentation review, verification
+of acceptance criteria, updated traceability, and recorded limitations.
+Apply release approval to each shipped platform, not only the final milestone.
+
+## Change discipline
+
+Read relevant code and requirements before editing. Make focused changes,
+preserve unrelated work, and add regression coverage for behaviour changes.
+Do not modify generated files, silently suppress failures, or introduce
+dependencies without a clear need and dependency assessment.
+Do not commit, push, publish, or change GitHub status without authorization.
+
+Treat `.idea` project models, caches, device state, workspace/session history,
+and local run configurations as generated or machine-local files. They are
+ignored; only intentionally shared `codeStyles` and `inspectionProfiles` are
+allowed. Review those profiles for machine-specific paths before committing.
+Do not share IDE launch configurations until verified after successful sync;
+the root README contains the verified CLI launch commands.
+
+This file is named `AGENT.md` as requested. Agents that only auto-discover
+`AGENTS.md` must be explicitly directed to read this file; do not assume automatic
+discovery.

@@ -1,0 +1,11 @@
+modules:
+  - apps/browser
+  - apps/common
+  - apps/desktop
+  - apps/mobile/android
+  - apps/mobile/ios
+  - core/design
+  - core/localization
+  - features/music
+  - features/settings
+  - features/timer

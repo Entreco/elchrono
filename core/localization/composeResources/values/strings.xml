@@ -1,0 +1,5 @@
+<resources>
+    <string name="show_content">Click me!</string>
+    <string name="greeting">Hello, %1$s!</string>
+    <string name="compose_greeting">Compose: %1$s</string>
+</resources>

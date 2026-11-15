@@ -1,0 +1,17 @@
+product:
+  type: kmp/lib
+  platforms: [ jvm, android, iosArm64, iosSimulatorArm64, wasmJs ]
+
+dependencies:
+  - $compose.components.resources
+
+test-dependencies@jvm:
+  - $libs.kotlinx.coroutines.test
+  - $compose.desktop.currentOs: runtime-only
+
+settings:
+  compose:
+    enabled: true
+    resources:
+      packageName: nl.entreco.elchrono.core.localization.resources
+      exposedAccessors: true

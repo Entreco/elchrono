@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M1-DOC-001 |
-| Revision | 1.1 |
+| Revision | 1.2 |
 | Product owner | @Entreco |
 | Document owner and approver | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
@@ -234,9 +234,9 @@ qualification conclusion.
 
 | ID | Record / planned path | Issue | Current evidence |
 |---|---|---|---|
-| M1-DOC-001 | [Document controls](document-control.md) | [#1](https://github.com/Entreco/elchrono/issues/1) | Owner @Entreco; revision 0.6; issue #1 closed and [PR #9](https://github.com/Entreco/elchrono/pull/9) merged; [PR #10](https://github.com/Entreco/elchrono/pull/10) contains subsequent changes; historical acceptance identity/SHA and specialist review evidence unresolved |
-| M1-DOC-002 | [Intended use](../product/intended-use.md) | [#2](https://github.com/Entreco/elchrono/issues/2) | Owner @Entreco; revision 0.5 candidate; EU and United States selected for assessment; exact-revision approval evidence unresolved; see [PR #10](https://github.com/Entreco/elchrono/pull/10) for prior changes and [PR #13](https://github.com/Entreco/elchrono/pull/13) for this candidate |
-| M1-DOC-003 | [Qualification and classification](../regulatory/qualification-and-classification.md) | [#3](https://github.com/Entreco/elchrono/issues/3) | Owner @Entreco; revision 0.4 candidate; [PR #13](https://github.com/Entreco/elchrono/pull/13); qualified reviewer concludes non-device in EU/US; PR acceptance pending; replaces closed [PR #12](https://github.com/Entreco/elchrono/pull/12) after branch rename |
+| M1-DOC-001 | [Document controls](document-control.md) | [#1](https://github.com/Entreco/elchrono/issues/1) | Owner @Entreco; revision 1.2; issue #1 closed and [PR #9](https://github.com/Entreco/elchrono/pull/9) merged; [PR #10](https://github.com/Entreco/elchrono/pull/10) contains subsequent changes; historical acceptance identity/SHA and specialist review evidence unresolved |
+| M1-DOC-002 | [Intended use](../product/intended-use.md) | [#2](https://github.com/Entreco/elchrono/issues/2) | Owner @Entreco; revision 0.6 candidate; EU and United States selected for assessment; exact-revision approval evidence unresolved; see [PR #10](https://github.com/Entreco/elchrono/pull/10) for prior changes and [PR #13](https://github.com/Entreco/elchrono/pull/13) for this candidate |
+| M1-DOC-003 | [Qualification and classification](../regulatory/qualification-and-classification.md) | [#3](https://github.com/Entreco/elchrono/issues/3) | Owner @Entreco; revision 0.5 candidate; [PR #13](https://github.com/Entreco/elchrono/pull/13); qualified reviewer concludes non-device in EU/US; PR acceptance pending; replaces closed [PR #12](https://github.com/Entreco/elchrono/pull/12) after branch rename |
 | M1-DOC-004 | `docs/safety/initial-risk-assessment.md` | [#4](https://github.com/Entreco/elchrono/issues/4) | Not created |
 | M1-DOC-005 | `docs/safety/software-safety-classification.md` | [#5](https://github.com/Entreco/elchrono/issues/5) | Not created |
 | M1-DOC-006 | `docs/governance/applicability-matrix.md` | [#6](https://github.com/Entreco/elchrono/issues/6) | Not created |
@@ -298,3 +298,4 @@ merge, or the Approved and effective lifecycle status.
 | 0.9 | Record the non-device qualification conclusion and update the intended-use evidence index |
 | 1.0 | Record @Entreco's M1-DOC-003 regulatory reviewer assignment and update the evidence index to show qualified review disposition and pending PR acceptance |
 | 1.1 | Update the evidence index for the qualified review conclusion and new intended-use and qualification revisions |
+| 1.2 | Update the evidence index for the revisioned intended-use and qualification records |

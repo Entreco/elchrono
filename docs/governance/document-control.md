@@ -3,14 +3,15 @@
 | Field | Value |
 |---|---|
 | Document ID | M1-DOC-001 |
-| Revision | 0.5 |
-| Status | Draft |
+| Revision | 0.6 |
 | Product owner | @Entreco |
 | Document owner and approver | @Entreco |
-| Draft author | Copilot; human accountability remains with the owner |
-| Review evidence | [PR #9](https://github.com/Entreco/elchrono/pull/9); human approval pending |
+| Author | Copilot; human accountability remains with the owner |
+| Review evidence | [PR #9](https://github.com/Entreco/elchrono/pull/9); [PR #10](https://github.com/Entreco/elchrono/pull/10) |
 | Work item | [Issue #1](https://github.com/Entreco/elchrono/issues/1) |
-| Approval | Pending; no approved baseline exists |
+
+Lifecycle status is derived from the branch and PR context, not stored in this
+table. See [Lifecycle and approval](#lifecycle-and-approval).
 
 ## Purpose and scope
 
@@ -22,7 +23,7 @@ an additional signature. Keep substantive decisions, limitations, and revision
 history in the document; keep review checks, discussions, and dispositions in
 the PR.
 
-These are proposed project controls, not a certification or a claim that every
+These are voluntary project controls, not a certification or a claim that every
 record is required by IEC 62304. The approved applicability matrix will determine
 normative obligations and justified tailoring. Until it exists, do not omit a
 milestone deliverable or claim an exemption.
@@ -36,8 +37,9 @@ Escalate any conflicting assessment to the product owner before affected work
 continues. Separate voluntary process controls from applicable legal obligations.
 
 The existing [module layout record](../architecture/module-layout.md) is
-engineering context, not an approved M1 safety or regulatory record. The current
-application is a starter UI, not an implemented timer.
+engineering context, not an M1 safety or regulatory assessment. It follows the
+same documentation lifecycle. The current application is a starter UI, not an
+implemented timer.
 
 ## Responsibilities
 
@@ -45,7 +47,7 @@ application is a starter UI, not an implemented timer.
 |---|---|---|
 | Product owner | @Entreco | Accountable for product boundaries, target markets, resourcing, and assignment of competent reviewers |
 | Document owner | @Entreco for this record; explicitly assign for each subsequent record | Maintains revisions, evidence links, findings, and affected-record assessment |
-| Author | Copilot for this draft; identify the actual author on each record | Prepares evidence and identifies uncertainty; cannot invent findings resolution, qualifications, or approval |
+| Author | Copilot for this record; identify the actual author on each record | Prepares evidence and identifies uncertainty; cannot invent findings resolution, qualifications, or approval |
 | Document approver | @Entreco | Accepts the exact document revision after required reviews and findings resolution; this designation does not establish specialist competence |
 | Regulatory reviewer | Unassigned; blocking | Must be competent to assess qualification, classification, and obligations in the selected markets |
 | Software-safety reviewer | Unassigned; blocking | Must be competent in the applicable IEC 62304 classification approach, software hazards, risk assumptions, and controls |
@@ -63,23 +65,24 @@ appoint another reviewer. AI assistance is not a qualified human review.
 
 For this record, regulatory and software-safety reviewers must check the proposed
 review arrangement, classification escalation, and document controls within their
-respective scopes before approval. For subsequent records, identify required
+respective scopes before merge. For subsequent records, identify required
 reviewers using their subject matter and the applicability matrix. Owner approval
 alone cannot substitute for required specialist review.
 
 ## Record format and identifiers
 
-Every controlled record starts with: document ID, revision, status, owner,
-author, required reviewers, approver, related issue, review PR link, and
-approval status/link. Include scope, source references, decisions and rationale,
+Every controlled record starts with: document ID, revision, owner,
+author, required reviewers, approver, related issue, and review PR links.
+Link this lifecycle rule rather than storing a Status or Approval field.
+Include scope, source references, decisions and rationale,
 assumptions, evidence gaps, findings, limitations, and revision history.
 
 - Reserve document IDs in the foundation index below before creating records.
   IDs stay unchanged through renames and supersession and are never reused.
-- Use numeric document revisions: this draft is `0.5`; subsequent reviewable
-  drafts increment the minor revision. The first approved candidate may be
-  `1.0`, with later candidates incrementing the revision. A version number never
-  implies approval.
+- Use numeric document revisions: this record is `0.6`; subsequent substantive
+  changes increment the revision. A candidate may be numbered `1.0`, but a
+  version number never implies approval. Branch/PR transitions alone do not
+  require revision bumps or metadata commits.
 - Record stable risk IDs as `RISK-001`, `RISK-002`, etc. in the initial risk
   assessment. Allocate them in that record and retain retired entries.
 - M2 establishes the requirement ID scheme and controlled requirements register.
@@ -98,12 +101,42 @@ Never identify reviewed content only as `main`, "latest", or a revision label.
 
 ## Lifecycle and approval
 
-| State | Meaning and entry/exit evidence |
+Status is a property of the **viewed branch and its PR context**, not text
+maintained inside a document. Apply the following rule to **all documents under
+`docs/`**, including unchanged documents and the module layout record:
+
+| Viewed context | Derived lifecycle status |
 |---|---|
-| Draft | Proposed or changed content; missing decisions are explicit. Not an approved development input |
-| In review | Required reviewers are appointed and given an exact candidate commit/path/revision with criteria and evidence. Any content change requires review of the new candidate |
-| Approved | Required reviews and verification are complete, blocking findings resolved, limitations owned, the human acceptance checkbox covers the final head SHA, and the accepted revision is merged |
-| Superseded | An approved replacement or explicit withdrawal identifies why the previous baseline must no longer be used for new work; history and approval evidence remain accessible |
+| Feature branch without an open PR targeting `main` | Draft |
+| Feature branch with an open PR targeting `main` | In review |
+| `main` after a PR merge | Approved and effective |
+
+Opening a PR, including a draft PR, moves its branch's documents to In review.
+This does not mean the candidate is ready to merge or reviewers are appointed.
+Closing without merging returns the branch to Draft; reopening restores
+In review. New commits on an open PR remain In review, but invalidate acceptance
+of the previous head and require review of the new full head SHA.
+
+Merging establishes the entire `docs/` tree on `main` as the approved and
+effective documentation baseline. Unchanged documents inherit that baseline;
+this does not claim they were individually re-reviewed in every PR. A retained
+feature branch is not the effective baseline merely because its PR was merged:
+use `main` or a commit-pinned merged baseline. Historical/detached snapshots
+require recorded branch and merge provenance; a revision label, copied file, or
+commit SHA without that provenance does not establish lifecycle status. Local
+unsubmitted edits are not covered by acceptance of a PR head.
+
+Approval here describes the **repository documentation lifecycle**. It does not
+establish specialist competence, completed verification, regulatory
+qualification, certification, milestone completion, or release authorization.
+Missing evidence and open findings remain explicit even on `main`; historical
+merges with incomplete acceptance evidence are process discrepancies, not proof
+that review occurred. The pre-merge requirements below still apply.
+
+Supersession or withdrawal is an explicit restriction on use of a baseline,
+not a fourth branch-derived state. Retain the reason, replacement/withdrawal
+reference, and historical review evidence; do not rely on withdrawn content
+merely because it is present on `main`.
 
 1. Open or reference an issue containing scope, acceptance criteria, dependencies,
    and expected verification. Assign owner and required reviewers.
@@ -112,7 +145,9 @@ Never identify reviewed content only as `main`, "latest", or a revision label.
 3. Submit a reviewable candidate through a PR and link it from the document.
    Identify document IDs/revisions, required reviewer scopes, acceptance checks,
    verification results, and limitations in the PR description and review.
-4. Reviewers check content and acceptance criteria, record findings, and confirm
+4. Required reviewers must be appointed and given the exact candidate
+   commit/path/revision, criteria, and evidence before their review.
+   Reviewers check content and acceptance criteria, record findings, and confirm
    dispositions in PR threads against the final candidate. Changed content
    requires fresh approval; acceptance of an older candidate is not reused.
 5. The document approver reviews the final diff, records their handle and full
@@ -120,11 +155,10 @@ Never identify reviewed content only as `main`, "latest", or a revision label.
    revision accepted for merge**. Self-review by the PR author is permitted.
    This is our voluntary acceptance record, not GitHub's formal Approve action
    or independent review. Agents must leave this checkbox unchecked.
-6. Merge only after required reviews, verification, and findings resolution.
-   Update the foundation index with the document revision and review PR. For
-   documents retaining a Draft/In review label in the reviewed commit, the PR
-   acceptance checklist and merge establish the baseline; the label is not evidence of
-   approval. Any later metadata update also goes through a reviewed PR.
+6. Before merge, update the foundation index with changed document revisions
+   and review PR links. Merge only after required reviews, verification, and
+   findings resolution. The merge makes all documents on `main` Approved and
+   effective; do not make a follow-up commit to change lifecycle labels.
 7. Close the issue only when its criteria and completion evidence are satisfied.
    Do not close the milestone or change project status implicitly.
 
@@ -163,10 +197,12 @@ human actually reviewed the content.
 ## Changes, blockers, and traceability
 
 When approved content changes, retain the previous approved commit and create a
-new draft revision. Record the reason and impact on intended use, markets,
+new candidate revision on a feature branch. Its lifecycle follows the branch/PR
+rule above. Record the reason and impact on intended use, markets,
 requirements, risks, controls, classification, applicability, verification,
 releases, and dependent records. Notify affected owners and require re-review
-where assumptions or conclusions change. Do not carry forward approval silently.
+where assumptions or conclusions change. Do not reuse acceptance of an older
+candidate for changed content.
 
 If new information undermines a baseline's safety or regulatory conclusion,
 record its withdrawal/supersession and block affected work pending assessment;
@@ -182,19 +218,21 @@ and future tests must remain distinguishable from implemented/verified controls.
 
 Unknown required appointments, missing prerequisite approval, unresolved
 qualification/classification, or findings affecting required safety/regulatory
-conclusions block approval and issue closure. A non-blocking limitation needs a
+conclusions block merge and issue closure. A non-blocking limitation needs a
 justification, an owner, and linked follow-up; it cannot waive a completion gate.
 
 ## Foundation evidence index
 
 Paths in code formatting are reserved deliverables, not links to existing files.
-Only populate approval evidence after real review. No requirement/risk register
-or approved M1 record exists at this revision.
+Only populate review evidence after real review. Lifecycle follows the viewed
+branch for every existing entry; do not duplicate it in this index.
+No requirement/risk register or completed M1 specialist assessment exists at
+this revision.
 
 | ID | Record / planned path | Issue | Current evidence |
 |---|---|---|---|
-| M1-DOC-001 | [Document controls](document-control.md) | [#1](https://github.com/Entreco/elchrono/issues/1) | Owner @Entreco; Draft 0.5; issue #1 closed and [PR #9](https://github.com/Entreco/elchrono/pull/9) merged; acceptance and required specialist review evidence pending |
-| M1-DOC-002 | [Intended use](../product/intended-use.md) | [#2](https://github.com/Entreco/elchrono/issues/2) | Draft 0.1; target jurisdictions unselected; prerequisite approval evidence unresolved |
+| M1-DOC-001 | [Document controls](document-control.md) | [#1](https://github.com/Entreco/elchrono/issues/1) | Owner @Entreco; revision 0.6; issue #1 closed and [PR #9](https://github.com/Entreco/elchrono/pull/9) merged; [PR #10](https://github.com/Entreco/elchrono/pull/10) contains subsequent changes; historical acceptance identity/SHA and required specialist review evidence unresolved |
+| M1-DOC-002 | [Intended use](../product/intended-use.md) | [#2](https://github.com/Entreco/elchrono/issues/2) | Owner @Entreco; revision 0.2; [PR #10](https://github.com/Entreco/elchrono/pull/10); target jurisdictions unselected; prerequisite review evidence unresolved |
 | M1-DOC-003 | `docs/regulatory/qualification-and-classification.md` | [#3](https://github.com/Entreco/elchrono/issues/3) | Not created |
 | M1-DOC-004 | `docs/safety/initial-risk-assessment.md` | [#4](https://github.com/Entreco/elchrono/issues/4) | Not created |
 | M1-DOC-005 | `docs/safety/software-safety-classification.md` | [#5](https://github.com/Entreco/elchrono/issues/5) | Not created |
@@ -203,46 +241,52 @@ or approved M1 record exists at this revision.
 | M1-DOC-008 | `docs/governance/m1-review.md` | [#8](https://github.com/Entreco/elchrono/issues/8) | Not created |
 
 For each created record, replace its reserved path with a working link and record
-its owner, revision/status, review PR, and approved commit when available.
+its owner, revision, review PR, and commit-pinned merged baseline when available.
 Document owners keep the index consistent with the records.
 
 ## Initial process walkthrough
 
-This is a draft-author walkthrough of this record, not a human review or approval.
-Draft 0.4 was submitted in [PR #9](https://github.com/Entreco/elchrono/pull/9),
-which is merged. The PR body still lists the accepting human and reviewed head
-SHA as pending. The merge and issue closure do not establish approval of this
-record or satisfy the required specialist reviews.
+This is an author walkthrough of this record, not a human review.
+Revision 0.4 was submitted in [PR #9](https://github.com/Entreco/elchrono/pull/9)
+and merged in [commit e4a1465](https://github.com/Entreco/elchrono/commit/e4a14656c1768e1bd29906fc7e29d03697b9a33c).
+Under this lifecycle rule, that merged `docs/` baseline is Approved and
+effective. PR #9 has a checked acceptance box, but still lists the accepting
+human and reviewed full head SHA as pending. Retain this as an unresolved
+process discrepancy; merge and issue closure do not prove the required human
+or specialist reviews happened. Subsequent changes are linked to
+[PR #10](https://github.com/Entreco/elchrono/pull/10).
 
 | Step / criterion from #1 | Observed result | Remaining evidence |
 |---|---|---|
 | Identify accountable owner and approver | @Entreco designated by the user for both roles | Confirm specialist appointments and competence |
-| Identify candidate and status | M1-DOC-001, draft 0.4, merged PR #9; acceptance identity and reviewed SHA are pending | Verify the exact candidate and required human/specialist review evidence |
-| Exercise lifecycle | This draft stops before In review because required reviewers are unassigned | Real reviewer checks and findings/dispositions |
+| Identify candidate and status | M1-DOC-001, revision 0.4, merged PR #9; its main baseline is Approved and effective, but acceptance identity and reviewed SHA are pending | Verify the required human/specialist review evidence without fabricating it |
+| Exercise lifecycle | Feature branch without open PR: Draft; open PR #10 branch: In review; merged main baseline: Approved and effective | Lifecycle context does not establish reviewer appointments or completed reviews |
 | Trace records and planned risks/requirements | Index reserves eight documents and distinguishes missing records; risk and requirement IDs are not presented as established | Populate actual records and cross-links when created |
-| Exercise approval/change handling | Procedure binds acceptance to exact content and requires impact assessment and re-review after changes | Human review of this procedure and explicit approval |
+| Exercise approval/change handling | Procedure binds acceptance to exact content and requires impact assessment and re-review after changes | Human acceptance of the final PR head and required specialist checks |
 
 ### Open findings
 
 | Finding | Disposition | Resolution owner / evidence needed |
 |---|---|---|
 | M1-DOC-001-F01: Required regulatory and software-safety reviewers are unassigned | Blocking; open | @Entreco appoints reviewers; reviewers confirm competence and scope |
-| M1-DOC-001-F02: The merged PR does not identify an accepting human or reviewed full head SHA | Blocking; open | @Entreco verifies candidate identity, required reviews, findings resolution, and acceptance evidence for the final SHA |
+| M1-DOC-001-F02: Merged PR #9 has a checked acceptance box but does not identify an accepting human or reviewed full head SHA | Historical process discrepancy; unresolved | @Entreco verifies candidate identity and actual acceptance evidence; record any missing evidence honestly and obtain required review of the current candidate |
 | M1-DOC-001-F03: Applicability matrix and milestone approver are not established | Later dependency; cannot waive later gates | @Entreco coordinates #6 and appointment before #8; re-review these controls if the matrix changes them |
 | M1-DOC-001-F04: Required main protections have not been verified | Blocking; open | @Entreco configures protections and links effective-settings verification in PR #9 |
 
-The first completed worked example will link this record's actual candidate,
+The first completed review example will link this record's actual candidate,
 verification, human findings resolution, and the PR acceptance checklist. Issue
-#1 is closed in GitHub, but this document remains a proposal until its required
-review and approval evidence is verified; issue closure and merge alone do not
-establish an approved baseline.
+#1 is closed in GitHub and its merged main baseline has the derived lifecycle
+status, but the unresolved review evidence above still requires reconciliation.
+Do not infer milestone completion or specialist assessment from issue closure,
+merge, or the Approved and effective lifecycle status.
 
 ## Revision history
 
-| Revision | Change | Approval |
-|---|---|---|
-| 0.1 | Initial document controls, assigned product ownership/approver, reserved M1 evidence index, and blocked walkthrough | Pending |
-| 0.2 | Link the dedicated draft review record, historical baseline, requested human checks, and remaining evidence | Pending |
-| 0.3 | Replace duplicate review evidence with human PR approvals; specify protected-main workflow and enforcement verification | Pending |
-| 0.4 | Permit author self-review using a human acceptance checkbox and reviewed head SHA; distinguish the manual gate from GitHub protection | Pending |
-| 0.5 | Add the M1-DOC-002 evidence-index entry and distinguish issue #1 closure/merge from its pending approval evidence | Pending |
+| Revision | Change |
+|---|---|
+| 0.1 | Initial document controls, assigned product ownership/approver, reserved M1 evidence index, and blocked walkthrough |
+| 0.2 | Link the dedicated draft review record, historical baseline, requested human checks, and remaining evidence |
+| 0.3 | Replace duplicate review evidence with human PR approvals; specify protected-main workflow and enforcement verification |
+| 0.4 | Permit author self-review using a human acceptance checkbox and reviewed head SHA; distinguish the manual gate from GitHub protection |
+| 0.5 | Add the M1-DOC-002 evidence-index entry and distinguish issue #1 closure/merge from its pending approval evidence |
+| 0.6 | Derive lifecycle from branch/PR context for all docs; remove stored lifecycle labels and reconcile historical merge status with unresolved review evidence |

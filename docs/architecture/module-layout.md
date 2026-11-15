@@ -1,5 +1,8 @@
 # Module layout
 
+Lifecycle status follows the [branch/PR rule](../governance/document-control.md#lifecycle-and-approval)
+for all documents under `docs/`; no status is stored in this record.
+
 ## Decision
 
 Organize the existing Kotlin Toolchain project into app launchers, reusable

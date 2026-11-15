@@ -86,9 +86,14 @@ requirements, voluntary documentation controls, and development instructions.
 
 Product documents live under `docs/`; a human acceptance checkbox in the PR provides review
 evidence without duplicate Markdown evidence files or separate signatures.
+Lifecycle status applies to every document in the viewed branch: **Draft** on a
+feature branch without an open PR targeting `main`, **In review** with an open
+PR, and **Approved and effective** on `main` after merge. Do not store Status
+or Approval fields in documents or make metadata commits for these transitions.
 Changes enter `main` through PRs. Author self-review is permitted: before merge,
 record the accepting human and reviewed commit, then check acceptance. This is
 a manual review gate, not GitHub-enforced approval. Start with the
 [document controls and M1 evidence index](docs/governance/document-control.md).
-These controls are a draft awaiting qualified human review and approval, not
-an approved safety baseline or a certification claim.
+Documentation lifecycle status does not prove specialist review, verification,
+milestone completion, or certification. Missing review evidence remains explicit
+and must be resolved for the relevant work.

@@ -9,7 +9,7 @@
 | Required reviewers | Regulatory applicability reviewer: unassigned for this matrix; privacy/data-protection reviewer: unassigned; accessibility reviewer: unassigned |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#6](https://github.com/Entreco/elchrono/issues/6) |
-| Review PR | Pending creation; update this record and the foundation index when the review PR opens |
+| Review PR | [PR #18](https://github.com/Entreco/elchrono/pull/18) |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [Lifecycle and approval](document-control.md#lifecycle-and-approval).

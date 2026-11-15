@@ -3,12 +3,12 @@
 | Field | Value |
 |---|---|
 | Document ID | M1-DOC-001 |
-| Revision | 0.1 |
+| Revision | 0.2 |
 | Status | Draft |
 | Product owner | @Entreco |
 | Document owner and approver | @Entreco |
 | Draft author | Copilot; human accountability remains with the owner |
-| Review record | [Initial process walkthrough](#initial-process-walkthrough) |
+| Review record | [Document-control review record](document-control-review.md); [initial walkthrough](#initial-process-walkthrough) |
 | Work item | [Issue #1](https://github.com/Entreco/elchrono/issues/1) |
 | Approval | Pending; no approved baseline exists |
 
@@ -74,7 +74,7 @@ assumptions, evidence gaps, findings, limitations, and revision history.
 
 - Reserve document IDs in the foundation index below before creating records.
   IDs stay unchanged through renames and supersession and are never reused.
-- Use numeric document revisions: this draft is `0.1`; subsequent reviewable
+- Use numeric document revisions: this draft is `0.2`; subsequent reviewable
   drafts increment the minor revision. The first approved candidate may be
   `1.0`, with later candidates incrementing the revision. A version number never
   implies approval.
@@ -158,7 +158,7 @@ or approved M1 record exists at this revision.
 
 | ID | Record / planned path | Issue | Current evidence |
 |---|---|---|---|
-| M1-DOC-001 | [Document controls](document-control.md) | [#1](https://github.com/Entreco/elchrono/issues/1) | Draft 0.1; walkthrough below; human review and approval pending |
+| M1-DOC-001 | [Document controls](document-control.md) | [#1](https://github.com/Entreco/elchrono/issues/1) | Owner @Entreco; Draft 0.2; [review record](document-control-review.md); human review and approval pending |
 | M1-DOC-002 | `docs/product/intended-use.md` | [#2](https://github.com/Entreco/elchrono/issues/2) | Not created |
 | M1-DOC-003 | `docs/regulatory/qualification-and-classification.md` | [#3](https://github.com/Entreco/elchrono/issues/3) | Not created |
 | M1-DOC-004 | `docs/safety/initial-risk-assessment.md` | [#4](https://github.com/Entreco/elchrono/issues/4) | Not created |
@@ -174,13 +174,15 @@ Document owners keep the index consistent with the records.
 ## Initial process walkthrough
 
 This is a draft-author walkthrough of this record, not a human review or approval.
-The candidate is the working-tree draft 0.1; no immutable candidate commit or PR
-has been published. This walkthrough cannot satisfy #1's completed-review gate.
+The candidate is the working-tree draft 0.2; its final candidate commit and PR
+are pending publication. The historical revision and missing review evidence are
+identified in the [review record](document-control-review.md). This walkthrough
+cannot satisfy #1's completed-review gate.
 
 | Step / criterion from #1 | Observed result | Remaining evidence |
 |---|---|---|
 | Identify accountable owner and approver | @Entreco designated by the user for both roles | Confirm specialist appointments and competence |
-| Identify candidate and status | M1-DOC-001, draft 0.1, repository path, no approval claimed | Commit-pinned candidate and PR |
+| Identify candidate and status | M1-DOC-001, draft 0.2, repository path, no approval claimed | Commit-pinned final candidate and PR |
 | Exercise lifecycle | This draft stops before In review because required reviewers are unassigned | Real reviewer checks and findings/dispositions |
 | Trace records and planned risks/requirements | Index reserves eight documents and distinguishes missing records; risk and requirement IDs are not presented as established | Populate actual records and cross-links when created |
 | Exercise approval/change handling | Procedure binds acceptance to exact content and requires impact assessment and re-review after changes | Human review of this procedure and explicit approval |
@@ -190,7 +192,7 @@ has been published. This walkthrough cannot satisfy #1's completed-review gate.
 | Finding | Disposition | Resolution owner / evidence needed |
 |---|---|---|
 | M1-DOC-001-F01: Required regulatory and software-safety reviewers are unassigned | Blocking; open | @Entreco appoints reviewers; reviewers confirm competence and scope |
-| M1-DOC-001-F02: No immutable candidate, human review, or approval record | Blocking; open | @Entreco coordinates candidate publication, human review, findings resolution, and approval |
+| M1-DOC-001-F02: Final immutable candidate and completed human review/approval evidence are missing | Blocking; open; draft review record prepared | @Entreco coordinates candidate publication, human review, findings resolution, and approval |
 | M1-DOC-001-F03: Applicability matrix and milestone approver are not established | Later dependency; cannot waive later gates | @Entreco coordinates #6 and appointment before #8; re-review these controls if the matrix changes them |
 
 The first completed worked example will link this record's actual candidate,
@@ -202,3 +204,4 @@ verification, human findings resolution, and approval under `docs/`. Until then,
 | Revision | Change | Approval |
 |---|---|---|
 | 0.1 | Initial document controls, assigned product ownership/approver, reserved M1 evidence index, and blocked walkthrough | Pending |
+| 0.2 | Link the dedicated draft review record, historical baseline, requested human checks, and remaining evidence | Pending |

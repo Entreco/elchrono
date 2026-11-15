@@ -3,11 +3,11 @@
 | Field | Value |
 |---|---|
 | Document ID | M1-DOC-001 |
-| Revision | 2.9 |
+| Revision | 2.11 |
 | Product owner | @Entreco |
 | Document owner and approver | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
-| Review evidence | [PR #9](https://github.com/Entreco/elchrono/pull/9); [PR #10](https://github.com/Entreco/elchrono/pull/10); [PR #15](https://github.com/Entreco/elchrono/pull/15); [PR #16](https://github.com/Entreco/elchrono/pull/16); [PR #17](https://github.com/Entreco/elchrono/pull/17); [PR #18](https://github.com/Entreco/elchrono/pull/18); [PR #19](https://github.com/Entreco/elchrono/pull/19); [PR #20](https://github.com/Entreco/elchrono/pull/20); [PR #21](https://github.com/Entreco/elchrono/pull/21) (open; review pending); issue #22 document updates, PR pending |
+| Review evidence | [PR #9](https://github.com/Entreco/elchrono/pull/9); [PR #10](https://github.com/Entreco/elchrono/pull/10); [PR #15](https://github.com/Entreco/elchrono/pull/15); [PR #16](https://github.com/Entreco/elchrono/pull/16); [PR #17](https://github.com/Entreco/elchrono/pull/17); [PR #18](https://github.com/Entreco/elchrono/pull/18); [PR #19](https://github.com/Entreco/elchrono/pull/19); [PR #20](https://github.com/Entreco/elchrono/pull/20); [PR #21](https://github.com/Entreco/elchrono/pull/21) (open; review pending); [PR #28](https://github.com/Entreco/elchrono/pull/28) (open; review pending); issue #22 document updates, PR pending |
 | Work item | [Issue #1](https://github.com/Entreco/elchrono/issues/1) |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
@@ -272,6 +272,7 @@ M1-DOC-003 records the qualified EU/US regulatory qualification conclusion.
 | M2-DOC-001 | [Product requirements](../product/requirements.md) | [#22](https://github.com/Entreco/elchrono/issues/22) | Owner @Entreco; revision 0.3 candidate; nine proposed requirements using REQ-NNN IDs, including whole-minute durations from 1 minute to 24 hours and sequential Hours/Minutes entry; REQ-007 is retired and not reusable; source-record approval and requirements reviewer remain pending |
 | M2-DOC-002 | [Product test protocol](../testing/test-protocol.md) | [#25](https://github.com/Entreco/elchrono/issues/25) | Owner @Entreco; revision 0.1 candidate; planned test procedures and acceptance criteria for REQ-001 through REQ-006 and REQ-008 through REQ-010; test execution and review pending |
 | M2-DOC-003 | [Requirements traceability matrix](../safety/requirements-traceability-matrix.md) | [#25](https://github.com/Entreco/elchrono/issues/25) | Owner @Entreco; revision 0.1 candidate; links requirements to intended use, risks, design/usability evidence, test cases, and verification evidence; mappings are proposed and evidence remains pending |
+| M2-DOC-004 | [Accessible screen flows and theme prototypes](../design/accessible-screen-flows-and-theme-prototypes.md) | [#23](https://github.com/Entreco/elchrono/issues/23) | Owner @Entreco; revision 0.2 candidate in [PR #28](https://github.com/Entreco/elchrono/pull/28); proposed Main, Settings, About, state, and visualization designs with conditional font/color options; usability and specialist review pending |
 
 For each created record, replace its reserved path with a working link and record
 its owner, revision, review PR, and commit-pinned merged baseline when available.
@@ -347,3 +348,5 @@ merge, or the Approved and effective lifecycle status.
 | 2.7 | Separate REQ-NNN statements, test-protocol acceptance criteria, and comprehensive requirements traceability; index the M2 test protocol and traceability matrix |
 | 2.8 | Reconcile current intended-use, risk, applicability, and development-plan revisions with the requirements/test/traceability split |
 | 2.9 | Reconcile the M1 handoff with current M2 issues and candidate requirements, test protocol, and traceability records |
+| 2.10 | Reserve M2-DOC-004 for issue #23 and index the candidate accessible screen flows and theme prototypes |
+| 2.11 | Update M2-DOC-004 to propose a default remaining-time disk, alternate visualizations, and conditional per-visualization font/color settings |

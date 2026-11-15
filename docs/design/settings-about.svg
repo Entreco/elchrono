@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 730" role="img" aria-labelledby="title description">
+  <title id="title">Settings and About screen concepts</title>
+  <desc id="description">Settings shows Hours and Minutes fields, a proposed default remaining-time disk and two alternatives, conditional per-visualization font and color options, optional music, and a caregiver-only access note. About reserves content for the logo, build, support, privacy, licences, intended use, and limitations.</desc>
+  <rect width="1200" height="650" fill="#f3f5f7"/>
+  <text x="40" y="52" font-family="sans-serif" font-size="30" font-weight="700" fill="#17212b">Settings and About</text>
+  <g font-family="sans-serif">
+    <rect x="40" y="84" width="550" height="620" rx="18" fill="#ffffff" stroke="#71808f" stroke-width="2"/>
+    <text x="68" y="126" font-size="25" font-weight="700" fill="#17212b">Settings</text>
+    <text x="68" y="158" font-size="15" fill="#344454">Caregiver-only screen; access mechanism remains undecided.</text>
+
+    <text x="68" y="206" font-size="18" font-weight="700" fill="#17212b">Waiting duration</text>
+    <text x="68" y="238" font-size="15" fill="#344454">Hours</text>
+    <text x="232" y="238" font-size="15" fill="#344454">Minutes</text>
+    <rect x="68" y="250" width="140" height="54" rx="8" fill="#ffffff" stroke="#344454" stroke-width="2"/>
+    <rect x="232" y="250" width="140" height="54" rx="8" fill="#ffffff" stroke="#344454" stroke-width="2"/>
+    <text x="123" y="286" font-size="26" font-weight="700" fill="#17212b">02</text>
+    <text x="287" y="286" font-size="26" font-weight="700" fill="#17212b">05</text>
+    <text x="68" y="330" font-size="14" fill="#344454">Illustrative fields: 205 entered sequentially displays 02:05.</text>
+
+    <text x="68" y="376" font-size="18" font-weight="700" fill="#17212b">Timer visualization</text>
+    <rect x="68" y="392" width="150" height="48" rx="8" fill="#ffffff" stroke="#17212b" stroke-width="3"/>
+    <rect x="232" y="392" width="150" height="48" rx="8" fill="#ffffff" stroke="#71808f"/>
+    <rect x="396" y="392" width="150" height="48" rx="8" fill="#ffffff" stroke="#71808f"/>
+    <text x="82" y="422" font-size="14" font-weight="700" fill="#17212b">Disk (default*)</text>
+    <text x="255" y="422" font-size="14" fill="#17212b">Digital</text>
+    <text x="418" y="422" font-size="14" fill="#17212b">Numeric ring</text>
+    <text x="68" y="461" font-size="13" fill="#344454">*Proposed first choice; all options require review.</text>
+
+    <text x="68" y="498" font-size="18" font-weight="700" fill="#17212b">Appearance for selected visualization</text>
+    <text x="68" y="526" font-size="14" fill="#344454">Font (only when text is shown)</text>
+    <rect x="68" y="538" width="210" height="40" rx="8" fill="#ffffff" stroke="#71808f"/>
+    <text x="84" y="564" font-size="14" fill="#17212b">[Font option]</text>
+    <text x="304" y="526" font-size="14" fill="#344454">Color (only when used)</text>
+    <rect x="304" y="538" width="242" height="40" rx="8" fill="#ffffff" stroke="#71808f"/>
+    <rect x="319" y="548" width="20" height="20" rx="4" fill="#344454"/>
+    <text x="350" y="564" font-size="14" fill="#17212b">[Color option]</text>
+    <text x="68" y="598" font-size="13" fill="#344454">Show only applicable settings; choices, defaults, and persistence TBD.</text>
+
+    <text x="68" y="636" font-size="18" font-weight="700" fill="#17212b">Optional music</text>
+    <rect x="68" y="648" width="478" height="40" rx="8" fill="#ffffff" stroke="#71808f"/>
+    <text x="84" y="673" font-size="14" fill="#17212b">Provider and playback behavior require review.</text>
+
+    <rect x="620" y="84" width="540" height="620" rx="18" fill="#ffffff" stroke="#71808f" stroke-width="2"/>
+    <text x="648" y="126" font-size="25" font-weight="700" fill="#17212b">About</text>
+    <rect x="648" y="148" width="484" height="64" rx="8" fill="#f3f5f7" stroke="#71808f"/>
+    <text x="666" y="176" font-size="17" font-weight="700" fill="#17212b">[Approved company logo asset]</text>
+    <text x="666" y="198" font-size="14" fill="#344454">No logo or company detail is fabricated in this prototype.</text>
+
+    <text x="648" y="248" font-size="16" font-weight="700" fill="#17212b">Version and build</text>
+    <text x="648" y="272" font-size="14" fill="#344454">[Supplied by the application at runtime]</text>
+    <text x="648" y="312" font-size="16" font-weight="700" fill="#17212b">Support</text>
+    <text x="648" y="336" font-size="14" fill="#344454">[Support information to be supplied by the owner]</text>
+    <text x="648" y="376" font-size="16" font-weight="700" fill="#17212b">Privacy and licences</text>
+    <text x="648" y="400" font-size="14" fill="#344454">[Privacy policy link]  [Relevant licences]</text>
+    <text x="648" y="440" font-size="16" font-weight="700" fill="#17212b">Intended use</text>
+    <text x="648" y="464" font-size="14" fill="#344454">Visual support for ordinary waiting time.</text>
+    <text x="648" y="504" font-size="16" font-weight="700" fill="#17212b">Limitations</text>
+    <text x="648" y="528" font-size="14" fill="#344454">Not a clock, deadline guarantee, medical function,</text>
+    <text x="648" y="550" font-size="14" fill="#344454">or safety-critical timer.</text>
+    <text x="648" y="586" font-size="13" fill="#344454">Content and navigation remain subject to review.</text>
+  </g>
+  <text x="40" y="724" font-family="sans-serif" font-size="14" fill="#344454">Static design concept only. Field limits follow candidate REQ-001; configuration and navigation behavior are not implemented.</text>
+</svg>

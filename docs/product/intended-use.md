@@ -3,13 +3,13 @@
 | Field | Value |
 |---|---|
 | Document ID | M1-DOC-002 |
-| Revision | 0.6 |
+| Revision | 0.7 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
-| Required reviewers | Regulatory qualification reviewer: @Entreco for M1-DOC-003; software-safety reviewer: unassigned |
+| Required reviewers | Regulatory qualification reviewer: @Entreco for M1-DOC-003; software-safety reviewer for this intended-use record: unassigned |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#2](https://github.com/Entreco/elchrono/issues/2); market selection follow-up in [#3](https://github.com/Entreco/elchrono/issues/3) |
-| Review PR | [PR #13](https://github.com/Entreco/elchrono/pull/13) |
+| Review PR | [PR #13](https://github.com/Entreco/elchrono/pull/13); follow-up PR pending |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [Lifecycle and approval](../governance/document-control.md#lifecycle-and-approval).
@@ -155,9 +155,11 @@ established.
   @Entreco as qualified regulatory reviewer; approval evidence for this
   intended-use revision remains pending.
 - @Entreco is assigned as regulatory qualification reviewer for M1-DOC-003.
-  The software-safety reviewer remains unassigned; the required review scope
-  and competence must be recorded before any applicable approval. An open PR
-  makes the branch In review but does not waive required review gates.
+  @Entreco is also assigned as competent software-safety reviewer for
+  M1-DOC-005; that separate appointment does not constitute a software-safety
+  review or approval of this intended-use record. A reviewer for any required
+  software-safety scope on this record remains unassigned. An open PR makes
+  the branch In review but does not waive required review gates.
 - There are no approved requirement or risk IDs yet. Link real identifiers and
   source sections when established; do not invent them.
 - No patient usability findings or verification evidence are established by
@@ -173,3 +175,4 @@ established.
 | 0.4 | Clarify general-use ordinary-waiting purpose and explicitly exclude disability-compensation and other medical purposes |
 | 0.5 | Link the qualified review conclusion and clarify the scope of the non-device determination |
 | 0.6 | Use a revision-independent reference to the qualification record to avoid cyclic revision references |
+| 0.7 | Clarify the scope of the M1-DOC-005 software-safety reviewer appointment; preserve this record's separate review gap |

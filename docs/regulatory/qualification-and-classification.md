@@ -3,13 +3,13 @@
 | Field | Value |
 |---|---|
 | Document ID | M1-DOC-003 |
-| Revision | 0.5 |
+| Revision | 0.6 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Regulatory qualification reviewer: @Entreco (qualified; conclusion recorded below) |
 | Approver | @Entreco, after PR human acceptance and findings resolution |
 | Related issue | [#3](https://github.com/Entreco/elchrono/issues/3) |
-| Review PR | [PR #13](https://github.com/Entreco/elchrono/pull/13) |
+| Review PR | [PR #13](https://github.com/Entreco/elchrono/pull/13); follow-up PR pending |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](../governance/document-control.md#lifecycle-and-approval).
@@ -39,10 +39,10 @@ This record separates:
 - whether the product meets a market's legal definition of a medical device;
 - the regulatory device class and obligations, which apply only if the
   product first qualifies as a device; and
-- the project's proposed use of IEC 62304 practices and Class A software safety
-  classification, adopted voluntarily as a separate process decision. It does
-  not mean the product is a medical device, establish a regulatory device
-  class, or claim IEC 62304 conformity or certification.
+- whether IEC 62304 applies to the software is a separate standards-scope
+  decision, not a regulatory device classification. M1-DOC-005 revision 0.2
+  records that IEC 62304 software safety classification is not applicable to
+  the defined non-medical software scope; no Class A, B, or C is assigned.
 
 ## Product and intended-use facts assessed
 
@@ -106,8 +106,10 @@ work continues.
 
 Because this conclusion is non-device, MDR device classification (including
 Annex VIII Rule 11) is not applicable; no regulatory Class I, II, or III is
-assigned. Rule 11 must not be used to describe the voluntary IEC 62304
-software safety classification.
+assigned. As recorded in M1-DOC-005 revision 0.2, IEC 62304 software safety
+classification is also not applicable to the defined non-medical software
+scope. Regulatory device classification and IEC software safety class are
+separate concepts.
 
 The non-device conclusion does not remove other applicable obligations. In
 particular:
@@ -257,3 +259,4 @@ subject to routine review when markets, claims, or functionality change.
 | 0.3 | Record @Entreco's qualified reviewer conclusion and disposition of the EU disability-compensation interpretation; remove language that incorrectly left qualification undecided |
 | 0.4 | Record the qualified-review disposition and PR acceptance status, and assess M1-DOC-002 revision 0.5 |
 | 0.5 | Reference M1-DOC-002 as the authoritative source for intended-use facts instead of restating them; assess revision 0.6 |
+| 0.6 | Link the M1-DOC-005 IEC 62304 non-applicability conclusion and distinguish it from regulatory device classification |

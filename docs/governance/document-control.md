@@ -3,11 +3,11 @@
 | Field | Value |
 |---|---|
 | Document ID | M1-DOC-001 |
-| Revision | 1.3 |
+| Revision | 1.6 |
 | Product owner | @Entreco |
 | Document owner and approver | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
-| Review evidence | [PR #9](https://github.com/Entreco/elchrono/pull/9); [PR #10](https://github.com/Entreco/elchrono/pull/10) |
+| Review evidence | [PR #9](https://github.com/Entreco/elchrono/pull/9); [PR #10](https://github.com/Entreco/elchrono/pull/10); [PR #15](https://github.com/Entreco/elchrono/pull/15) |
 | Work item | [Issue #1](https://github.com/Entreco/elchrono/issues/1) |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
@@ -50,15 +50,16 @@ implemented timer.
 | Author | Copilot for this record; identify the actual author on each record | Prepares evidence and identifies uncertainty; cannot invent findings resolution, qualifications, or approval |
 | Document approver | @Entreco | Accepts the exact document revision after required reviews and findings resolution; this designation does not establish specialist competence |
 | Regulatory reviewer | @Entreco for M1-DOC-003 (qualified reviewer, as confirmed by the reviewer); unassigned for other assessments | Assesses medical-device qualification and applicable obligations within the appointed markets |
-| Software-safety reviewer | Unassigned; blocking | Must be competent in the applicable IEC 62304 classification approach, software hazards, risk assumptions, and controls |
+| Software-safety reviewer | @Entreco for M1-DOC-005; competence confirmed by reviewer; post-merge assessment pending | Reviews the non-medical software-scope conclusion and IEC 62304 applicability against approved source revisions |
 | Milestone approver | Unassigned; required before #8 can close | Checks the complete M1 evidence baseline and authorizes its handoff |
 
 The product owner must record each appointment, the review scope, and confirmation
 of relevant competence in this table or the applicable record. For M1-DOC-003,
 @Entreco confirms qualification for the EU and US assessment; the review
-conclusion and scope are recorded in that document. Use a concise
-professional competency statement confirmed by the appointed reviewer; do not
-collect CVs, private contact details, or personal evidence in the repository.
+conclusion and scope are recorded in that document. For M1-DOC-005, @Entreco
+confirms competence as software-safety reviewer; the post-merge review scope
+and conclusion are specified in that document. Do not collect CVs, private
+contact details, or personal evidence in the repository.
 
 A person may hold multiple roles if competent and permitted by the applicability
 matrix; do not impose an unsupported independence requirement. Record overlapping
@@ -66,10 +67,11 @@ roles and how review challenges are handled. If independent review is required,
 appoint another reviewer. AI assistance is not a qualified human review.
 
 For this record, regulatory and software-safety reviewers must check the proposed
-review arrangement, classification escalation, and document controls within their
-respective scopes before merge. For subsequent records, identify required
-reviewers using their subject matter and the applicability matrix. Owner approval
-alone cannot substitute for required specialist review.
+review arrangement and document controls within their respective scopes before
+merge. M1-DOC-005's applicability assessment is scheduled for a follow-up PR
+after its source-record baseline is merged. For subsequent records, identify
+required reviewers using their subject matter and the applicability matrix.
+Owner approval alone cannot substitute for required specialist review.
 
 ## Record format and identifiers
 
@@ -209,8 +211,12 @@ candidate for changed content.
 If new information undermines a baseline's safety or regulatory conclusion,
 record its withdrawal/supersession and block affected work pending assessment;
 do not continue relying on it merely because a replacement is unfinished.
-If Class A cannot be justified, escalate to the product owner and qualified
-reviewers and revise the classification and affected process before proceeding.
+First determine whether the software-classification scheme is applicable to
+the product within its intended use and qualified scope. If it is not
+applicable, record the rationale and reassess when the scope changes. If it is
+applicable and Class A cannot be justified, escalate to the product owner and
+qualified reviewers and revise the classification and affected process before
+proceeding.
 
 Maintain links from source document ID/section/revision to risk IDs, proposed
 controls, future requirement IDs, verification evidence, and related issues.
@@ -228,18 +234,19 @@ justification, an owner, and linked follow-up; it cannot waive a completion gate
 Paths in code formatting are reserved deliverables, not links to existing files.
 Only populate review evidence after real review. Lifecycle follows the viewed
 branch for every existing entry; do not duplicate it in this index.
-No controlled requirements register or completed M1 software-safety
-classification exists at this revision. M1-DOC-004 proposes initial risk IDs
-and controls; they remain subject to software-safety review. M1-DOC-003 records
-the qualified EU/US regulatory qualification conclusion.
+No controlled requirements register or approved M1 software-safety
+classification-applicability decision exists at this revision. M1-DOC-005
+records a candidate plan to determine applicability after merge; M1-DOC-004
+proposes initial risk IDs and controls, which remain subject to review.
+M1-DOC-003 records the qualified EU/US regulatory qualification conclusion.
 
 | ID | Record / planned path | Issue | Current evidence |
 |---|---|---|---|
-| M1-DOC-001 | [Document controls](document-control.md) | [#1](https://github.com/Entreco/elchrono/issues/1) | Owner @Entreco; revision 1.3; issue #1 closed and [PR #9](https://github.com/Entreco/elchrono/pull/9) merged; [PR #10](https://github.com/Entreco/elchrono/pull/10) contains subsequent changes; historical acceptance identity/SHA and specialist review evidence unresolved |
+| M1-DOC-001 | [Document controls](document-control.md) | [#1](https://github.com/Entreco/elchrono/issues/1) | Owner @Entreco; revision 1.6; issue #1 closed and [PR #9](https://github.com/Entreco/elchrono/pull/9) merged; [PR #10](https://github.com/Entreco/elchrono/pull/10) contains subsequent changes; historical acceptance identity/SHA and specialist review evidence unresolved |
 | M1-DOC-002 | [Intended use](../product/intended-use.md) | [#2](https://github.com/Entreco/elchrono/issues/2) | Owner @Entreco; revision 0.6 candidate; EU and United States selected for assessment; exact-revision approval evidence unresolved; see [PR #10](https://github.com/Entreco/elchrono/pull/10) for prior changes and [PR #13](https://github.com/Entreco/elchrono/pull/13) for this candidate |
 | M1-DOC-003 | [Qualification and classification](../regulatory/qualification-and-classification.md) | [#3](https://github.com/Entreco/elchrono/issues/3) | Owner @Entreco; revision 0.5 candidate; [PR #13](https://github.com/Entreco/elchrono/pull/13); qualified reviewer concludes non-device in EU/US; PR acceptance pending; replaces closed [PR #12](https://github.com/Entreco/elchrono/pull/12) after branch rename |
 | M1-DOC-004 | [Risk assessment](../safety/risk-assessment.md) | [#4](https://github.com/Entreco/elchrono/issues/4) | Owner @Entreco; revision 0.1 candidate; [PR #14](https://github.com/Entreco/elchrono/pull/14); six proposed risks and controls; no approved requirement IDs or verified controls; software-safety reviewer unassigned and required review walkthrough pending |
-| M1-DOC-005 | `docs/safety/software-safety-classification.md` | [#5](https://github.com/Entreco/elchrono/issues/5) | Not created |
+| M1-DOC-005 | [Software safety classification](../safety/software-safety-classification.md) | [#5](https://github.com/Entreco/elchrono/issues/5) | Owner @Entreco; revision 0.1 candidate; [PR #15](https://github.com/Entreco/elchrono/pull/15); @Entreco confirms competence as software-safety reviewer; applicability decision deferred to post-merge follow-up |
 | M1-DOC-006 | `docs/governance/applicability-matrix.md` | [#6](https://github.com/Entreco/elchrono/issues/6) | Not created |
 | M1-DOC-007 | `docs/governance/software-development-plan.md` | [#7](https://github.com/Entreco/elchrono/issues/7) | Not created |
 | M1-DOC-008 | `docs/governance/m1-review.md` | [#8](https://github.com/Entreco/elchrono/issues/8) | Not created |
@@ -263,7 +270,7 @@ or specialist reviews happened. Subsequent changes are linked to
 
 | Step / criterion from #1 | Observed result | Remaining evidence |
 |---|---|---|
-| Identify accountable owner and approver | @Entreco designated by the user for both roles; @Entreco confirms qualification for the M1-DOC-003 regulatory review scope | Software-safety reviewer and other specialist appointments remain open |
+| Identify accountable owner and approver | @Entreco designated by the user for both roles; @Entreco confirms qualification for the M1-DOC-003 regulatory review scope and competence for the M1-DOC-005 software-safety review | Post-merge software-safety assessment remains pending |
 | Identify candidate and status | M1-DOC-001, revision 0.4, merged PR #9; its main baseline is Approved and effective, but acceptance identity and reviewed SHA are pending | Verify the required human/specialist review evidence without fabricating it |
 | Exercise lifecycle | Feature branch without open PR: Draft; open PR #10 branch: In review; merged main baseline: Approved and effective | Lifecycle context does not establish reviewer appointments or completed reviews |
 | Trace records and planned risks/requirements | Index reserves eight documents and distinguishes missing records; risk and requirement IDs are not presented as established | Populate actual records and cross-links when created |
@@ -273,7 +280,7 @@ or specialist reviews happened. Subsequent changes are linked to
 
 | Finding | Disposition | Resolution owner / evidence needed |
 |---|---|---|
-| M1-DOC-001-F01: Required regulatory and software-safety reviewers are unassigned | Partially resolved: @Entreco is assigned and confirms qualification for M1-DOC-003 EU/US qualification review; software-safety reviewer remains unassigned | @Entreco records any further appointments and scopes; assign a competent software-safety reviewer |
+| M1-DOC-001-F01: Required regulatory and software-safety reviewers are unassigned | Partially resolved: @Entreco is assigned and confirms qualification for M1-DOC-003 EU/US qualification review and competence for M1-DOC-005; the post-merge applicability review remains pending | Record the M1-DOC-005 disposition and evidence in the follow-up PR after merge |
 | M1-DOC-001-F02: Merged PR #9 has a checked acceptance box but does not identify an accepting human or reviewed full head SHA | Historical process discrepancy; unresolved | @Entreco verifies candidate identity and actual acceptance evidence; record any missing evidence honestly and obtain required review of the current candidate |
 | M1-DOC-001-F03: Applicability matrix and milestone approver are not established | Later dependency; cannot waive later gates | @Entreco coordinates #6 and appointment before #8; re-review these controls if the matrix changes them |
 | M1-DOC-001-F04: Required main protections have not been verified | Blocking; open | @Entreco configures protections and links effective-settings verification in PR #9 |
@@ -302,3 +309,6 @@ merge, or the Approved and effective lifecycle status.
 | 1.1 | Update the evidence index for the qualified review conclusion and new intended-use and qualification revisions |
 | 1.2 | Update the evidence index for the revisioned intended-use and qualification records |
 | 1.3 | Add M1-DOC-004 and the M1-DOC-009 risk traceability matrix to the foundation evidence index; distinguish proposed controls from verified controls |
+| 1.4 | Add the M1-DOC-005 software safety classification candidate and preserve its unresolved reviewer and prerequisite-approval gates |
+| 1.5 | Link the M1-DOC-005 review PR and update the evidence index for this document-control revision |
+| 1.6 | Record @Entreco's confirmed software-safety reviewer competence and the post-merge timing of the M1-DOC-005 applicability decision |

@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M1-DOC-002 |
-| Revision | 0.3 |
+| Revision | 0.4 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Regulatory reviewer: unassigned; software-safety reviewer: unassigned |
@@ -23,6 +23,13 @@ without seeing a clock face or time of day. Background music may optionally
 accompany the experience; it is not necessary to understand the visual remaining
 time or for the timer to operate as intended.
 
+The timer is for ordinary waiting situations and is intended for general use.
+People with cognitive or intellectual disabilities may use it, but the product
+is not designed or intended to compensate for a disability or to address a
+medical condition. It provides the same general waiting-time display regardless
+of a person's diagnosis, disability, or health status; it does not assess or
+adapt to any such status.
+
 This is a proposed intended-use boundary, not a description of a completed
 product. The current application is a starter screen, not an implemented timer.
 The timer, audio behaviour, accessibility, and interruption handling require
@@ -35,8 +42,9 @@ separate implementation and verification.
   responsibilities and access controls are not yet specified.
 - **Person waiting:** a person who benefits from a visual representation of
   remaining waiting time. The product direction includes people with cognitive
-  or intellectual disabilities; the app does not assess, diagnose, or determine
-  an individual's condition, eligibility, or suitability.
+  or   intellectual disabilities; this describes potential users, not a medical
+  indication. The app does not assess, diagnose, determine eligibility by, or
+  adapt its function to an individual's condition.
 - **Product owner:** @Entreco, as designated in
   [document controls](../governance/document-control.md).
 
@@ -94,6 +102,8 @@ their behaviour.
 El Chrono is not intended to:
 
 - diagnose, treat, monitor, or manage a medical condition;
+- compensate for an injury or disability or provide a medical-purpose
+  function;
 - provide safety-critical timing, including medication or procedure timing;
 - support emergency response or be relied on as an emergency timer; or
 - replace a caregiver's judgment or another required timing or safety system.
@@ -160,3 +170,4 @@ established.
 | 0.1 | Initial proposed intended-use statement and explicit evidence gaps for issue #2 |
 | 0.2 | Replace stored lifecycle labels with branch/PR-derived status, link PR #10, and distinguish prerequisite lifecycle from unresolved review evidence |
 | 0.3 | Select the EU and United States for qualification assessment and preserve unresolved launch-scope and approval evidence |
+| 0.4 | Clarify general-use ordinary-waiting purpose and explicitly exclude disability-compensation and other medical purposes |

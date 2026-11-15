@@ -271,6 +271,20 @@ to create issues, assign the repository milestone and add them to the project;
 include scope, acceptance criteria, dependencies, relevant requirement/risk IDs,
 and documentation evidence. Do not invent deadlines or approval decisions.
 
+Use consistent names for issues, branches, pull requests, and commits:
+
+- Issue titles use `<milestone>: <verb-led outcome>` (for example,
+  `M1: Assess medical-device qualification and target-market classification`).
+- Branches use `<type>/<issue-number>-<short-kebab-topic>` (for example,
+  `docs/3-market-qualification`), matching established names such as
+  `docs/1-document-control-update` and `docs/2-intended-use`. Use a concise
+  type such as `docs`, `feat`, `fix`, or `chore`; do not spell out `issue-`
+  before the number. Choose the final name before publishing; avoid renaming a
+  branch after opening its PR.
+- Pull request titles use `<type>: <imperative summary> (#<issue-number>)`.
+- Commit subjects use `<type>(optional-scope): <imperative summary> (#<issue-number>)`;
+  keep the subject concise and tie each task commit to its issue.
+
 An issue is Done only after implementation/documentation review, verification
 of acceptance criteria, updated traceability, and recorded limitations.
 Apply release approval to each shipped platform, not only the final milestone.

@@ -3,13 +3,13 @@
 | Field | Value |
 |---|---|
 | Document ID | M1-DOC-002 |
-| Revision | 0.2 |
+| Revision | 0.6 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
-| Required reviewers | Regulatory reviewer: unassigned; software-safety reviewer: unassigned |
+| Required reviewers | Regulatory qualification reviewer: @Entreco for M1-DOC-003; software-safety reviewer: unassigned |
 | Approver | @Entreco, after required reviews and findings resolution |
-| Related issue | [#2](https://github.com/Entreco/elchrono/issues/2) |
-| Review PR | [PR #10](https://github.com/Entreco/elchrono/pull/10) |
+| Related issue | [#2](https://github.com/Entreco/elchrono/issues/2); market selection follow-up in [#3](https://github.com/Entreco/elchrono/issues/3) |
+| Review PR | [PR #13](https://github.com/Entreco/elchrono/pull/13) |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [Lifecycle and approval](../governance/document-control.md#lifecycle-and-approval).
@@ -23,6 +23,13 @@ without seeing a clock face or time of day. Background music may optionally
 accompany the experience; it is not necessary to understand the visual remaining
 time or for the timer to operate as intended.
 
+The timer is for ordinary waiting situations and is intended for general use.
+People with cognitive or intellectual disabilities may use it, but the product
+is not designed or intended to compensate for a disability or to address a
+medical condition. It provides the same general waiting-time display regardless
+of a person's diagnosis, disability, or health status; it does not assess or
+adapt to any such status.
+
 This is a proposed intended-use boundary, not a description of a completed
 product. The current application is a starter screen, not an implemented timer.
 The timer, audio behaviour, accessibility, and interruption handling require
@@ -35,8 +42,9 @@ separate implementation and verification.
   responsibilities and access controls are not yet specified.
 - **Person waiting:** a person who benefits from a visual representation of
   remaining waiting time. The product direction includes people with cognitive
-  or intellectual disabilities; the app does not assess, diagnose, or determine
-  an individual's condition, eligibility, or suitability.
+  or   intellectual disabilities; this describes potential users, not a medical
+  indication. The app does not assess, diagnose, determine eligibility by, or
+  adapt its function to an individual's condition.
 - **Product owner:** @Entreco, as designated in
   [document controls](../governance/document-control.md).
 
@@ -47,10 +55,11 @@ patient data is part of this proposed use.
 ## Care environments and supported situations
 
 The proposed situation is an ordinary waiting period in a context where a
-caregiver can set and explain the timer. No particular facility, care setting,
-or target jurisdiction has been selected. Do not infer use in a clinical,
-educational, residential, or other specific institution until the product owner
-and qualified reviewers confirm the scope against the selected markets.
+caregiver can set and explain the timer. No particular facility or care setting
+has been selected. The selected assessment markets are the EU and United
+States; do not infer use in a clinical, educational, residential, or other
+specific institution until the product owner and qualified reviewers confirm
+the scope.
 
 The app is not intended to provide a clock, time-of-day display, appointment
 schedule, deadline guarantee, or authoritative indication that a person may
@@ -93,24 +102,29 @@ their behaviour.
 El Chrono is not intended to:
 
 - diagnose, treat, monitor, or manage a medical condition;
+- compensate for an injury or disability or provide a medical-purpose
+  function;
 - provide safety-critical timing, including medication or procedure timing;
 - support emergency response or be relied on as an emergency timer; or
 - replace a caregiver's judgment or another required timing or safety system.
 
 No clinical benefit, improved health outcome, regulatory classification,
-compliance, or certification is claimed. This statement does not determine
-whether the product is legally a medical device in any market. Qualification
-and applicable obligations must be assessed against the actual intended use,
-functionality, claims, and selected target markets by appropriately competent
-reviewers. If that assessment conflicts with the non-medical product direction,
-escalate and resolve the conflict before affected work continues.
+compliance, or certification is claimed. The qualification assessment for the
+selected EU and US markets is recorded in
+[M1-DOC-003](../regulatory/qualification-and-classification.md). That
+conclusion applies only to the intended use and functions described here; if
+they change or conflict with the non-medical product boundary, reassess and
+escalate before affected work continues.
 
 ## Target markets
 
-Target jurisdictions have **not been selected**. No distribution territory,
-market-specific qualification conclusion, or applicable legal obligation is
-assumed in this record. Selection by the product owner and review by a competent
-regulatory reviewer are blocking evidence for merge and closure of issue #2.
+The European Union and United States are selected for qualification assessment.
+The EU scope is the EU Member States; other EEA or European jurisdictions are
+not included unless separately selected. The United States scope is federal;
+launch states, territories, distribution channels, and launch decisions have
+not been specified. The qualification conclusion for this intended use is
+recorded in [M1-DOC-003](../regulatory/qualification-and-classification.md).
+Selection for assessment does not authorize distribution.
 
 ## Sources and traceability
 
@@ -133,12 +147,17 @@ established.
   and required specialist review evidence remains unresolved. Reconcile the
   prerequisite review evidence before merging this record; lifecycle status
   does not prove those reviews happened.
-- Target jurisdictions and the intended care settings require explicit
-  selection and review.
-- Regulatory and software-safety reviewers remain unassigned in the document
-  controls. Their review scopes and competence must be recorded before this
-  record can be merged. An open PR makes the branch In review even when these
-  appointments are missing; it does not waive them.
+- The EU and United States are selected for assessment in revision 0.3.
+  Specific launch states, channels, and any non-EU European markets remain
+  unspecified.
+- Revision 0.6 is a candidate follow-up to closed issue #2. The EU/US
+  qualification decision is recorded in M1-DOC-003 by
+  @Entreco as qualified regulatory reviewer; approval evidence for this
+  intended-use revision remains pending.
+- @Entreco is assigned as regulatory qualification reviewer for M1-DOC-003.
+  The software-safety reviewer remains unassigned; the required review scope
+  and competence must be recorded before any applicable approval. An open PR
+  makes the branch In review but does not waive required review gates.
 - There are no approved requirement or risk IDs yet. Link real identifiers and
   source sections when established; do not invent them.
 - No patient usability findings or verification evidence are established by
@@ -150,4 +169,7 @@ established.
 |---|---|
 | 0.1 | Initial proposed intended-use statement and explicit evidence gaps for issue #2 |
 | 0.2 | Replace stored lifecycle labels with branch/PR-derived status, link PR #10, and distinguish prerequisite lifecycle from unresolved review evidence |
-
+| 0.3 | Select the EU and United States for qualification assessment and preserve unresolved launch-scope and approval evidence |
+| 0.4 | Clarify general-use ordinary-waiting purpose and explicitly exclude disability-compensation and other medical purposes |
+| 0.5 | Link the qualified review conclusion and clarify the scope of the non-device determination |
+| 0.6 | Use a revision-independent reference to the qualification record to avoid cyclic revision references |

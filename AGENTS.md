@@ -11,6 +11,21 @@ the experience; patients have simple, accessible controls.
 - Project: https://github.com/users/Entreco/projects/4
 - Milestones: https://github.com/Entreco/elchrono/milestones
 
+## Non-medical product boundary
+
+El Chrono is intended as a **non-medical-device app** for visual waiting-time
+support. Do not make medical claims in the application, documentation, marketing,
+store listings, or support material. Do not introduce diagnosis, treatment,
+medical-condition monitoring, or safety-critical medical timing as intended uses.
+
+Medical-device-style documentation is adopted voluntarily for rigor, not to
+position the app as a medical device or claim certification. Target-market
+qualification review must check the actual intended use, functionality, and
+claims against this boundary; a disclaimer alone does not determine legal
+qualification. If the assessment conflicts with the non-medical scope, escalate
+and resolve the conflict before continuing affected work. Do not silently expand
+the product into a medical device.
+
 ## Product requirements
 
 - Caregivers select a duration from 5 minutes to 24 hours, in 5-minute increments.
@@ -108,15 +123,22 @@ and system-volume APIs behind narrow, testable boundaries.
 
 ## Medical-device documentation and safety
 
-Develop against the approved applicability matrix for IEC 62304:2006 with
-Amendment 1:2015, with software safety Class A as the proposed classification.
-Class A is not a regulatory medical-device class, and documentation alone does
-not demonstrate compliance or certification.
+Voluntarily use IEC 62304:2006 with Amendment 1:2015 as a documentation/process
+reference, subject to the approved applicability matrix. Class A is a proposed
+software safety classification within that voluntary framework, not an
+established classification or a regulatory medical-device class. Documentation
+alone does not demonstrate compliance or certification.
 
-M1 must establish intended use, medical-device qualification, target-market
-obligations, and a justified software safety classification with qualified
-review. If risks do not support Class A, escalate and revise the process before
+M1 must establish the non-medical intended use and no-medical-claims boundary,
+review medical-device qualification and target-market obligations, and justify
+the software safety classification used for the voluntary process with qualified
+review. Device classification is applicable only if qualification warrants it;
+that outcome conflicts with the product direction and requires escalation.
+If risks do not support Class A, escalate and revise the voluntary process before
 continuing affected work. Never claim certification or invent clinical evidence.
+
+Product documents and review records belong under `docs/`. Keep pending reviews
+and approvals explicit; never fabricate qualified human review or approval.
 
 Maintain controlled, versioned records as applicable:
 
@@ -130,7 +152,9 @@ Maintain controlled, versioned records as applicable:
   instructions, limitations, and maintenance/incident assessment procedures.
 
 These project controls are not a claim that every listed document is explicitly
-required for Class A. Follow the approved applicability matrix.
+required for Class A or legally required for this non-medical app. Distinguish
+voluntarily adopted controls from applicable legal obligations in the approved
+applicability matrix.
 Update affected records with each change. Separate observed evidence from
 assumptions; record missing evidence and review status honestly.
 
@@ -242,7 +266,3 @@ ignored; only intentionally shared `codeStyles` and `inspectionProfiles` are
 allowed. Review those profiles for machine-specific paths before committing.
 Do not share IDE launch configurations until verified after successful sync;
 the root README contains the verified CLI launch commands.
-
-This file is named `AGENT.md` as requested. Agents that only auto-discover
-`AGENTS.md` must be explicitly directed to read this file; do not assume automatic
-discovery.

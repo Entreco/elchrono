@@ -5,6 +5,18 @@ disabilities. Caregivers configure duration, one of five themes, and optional
 music; patients can adjust volume. The current application is a starter UI,
 not an implemented timer.
 
+## Product positioning
+
+El Chrono is intended as a **non-medical-device app** for visual waiting-time
+support. We will not make medical claims: it is not intended for diagnosis,
+treatment, monitoring a medical condition, or safety-critical medical timing.
+
+We voluntarily maintain documentation with medical-device-style rigor, including
+intended use, risks, reviews, verification, and traceability. This does not make
+the app a medical device or imply certification. Target-market qualification
+review must confirm that the actual intended use, functionality, and published
+claims remain consistent with this non-medical scope.
+
 ## Structure
 
 This Kotlin Multiplatform / Compose Multiplatform project uses the Kotlin
@@ -67,5 +79,12 @@ Desktop launch is verified on the current macOS host; other desktop operating
 systems require their own packaging/verification. Android TV, Apple TV, Wear OS,
 and watchOS remain planned, not configured targets.
 
-See [AGENT.md](./AGENT.md) for project goals, platform targets, accessibility
-requirements, medical-device documentation controls, and development instructions.
+See [AGENTS.md](./AGENTS.md) for project goals, platform targets, accessibility
+requirements, voluntary documentation controls, and development instructions.
+
+## Documentation
+
+Product documents and review records live under `docs/`. Start with the
+[document controls and M1 evidence index](docs/governance/document-control.md).
+These controls are a draft awaiting qualified human review and approval, not
+an approved safety baseline or a certification claim.

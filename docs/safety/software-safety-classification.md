@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M1-DOC-005 |
-| Revision | 0.2 |
+| Revision | 0.3 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Software-safety reviewer | @Entreco; competence confirmed by reviewer |
@@ -134,10 +134,12 @@ B, or C is assigned. This is separate from the regulatory conclusion that no
 medical-device class applies; neither conclusion claims regulatory approval,
 legal advice, or certification.
 
-The reviewer supplied this applicability conclusion for the M1-DOC-005
-assessment on 2026-11-15. The PR's human acceptance remains the approval
-evidence for this exact candidate revision. No separate or independent
-reviewer is represented.
+The reviewer supplied this applicability conclusion for M1-DOC-005 revision
+0.2 on 2026-11-15. @Entreco accepted the exact PR #16 head,
+`dc01e2ebc25f1458ef0a9a901a28128cdf7464ea`; the PR merged as
+`2a8791c9a1cf76a96768e3033a88af3f51f81732`. This revision records that
+acceptance evidence without changing the assessed scope or conclusion. No
+separate or independent reviewer is represented.
 
 ## Reassessment triggers and limitations
 
@@ -172,3 +174,4 @@ identified in M1-DOC-004 and M1-DOC-009.
 |---|---|
 | 0.1 | Establish M1-DOC-005 and defer the applicability decision to a post-merge assessment. |
 | 0.2 | Record @Entreco's full software-safety applicability conclusion against the exact merged M1 source revisions; withdraw the premature Class A proposal; no IEC 62304 class applies. |
+| 0.3 | Record @Entreco's human acceptance of the exact PR #16 head and its merge commit. |

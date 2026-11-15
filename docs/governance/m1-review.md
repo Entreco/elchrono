@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M1-DOC-008 |
-| Revision | 0.1 |
+| Revision | 0.2 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Designated M1 milestone approver (unassigned); competent reviewer for risk evidence (unassigned) |
@@ -105,18 +105,18 @@ and dispositions must be recorded in the PR against its final head.
 ## M2 handoff actions and limitations
 
 The M2 milestone is [Requirements and accessible UX](https://github.com/Entreco/elchrono/milestone/2);
-it has no linked issues at the reviewed snapshot. The following actions are
-assigned to @Entreco as product owner for issue planning. These links lead to
-the source records and requirements, not to nonexistent M2 issues. Create and
-link tracked M2 work before relying on the handoff; do not invent requirement
-IDs or treat planned actions as approved behavior.
+it had no linked issues at the reviewed snapshot. The follow-up work is now
+tracked by M2 issues #22 through #25. Candidate requirement, protocol, and
+traceability records do not represent approval or completed verification.
+These links lead to the source records and tracked follow-up work; do not
+invent requirement IDs or treat planned actions as approved behavior.
 
 | M2 action | Owner and linked source | Limitation / gate |
 |---|---|---|
-| Define measurable requirements and validate accessible UX, themes, and state semantics with caregivers and representative users under appropriate consent and safeguards. | @Entreco; [project accessibility and timer reliability requirements](../../AGENTS.md#accessibility-and-timer-reliability), [intended-use roles](../product/intended-use.md#users-population-and-roles), and M1-DOC-009 RISK-005. | No controlled requirements register or representative usability evidence exists yet. Do not infer patient preferences or claim verification. |
+| Define concise requirements and validate accessible UX, themes, and state semantics with caregivers and representative users under appropriate consent and safeguards. | @Entreco; [requirements issue #22](https://github.com/Entreco/elchrono/issues/22), [design issue #23](https://github.com/Entreco/elchrono/issues/23), [usability issue #24](https://github.com/Entreco/elchrono/issues/24), [intended-use roles](../product/intended-use.md#users-population-and-roles), and M1-DOC-009 RISK-005. | A candidate requirements register exists; its approval and representative usability evidence remain pending. Do not infer patient preferences or claim verification. |
 | Decide caregiver protection, patient volume access/limits, completion sounds, and pause/reset behavior before implementation. | @Entreco; [intended-use limitations](../product/intended-use.md#foreseeable-use-and-limitations), M1-DOC-004 RISK-003/RISK-004 and controls, and M1-DOC-009. | These behaviors remain undecided; this handoff authorizes no defaults or implementation. |
 | Specify and verify timer behavior and interruption recovery for backgrounding, sleep, process termination, restart, and wall-clock changes. | @Entreco; M1-DOC-004 RISK-001/RISK-002 and M1-DOC-009; [timer reliability requirements](../../AGENTS.md#accessibility-and-timer-reliability). | Recovery decisions and verified controls are absent. A monotonic timestamp alone does not provide persistence across device restarts. |
-| Establish stable requirement IDs and link accepted requirements to risks, controls, verification, usability findings, and limitations. | @Entreco; M1-DOC-007 requirements/traceability plan and the M2 milestone. | No approved requirement IDs, completed risk verification, or owned M2 issue links exist at this snapshot. |
+| Establish stable requirement IDs and link requirements to sources, risks, controls, verification, usability findings, and limitations. | @Entreco; [test protocol and traceability issue #25](https://github.com/Entreco/elchrono/issues/25), [M2 requirements register](../product/requirements.md), and the M2 milestone. | Candidate REQ-NNN IDs, test cases, and trace links exist; approvals, test results, and risk-control verification remain pending. |
 
 These are planned follow-ups, not approved requirements or findings of
 acceptable residual risk. The non-medical intended-use boundary remains in
@@ -128,3 +128,4 @@ safety-critical timing, or a certification claim.
 | Revision | Change |
 |---|---|
 | 0.1 | Record the M1 evidence map, review checks, open findings, blocked gate outcome, and planned M2 handoff actions |
+| 0.2 | Reconcile the M2 handoff with the tracked issues and candidate requirement, test protocol, and traceability records; retain their unresolved approval and evidence status |

@@ -28,8 +28,10 @@ the product into a medical device.
 
 ## Product requirements
 
-- Caregivers select a duration from 5 minutes to 24 hours, in 5-minute increments.
-- Caregivers choose from five approved timer themes. Include quiet experiences
+- Caregivers select any whole-minute duration from 1 minute to 24 hours using
+  Hours and Minutes fields: sequential digits fill MM first and then shift left
+  into HH (for example, `205` displays `02:05`).
+- Caregivers select from the available timer themes. Include quiet experiences
   and explore geometric experiences such as triangles; final designs require
   usability review rather than assumptions about patient preferences.
 - Caregivers optionally connect YouTube or Spotify for background music through
@@ -42,7 +44,9 @@ the product into a medical device.
 Minimum screens:
 
 1. **Main:** themed countdown, accessible volume control, and distinguishable
-   running, paused, completed, and interrupted states; no clock presentation.
+   running, paused, and interrupted states; no clock presentation. On
+   completion, reset immediately to the configured duration and stop music;
+   do not display a completed state.
 2. **Settings:** duration, theme, optional music, and caregiver timer controls.
 3. **About:** company logo, version/build details, support information, privacy
    policy, relevant licences, intended use, and limitations.
@@ -115,7 +119,7 @@ and system-volume APIs behind narrow, testable boundaries.
 - Define and verify recovery across backgrounding, sleep, process termination,
   restart, and wall-clock changes. Monotonic timestamps alone do not provide
   persistence across device restarts.
-- Test every allowed duration, including 5 minutes and 24 hours, invalid
+- Test every allowed duration, including 1 minute and 24 hours, invalid
   configuration, pause/resume, completion boundaries, and interruption paths.
 - Inject controllable time sources for deterministic tests rather than waiting
   real minutes/hours. Prevent negative remaining time and duplicate completion.
@@ -174,7 +178,9 @@ Maintain controlled, versioned records as applicable:
 - Intended use, standards-applicability rationale (and classification rationale
   where applicable), development plan, responsibilities,
   and standards/documentation applicability.
-- Requirements with stable IDs and measurable acceptance criteria.
+- Requirements with stable IDs; keep measurable acceptance criteria in the
+  test protocol and requirement-risk-test relationships in the traceability
+  matrix.
 - Risks, controls, usability findings, and verification of those controls.
 - Architecture/design decisions and third-party dependency/SOUP assessments.
 - Verification plans, results, and requirements-to-risk-to-test traceability.
@@ -266,7 +272,7 @@ Apple TV/watch toolchains by labelling mobile builds as those products.
 2. **M2:** Requirements and accessible UX.
 3. **M3:** Architecture and engineering foundation.
 4. **M4:** Reliable timer engine.
-5. **M5:** Browser MVP with five themes.
+5. **M5:** Browser MVP with selectable themes.
 6. **M6:** Music and volume.
 7. **M7:** Mobile and desktop releases.
 8. **M8:** TV and watch releases.

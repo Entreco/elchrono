@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M1-DOC-004 |
-| Revision | 0.2 |
+| Revision | 0.4 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Software-safety reviewer: unassigned; blocking |
@@ -175,14 +175,14 @@ Individual effects cannot be added to calculate the overall post-control score.
 | RC-001-1 | Use an appropriate monotonic source during active execution instead of frames or callback counts. | Likelihood: reduce timing errors from callback delays or wall-clock changes during active execution. |
 | RC-001-2 | Prevent negative remaining time and duplicate completion. | Likelihood: reduce misleading timer states and repeated completion signals. |
 | RC-001-3 | Keep remaining-time visual semantics consistent across themes and platforms. | Likelihood: reduce misleading or inconsistent interpretation of progress. |
-| RC-001-4 | Define completion and pause/reset behavior before implementation. | Likelihood: establish consistent behavior that can be implemented and verified; effect depends on the decisions made. |
+| RC-001-4 | Implement the reviewed completion behavior; define manual pause/reset behavior before implementation. | Likelihood: establish consistent behavior that can be implemented and verified. Immediate reset to the configured duration and stopping optional music at completion are proposed, subject to review and approval. |
 
 ### RISK-002 controls
 
 | ID | Proposed control | Intended effect and rationale |
 |---|---|---|
 | RC-002-1 | Define interruption detection, persistence, and recovery requirements; choose recovery behavior through requirements and risk/UX review. | Likelihood: reduce undetected interruptions and incorrect recovery; effect depends on the chosen behavior and platform support. |
-| RC-002-2 | Distinguish running, paused, completed, and interrupted states; do not imply continuity when unknown. | Likelihood: reduce reliance on an apparently reliable state when timing continuity is uncertain. |
+| RC-002-2 | Distinguish running, paused, and interrupted states; at completion, reset immediately to the configured duration without displaying a completed state. Do not imply continuity when unknown. | Likelihood: reduce reliance on an apparently reliable state when timing continuity is uncertain; completion behavior is proposed and remains subject to review and approval. |
 
 ### RISK-003 controls
 
@@ -219,7 +219,8 @@ Individual effects cannot be added to calculate the overall post-control score.
 The following behavior and control decisions remain unresolved and require
 requirements and risk/UX review, primarily in M2:
 
-- pause, reset, completion, and interruption/recovery behavior;
+- manual pause/reset and interruption/recovery behavior; the proposed
+  immediate reset/music-stop completion behavior requires review and approval;
 - caregiver protection and patient access to timer settings;
 - volume limits, audio initiation, completion sounds, and playback-failure
   presentation; and
@@ -264,3 +265,5 @@ they are not waived by this initial assessment.
 |---|---|
 | 0.1 | Initial candidate assessment for issue #4; define screening method and six proposed risk entries, with traceability in M1-DOC-009 and unresolved review evidence |
 | 0.2 | Replace the proposed IEC 62304 classification dependency with the M1-DOC-005 non-applicability conclusion; retain the separate risk-review and verification gates |
+| 0.3 | Align proposed risk controls and open decisions with M2 requirements for caregiver-only Settings and immediate timer reset/music stop at completion; keep controls unverified and review pending |
+| 0.4 | Remove requirement-ID cross-references; retain the risk controls and verification here while requirement-risk-test links are maintained in the M2 traceability matrix |

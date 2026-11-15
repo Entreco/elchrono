@@ -3,11 +3,11 @@
 | Field | Value |
 |---|---|
 | Document ID | M1-DOC-001 |
-| Revision | 1.8 |
+| Revision | 2.0 |
 | Product owner | @Entreco |
 | Document owner and approver | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
-| Review evidence | [PR #9](https://github.com/Entreco/elchrono/pull/9); [PR #10](https://github.com/Entreco/elchrono/pull/10); [PR #15](https://github.com/Entreco/elchrono/pull/15); [PR #16](https://github.com/Entreco/elchrono/pull/16); [PR #17](https://github.com/Entreco/elchrono/pull/17) |
+| Review evidence | [PR #9](https://github.com/Entreco/elchrono/pull/9); [PR #10](https://github.com/Entreco/elchrono/pull/10); [PR #15](https://github.com/Entreco/elchrono/pull/15); [PR #16](https://github.com/Entreco/elchrono/pull/16); [PR #17](https://github.com/Entreco/elchrono/pull/17); [PR #18](https://github.com/Entreco/elchrono/pull/18) |
 | Work item | [Issue #1](https://github.com/Entreco/elchrono/issues/1) |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
@@ -233,9 +233,9 @@ justification, an owner, and linked follow-up; it cannot waive a completion gate
 
 ## Foundation evidence index
 
-Paths in code formatting are reserved deliverables, not links to existing files.
-Only populate review evidence after real review. Lifecycle follows the viewed
-branch for every existing entry; do not duplicate it in this index.
+Paths shown in code formatting are reserved deliverables; link the record when
+it exists. Only populate review evidence after real review. Lifecycle follows
+the viewed branch for every existing entry; do not duplicate it in this index.
 No controlled requirements register exists at this revision. M1-DOC-005
 revision 0.3 records the conclusion that IEC 62304 software safety
 classification is not applicable to El Chrono's defined non-medical software,
@@ -247,12 +247,12 @@ M1-DOC-003 records the qualified EU/US regulatory qualification conclusion.
 
 | ID | Record / planned path | Issue | Current evidence |
 |---|---|---|---|
-| M1-DOC-001 | [Document controls](document-control.md) | [#1](https://github.com/Entreco/elchrono/issues/1) | Owner @Entreco; revision 1.8; issue #1 closed and [PR #9](https://github.com/Entreco/elchrono/pull/9) merged; [PR #10](https://github.com/Entreco/elchrono/pull/10) contains subsequent changes; historical acceptance identity/SHA and specialist review evidence unresolved |
+| M1-DOC-001 | [Document controls](document-control.md) | [#1](https://github.com/Entreco/elchrono/issues/1) | Owner @Entreco; revision 2.0 candidate; [PR #18](https://github.com/Entreco/elchrono/pull/18) updates the applicability index; issue #1 closed and [PR #9](https://github.com/Entreco/elchrono/pull/9) merged; [PR #10](https://github.com/Entreco/elchrono/pull/10) contains earlier changes; historical acceptance identity/SHA and specialist review evidence unresolved |
 | M1-DOC-002 | [Intended use](../product/intended-use.md) | [#2](https://github.com/Entreco/elchrono/issues/2) | Owner @Entreco; revision 0.7 candidate; EU and United States selected for assessment; exact-revision approval evidence unresolved; see [PR #10](https://github.com/Entreco/elchrono/pull/10), [PR #13](https://github.com/Entreco/elchrono/pull/13), and [PR #16](https://github.com/Entreco/elchrono/pull/16) |
 | M1-DOC-003 | [Qualification and classification](../regulatory/qualification-and-classification.md) | [#3](https://github.com/Entreco/elchrono/issues/3) | Owner @Entreco; revision 0.6 candidate; [PR #13](https://github.com/Entreco/elchrono/pull/13) and [PR #16](https://github.com/Entreco/elchrono/pull/16); qualified reviewer concludes non-device in EU/US; human acceptance pending; replaces closed [PR #12](https://github.com/Entreco/elchrono/pull/12) after branch rename |
 | M1-DOC-004 | [Risk assessment](../safety/risk-assessment.md) | [#4](https://github.com/Entreco/elchrono/issues/4) | Owner @Entreco; revision 0.2 candidate; [PR #14](https://github.com/Entreco/elchrono/pull/14) and [PR #16](https://github.com/Entreco/elchrono/pull/16); six proposed risks and controls; no approved requirement IDs or verified controls; separate risk review walkthrough remains pending |
 | M1-DOC-005 | [Software safety classification](../safety/software-safety-classification.md) | [#5](https://github.com/Entreco/elchrono/issues/5) | Owner @Entreco; revision 0.3 records the conclusion and acceptance evidence; @Entreco accepted PR #16's exact head `dc01e2ebc25f1458ef0a9a901a28128cdf7464ea`, merged as `2a8791c9a1cf76a96768e3033a88af3f51f81732`; record reconciliation in [PR #17](https://github.com/Entreco/elchrono/pull/17); IEC 62304 classification not applicable |
-| M1-DOC-006 | `docs/governance/applicability-matrix.md` | [#6](https://github.com/Entreco/elchrono/issues/6) | Not created |
+| M1-DOC-006 | [Standards and documentation applicability matrix](applicability-matrix.md) | [#6](https://github.com/Entreco/elchrono/issues/6) | Owner @Entreco; revision 0.1 candidate; [PR #18](https://github.com/Entreco/elchrono/pull/18) open as draft; regulatory, privacy, and accessibility reviewer scopes unassigned; applicability findings and qualified review remain pending |
 | M1-DOC-007 | `docs/governance/software-development-plan.md` | [#7](https://github.com/Entreco/elchrono/issues/7) | Not created |
 | M1-DOC-008 | `docs/governance/m1-review.md` | [#8](https://github.com/Entreco/elchrono/issues/8) | Not created |
 | M1-DOC-009 | [Risk traceability matrix](../safety/risk-traceability-matrix.md) | [#4](https://github.com/Entreco/elchrono/issues/4) | Owner @Entreco; revision 0.1 candidate; [PR #14](https://github.com/Entreco/elchrono/pull/14); planned verification and test evidence pending; software-safety reviewer unassigned |
@@ -321,3 +321,4 @@ merge, or the Approved and effective lifecycle status.
 | 1.7 | Record the M1-DOC-005 non-applicability conclusion and pending follow-up PR acceptance |
 | 1.8 | Update the evidence index for revised intended-use, qualification, risk, and classification-applicability records |
 | 1.9 | Record M1-DOC-005's exact-head human acceptance and merged evidence in the reviewer assignment, findings, and foundation index; link the record-reconciliation PR |
+| 2.0 | Add the M1-DOC-006 applicability-matrix candidate and its pending review scopes to the foundation evidence index |

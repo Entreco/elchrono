@@ -84,10 +84,11 @@ requirements, voluntary documentation controls, and development instructions.
 
 ## Documentation
 
-Product documents live under `docs/`; human GitHub PR approvals provide review
+Product documents live under `docs/`; a human acceptance checkbox in the PR provides review
 evidence without duplicate Markdown evidence files or separate signatures.
-Changes must enter `main` through a protected PR workflow with human approval
-before merge. Start with the
+Changes enter `main` through PRs. Author self-review is permitted: before merge,
+record the accepting human and reviewed commit, then check acceptance. This is
+a manual review gate, not GitHub-enforced approval. Start with the
 [document controls and M1 evidence index](docs/governance/document-control.md).
 These controls are a draft awaiting qualified human review and approval, not
 an approved safety baseline or a certification claim.

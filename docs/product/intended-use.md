@@ -3,10 +3,10 @@
 | Field | Value |
 |---|---|
 | Document ID | M1-DOC-002 |
-| Revision | 0.4 |
+| Revision | 0.5 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
-| Required reviewers | Regulatory reviewer: unassigned; software-safety reviewer: unassigned |
+| Required reviewers | Regulatory qualification reviewer: @Entreco for M1-DOC-003; software-safety reviewer: unassigned |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#2](https://github.com/Entreco/elchrono/issues/2); market selection follow-up in [#3](https://github.com/Entreco/elchrono/issues/3) |
 | Review PR | [PR #13](https://github.com/Entreco/elchrono/pull/13) |
@@ -109,12 +109,11 @@ El Chrono is not intended to:
 - replace a caregiver's judgment or another required timing or safety system.
 
 No clinical benefit, improved health outcome, regulatory classification,
-compliance, or certification is claimed. This statement does not determine
-whether the product is legally a medical device in any market. Qualification
-and applicable obligations must be assessed against the actual intended use,
-functionality, claims, and selected target markets by appropriately competent
-reviewers. If that assessment conflicts with the non-medical product direction,
-escalate and resolve the conflict before affected work continues.
+compliance, or certification is claimed. The qualification conclusion for the
+selected EU and US markets is recorded in M1-DOC-003, revision 0.4. That
+conclusion applies only to the intended use and functions described here; if
+they change or conflict with the non-medical product boundary, reassess and
+escalate before affected work continues.
 
 ## Target markets
 
@@ -122,9 +121,9 @@ The European Union and United States are selected for qualification assessment.
 The EU scope is the EU Member States; other EEA or European jurisdictions are
 not included unless separately selected. The United States scope is federal;
 launch states, territories, distribution channels, and launch decisions have
-not been specified. Selection for assessment does not authorize distribution
-or establish regulatory qualification. A competent regulatory reviewer must
-review the exact intended-use revision and the market-specific assessment.
+not been specified. The qualification conclusion for this intended use is
+recorded in [M1-DOC-003, revision 0.4](../regulatory/qualification-and-classification.md).
+Selection for assessment does not authorize distribution.
 
 ## Sources and traceability
 
@@ -150,14 +149,14 @@ established.
 - The EU and United States are selected for assessment in revision 0.3.
   Specific launch states, channels, and any non-EU European markets remain
   unspecified.
-- Revision 0.3 is a candidate follow-up to closed issue #2. The target-market
-  selection and required exact-revision approval/review evidence have not been
-  reconciled by that issue's closure; do not treat closure or PR #10 as proof
-  of approval.
-- Regulatory and software-safety reviewers remain unassigned in the document
-  controls. Their review scopes and competence must be recorded before this
-  record can be merged. An open PR makes the branch In review even when these
-  appointments are missing; it does not waive them.
+- Revision 0.5 is a candidate follow-up to closed issue #2. The EU/US
+  qualification decision is recorded in M1-DOC-003, revision 0.4, by
+  @Entreco as qualified regulatory reviewer; approval evidence for this
+  intended-use revision remains pending.
+- @Entreco is assigned as regulatory qualification reviewer for M1-DOC-003.
+  The software-safety reviewer remains unassigned; the required review scope
+  and competence must be recorded before any applicable approval. An open PR
+  makes the branch In review but does not waive required review gates.
 - There are no approved requirement or risk IDs yet. Link real identifiers and
   source sections when established; do not invent them.
 - No patient usability findings or verification evidence are established by
@@ -171,3 +170,4 @@ established.
 | 0.2 | Replace stored lifecycle labels with branch/PR-derived status, link PR #10, and distinguish prerequisite lifecycle from unresolved review evidence |
 | 0.3 | Select the EU and United States for qualification assessment and preserve unresolved launch-scope and approval evidence |
 | 0.4 | Clarify general-use ordinary-waiting purpose and explicitly exclude disability-compensation and other medical purposes |
+| 0.5 | Link the qualified review conclusion and clarify the scope of the non-device determination |

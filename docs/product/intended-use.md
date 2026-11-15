@@ -150,3 +150,4 @@ established.
 |---|---|
 | 0.1 | Initial proposed intended-use statement and explicit evidence gaps for issue #2 |
 | 0.2 | Replace stored lifecycle labels with branch/PR-derived status, link PR #10, and distinguish prerequisite lifecycle from unresolved review evidence |
+

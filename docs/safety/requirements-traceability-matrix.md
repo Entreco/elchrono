@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-003 |
-| Revision | 0.2 |
+| Revision | 0.3 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Requirements and software-safety reviewers: unassigned |
@@ -33,7 +33,7 @@ actual evidence is recorded.
 | [M2-DOC-001, product requirements](../product/requirements.md) | 0.3 candidate | Requirements traced below |
 | [M1-DOC-004, risk assessment](risk-assessment.md) | 0.4 candidate | RISK-001 through RISK-006 traced below |
 | [M2-DOC-002, product test protocol](../testing/test-protocol.md) | 0.1 candidate | Test procedures and acceptance criteria traced below |
-| [M2-DOC-004, accessible screen flows and theme prototypes](../design/accessible-screen-flows-and-theme-prototypes.md) | 0.1 candidate | Proposed Main, Settings, About, state, and theme designs; usability and specialist review pending |
+| [M2-DOC-004, accessible screen flows and theme prototypes](../design/accessible-screen-flows-and-theme-prototypes.md) | 0.2 candidate | Proposed Main, Settings, About, state, and timer visualizations with conditional appearance options; usability and specialist review pending |
 | Usability plan/findings, issue #24 | Not yet available | Add actual records, findings, and limitations when created |
 
 ## Traceability
@@ -42,10 +42,10 @@ actual evidence is recorded.
 |---|---|---|---|---|---|
 | [REQ-001](../product/requirements.md#requirement-identification) | [Duration and supported waiting use](../product/intended-use.md#supported-role-of-visual-time-and-optional-audio) | RISK-001 | [Settings duration entry](../design/accessible-screen-flows-and-theme-prototypes.md#settings-screen) | [TP-REQ-001](../testing/test-protocol.md#test-cases) | Pending |
 | [REQ-002](../product/requirements.md#requirement-identification) | [Users and roles](../product/intended-use.md#users-population-and-roles) | RISK-001 | [Caregiver setup flow](../design/accessible-screen-flows-and-theme-prototypes.md#settings-screen) | [TP-REQ-002](../testing/test-protocol.md#test-cases) | Pending |
-| [REQ-003](../product/requirements.md#requirement-identification) | [Visual remaining-time use and limitations](../product/intended-use.md#supported-role-of-visual-time-and-optional-audio) | RISK-001, RISK-002, RISK-005, RISK-006 | [Main states and theme mapping](../design/accessible-screen-flows-and-theme-prototypes.md#main-screen-and-states) | [TP-REQ-003](../testing/test-protocol.md#test-cases) | Pending |
+| [REQ-003](../product/requirements.md#requirement-identification) | [Visual remaining-time use and limitations](../product/intended-use.md#supported-role-of-visual-time-and-optional-audio) | RISK-001, RISK-002, RISK-005, RISK-006 | [Main states and visualization mapping](../design/accessible-screen-flows-and-theme-prototypes.md#main-screen-and-states) | [TP-REQ-003](../testing/test-protocol.md#test-cases) | Pending |
 | [REQ-004](../product/requirements.md#requirement-identification) | [Users and roles](../product/intended-use.md#users-population-and-roles); supported-use scope | RISK-004, RISK-005, RISK-006 | [Main, Settings, and About designs](../design/accessible-screen-flows-and-theme-prototypes.md#screen-flows) | [TP-REQ-004](../testing/test-protocol.md#test-cases) | Pending |
 | [REQ-005](../product/requirements.md#requirement-identification) | [Users and roles](../product/intended-use.md#users-population-and-roles) | RISK-004 | [Caregiver access gate and patient volume](../design/accessible-screen-flows-and-theme-prototypes.md#main-screen-and-states) | [TP-REQ-005](../testing/test-protocol.md#test-cases) | Pending |
-| [REQ-006](../product/requirements.md#requirement-identification) | Supported-use scope | RISK-004, RISK-005 | [Theme concepts](../design/accessible-screen-flows-and-theme-prototypes.md#theme-concepts) | [TP-REQ-006](../testing/test-protocol.md#test-cases) | Pending |
+| [REQ-006](../product/requirements.md#requirement-identification) | Supported-use scope | RISK-004, RISK-005 | [Timer visualizations and conditional appearance options](../design/accessible-screen-flows-and-theme-prototypes.md#timer-visualizations) | [TP-REQ-006](../testing/test-protocol.md#test-cases) | Pending |
 | [REQ-008](../product/requirements.md#requirement-identification) | [Optional audio and offline use](../product/intended-use.md#supported-role-of-visual-time-and-optional-audio) | RISK-003 | [Optional music design boundary](../design/accessible-screen-flows-and-theme-prototypes.md#settings-screen) | [TP-REQ-008](../testing/test-protocol.md#test-cases) | Pending |
 | [REQ-009](../product/requirements.md#requirement-identification) | [Exclusions and claims boundary](../product/intended-use.md#exclusions-and-claims-boundary) | RISK-006 | [About screen content](../design/accessible-screen-flows-and-theme-prototypes.md#about-screen) | [TP-REQ-009](../testing/test-protocol.md#test-cases) | Pending |
 | [REQ-010](../product/requirements.md#requirement-identification) | [Ordinary waiting use and limitations](../product/intended-use.md#foreseeable-use-and-limitations) | RISK-001, RISK-003, RISK-005 | [Completion behavior boundary](../design/accessible-screen-flows-and-theme-prototypes.md#main-screen-and-states) | [TP-REQ-010](../testing/test-protocol.md#test-cases) | Pending |
@@ -72,3 +72,4 @@ test procedures or acceptance criteria in this matrix.
 |---|---|
 | 0.1 | Establish initial requirement-to-intended-use/risk/design/usability/test/evidence links; preserve all review and verification gaps. |
 | 0.2 | Link the candidate M2-DOC-004 screen-flow and theme-prototype record to applicable requirement rows; keep design review, usability, and verification evidence pending. |
+| 0.3 | Update design traceability for the proposed remaining-disk default, alternate timer visualizations, and conditional appearance options; keep all review and verification evidence pending. |

@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 470" role="img" aria-labelledby="title description">
+  <title id="title">Timer visualization concepts</title>
+  <desc id="description">Three proposed remaining-time presentations. The proposed default is a circular remaining-time disk without clock markings. Alternatives are a labeled digital duration countdown and a circular progress ring with remaining minutes. All show the same illustrative 60 percent remaining.</desc>
+  <rect width="1200" height="470" fill="#f3f5f7"/>
+  <text x="40" y="52" font-family="sans-serif" font-size="30" font-weight="700" fill="#17212b">Timer visualizations</text>
+  <text x="40" y="82" font-family="sans-serif" font-size="16" fill="#344454">Same illustrative 60% remaining; duration presentation, never time of day.</text>
+
+  <g font-family="sans-serif">
+    <rect x="40" y="112" width="350" height="310" rx="18" fill="#ffffff" stroke="#71808f" stroke-width="2"/>
+    <text x="66" y="154" font-size="22" font-weight="700" fill="#17212b">Remaining-time disk</text>
+    <text x="66" y="182" font-size="15" font-weight="700" fill="#344454">Proposed default</text>
+    <circle cx="215" cy="292" r="72" fill="#e1e6eb"/>
+    <path d="M215 292 L215 220 A72 72 0 1 1 172.7 350.3 Z" fill="#344454"/>
+    <text x="135" y="389" font-size="14" fill="#344454">60% of the disk remains filled.</text>
+    <text x="84" y="410" font-size="12" fill="#344454">No face, numerals, ticks, or hand.</text>
+
+    <rect x="425" y="112" width="350" height="310" rx="18" fill="#ffffff" stroke="#71808f" stroke-width="2"/>
+    <text x="451" y="154" font-size="22" font-weight="700" fill="#17212b">Digital countdown</text>
+    <text x="451" y="182" font-size="15" fill="#344454">Alternative: duration as text</text>
+    <rect x="461" y="236" width="278" height="102" rx="16" fill="#17212b"/>
+    <text x="600" y="274" text-anchor="middle" font-size="14" font-weight="700" letter-spacing="2" fill="#ffffff">REMAINING</text>
+    <text x="600" y="320" text-anchor="middle" font-size="38" font-weight="700" fill="#ffffff">02:05</text>
+    <text x="451" y="377" font-size="14" fill="#344454">Font and optional text color are configurable.</text>
+    <text x="451" y="400" font-size="13" fill="#344454">Value is duration, not a time-of-day reading.</text>
+
+    <rect x="810" y="112" width="350" height="310" rx="18" fill="#ffffff" stroke="#71808f" stroke-width="2"/>
+    <text x="836" y="154" font-size="22" font-weight="700" fill="#17212b">Numeric progress ring</text>
+    <text x="836" y="182" font-size="15" fill="#344454">Alternative: progress and duration</text>
+    <circle cx="985" cy="292" r="72" fill="none" stroke="#e1e6eb" stroke-width="18"/>
+    <circle cx="985" cy="292" r="72" fill="none" stroke="#344454" stroke-width="18" stroke-linecap="round" stroke-dasharray="271.4 452.4" transform="rotate(-90 985 292)"/>
+    <text x="985" y="289" text-anchor="middle" font-size="27" font-weight="700" fill="#17212b">45</text>
+    <text x="985" y="313" text-anchor="middle" font-size="14" fill="#344454">minutes left</text>
+    <text x="836" y="389" font-size="14" fill="#344454">Ring and number share remaining-time meaning.</text>
+  </g>
+  <text x="40" y="454" font-family="sans-serif" font-size="14" fill="#344454">Static design proposals only; options and user preference require review.</text>
+</svg>

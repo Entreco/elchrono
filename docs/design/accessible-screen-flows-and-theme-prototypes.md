@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-004 |
-| Revision | 0.1 |
+| Revision | 0.2 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Product design, accessibility, and usability reviewers: unassigned |
@@ -16,7 +16,7 @@ table. See [document controls](../governance/document-control.md#lifecycle-and-a
 
 ## Purpose and limits
 
-This record proposes low-fidelity screen flows and three visual theme concepts
+This record proposes low-fidelity screen flows and three timer visualizations
 for review. It is design evidence for the proposed ordinary-waiting use, not
 application implementation, a usability finding, or approval of product
 requirements. The current application remains a starter screen, not an
@@ -34,9 +34,10 @@ conformance, or certification.
 
 - The timer visualization represents remaining duration, not a clock, time of
   day, deadline guarantee, or safety-critical timing system.
-- Each theme uses the same continuous remaining-time mapping: a full visual
-  track represents the configured duration remaining; an empty track
-  represents zero. The static prototypes use the same illustrative 60% fill.
+- Each visualization uses the same continuous remaining-time mapping: its
+  complete form represents 100% of the configured duration remaining; its
+  empty form represents zero. Static examples use the same illustrative 60%
+  remaining.
 - Progress has a non-colour cue: filled extent and remaining track are
   distinguishable by shape and position. State is also stated in text.
 - The proposed theme presentation is visual-only. Accessible semantics expose
@@ -78,7 +79,7 @@ approval; no transition timing or audio-start behavior is specified here.
 
 ### Settings screen
 
-![Settings prototype with Hours and Minutes fields, theme concepts, and an optional-music area whose provider and playback interaction are pending.](settings-about.svg)
+![Settings prototype with Hours and Minutes fields, visualization choices, conditional appearance settings, and optional music.](settings-about.svg)
 
 The duration entry example follows the candidate sequential-digit rule:
 `205` displays as `02:05`. The configured duration is a whole-minute value
@@ -90,10 +91,22 @@ Requirements: REQ-001 (duration entry), REQ-002 (caregiver start), REQ-004
 and REQ-008 (optional music).
 
 The caregiver flow is abstract: caregiver-only access gate (mechanism pending)
-then duration, theme, and optional-music configuration. A caregiver starts the
-countdown after a valid duration is configured, as required by REQ-002; the
-start control's placement is not selected. Theme concepts are shown as
-unselected proposals, not as approved or available product options.
+then duration, visualization, optional appearance settings, and optional-music
+configuration. The proposed initial visualization is a Time Timer-inspired
+remaining-time disk. This adapts the supplied dial-like reference to the
+no-clock requirement: it has no clock face, numerals, tick marks, or hand. It
+is a design proposal, not a selected or approved product default. A caregiver
+starts the countdown after a valid duration is configured, as required by
+REQ-002; the start control's placement is not selected.
+
+The appearance controls are conditional on the selected visualization. Offer
+a font choice only when it displays text, and a color choice only when it uses
+color. These are proposed caregiver settings, scoped to the selected
+visualization; available choices, defaults, saving/persistence, and any
+reset-to-default action remain undecided. Any selected font or color must
+preserve readable text, non-colour progress/state cues, and the same remaining
+time semantics. Contrast and legibility need accessibility and usability
+review; no conformance baseline or user preference is claimed.
 
 The optional-music area identifies a product capability without choosing a
 provider, connection screen, playback control, default, start behavior, or
@@ -118,25 +131,29 @@ safety-critical timing. It does not claim a clinical benefit or guarantee that
 a wait has ended. The About entry point and navigation placement remain
 unselected.
 
-## Theme concepts
+## Timer visualizations
 
-![Three theme concepts showing a quiet bar, a triangle motif, and a soft dot field with the same illustrative remaining fraction.](theme-concepts.svg)
+![Three proposed timer visualizations: a Time Timer-inspired remaining disk as the proposed default, a digital duration countdown, and a numeric circular progress indicator.](timer-visualizations.svg)
 
-| Concept | Visual treatment | Remaining-time mapping | Requirement / risk links |
+| Visualization | Visual treatment | Remaining-time mapping | Requirement / risk links |
 |---|---|---|---|
-| Quiet bar | A low-detail, neutral horizontal track with a clearly bounded remaining segment. | Continuous filled extent; full means 100% remains and empty means 0% remains. | REQ-003, REQ-006; RISK-001, RISK-005 |
-| Triangle path | A continuous track with a restrained triangular pattern. Triangles are visual structure, not discrete time units. | Same continuous filled extent and 0-100% semantics as Quiet bar. | REQ-003, REQ-006; RISK-001, RISK-005 |
-| Soft dot field | A low-detail field with a continuous mask over a dot pattern; dots are not counted as time units. | Same continuous filled extent and 0-100% semantics as Quiet bar. | REQ-003, REQ-006; RISK-001, RISK-005 |
+| Time Timer-inspired remaining disk (proposed default) | A filled disk sector shrinks as time elapses. No dial, face, numeral, tick mark, or hand is shown; the nearby "Remaining" label makes the duration meaning explicit. | Full disk means 100% remains; empty disk means zero. | REQ-003, REQ-006; RISK-001, RISK-005 |
+| Digital duration countdown | Prominent remaining duration (illustrated as `02:05`) with a textual "Remaining" label; it is not time of day. Font and, if used, text color are configurable proposals. | The duration value counts down; optional progress indication follows the same remaining-time fraction. Units and display precision require review. | REQ-003, REQ-006; RISK-001, RISK-005 |
+| Numeric circular progress | Circular progress ring with a central remaining-duration value (illustrated as `45 min`); no dial markings or hands. | Ring fill and numeric duration both represent time remaining; their mapping must stay consistent. | REQ-003, REQ-006; RISK-001, RISK-005 |
 
-The three concepts are proposals for review, not a prescribed theme count or a
-claim that any visual is preferred, quiet for every user, or usable by a
-representative patient. Their shared mapping is a design constraint; it has
-not been implemented or verified across durations, screen sizes, platforms, or
-assistive technology.
+The remaining disk is the proposed first/default visualization; digital
+countdown and numeric circular progress are alternatives inspired by the
+references supplied for this review. All three are unselected design proposals
+pending review, not a prescribed final theme count or a claim that any is
+preferred or usable by a representative patient. Their shared mapping is a
+design constraint; it has not been implemented or verified across durations,
+screen sizes, platforms, or assistive technology. The attached references
+inform the concepts but are not copied into the repository.
 
 ## Open decisions and evidence gaps
 
-The designs intentionally do not resolve these candidate requirement decisions:
+The designs intentionally leave these candidate requirement decisions and
+appearance questions unresolved:
 
 | Decision | Design boundary |
 |---|---|
@@ -145,6 +162,7 @@ The designs intentionally do not resolve these candidate requirement decisions:
 | D-03: music start behavior and completion sounds | Music remains optional; provider, connection, start behavior, and any completion sound remain open. |
 | D-04: manual pause and reset behavior | Required states are illustrated; controls and transitions are not selected. |
 | D-05: interruption detection and recovery | The interrupted presentation avoids implying continuity; detection, persistence, and recovery are not selected. |
+| Visualization appearance | Font and color are proposed as conditional per-visualization settings; option lists, defaults, and persistence remain undecided and require accessibility/usability review. |
 
 Required product-design, accessibility, usability, and specialist review
 appointments are unassigned. No caregiver or representative-patient review,
@@ -159,3 +177,4 @@ keep unresolved findings and limitations explicit.
 | Revision | Change |
 |---|---|
 | 0.1 | Establish candidate screen flows and three low-fidelity theme concepts for issue #23; preserve open decisions and review gaps. |
+| 0.2 | Propose a Time Timer-inspired remaining disk as the first/default visualization and digital and numeric-ring alternatives; add conditional per-visualization font/color settings while preserving no-clock and open-decision constraints. |

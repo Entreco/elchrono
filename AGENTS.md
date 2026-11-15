@@ -143,6 +143,16 @@ separate signatures. Link the PR from the document and record review scopes,
 checks, findings resolution, and limitations in the PR. Keep pending reviews
 explicit; never fabricate qualified human review or approval.
 
+Lifecycle status is derived from the viewed branch and PR context for every
+document under `docs/`, including unchanged documents: **Draft** on a feature
+branch without an open PR targeting `main`, **In review** with an open PR
+(including draft PRs), and **Approved and effective** on `main` after merge.
+Do not store Status/Approval fields or duplicate current lifecycle labels in
+indexes or revision histories; branch/PR transitions need no metadata commits.
+This status is not proof of specialist review, verification, milestone
+completion, or release approval. Keep evidence gaps and use restrictions
+explicit even on `main`; required pre-merge review gates still apply.
+
 All changes must enter `main` through a PR. For solo maintenance, use zero required
 formal GitHub approvals and permit author self-review. Before merging, a human
 must review the final diff, record their handle and full reviewed head SHA in the

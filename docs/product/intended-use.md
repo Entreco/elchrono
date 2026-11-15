@@ -3,15 +3,16 @@
 | Field | Value |
 |---|---|
 | Document ID | M1-DOC-002 |
-| Revision | 0.1 |
-| Status | Draft; not an approved development input |
+| Revision | 0.2 |
 | Document owner | @Entreco |
-| Draft author | Copilot; human accountability remains with the owner |
+| Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Regulatory reviewer: unassigned; software-safety reviewer: unassigned |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#2](https://github.com/Entreco/elchrono/issues/2) |
-| Review PR | Not created |
-| Approval | Pending; no approval claimed |
+| Review PR | [PR #10](https://github.com/Entreco/elchrono/pull/10) |
+
+Lifecycle status is derived from the branch and PR context, not stored in this
+table. See [Lifecycle and approval](../governance/document-control.md#lifecycle-and-approval).
 
 ## Intended-use statement
 
@@ -108,8 +109,8 @@ escalate and resolve the conflict before affected work continues.
 
 Target jurisdictions have **not been selected**. No distribution territory,
 market-specific qualification conclusion, or applicable legal obligation is
-assumed in this draft. Selection by the product owner and review by a competent
-regulatory reviewer are blocking evidence for approval and closure of issue #2.
+assumed in this record. Selection by the product owner and review by a competent
+regulatory reviewer are blocking evidence for merge and closure of issue #2.
 
 ## Sources and traceability
 
@@ -124,26 +125,28 @@ No approved requirement or risk identifiers exist at this revision. Link actual
 identifiers and source sections when the applicable controlled records are
 established.
 
-## Review status and evidence gaps
+## Review evidence gaps
 
-- Issue #1 is closed and its PR #9 is merged. However, the current
-  `document-control.md` record still reports human acceptance and required
-  specialist reviews as pending and lists blocking findings. This draft does
-  not treat the issue status or merge alone as approval evidence; reconcile the
-  exact approved prerequisite revision and review evidence before approving
-  this record.
+- Issue #1 is closed and its PR #9 is merged. Its main documentation baseline
+  is Approved and effective under the lifecycle rule. However, PR #9's checked
+  acceptance box still lacks an accepting human and reviewed full head SHA,
+  and required specialist review evidence remains unresolved. Reconcile the
+  prerequisite review evidence before merging this record; lifecycle status
+  does not prove those reviews happened.
 - Target jurisdictions and the intended care settings require explicit
   selection and review.
 - Regulatory and software-safety reviewers remain unassigned in the document
   controls. Their review scopes and competence must be recorded before this
-  record enters review.
+  record can be merged. An open PR makes the branch In review even when these
+  appointments are missing; it does not waive them.
 - There are no approved requirement or risk IDs yet. Link real identifiers and
   source sections when established; do not invent them.
 - No patient usability findings or verification evidence are established by
-  this draft.
+  this record.
 
 ## Revision history
 
-| Revision | Change | Approval |
-|---|---|---|
-| 0.1 | Initial proposed intended-use statement and explicit evidence gaps for issue #2 | Pending |
+| Revision | Change |
+|---|---|
+| 0.1 | Initial proposed intended-use statement and explicit evidence gaps for issue #2 |
+| 0.2 | Replace stored lifecycle labels with branch/PR-derived status, link PR #10, and distinguish prerequisite lifecycle from unresolved review evidence |

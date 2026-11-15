@@ -102,17 +102,16 @@
     detailsValue.textContent = description;
 
     const diskLabels = document.getElementById("disk-labels");
+    const useSeconds = durationSeconds < 10 * 60;
+    document.getElementById("clock-unit").textContent = useSeconds ? "seconds" : "minutes";
     diskLabels.replaceChildren();
     for (let index = 0; index < sections; index++) {
       const label = document.createElement("span");
       label.className = "minute-label";
       const fraction = (sections - index) % sections / sections;
-      const seconds = Math.round(durationSeconds * fraction);
-      label.textContent = durationSeconds < 3600
-        ? `${seconds}s`
-        : seconds % 60 === 0
-          ? String(seconds / 60)
-          : `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
+      label.textContent = useSeconds
+        ? String(Math.round(durationSeconds * fraction))
+        : String(Math.round(durationSeconds / 60 * fraction * 10) / 10);
       const angle = index / sections * 2 * Math.PI - Math.PI / 2;
       label.style.left = `calc(${50 + Math.cos(angle) * 50}% + ${Math.cos(angle) * 32}px)`;
       label.style.top = `calc(${50 + Math.sin(angle) * 50}% + ${Math.sin(angle) * 32}px)`;

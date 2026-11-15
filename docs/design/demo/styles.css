@@ -288,6 +288,12 @@ main {
   display: none;
 }
 
+.clock-unit {
+  margin: 0;
+  color: var(--visualization-text);
+  font-family: var(--text-font);
+}
+
 .visual-time {
   margin: -4px 0 -12px;
   color: var(--visualization-text);
@@ -380,6 +386,7 @@ main {
 .visualization:not(.show-details) .battery-separators,
 .visualization:not(.show-details) .fan-ribs,
 .visualization:not(.show-details) .ring-separators,
+.visualization:not(.show-details) .clock-unit,
 .visualization:not(.show-details) .circular-labels {
   display: none;
 }

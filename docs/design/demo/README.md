@@ -27,10 +27,12 @@ Off hides all extra separators and labels; it never hides the underlying fill.
 Clock always keeps a continuous fill; details affect only its outer labels.
 Ring has radial section boundaries only, with no intermediate duration labels.
 Clock has 36 px duration labels outside the shape.
-For configured durations below one hour, labels show whole seconds with an
-`s` suffix: five minutes with twelve sections shows 0s, 275s, 250s, ..., 25s
-clockwise. For durations of one hour or more, labels show minutes, or
-minutes:seconds when a boundary is not a whole minute. The unit is based on
+For configured durations below ten minutes, labels show whole seconds:
+five minutes with twelve sections shows 0, 275, 250, ..., 25 clockwise.
+For durations of ten minutes or more, labels show compact minutes rounded to
+one decimal, omitting trailing zeros: thirty minutes with twelve sections
+shows 0, 27.5, 25, 22.5, ..., 2.5. A single seconds/minutes label below the
+Clock identifies the unit and hides when details are Off. The unit is based on
 configured duration, not remaining time, so it does not change during countdown.
 One hour with two sections shows 0 and 30; with ten sections it shows
 0, 54, 48, ..., 6 clockwise on Clock.

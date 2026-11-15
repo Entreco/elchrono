@@ -52,6 +52,7 @@
               <span class="disk-center" aria-hidden="true"></span>
               <div id="disk-labels" class="circular-labels" aria-hidden="true"></div>
             </div>
+            <p id="clock-unit" class="clock-unit">minutes</p>
             <p id="disk-time" class="visual-time">02:00:00 remaining</p>
           </div>
 
@@ -187,7 +188,7 @@
           <output id="details-value" for="show-details">6 sections</output>
           <input id="show-details" type="range" min="0" max="11" step="1" value="5"
                  aria-describedby="details-hint" aria-valuetext="6 sections">
-          <p id="details-hint" class="setting-hint">Off, then 2–12 equal sections. Clock labels use seconds (s) below one hour; otherwise minutes (minutes:seconds for partial minutes). Other shapes show separators only.</p>
+          <p id="details-hint" class="setting-hint">Off, then 2–12 equal sections. Clock labels use seconds below 10 minutes; otherwise minutes rounded to one decimal. Other shapes show separators only.</p>
         </div>
 
         <div class="settings-divider"></div>

@@ -34,10 +34,12 @@ Details add duration-based labels outside Clock only, Ring section
 boundaries, battery divisions, or fixed fan separators. Clock keeps a continuous
 fill regardless of details; only its outer labels change. Ring details add no
 intermediate text; Show remaining still controls its central duration. One hour with two
-sections shows 0 and 30. Configured durations below one hour use whole seconds
-with an `s` suffix (five minutes with twelve sections: 0s, 275s, 250s, ..., 25s
-clockwise). Durations of one hour or more use minutes, with minutes:seconds for
-partial-minute boundaries. Units do not change as the countdown runs.
+sections shows 0 and 30. Configured durations below ten minutes use whole seconds
+(five minutes with twelve sections: 0, 275, 250, ..., 25 clockwise).
+Durations of ten minutes or more use compact minutes rounded to one decimal,
+omitting trailing zeros (thirty minutes with twelve sections: 0, 27.5, 25,
+22.5, ..., 2.5). A single unit label below Clock is shown only with details.
+Units do not change as the countdown runs.
 The base fill remains visible. Shapes have no explanatory captions.
 Font and text color controls appear when time
 or Clock numerals are visible, without
@@ -231,4 +233,4 @@ and limitations explicit.
 | 1.0 | Triple optional disk numeral size to 36 px with surrounding space; replace horizontal fan scaling with a fixed-radius angular opening from 180 degrees to zero. |
 | 1.1 | Unify the demo into one shape selector and shared settings; merge Circle into Disk; retain hidden text preferences and ring thickness across shape changes. |
 | 1.2 | Separate remaining-time visibility from shape-specific progress markers; add ring numerals and battery divisions; replace fan folding with a fixed-edge sweep and clipped stationary separators. |
-| 1.3 | Replace Show progress with an Off/2–12-section Show details slider; subdivide Battery/Fan/Ring, keep Clock fill continuous, and label Clock only; remove shape explanations. Rename prototype Disk to Clock and use seconds below one configured hour, minutes otherwise; no time-of-day display or product-boundary change. |
+| 1.3 | Replace Show progress with an Off/2–12-section Show details slider; subdivide Battery/Fan/Ring, keep Clock fill continuous, and label Clock only; remove shape explanations. Rename prototype Disk to Clock and use seconds below ten configured minutes, compact decimal minutes otherwise, with one unit label; no time-of-day display or product-boundary change. |

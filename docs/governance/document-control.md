@@ -10,7 +10,6 @@
 | Review evidence | [PR #9](https://github.com/Entreco/elchrono/pull/9); [PR #10](https://github.com/Entreco/elchrono/pull/10) |
 | Work item | [Issue #1](https://github.com/Entreco/elchrono/issues/1) |
 
-
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [Lifecycle and approval](#lifecycle-and-approval).
 

@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f6f3">
+  <title>El Chrono | Visualization demo</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="./" aria-label="El Chrono visualization demo">
+      <span class="brand-mark" aria-hidden="true"><span></span></span>
+      <span>el chrono</span>
+    </a>
+    <span class="prototype-tag">DESIGN PROTOTYPE</span>
+  </header>
+
+  <main>
+    <section class="intro" aria-labelledby="page-title">
+      <p class="eyebrow">A CUSTOMIZABLE COUNTDOWN</p>
+      <h1 id="page-title">Time, made visible.</h1>
+      <p class="intro-copy">Explore three ways to see the same waiting time. Switch views while the countdown runs.</p>
+    </section>
+
+    <div class="demo-layout">
+      <section class="timer-card" aria-labelledby="timer-heading">
+        <div class="timer-topline">
+          <div>
+            <p class="eyebrow">TIME REMAINING</p>
+            <h2 id="timer-heading" class="duration">2 hours</h2>
+          </div>
+          <div class="timer-topline-actions">
+            <button id="personalization-toggle" class="panel-toggle" type="button"
+                    aria-controls="personalization-panel" aria-expanded="true">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+              <span>Hide personalization</span>
+            </button>
+            <span id="timer-state" class="state-chip" role="status">Ready to start</span>
+          </div>
+        </div>
+
+        <div class="visualization-stage">
+          <div id="view-disk" class="visualization view-disk" data-view="disk">
+            <div id="disk-progress" class="disk-progress" role="progressbar"
+                 aria-label="Time remaining" aria-valuemin="0" aria-valuemax="100"
+                 aria-valuenow="100" aria-valuetext="2 hours remaining">
+              <span class="disk-center" aria-hidden="true"></span>
+            </div>
+            <p id="disk-time" class="visual-time">02:00:00 remaining</p>
+            <p class="visual-caption">The disk gradually empties</p>
+          </div>
+
+          <div id="view-digital" class="visualization view-digital" data-view="digital" hidden>
+            <div id="digital-progress" class="digital-battery" role="progressbar"
+                 aria-label="Time remaining" aria-valuemin="0" aria-valuemax="100"
+                 aria-valuenow="100" aria-valuetext="2 hours remaining">
+              <span id="digital-fill" class="digital-fill"></span>
+              <svg class="digital-fan" viewBox="0 0 300 160" aria-hidden="true">
+                <path id="fan-panel" class="fan-panel" d="M150 150 L5 150 A145 145 0 0 1 295 150 Z"></path>
+                <path id="fan-ribs" class="fan-ribs" d="M150 150 L5 150 M150 150 L24.4 77.5 M150 150 L77.5 24.4 M150 150 L150 5 M150 150 L222.5 24.4 M150 150 L275.6 77.5 M150 150 L295 150"></path>
+                <circle class="fan-pivot" cx="150" cy="150" r="8"></circle>
+              </svg>
+              <span id="digital-time" class="digital-time">02:00:00</span>
+            </div>
+            <p class="visual-caption">A clear duration countdown</p>
+          </div>
+
+          <div id="view-ring" class="visualization view-ring" data-view="ring" hidden>
+            <div class="ring-wrap">
+              <svg class="progress-ring" viewBox="0 0 280 280" role="progressbar"
+                   aria-label="Time remaining" aria-valuemin="0" aria-valuemax="100"
+                   aria-valuenow="100" aria-valuetext="2 hours remaining">
+                <circle class="ring-track" cx="140" cy="140" r="118"></circle>
+                <circle id="ring-progress" class="ring-progress" cx="140" cy="140" r="118"></circle>
+              </svg>
+              <div class="ring-center">
+                <span id="ring-time" class="ring-time">2h 00m</span>
+                <span class="ring-label">remaining</span>
+              </div>
+            </div>
+            <p class="visual-caption">Progress with time left</p>
+          </div>
+        </div>
+
+        <div class="visualization-picker">
+          <p class="control-label" id="visualization-label">CHOOSE A VISUALIZATION</p>
+          <div class="visualization-options" role="group" aria-labelledby="visualization-label">
+            <button class="view-option" type="button" data-select-view="disk" aria-pressed="true">
+              <span class="option-glyph glyph-disk" aria-hidden="true"></span>
+              <span>Remaining disk<small>Proposed default</small></span>
+            </button>
+            <button class="view-option" type="button" data-select-view="digital" aria-pressed="false">
+              <span class="option-glyph glyph-digital" aria-hidden="true">01</span>
+              <span>Digital<small>Duration text</small></span>
+            </button>
+            <button class="view-option" type="button" data-select-view="ring" aria-pressed="false">
+              <span class="option-glyph glyph-ring" aria-hidden="true"></span>
+              <span>Numeric ring<small>Progress + time</small></span>
+            </button>
+          </div>
+        </div>
+
+        <div class="timer-actions">
+          <button id="start-button" class="start-button" type="button">Start 2-hour demo</button>
+          <p class="timer-note">Reload this page to start a fresh demo.</p>
+        </div>
+      </section>
+
+      <aside id="personalization-panel" class="settings-card" aria-labelledby="personalization-heading">
+        <div class="settings-heading">
+          <span class="settings-icon" aria-hidden="true">✳</span>
+          <div>
+            <p class="eyebrow">PERSONALIZE</p>
+            <h2 id="personalization-heading">Personalization</h2>
+          </div>
+        </div>
+        <p class="settings-intro">These preview settings belong to the selected visualization.</p>
+
+        <fieldset id="duration-control" class="setting-control duration-control">
+          <legend>Duration</legend>
+          <div class="duration-fields">
+            <label for="duration-hours">Hours</label>
+            <input id="duration-hours" type="number" min="0" max="24" step="1" value="2" inputmode="numeric">
+            <label for="duration-minutes">Minutes</label>
+            <input id="duration-minutes" type="number" min="0" max="59" step="1" value="0" inputmode="numeric">
+          </div>
+          <p id="duration-error" class="setting-hint duration-error" role="alert" hidden>Choose a duration from 1 minute to 24 hours.</p>
+        </fieldset>
+
+        <div id="font-control" class="setting-control">
+          <label for="font-select">Timer text font</label>
+          <select id="font-select">
+            <option value="sans">Clean sans</option>
+            <option value="rounded">Soft rounded</option>
+            <option value="serif">Classic serif</option>
+            <option value="mono">Monospaced</option>
+          </select>
+        </div>
+
+        <div id="ring-thickness-control" class="setting-control ring-thickness-control" hidden>
+          <label for="ring-thickness">Ring thickness</label>
+          <output id="ring-thickness-value" for="ring-thickness">15 px</output>
+          <input id="ring-thickness" type="range" min="1" max="234" step="1" value="15">
+        </div>
+
+        <div id="digital-shape-control" class="setting-control" hidden>
+          <label for="digital-shape">Digital shape</label>
+          <select id="digital-shape">
+            <option value="battery">Battery</option>
+            <option value="circle">Circle</option>
+            <option value="fan">Hand fan</option>
+          </select>
+        </div>
+
+        <div class="setting-control">
+          <label for="background-color-picker">Background color</label>
+          <input id="background-color-picker" class="background-color-picker" type="color" value="#ffffff">
+          <div class="background-swatches" role="group" aria-label="Background color presets">
+            <button class="background-swatch" type="button" data-background-color="#ffffff" aria-label="White background" title="White"></button>
+            <button class="background-swatch" type="button" data-background-color="#000000" aria-label="Black background" title="Black"></button>
+            <button class="background-swatch" type="button" data-background-color="#dceeff" aria-label="Sky blue background" title="Sky blue"></button>
+            <button class="background-swatch" type="button" data-background-color="#fff1c2" aria-label="Soft yellow background" title="Soft yellow"></button>
+          </div>
+        </div>
+
+        <fieldset class="setting-control color-control">
+          <legend>Foreground color</legend>
+          <div class="color-row">
+            <div class="color-swatches" role="group" aria-label="Foreground color presets">
+              <button class="color-swatch" type="button" data-color="#c94d45" aria-label="Warm red" title="Warm red"></button>
+              <button class="color-swatch" type="button" data-color="#267b68" aria-label="Forest green" title="Forest green"></button>
+              <button class="color-swatch" type="button" data-color="#5572bd" aria-label="Soft blue" title="Soft blue"></button>
+              <button class="color-swatch" type="button" data-color="#805c98" aria-label="Muted violet" title="Muted violet"></button>
+            </div>
+            <label class="custom-color" for="color-picker">
+              <span>Custom</span>
+              <input id="color-picker" type="color" value="#267b68" aria-label="Choose a custom foreground color">
+            </label>
+          </div>
+        </fieldset>
+
+        <div class="setting-control">
+          <label for="text-color-picker">Text color</label>
+          <input id="text-color-picker" class="background-color-picker" type="color" value="#23322f">
+        </div>
+
+        <div class="setting-control">
+          <label for="show-numbers">Show numbers</label>
+          <select id="show-numbers">
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
+          <p class="setting-hint">When enabled, shows the duration; the disk also shows 0–55 minute markers.</p>
+        </div>
+
+        <div class="settings-divider"></div>
+        <div class="settings-footnote">
+          <span class="footnote-mark" aria-hidden="true">i</span>
+          <p>When numbers are off, the visualization shows no text or markers. The disk numerals are exploratory and do not change the product's no-clock design boundary.</p>
+        </div>
+        <div class="settings-footnote">
+          <span class="footnote-mark" aria-hidden="true">i</span>
+          <p>Font changes apply to the selected visualization's time value. Ring thickness and digital shape appear only for their relevant views. Contrast and final options need review.</p>
+        </div>
+        <div class="settings-footnote">
+          <span class="footnote-mark" aria-hidden="true">i</span>
+          <p>Prototype settings are temporary and do not change the product.</p>
+        </div>
+      </aside>
+    </div>
+
+    <p class="prototype-disclaimer">Concept demo only · Not a released timer · No settings are saved</p>
+  </main>
+</body>
+</html>

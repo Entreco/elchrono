@@ -3,13 +3,13 @@
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-004 |
-| Revision | 0.2 |
+| Revision | 1.0 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Product design, accessibility, and usability reviewers: unassigned |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#23](https://github.com/Entreco/elchrono/issues/23) |
-| Review PR | [PR #28](https://github.com/Entreco/elchrono/pull/28) |
+| Review PR | Prior baseline: [PR #28](https://github.com/Entreco/elchrono/pull/28) (revision 0.2); current revision pending |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](../governance/document-control.md#lifecycle-and-approval).
@@ -21,6 +21,27 @@ for review. It is design evidence for the proposed ordinary-waiting use, not
 application implementation, a usability finding, or approval of product
 requirements. The current application remains a starter screen, not an
 implemented timer.
+
+An interactive, browser-based demonstration of the three visualizations is
+available in the [local demo](demo/README.md). It starts a configurable
+countdown, defaulting to two hours, on user action; the visualizations share
+the same running time and can be switched without restarting it. The disk
+sweep direction, background, foreground and text colors, digital shape,
+numeric-ring thickness, and whether numbers are shown can be previewed. Each
+visualization uses only its selected background, foreground, and text colors;
+unselected colors are not added as decorative highlights or outlines. The
+disk's optional 0–55 numerals use 36 px text outside its progress area, with
+reserved space for the larger labels. The digital circle
+uses the same radial remaining-time treatment as the disk, and its hand-fan
+shape reduces its opening angle from 180 degrees to zero with elapsed time,
+keeping its radius and ribs fixed in length rather than scaling horizontally. The
+optional disk numerals
+are an exploratory client-feedback variant only; the product design remains
+without clock-face numerals or markings. These are prototype controls only,
+separate from the Kotlin application and not approved product requirements.
+The prototype also permits duration selection from one minute through 24 hours
+and hiding or showing its personalization panel; these controls do not
+establish changed requirements.
 
 The requirement IDs cited below are candidates from
 [M2-DOC-001, revision 0.3](../product/requirements.md); they remain proposed
@@ -150,6 +171,14 @@ design constraint; it has not been implemented or verified across durations,
 screen sizes, platforms, or assistive technology. The attached references
 inform the concepts but are not copied into the repository.
 
+The local demo makes these concepts interactive without establishing
+requirements or product behavior. Its configurable countdown runs from a user
+action, uses the browser monotonic clock, and immediately resets to the chosen
+duration at completion without a completed state. View switching does not reset
+countdown progress. It does not implement pause, restart controls, persistence,
+audio, or interruption recovery. Styling previews remain separate per view for
+the current page session only.
+
 ## Open decisions and evidence gaps
 
 The designs intentionally leave these candidate requirement decisions and
@@ -167,10 +196,11 @@ appearance questions unresolved:
 Required product-design, accessibility, usability, and specialist review
 appointments are unassigned. No caregiver or representative-patient review,
 feedback, finding, disposition, requirement approval, or design approval is
-claimed. The static SVGs are not interactive prototypes and have not been
-tested for screen readers, keyboard, touch, or any target platform. Record
-actual reviewer scopes, feedback, findings, and dispositions in the review PR;
-keep unresolved findings and limitations explicit.
+claimed. The static SVGs remain non-interactive; the browser demo provides
+interactive view switching but has not been tested for screen readers,
+keyboard, touch, or any target platform. Record actual reviewer scopes,
+feedback, findings, and dispositions in the review PR; keep unresolved findings
+and limitations explicit.
 
 ## Revision history
 
@@ -178,3 +208,11 @@ keep unresolved findings and limitations explicit.
 |---|---|
 | 0.1 | Establish candidate screen flows and three low-fidelity theme concepts for issue #23; preserve open decisions and review gaps. |
 | 0.2 | Propose a Time Timer-inspired remaining disk as the first/default visualization and digital and numeric-ring alternatives; add conditional per-visualization font/color settings while preserving no-clock and open-decision constraints. |
+| 0.3 | Add a local interactive two-hour browser demo of the three visualizations and per-view appearance previews; keep it separate from the application and product requirements. |
+| 0.4 | Refine the demo with a reversed disk sweep, visualization-colored digital background, and adjustable numeric-ring thickness; keep these prototype-only and preserve the no-clock boundary. |
+| 0.5 | Add prototype-only background-color and number-visibility options, a draining digital fill, and optional clock-position disk numerals for feedback; retain the product no-clock boundary. |
+| 0.6 | Add configurable demo duration, a hide/show personalization control, and a ring-thickness range from hairline to solid fill. |
+| 0.7 | Apply the selected background to the disk's center and depleted area; place digital time inside its shape; add battery/circle/half-circle shapes and four background presets. |
+| 0.8 | Separate background, foreground, and text color controls and limit each visualization to those three selected colors. |
+| 0.9 | Place optional disk numerals outside the progress area; make the digital circle drain radially and the hand fan fold closed with elapsed time. |
+| 1.0 | Triple optional disk numeral size to 36 px with surrounding space; replace horizontal fan scaling with a fixed-radius angular opening from 180 degrees to zero. |

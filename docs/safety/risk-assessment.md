@@ -3,13 +3,13 @@
 | Field | Value |
 |---|---|
 | Document ID | M1-DOC-004 |
-| Revision | 0.1 |
+| Revision | 0.2 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Software-safety reviewer: unassigned; blocking |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#4](https://github.com/Entreco/elchrono/issues/4) |
-| Review PR | [PR #14](https://github.com/Entreco/elchrono/pull/14) |
+| Review PR | [PR #14](https://github.com/Entreco/elchrono/pull/14); [PR #16](https://github.com/Entreco/elchrono/pull/16) |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [Lifecycle and approval](../governance/document-control.md#lifecycle-and-approval).
@@ -225,11 +225,11 @@ requirements and risk/UX review, primarily in M2:
   presentation; and
 - the accessible presentation and validation of progress and timer states.
 
-Do not silently choose these behaviors during implementation. The software-
-safety reviewer must determine whether any issue must be resolved earlier to
-support the proposed software safety classification in M1-DOC-005. The
-classification decision remains subject to qualified review and escalation if
-the proposed Class A process cannot be justified.
+Do not silently choose these behaviors during implementation. M1-DOC-005
+revision 0.2 records that IEC 62304 software safety classification is not
+applicable to the defined non-medical software scope. These product risks and
+controls remain subject to their own qualified review and verification; this
+applicability decision does not classify them or establish acceptability.
 
 ## Required review walkthrough and evidence gaps
 
@@ -239,7 +239,10 @@ situation, harm, proposed control, and follow-up verification, and check for
 omissions. Record actual review scope, findings, and dispositions in the PR.
 That review has not occurred.
 
-- No software-safety reviewer is assigned; this is a blocking review gap.
+- No reviewer is assigned to the risk assessment's required software-safety
+  walkthrough; this remains a blocking review gap. The reviewer appointment
+  for M1-DOC-005 is scoped to IEC 62304 applicability and does not by itself
+  complete this risk review.
 - No approved requirement IDs, implemented controls, residual-risk
   assessments, verification results, or representative patient usability
   findings exist in this record.
@@ -260,3 +263,4 @@ they are not waived by this initial assessment.
 | Revision | Change |
 |---|---|
 | 0.1 | Initial candidate assessment for issue #4; define screening method and six proposed risk entries, with traceability in M1-DOC-009 and unresolved review evidence |
+| 0.2 | Replace the proposed IEC 62304 classification dependency with the M1-DOC-005 non-applicability conclusion; retain the separate risk-review and verification gates |

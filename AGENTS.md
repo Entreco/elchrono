@@ -123,19 +123,25 @@ and system-volume APIs behind narrow, testable boundaries.
 
 ## Medical-device documentation and safety
 
-Voluntarily use IEC 62304:2006 with Amendment 1:2015 as a documentation/process
-reference, subject to the approved applicability matrix. Class A is a proposed
-software safety classification within that voluntary framework, not an
-established classification or a regulatory medical-device class. Documentation
-alone does not demonstrate compliance or certification.
+The M1 software-safety applicability assessment in
+[M1-DOC-005](docs/safety/software-safety-classification.md) concludes that El
+Chrono, within its defined non-medical intended purpose and functions, is not
+medical-device software. IEC 62304:2006 with Amendment 1:2015 software safety
+classification is therefore not applicable to that scope; no Class A, B, or C
+is assigned. This is distinct from regulatory device classification and does
+not claim legal qualification, conformity, or certification. Voluntary
+project controls may draw on lifecycle practices, but must not be described
+as IEC 62304 applicability or conformity.
 
 M1 must establish the non-medical intended use and no-medical-claims boundary,
 review medical-device qualification and target-market obligations, and justify
-the software safety classification used for the voluntary process with qualified
-review. Device classification is applicable only if qualification warrants it;
-that outcome conflicts with the product direction and requires escalation.
-If risks do not support Class A, escalate and revise the voluntary process before
-continuing affected work. Never claim certification or invent clinical evidence.
+the standards' applicability with qualified review. Assess the intended
+purpose, actual functions, claims, and markets; absence of medical claims alone
+does not determine qualification. Reassess if any of these change. If a
+changed scope makes medical-device software or otherwise changes standards
+applicability, escalate and assess obligations before affected work continues.
+Do not assign a software safety class by default. Never claim certification or
+invent clinical evidence.
 
 Product documents belong under `docs/`. The PR human acceptance checklist is review and
 approval evidence; do not create duplicate Markdown evidence files or require
@@ -165,7 +171,8 @@ before claiming enforcement. See [document controls](docs/governance/document-co
 
 Maintain controlled, versioned records as applicable:
 
-- Intended use, classification rationale, development plan, responsibilities,
+- Intended use, standards-applicability rationale (and classification rationale
+  where applicable), development plan, responsibilities,
   and standards/documentation applicability.
 - Requirements with stable IDs and measurable acceptance criteria.
 - Risks, controls, usability findings, and verification of those controls.
@@ -175,7 +182,7 @@ Maintain controlled, versioned records as applicable:
   instructions, limitations, and maintenance/incident assessment procedures.
 
 These project controls are not a claim that every listed document is explicitly
-required for Class A or legally required for this non-medical app. Distinguish
+required by IEC 62304 or legally required for this non-medical app. Distinguish
 voluntarily adopted controls from applicable legal obligations in the approved
 applicability matrix.
 Update affected records with each change. Separate observed evidence from

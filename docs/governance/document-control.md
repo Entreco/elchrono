@@ -7,7 +7,7 @@
 | Product owner | @Entreco |
 | Document owner and approver | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
-| Review evidence | [PR #9](https://github.com/Entreco/elchrono/pull/9); [PR #10](https://github.com/Entreco/elchrono/pull/10); [PR #15](https://github.com/Entreco/elchrono/pull/15); [PR #16](https://github.com/Entreco/elchrono/pull/16) |
+| Review evidence | [PR #9](https://github.com/Entreco/elchrono/pull/9); [PR #10](https://github.com/Entreco/elchrono/pull/10); [PR #15](https://github.com/Entreco/elchrono/pull/15); [PR #16](https://github.com/Entreco/elchrono/pull/16); [PR #17](https://github.com/Entreco/elchrono/pull/17) |
 | Work item | [Issue #1](https://github.com/Entreco/elchrono/issues/1) |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
@@ -50,7 +50,7 @@ implemented timer.
 | Author | Copilot for this record; identify the actual author on each record | Prepares evidence and identifies uncertainty; cannot invent findings resolution, qualifications, or approval |
 | Document approver | @Entreco | Accepts the exact document revision after required reviews and findings resolution; this designation does not establish specialist competence |
 | Regulatory reviewer | @Entreco for M1-DOC-003 (qualified reviewer, as confirmed by the reviewer); unassigned for other assessments | Assesses medical-device qualification and applicable obligations within the appointed markets |
-| Software-safety reviewer | @Entreco for M1-DOC-005; competence confirmed by reviewer; conclusion recorded in revision 0.2 and exact-head acceptance evidenced by [PR #16](https://github.com/Entreco/elchrono/pull/16) | Reviews non-medical software scope and IEC 62304 applicability against the identified source revisions |
+| Software-safety reviewer | @Entreco for M1-DOC-005; competence confirmed by reviewer; conclusion recorded in revision 0.2 and exact-head acceptance evidenced by [PR #16](https://github.com/Entreco/elchrono/pull/16), with the record reconciliation in [PR #17](https://github.com/Entreco/elchrono/pull/17) | Reviews non-medical software scope and IEC 62304 applicability against the identified source revisions |
 | Milestone approver | Unassigned; required before #8 can close | Checks the complete M1 evidence baseline and authorizes its handoff |
 
 The product owner must record each appointment, the review scope, and confirmation
@@ -251,7 +251,7 @@ M1-DOC-003 records the qualified EU/US regulatory qualification conclusion.
 | M1-DOC-002 | [Intended use](../product/intended-use.md) | [#2](https://github.com/Entreco/elchrono/issues/2) | Owner @Entreco; revision 0.7 candidate; EU and United States selected for assessment; exact-revision approval evidence unresolved; see [PR #10](https://github.com/Entreco/elchrono/pull/10), [PR #13](https://github.com/Entreco/elchrono/pull/13), and [PR #16](https://github.com/Entreco/elchrono/pull/16) |
 | M1-DOC-003 | [Qualification and classification](../regulatory/qualification-and-classification.md) | [#3](https://github.com/Entreco/elchrono/issues/3) | Owner @Entreco; revision 0.6 candidate; [PR #13](https://github.com/Entreco/elchrono/pull/13) and [PR #16](https://github.com/Entreco/elchrono/pull/16); qualified reviewer concludes non-device in EU/US; human acceptance pending; replaces closed [PR #12](https://github.com/Entreco/elchrono/pull/12) after branch rename |
 | M1-DOC-004 | [Risk assessment](../safety/risk-assessment.md) | [#4](https://github.com/Entreco/elchrono/issues/4) | Owner @Entreco; revision 0.2 candidate; [PR #14](https://github.com/Entreco/elchrono/pull/14) and [PR #16](https://github.com/Entreco/elchrono/pull/16); six proposed risks and controls; no approved requirement IDs or verified controls; separate risk review walkthrough remains pending |
-| M1-DOC-005 | [Software safety classification](../safety/software-safety-classification.md) | [#5](https://github.com/Entreco/elchrono/issues/5) | Owner @Entreco; revision 0.3 records the conclusion and acceptance evidence; @Entreco accepted PR #16's exact head `dc01e2ebc25f1458ef0a9a901a28128cdf7464ea`, merged as `2a8791c9a1cf76a96768e3033a88af3f51f81732`; IEC 62304 classification not applicable |
+| M1-DOC-005 | [Software safety classification](../safety/software-safety-classification.md) | [#5](https://github.com/Entreco/elchrono/issues/5) | Owner @Entreco; revision 0.3 records the conclusion and acceptance evidence; @Entreco accepted PR #16's exact head `dc01e2ebc25f1458ef0a9a901a28128cdf7464ea`, merged as `2a8791c9a1cf76a96768e3033a88af3f51f81732`; record reconciliation in [PR #17](https://github.com/Entreco/elchrono/pull/17); IEC 62304 classification not applicable |
 | M1-DOC-006 | `docs/governance/applicability-matrix.md` | [#6](https://github.com/Entreco/elchrono/issues/6) | Not created |
 | M1-DOC-007 | `docs/governance/software-development-plan.md` | [#7](https://github.com/Entreco/elchrono/issues/7) | Not created |
 | M1-DOC-008 | `docs/governance/m1-review.md` | [#8](https://github.com/Entreco/elchrono/issues/8) | Not created |
@@ -320,4 +320,4 @@ merge, or the Approved and effective lifecycle status.
 | 1.6 | Record @Entreco's confirmed software-safety reviewer competence and the post-merge timing of the M1-DOC-005 applicability decision |
 | 1.7 | Record the M1-DOC-005 non-applicability conclusion and pending follow-up PR acceptance |
 | 1.8 | Update the evidence index for revised intended-use, qualification, risk, and classification-applicability records |
-| 1.9 | Record M1-DOC-005's exact-head human acceptance and merged evidence in the reviewer assignment, findings, and foundation index |
+| 1.9 | Record M1-DOC-005's exact-head human acceptance and merged evidence in the reviewer assignment, findings, and foundation index; link the record-reconciliation PR |

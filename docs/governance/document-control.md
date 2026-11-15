@@ -7,7 +7,7 @@
 | Product owner | @Entreco |
 | Document owner and approver | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
-| Review evidence | [PR #9](https://github.com/Entreco/elchrono/pull/9); [PR #10](https://github.com/Entreco/elchrono/pull/10); [PR #15](https://github.com/Entreco/elchrono/pull/15); [PR #16](https://github.com/Entreco/elchrono/pull/16); [PR #17](https://github.com/Entreco/elchrono/pull/17); [PR #18](https://github.com/Entreco/elchrono/pull/18); [PR #19](https://github.com/Entreco/elchrono/pull/19); [PR #20](https://github.com/Entreco/elchrono/pull/20); [PR #21](https://github.com/Entreco/elchrono/pull/21) |
+| Review evidence | [PR #9](https://github.com/Entreco/elchrono/pull/9); [PR #10](https://github.com/Entreco/elchrono/pull/10); [PR #15](https://github.com/Entreco/elchrono/pull/15); [PR #16](https://github.com/Entreco/elchrono/pull/16); [PR #17](https://github.com/Entreco/elchrono/pull/17); [PR #18](https://github.com/Entreco/elchrono/pull/18); [PR #19](https://github.com/Entreco/elchrono/pull/19); [PR #20](https://github.com/Entreco/elchrono/pull/20); [PR #21](https://github.com/Entreco/elchrono/pull/21) (open; review pending) |
 | Work item | [Issue #1](https://github.com/Entreco/elchrono/issues/1) |
 
 Lifecycle status is derived from the branch and PR context, not stored in this

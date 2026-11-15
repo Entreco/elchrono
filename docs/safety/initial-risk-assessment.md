@@ -9,7 +9,7 @@
 | Required reviewers | Software-safety reviewer: unassigned; blocking |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#4](https://github.com/Entreco/elchrono/issues/4) |
-| Review PR | Not opened; add the PR link when this local candidate is published for review |
+| Review PR | [PR #14](https://github.com/Entreco/elchrono/pull/14) |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [Lifecycle and approval](../governance/document-control.md#lifecycle-and-approval).
@@ -318,7 +318,7 @@ Before approval, the reviewer must walk through at least one incorrect-timing,
 one sound, and one settings-access scenario from cause through hazardous
 situation, harm, proposed control, and follow-up verification, and check for
 omissions. Record actual review scope, findings, and dispositions in the PR.
-That review has not occurred in this local draft.
+That review has not occurred.
 
 - No software-safety reviewer is assigned; this is a blocking review gap.
 - No approved requirement IDs, implemented controls, residual-risk

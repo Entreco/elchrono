@@ -9,7 +9,7 @@
 | Required reviewers | Regulatory qualification reviewer: @Entreco for M1-DOC-003; software-safety reviewer for this intended-use record: unassigned |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#2](https://github.com/Entreco/elchrono/issues/2); market selection follow-up in [#3](https://github.com/Entreco/elchrono/issues/3) |
-| Review PR | [PR #13](https://github.com/Entreco/elchrono/pull/13); follow-up PR pending |
+| Review PR | [PR #13](https://github.com/Entreco/elchrono/pull/13); [PR #16](https://github.com/Entreco/elchrono/pull/16) |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [Lifecycle and approval](../governance/document-control.md#lifecycle-and-approval).

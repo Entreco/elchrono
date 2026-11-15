@@ -9,7 +9,7 @@
 | Required reviewers | Software-safety reviewer: unassigned; blocking |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#4](https://github.com/Entreco/elchrono/issues/4) |
-| Review PR | [PR #14](https://github.com/Entreco/elchrono/pull/14); follow-up PR pending |
+| Review PR | [PR #14](https://github.com/Entreco/elchrono/pull/14); [PR #16](https://github.com/Entreco/elchrono/pull/16) |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [Lifecycle and approval](../governance/document-control.md#lifecycle-and-approval).

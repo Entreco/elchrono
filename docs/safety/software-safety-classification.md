@@ -10,7 +10,7 @@
 | Reviewer conclusion date | 2026-11-15 |
 | Approver | @Entreco, after PR human acceptance and findings resolution |
 | Related issue | [#5](https://github.com/Entreco/elchrono/issues/5) |
-| Review PR | Pending |
+| Review PR | [PR #16](https://github.com/Entreco/elchrono/pull/16) |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [Lifecycle and approval](../governance/document-control.md#lifecycle-and-approval).

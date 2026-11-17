@@ -3,13 +3,13 @@
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-005 |
-| Revision | 0.5 |
+| Revision | 0.6 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Product usability, accessibility, and safeguarding/privacy reviewers: unassigned |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#24](https://github.com/Entreco/elchrono/issues/24) |
-| Review PR | Prior baseline: [PR #30](https://github.com/Entreco/elchrono/pull/30); revision 0.5: [PR #32](https://github.com/Entreco/elchrono/pull/32) |
+| Review PR | Prior baseline: [PR #30](https://github.com/Entreco/elchrono/pull/30) and [PR #32](https://github.com/Entreco/elchrono/pull/32); revision 0.6: [PR #41](https://github.com/Entreco/elchrono/pull/41) |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](../governance/document-control.md#lifecycle-and-approval).
@@ -18,12 +18,12 @@ table. See [document controls](../governance/document-control.md#lifecycle-and-a
 
 This plan describes a proposed, safeguarded usability review of El Chrono's
 screen and timer-visualization prototypes. It is grounded in the proposed
-[requirements register, M2-DOC-001 revision 0.4](../product/requirements.md),
-the [test protocol, M2-DOC-002 revision 0.3](../testing/test-protocol.md), the
-[requirements traceability matrix, M2-DOC-003 revision 1.9](../safety/requirements-traceability-matrix.md),
-the [screen-flow and theme-prototype record, M2-DOC-004 revision 1.5](../design/accessible-screen-flows-and-theme-prototypes.md),
+[requirements register, M2-DOC-001 revision 0.5](../product/requirements.md),
+the [test protocol, M2-DOC-002 revision 0.5](../testing/test-protocol.md), the
+[requirements traceability matrix, M2-DOC-003 revision 2.3](../safety/requirements-traceability-matrix.md),
+the [screen-flow and theme-prototype record, M2-DOC-004 revision 1.6](../design/accessible-screen-flows-and-theme-prototypes.md),
 and the proposed [risk assessment, M1-DOC-004 revision 0.5](../safety/risk-assessment.md).
-The design record is revision 1.4 in PR #32; it is still a proposal,
+The design record is revision 1.6 in PR #41; it is still a proposal,
 not evidence that the designs are approved or usable.
 
 The review is intended to identify misunderstandings and design questions for
@@ -54,7 +54,8 @@ future sessions.
 3. Review the proposed Main, Settings, and About flows, including the
    unprotected Settings access selected for v1.
 4. Explore caregiver comprehension of duration entry, theme selection, and
-   the pause-on-open/save-to-start behavior.
+   the pause-on-open/save-to-start behavior, including the absence of separate
+   manual pause, resume, and reset controls.
 5. Gather open-ended reactions to the proposed visualizations and sensory
    presentation without assuming a preference, fixed theme count, or
    representative preference from any one participant.
@@ -63,7 +64,7 @@ future sessions.
 
 ## Prototype and review scope
 
-Review the exact M2-DOC-004 revision 1.5 candidate content in PR #32. Before any
+Review the exact M2-DOC-004 revision 1.6 candidate content in PR #41. Before any
 session, verify that the materials shown match that revision and record any
 changed artifact and revision in the findings record.
 
@@ -154,7 +155,7 @@ meaning in their own terms where safely paraphrasable.
 | U-01 | Patient participant; same-progress examples from the Clock, Battery, Hand fan, and Ring demo | “What do you think this shows?” “What makes you think that?” “What do you think will happen next?” Ask before explaining the intended meaning. | Interpretation of remaining duration, progress direction, ambiguity with a clock/time of day, and differences between shapes. Do not treat a preference as a usability result. |
 | U-02 | Patient participant; static running, paused, and interrupted Main-state examples | “What do you think is happening in each picture?” “How can you tell?” “In which one might the progress be out of date?” | Whether state meanings and the interruption warning are understood without relying on colour. These are static comprehension tasks, not transition tests. |
 | U-03 | Caregiver participant; duration-entry proposal and demo duration selector | Ask the caregiver to describe how they would enter a short duration and a duration with hours. Use examples `2`, `20`, `205`, and `2400`; ask what each should display and whether any value is unclear. | Comprehension of the proposed Hours/Minutes sequential-digit rule and range, not proof that the demo implements or verifies REQ-001. |
-| U-04 | Caregiver and patient participants as appropriate; static Main/Settings flow | “Show me how you would change the timer duration or theme.” Explain that v1 Settings has no caregiver-protection mechanism and may be opened by a patient; ask what they expect or consider concerning about that choice. | Comprehension of the open Settings behavior and possible consequences. This is formative feedback, not evidence that RISK-004 is acceptable or controlled. |
+| U-04 | Caregiver and patient participants as appropriate; static Main/Settings flow | “Show me how you would change the timer duration or theme.” Explain that v1 Settings has no caregiver-protection mechanism and may be opened by a patient; ask what they expect or consider concerning about that choice. Ask what they expect after Settings pauses a running timer and confirm that no separate manual pause, resume, or reset controls are provided. | Comprehension of the open Settings behavior, the selected save-to-start behavior, and possible consequences of open access. This is formative feedback, not evidence that RISK-004 is acceptable or controlled. |
 | U-05 | Caregiver participant; four demo shapes in a counterbalanced order where feasible | “What do you notice?” “Is any option easier or harder to understand?” “Would you choose one for this wait? Why or why not?” “Is there anything you would avoid?” | Individual reactions and reasons, including no preference or mixed preference. Do not generalize to all users or prescribe a fixed theme set. |
 | U-06 | Patient participant; chosen prototype at a comfortable viewing size | Ask what text, progress, and state information is noticeable; offer the participant's preferred zoom, communication, or assistive method if available. “Is anything difficult to see, understand, or use?” | Observed barriers and accommodations. The artifacts are not instrumented for assistive technology; do not claim screen-reader, keyboard, touch, or conformance verification unless separately performed and recorded. |
 | U-07 | Caregiver and patient participants as appropriate; Settings and About static proposals | “What do you understand about the app's purpose and limitations from About?” “What do you expect when you save these settings?” | Comprehension of the ordinary-waiting boundary and save-to-start behavior. Music and in-app volume controls are not v1 capabilities and are not evaluated. |
@@ -206,7 +207,7 @@ The review is not complete until actual session scope/findings are recorded,
 or reasonable recruitment/arrangement attempts and the reason sessions could
 not proceed are documented alongside any alternative evidence and remaining
 gaps. Do not call the prototypes user-validated without representative-user
-evidence. [M2-DOC-006 revision 0.4](usability-findings.md) records two
+evidence. [M2-DOC-006 revision 0.6](usability-findings.md) records two
 retrospectively reported sessions, the caregiver availability explanation, and
 the owner's decision to skip a replacement caregiver session for that
 formative round. Its bounded sufficiency rationale supports further design
@@ -221,3 +222,4 @@ iteration, not validation of caregiver workflows or waiver of M2 gates.
 | 0.3 | Link the reported formative sessions and caregiver-participation limitation; distinguish the owner's decision to continue iteration from completed validation or milestone approval. |
 | 0.4 | Align future review tasks with the v1 decisions for open Settings, save-to-start pause behavior, and deferred v2 music/volume; retain the earlier sessions' evidence limitations. |
 | 0.5 | Update the exact design source revision to M2-DOC-004 revision 1.5 and retain all participant, safeguarding, and review prerequisites. |
+| 0.6 | Align requirements, protocol, traceability, and design references to the review candidate; include the no-manual-controls decision in future usability scope. |

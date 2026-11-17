@@ -26,7 +26,7 @@
     <rect x="451" y="344" width="298" height="72" rx="12" fill="#f3f5f7" stroke="#71808f"/>
     <text x="471" y="374" font-size="17" font-weight="700" fill="#17212b">Paused while Settings are open</text>
     <text x="471" y="398" font-size="14" fill="#344454">Saving starts a full-duration countdown.</text>
-    <text x="451" y="456" font-size="15" fill="#344454">No separate pause control is in v1.</text>
+    <text x="451" y="456" font-size="15" fill="#344454">No manual pause, resume, or reset controls in v1.</text>
 
     <rect x="810" y="112" width="350" height="390" rx="18" fill="#ffffff" stroke="#71808f" stroke-width="2"/>
     <text x="836" y="154" font-size="24" font-weight="700" fill="#17212b">Interrupted</text>

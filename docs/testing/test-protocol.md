@@ -3,13 +3,13 @@
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-002 |
-| Revision | 0.4 |
+| Revision | 0.5 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Test and product requirements reviewers: unassigned |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#25](https://github.com/Entreco/elchrono/issues/25) |
-| Review PR | Prior baselines: [PR #27](https://github.com/Entreco/elchrono/pull/27), [PR #31](https://github.com/Entreco/elchrono/pull/31); revision 0.4: [PR #32](https://github.com/Entreco/elchrono/pull/32) |
+| Review PR | Prior baselines: [PR #27](https://github.com/Entreco/elchrono/pull/27), [PR #31](https://github.com/Entreco/elchrono/pull/31), and [PR #32](https://github.com/Entreco/elchrono/pull/32); revision 0.5: [PR #41](https://github.com/Entreco/elchrono/pull/41) |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](../governance/document-control.md#lifecycle-and-approval).
@@ -17,7 +17,7 @@ table. See [document controls](../governance/document-control.md#lifecycle-and-a
 ## Purpose and limits
 
 This protocol contains planned test procedures and acceptance criteria for
-[M2-DOC-001, revision 0.4, Product requirements](../product/requirements.md).
+[M2-DOC-001, revision 0.5, Product requirements](../product/requirements.md).
 The exact source revisions and requirement-to-source, risk, design, usability,
 and test relationships are identified in the
 [requirements traceability matrix](../safety/requirements-traceability-matrix.md).
@@ -34,7 +34,7 @@ hours. No accessibility conformance baseline is selected by this protocol.
 | Test ID | Requirement | Procedure | Acceptance criteria |
 |---|---|---|---|
 | TP-REQ-001 | [REQ-001](../product/requirements.md#requirement-identification) | Enter representative digit sequences, test the allowed duration boundaries, exercise invalid values, and enumerate all whole-minute durations with a controllable input/test harness. | `2`, `20`, `205`, and `2400` display as `00:02`, `00:20`, `02:05`, and `24:00`. Every duration from `00:01` through `24:00` is representable. `00:00`, minute values above `59`, and values above `24:00` cannot be configured as valid durations. |
-| TP-REQ-002 | [REQ-002](../product/requirements.md#requirement-identification) | Save valid settings and advance the injected time source. While running, open Settings and record remaining time; keep Settings open while advancing time, then save valid settings. | Saving starts the countdown from the full saved duration. Opening Settings pauses it (remaining time does not change while Settings is open). Saving again starts a new countdown from the full saved duration, not the previously remaining time. |
+| TP-REQ-002 | [REQ-002](../product/requirements.md#requirement-identification) | Inspect Main and Settings for manual timer controls. Save valid settings and advance the injected time source. While running, open Settings and record remaining time; keep Settings open while advancing time, then save valid settings. | No separate manual pause, resume, or reset controls are available in v1. Saving starts the countdown from the full saved duration. Opening Settings pauses it (remaining time does not change while Settings is open). Saving again starts a new countdown from the full saved duration, not the previously remaining time. |
 | TP-REQ-003 | [REQ-003](../product/requirements.md#requirement-identification) | Review each available visualization's specification and exercise its running, paused, and interrupted presentations at defined time points and each supported layout configuration in scope. | Each visualization specifies numeric remaining time, visual progress, or both, and maps progress consistently to remaining time. Remaining-time information is fully visible and not clipped or obscured in each required state and supported layout configuration. No clock face or time of day is presented, and state meaning does not rely on colour alone. Numeric display, if present, follows its declared units and rounding. |
 | TP-REQ-004 | [REQ-004](../product/requirements.md#requirement-identification) | Inspect Main, Settings, and About against their required v1 content in each supported layout configuration in scope. Confirm music and volume controls are absent in v1. | Main includes the selected timer visualization. Settings includes duration and theme controls, with no v1 music or volume controls. About includes company logo, version/build details, support information, privacy policy, relevant licences, intended use, and limitations. All required content is fully visible and not clipped or obscured. Missing content sources are recorded rather than fabricated. |
 | TP-REQ-005 | [REQ-005](../product/requirements.md#requirement-identification) | Open Settings without a gate as a patient and change/save duration or theme. | Settings is not protected by a caregiver gate in v1 and permits the access specified by the product decision. The test verifies this behavior; it does not establish that the resulting risk is acceptable or controlled. |
@@ -67,3 +67,4 @@ v2, not passed or waived.
 | 0.2 | Identify the requirements baseline revision and add explicit no-clipping acceptance criteria for required remaining-time and screen content; retain unrun and blocked result rules. |
 | 0.3 | Align procedures and criteria with v1 decisions for open Settings, save-to-start pause behavior, absent volume/music controls, deferred v2 audio, and no v1 interruption recovery; record the clipping code correction without claiming layout verification. |
 | 0.4 | Record the limited F01 prototype layout check separately from product test execution; retain blocked status for undefined supported layouts and unverified application behavior. |
+| 0.5 | Align TP-REQ-002 with the explicit v1 decision to omit separate manual pause, resume, and reset controls. |

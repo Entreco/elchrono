@@ -3,13 +3,13 @@
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-004 |
-| Revision | 0.2 |
+| Revision | 1.3 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Product design, accessibility, and usability reviewers: unassigned |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#23](https://github.com/Entreco/elchrono/issues/23) |
-| Review PR | [PR #28](https://github.com/Entreco/elchrono/pull/28) |
+| Review PR | Prior baseline: [PR #28](https://github.com/Entreco/elchrono/pull/28) (revision 0.2); revision 1.3: [PR #29](https://github.com/Entreco/elchrono/pull/29) |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](../governance/document-control.md#lifecycle-and-approval).
@@ -21,6 +21,42 @@ for review. It is design evidence for the proposed ordinary-waiting use, not
 application implementation, a usability finding, or approval of product
 requirements. The current application remains a starter screen, not an
 implemented timer.
+
+An interactive, browser-based demonstration is available in the
+[local demo](demo/README.md). It has one configurable countdown, defaulting to
+two hours, and a single Shape selector: Clock (formerly Disk), Battery, Hand fan, or Ring.
+The former digital circle is merged into Clock. Changing shape preserves
+the countdown, shared background/foreground/text colors, font, and text
+visibility. Ring thickness appears only for Ring and is retained when changing
+shape. Show remaining independently controls the duration display. A Show
+details slider steps through Off, then 2–12 equal sections, defaulting to six.
+Details add duration-based labels outside Clock only, Ring section
+boundaries, battery divisions, or fixed fan separators. Clock keeps a continuous
+fill regardless of details; only its outer labels change. Ring details add no
+intermediate text; Show remaining still controls its central duration. One hour with two
+sections shows 0 and 30. Configured durations below ten minutes use whole seconds
+(five minutes with twelve sections: 0, 275, 250, ..., 25 clockwise).
+Durations of ten minutes or more use compact minutes rounded to one decimal,
+omitting trailing zeros (thirty minutes with twelve sections: 0, 27.5, 25,
+22.5, ..., 2.5). A single unit label below Clock is shown only with details.
+Units do not change as the countdown runs.
+The base fill remains visible. Shapes have no explanatory captions.
+Font and text color controls appear when time
+or Clock numerals are visible, without
+clearing their values when hidden. Each shape uses only the selected colors;
+unselected colors are not added as decorative highlights or outlines. The
+disk's optional duration numerals use 36 px text outside its progress area, with
+reserved space for the larger labels. Clock uses a radial remaining-time
+treatment, Battery drains linearly, and the hand-fan
+shape empties over 180 degrees toward a fixed left edge, like a disk sweep,
+keeping its radius and separator positions fixed rather than folding them. The
+optional disk numerals
+are an exploratory client-feedback variant only; the product design remains
+without clock-face numerals or markings. These are prototype controls only,
+separate from the Kotlin application and not approved product requirements.
+The prototype also permits duration selection from one minute through 24 hours
+and hiding or showing its personalization panel; these controls do not
+establish changed requirements.
 
 The requirement IDs cited below are candidates from
 [M2-DOC-001, revision 0.3](../product/requirements.md); they remain proposed
@@ -150,6 +186,14 @@ design constraint; it has not been implemented or verified across durations,
 screen sizes, platforms, or assistive technology. The attached references
 inform the concepts but are not copied into the repository.
 
+The local demo makes these concepts interactive without establishing
+requirements or product behavior. Its configurable countdown runs from a user
+action, uses the browser monotonic clock, and immediately resets to the chosen
+duration at completion without a completed state. Shape switching does not reset
+countdown progress. It does not implement pause, restart controls, persistence,
+audio, or interruption recovery. Styling previews are shared across shapes for
+the current page session only; nothing is saved across reloads.
+
 ## Open decisions and evidence gaps
 
 The designs intentionally leave these candidate requirement decisions and
@@ -167,10 +211,11 @@ appearance questions unresolved:
 Required product-design, accessibility, usability, and specialist review
 appointments are unassigned. No caregiver or representative-patient review,
 feedback, finding, disposition, requirement approval, or design approval is
-claimed. The static SVGs are not interactive prototypes and have not been
-tested for screen readers, keyboard, touch, or any target platform. Record
-actual reviewer scopes, feedback, findings, and dispositions in the review PR;
-keep unresolved findings and limitations explicit.
+claimed. The static SVGs remain non-interactive; the browser demo provides
+interactive view switching but has not been tested for screen readers,
+keyboard, touch, or any target platform. Record actual reviewer scopes,
+feedback, findings, and dispositions in the review PR; keep unresolved findings
+and limitations explicit.
 
 ## Revision history
 
@@ -178,3 +223,14 @@ keep unresolved findings and limitations explicit.
 |---|---|
 | 0.1 | Establish candidate screen flows and three low-fidelity theme concepts for issue #23; preserve open decisions and review gaps. |
 | 0.2 | Propose a Time Timer-inspired remaining disk as the first/default visualization and digital and numeric-ring alternatives; add conditional per-visualization font/color settings while preserving no-clock and open-decision constraints. |
+| 0.3 | Add a local interactive two-hour browser demo of the three visualizations and per-view appearance previews; keep it separate from the application and product requirements. |
+| 0.4 | Refine the demo with a reversed disk sweep, visualization-colored digital background, and adjustable numeric-ring thickness; keep these prototype-only and preserve the no-clock boundary. |
+| 0.5 | Add prototype-only background-color and number-visibility options, a draining digital fill, and optional clock-position disk numerals for feedback; retain the product no-clock boundary. |
+| 0.6 | Add configurable demo duration, a hide/show personalization control, and a ring-thickness range from hairline to solid fill. |
+| 0.7 | Apply the selected background to the disk's center and depleted area; place digital time inside its shape; add battery/circle/half-circle shapes and four background presets. |
+| 0.8 | Separate background, foreground, and text color controls and limit each visualization to those three selected colors. |
+| 0.9 | Place optional disk numerals outside the progress area; make the digital circle drain radially and the hand fan fold closed with elapsed time. |
+| 1.0 | Triple optional disk numeral size to 36 px with surrounding space; replace horizontal fan scaling with a fixed-radius angular opening from 180 degrees to zero. |
+| 1.1 | Unify the demo into one shape selector and shared settings; merge Circle into Disk; retain hidden text preferences and ring thickness across shape changes. |
+| 1.2 | Separate remaining-time visibility from shape-specific progress markers; add ring numerals and battery divisions; replace fan folding with a fixed-edge sweep and clipped stationary separators. |
+| 1.3 | Replace Show progress with an Off/2–12-section Show details slider; subdivide Battery/Fan/Ring, keep Clock fill continuous, and label Clock only; remove shape explanations. Rename prototype Disk to Clock and use seconds below ten configured minutes, compact decimal minutes otherwise, with one unit label; no time-of-day display or product-boundary change. |

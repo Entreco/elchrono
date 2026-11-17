@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-007 |
-| Revision | 0.6 |
+| Revision | 0.7 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | M2 milestone, product requirements, design/usability, accessibility, test/traceability, and software-safety reviewers: unassigned |
@@ -133,12 +133,13 @@ product behavior.
 ## Review limitations
 
 This integration check compares the linked records, their stated revisions,
-the M2 milestone gate, and available PR descriptions/review metadata. It does
-not reproduce participant sessions, test the prototype, execute protocol
-cases, verify risk controls, establish reviewer competence, or decide legal
-qualification. The owner directed that no delegated reviewer acceptance be
-recorded; consequently, this change does not supply or imply required reviewer
-acceptance. The PR review evidence remains incomplete as described above.
+the M2 milestone gate, and available PR descriptions/review metadata. The
+limited F01 prototype layout check is described above; it does not reproduce
+participant sessions, execute product protocol cases, verify risk controls,
+establish reviewer competence, or decide legal qualification. No scoped
+competent-reviewer acceptance was supplied, and this agent integration check
+does not substitute for specialist review. The PR review evidence remains
+incomplete as described above.
 Do not treat this record's existence, issue #26 closure, or the document's
 branch-derived lifecycle as M2 approval.
 
@@ -152,3 +153,4 @@ branch-derived lifecycle as M2 approval.
 | 0.4 | Reconcile the design and requirements-traceability records to the current risk source and usability revisions; retain the blocked outcome, missing reviewer acceptance, and pending clipping verification. |
 | 0.5 | Record the owner's clipping-resolution report and limited prototype layout results; close only the specific finding for checked layouts while retaining undefined supported-layout and product verification gaps. |
 | 0.6 | Reconcile the M2 usability-plan and traceability revisions with the current design source and retain all open gate conditions. |
+| 0.7 | Clarify that the F01 layout probe was limited prototype evidence and that agent integration review does not substitute for competent specialist acceptance. |

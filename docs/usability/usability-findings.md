@@ -9,7 +9,7 @@
 | Required reviewers | Product usability, accessibility, and safeguarding/privacy reviewers: unassigned |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#24](https://github.com/Entreco/elchrono/issues/24) |
-| Review PR | Prior baseline: [PR #30](https://github.com/Entreco/elchrono/pull/30) and [PR #32](https://github.com/Entreco/elchrono/pull/32); revision 0.6: [PR #33](https://github.com/Entreco/elchrono/pull/33) |
+| Review PR | Prior baseline: [PR #30](https://github.com/Entreco/elchrono/pull/30) and [PR #32](https://github.com/Entreco/elchrono/pull/32); revision 0.6: [PR #41](https://github.com/Entreco/elchrono/pull/41) |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](../governance/document-control.md#lifecycle-and-approval).

@@ -9,7 +9,7 @@
 | Required reviewers | Product usability, accessibility, and safeguarding/privacy reviewers: unassigned |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#24](https://github.com/Entreco/elchrono/issues/24) |
-| Review PR | Prior baseline: [PR #30](https://github.com/Entreco/elchrono/pull/30) and [PR #32](https://github.com/Entreco/elchrono/pull/32); revision 0.6: [PR #33](https://github.com/Entreco/elchrono/pull/33) |
+| Review PR | Prior baseline: [PR #30](https://github.com/Entreco/elchrono/pull/30) and [PR #32](https://github.com/Entreco/elchrono/pull/32); revision 0.6: [PR #41](https://github.com/Entreco/elchrono/pull/41) |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](../governance/document-control.md#lifecycle-and-approval).
@@ -23,7 +23,7 @@ the [test protocol, M2-DOC-002 revision 0.5](../testing/test-protocol.md), the
 [requirements traceability matrix, M2-DOC-003 revision 2.3](../safety/requirements-traceability-matrix.md),
 the [screen-flow and theme-prototype record, M2-DOC-004 revision 1.6](../design/accessible-screen-flows-and-theme-prototypes.md),
 and the proposed [risk assessment, M1-DOC-004 revision 0.5](../safety/risk-assessment.md).
-The design record is revision 1.6 in PR #33; it is still a proposal,
+The design record is revision 1.6 in PR #41; it is still a proposal,
 not evidence that the designs are approved or usable.
 
 The review is intended to identify misunderstandings and design questions for
@@ -64,7 +64,7 @@ future sessions.
 
 ## Prototype and review scope
 
-Review the exact M2-DOC-004 revision 1.6 candidate content in PR #33. Before any
+Review the exact M2-DOC-004 revision 1.6 candidate content in PR #41. Before any
 session, verify that the materials shown match that revision and record any
 changed artifact and revision in the findings record.
 

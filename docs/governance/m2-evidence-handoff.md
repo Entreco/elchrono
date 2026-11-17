@@ -6,10 +6,10 @@
 | Revision | 0.8 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
-| Required reviewers | M2 milestone, product requirements, design/usability, accessibility, test/traceability, and software-safety scopes: requested for PR #33; reviewer appointments and competence/scope confirmation pending |
+| Required reviewers | M2 milestone, product requirements, design/usability, accessibility, test/traceability, and software-safety scopes: requested for PR #41; reviewer appointments and competence/scope confirmation pending |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#26](https://github.com/Entreco/elchrono/issues/26) |
-| Review PR | Prior evidence baseline: [PR #32](https://github.com/Entreco/elchrono/pull/32); current review: [PR #33](https://github.com/Entreco/elchrono/pull/33) |
+| Review PR | Prior evidence baseline: [PR #32](https://github.com/Entreco/elchrono/pull/32); current review: [PR #41](https://github.com/Entreco/elchrono/pull/41) |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](document-control.md#lifecycle-and-approval).
@@ -39,19 +39,19 @@ approve that limitation for M2 completion.
 
 This is an integration check of the records and GitHub evidence listed below.
 It is not a specialist usability, accessibility, product-design, or
-software-safety review. The M2 documents revised here are candidates in PR #33;
+software-safety review. The M2 documents revised here are candidates in PR #41;
 the exact reviewed content is the PR head identified in GitHub when a human
 reviews it. A PR merge or a document's branch-derived lifecycle is not
 evidence of human acceptance or specialist review.
 
 | Record | Exact source revision and evidence inspected |
 |---|---|
-| [M2-DOC-001 — Product requirements](../product/requirements.md) | Revision 0.5, candidate in [PR #33](https://github.com/Entreco/elchrono/pull/33); nine proposed requirements and D-01–D-06, including no separate manual timer controls |
-| [M2-DOC-004 — Accessible screen flows and theme prototypes](../design/accessible-screen-flows-and-theme-prototypes.md) | Revision 1.6, candidate in [PR #33](https://github.com/Entreco/elchrono/pull/33); Main/Settings concepts reflect D-01–D-06 using the existing prototype designs; visualizations and appearance options remain proposals pending review |
-| [M2-DOC-005 — Usability review plan](../usability/usability-plan.md) | Revision 0.6, candidate in [PR #33](https://github.com/Entreco/elchrono/pull/33); future tasks align to the current requirements/design; earlier sessions were not governed by it |
-| [M2-DOC-006 — Usability findings and evidence status](../usability/usability-findings.md) | Revision 0.6, candidate in [PR #33](https://github.com/Entreco/elchrono/pull/33); preserves retrospective evidence, caregiver gap, and limited F01 layout checks |
-| [M2-DOC-002 — Product test protocol](../testing/test-protocol.md) | Revision 0.5, candidate in [PR #33](https://github.com/Entreco/elchrono/pull/33); measurable procedures for nine active requirements; product tests remain unexecuted |
-| [M2-DOC-003 — Requirements traceability matrix](../safety/requirements-traceability-matrix.md) | Revision 2.3, candidate in [PR #33](https://github.com/Entreco/elchrono/pull/33); current source revisions and D-01–D-06 linked; product verification pending |
+| [M2-DOC-001 — Product requirements](../product/requirements.md) | Revision 0.5, candidate in [PR #41](https://github.com/Entreco/elchrono/pull/41); nine proposed requirements and D-01–D-06, including no separate manual timer controls |
+| [M2-DOC-004 — Accessible screen flows and theme prototypes](../design/accessible-screen-flows-and-theme-prototypes.md) | Revision 1.6, candidate in [PR #41](https://github.com/Entreco/elchrono/pull/41); Main/Settings concepts reflect D-01–D-06 using the existing prototype designs; visualizations and appearance options remain proposals pending review |
+| [M2-DOC-005 — Usability review plan](../usability/usability-plan.md) | Revision 0.6, candidate in [PR #41](https://github.com/Entreco/elchrono/pull/41); future tasks align to the current requirements/design; earlier sessions were not governed by it |
+| [M2-DOC-006 — Usability findings and evidence status](../usability/usability-findings.md) | Revision 0.6, candidate in [PR #41](https://github.com/Entreco/elchrono/pull/41); preserves retrospective evidence, caregiver gap, and limited F01 layout checks |
+| [M2-DOC-002 — Product test protocol](../testing/test-protocol.md) | Revision 0.5, candidate in [PR #41](https://github.com/Entreco/elchrono/pull/41); measurable procedures for nine active requirements; product tests remain unexecuted |
+| [M2-DOC-003 — Requirements traceability matrix](../safety/requirements-traceability-matrix.md) | Revision 2.3, candidate in [PR #41](https://github.com/Entreco/elchrono/pull/41); current source revisions and D-01–D-06 linked; product verification pending |
 | [M1-DOC-004 — Risk assessment](../safety/risk-assessment.md) | Revision 0.5, candidate; updated in [PR #32](https://github.com/Entreco/elchrono/pull/32); owner D-01 disposition recorded, risk acceptability still undetermined pending competent review |
 | [M1-DOC-009 — Risk traceability matrix](../safety/risk-traceability-matrix.md) | Revision 0.7, candidate; updated in [PR #32](https://github.com/Entreco/elchrono/pull/32); v1 scope reflected, risk review and verification pending |
 
@@ -62,7 +62,7 @@ acceptance of the #26 evidence/handoff deliverable at that head. That
 acceptance expressly did not approve M2, the linked source documents, or
 specialist dispositions. PR #32 has no formal GitHub review submissions.
 Reviewers must now record actual scopes, findings/dispositions, limitations,
-and acceptance of the final PR #33 head; agents must leave the human
+and acceptance of the final PR #41 head; agents must leave the human
 acceptance box unchecked.
 
 The candidate inputs also depend on [M1-DOC-002, intended use revision 0.9](../product/intended-use.md)
@@ -121,7 +121,7 @@ behavior.
 
 | Action before relying on M2 as an approved input | Owner / source | Evidence needed |
 |---|---|---|
-| Review the exact M2 candidate and prerequisite M1 source revisions; appoint/confirm competent review scopes, record findings/dispositions and limitations, and tie acceptance to the final PR #33 head. | @Entreco; M2-DOC-001 through M2-DOC-007, M1-DOC-002 revision 0.9, M1-DOC-004 revision 0.5, and M1-DOC-009 revision 0.7; [document controls](document-control.md) | Human acceptance and specialist scope/competence confirmation are pending. The prior PR #32 acceptance covers only the #26 evidence/handoff deliverable, not these revisions or M2 closure. |
+| Review the exact M2 candidate and prerequisite M1 source revisions; appoint/confirm competent review scopes, record findings/dispositions and limitations, and tie acceptance to the final PR #41 head. | @Entreco; M2-DOC-001 through M2-DOC-007, M1-DOC-002 revision 0.9, M1-DOC-004 revision 0.5, and M1-DOC-009 revision 0.7; [document controls](document-control.md) | Human acceptance and specialist scope/competence confirmation are pending. The prior PR #32 acceptance covers only the #26 evidence/handoff deliverable, not these revisions or M2 closure. |
 | Decide whether the documented caregiver/usability limitation is acceptable for M2 or whether further safeguarded evidence is required. | @Entreco; M2-DOC-005/006, G01–G05, milestone #2 | No direct caregiver session or assistive-technology evaluation is reported; the owner elected not to attempt a replacement caregiver session for that formative round. Do not claim representative validation. |
 | Retain and review the limited Clock clipping evidence; define supported layouts and verify the actual application when available. | @Entreco; M2-DOC-006-F01, M2-DOC-003, TP-REQ-003 and TP-REQ-006 | The merged PR #32 probe checks only the prototype at 500 × 1000 px and 1440 × 1200 px. No further demo-CSS work is proposed; supported layouts and application-level verification remain open. |
 | Confirm the M2 definition-of-done interpretation for unexecuted product test cases. | @Entreco; M2-DOC-002 revision 0.5, M2-DOC-003 revision 2.3, milestone #2 | Protocol coverage and measurable criteria are documented; no product tests can be claimed before implementation. If M2 requires execution results, this item blocks closure and needs a separately authorized implementation/test scope. |

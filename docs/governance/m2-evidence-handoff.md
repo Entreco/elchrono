@@ -3,13 +3,13 @@
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-007 |
-| Revision | 0.1 |
+| Revision | 0.2 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | M2 milestone, product requirements, design/usability, accessibility, and test/traceability reviewers: unassigned |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#26](https://github.com/Entreco/elchrono/issues/26) |
-| Review PR | Pending |
+| Review PR | [PR #32](https://github.com/Entreco/elchrono/pull/32) |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](document-control.md#lifecycle-and-approval).
@@ -135,3 +135,4 @@ branch-derived lifecycle as M2 approval.
 | Revision | Change |
 |---|---|
 | 0.1 | Record the M2 evidence baseline, blocked completion-gate outcome, open product decisions, unresolved usability/review/verification evidence, and dependent M3 actions for issue #26. |
+| 0.2 | Link the evidence record to its review PR; the required review, findings disposition, and human acceptance remain pending. |

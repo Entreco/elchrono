@@ -3,13 +3,13 @@
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-004 |
-| Revision | 1.3 |
+| Revision | 1.5 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Product design, accessibility, and usability reviewers: unassigned |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#23](https://github.com/Entreco/elchrono/issues/23) |
-| Review PR | Prior baseline: [PR #28](https://github.com/Entreco/elchrono/pull/28) (revision 0.2); revision 1.3: [PR #29](https://github.com/Entreco/elchrono/pull/29) |
+| Review PR | Prior baselines: [PR #28](https://github.com/Entreco/elchrono/pull/28) (revision 0.2), [PR #29](https://github.com/Entreco/elchrono/pull/29) (revision 1.3); revision 1.5: [PR #32](https://github.com/Entreco/elchrono/pull/32) |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](../governance/document-control.md#lifecycle-and-approval).
@@ -59,9 +59,9 @@ and hiding or showing its personalization panel; these controls do not
 establish changed requirements.
 
 The requirement IDs cited below are candidates from
-[M2-DOC-001, revision 0.3](../product/requirements.md); they remain proposed
+[M2-DOC-001, revision 0.4](../product/requirements.md); they remain proposed
 pending required review and approval. The risk IDs are proposed in
-[M1-DOC-004, revision 0.4](../safety/risk-assessment.md); the related risk
+[M1-DOC-004, revision 0.5](../safety/risk-assessment.md); the related risk
 controls are not verified. Intended-use and risk-assessment review gaps remain
 open. This design does not establish medical-device qualification, legal
 conformance, or certification.
@@ -95,61 +95,65 @@ conformance, or certification.
 The running and paused examples retain the same illustrative progress shape.
 The interrupted example retains the shape but explicitly warns that progress
 may be out of date; it must not imply timing continuity when that is unknown.
-Volume remains an accessible Main-screen control in every state shown. No
-pause, resume, reset, or interruption-recovery action is drawn because those
-behaviors are unresolved.
+No in-app volume control is included in v1. Opening Settings while running
+pauses the countdown; saving valid settings starts a new countdown at the full
+saved duration. Settings has no caregiver-protection mechanism in v1. No
+interruption-recovery action is provided; an interrupted presentation must
+not imply timing continuity.
 
 | Main element | Proposed presentation and semantics | Requirement / risk links |
 |---|---|---|
 | Remaining progress | A theme's progress shape; accessible role: progress indicator; label: "Remaining waiting time"; value: percent of the configured duration remaining, 0-100. | REQ-003; RISK-001, RISK-005 |
 | Running state | Text label "Running" separate from progress semantics. | REQ-003; RISK-001, RISK-005 |
-| Paused state | Text label "Paused" separate from progress semantics; no transition or control is selected. | REQ-003; RISK-001, RISK-005 |
-| Interrupted state | Text label "Timer interrupted" and "Progress may be out of date"; no recovery action or continuity claim is selected. | REQ-003; RISK-002, RISK-005 |
-| Volume | A large, labelled Main-screen adjustment target; accessible name "Volume". The illustrated slider position is not a default; limits and range are not specified. | REQ-004, REQ-005; RISK-003, RISK-004 |
-| Settings access | Caregiver-only access is required, but the access route is an abstract gate in this flow. No PIN, gesture, or other protection mechanism is selected. | REQ-005; RISK-004 |
+| Paused state | Text label "Paused" separate from progress semantics. Opening Settings while running pauses the countdown. | REQ-002, REQ-003; RISK-001, RISK-005 |
+| Interrupted state | Text label "Timer interrupted" and "Progress may be out of date"; no recovery is provided or promised in v1. | REQ-003; RISK-002, RISK-005 |
+| Settings access | Settings is available without a caregiver-protection mechanism in v1. This is the product owner's explicit risk disposition, not a verified control; a patient may change the saved duration or theme. | REQ-005; RISK-004 |
+| Settings lifecycle | Opening Settings while running pauses the countdown. Saving valid settings starts a new countdown from the full saved duration. | REQ-002; RISK-001 |
+| Volume and audio | No in-app volume control, music integration, or completion sound is included in v1. Music is deferred to v2 and its behavior requires separate review. | REQ-004, REQ-008, REQ-010; RISK-003 |
+| Interrupted state | Display the interrupted warning when continuity is uncertain; no recovery behavior is provided or promised in v1. | REQ-003; RISK-002 |
 
-At zero, the candidate REQ-010 behavior is an immediate return to the
-configured duration and stopping optional music. There is no completed screen
-or completed-state message. The proposed behavior remains subject to review and
-approval; no transition timing or audio-start behavior is specified here.
+At zero, REQ-010 returns immediately to the configured duration without a
+completed screen or completed-state message. Music is not part of v1; if
+introduced in v2, it will stop at zero. This candidate behavior remains subject
+to review and approval.
 
 ### Settings screen
 
-![Settings prototype with Hours and Minutes fields, visualization choices, conditional appearance settings, and optional music.](settings-about.svg)
+![Settings prototype with Hours and Minutes fields, visualization choices, conditional appearance settings, and a save action that starts the timer.](settings-about.svg)
 
 The duration entry example follows the candidate sequential-digit rule:
 `205` displays as `02:05`. The configured duration is a whole-minute value
 from 00:01 through 24:00. The examples describe field content, not a
 verification result.
 
-Requirements: REQ-001 (duration entry), REQ-002 (caregiver start), REQ-004
-(screen content), REQ-005 (caregiver-only access), REQ-006 (theme selection),
-and REQ-008 (optional music).
+Requirements: REQ-001 (duration entry), REQ-002 (save-to-start and
+Settings-open pause), REQ-004 (screen content), REQ-005 (v1 access decision),
+and REQ-006 (theme selection). Optional music is deferred to v2.
 
-The caregiver flow is abstract: caregiver-only access gate (mechanism pending)
-then duration, visualization, optional appearance settings, and optional-music
-configuration. The proposed initial visualization is a Time Timer-inspired
+The v1 flow has no caregiver-only access gate: Settings can be opened without
+protection. The user configures duration and visualization, then saves; saving
+starts a new countdown from the full saved duration. Opening Settings while
+the countdown is running pauses it. The proposed initial visualization is a Time Timer-inspired
 remaining-time disk. This adapts the supplied dial-like reference to the
 no-clock requirement: it has no clock face, numerals, tick marks, or hand. It
 is a design proposal, not a selected or approved product default. A caregiver
-starts the countdown after a valid duration is configured, as required by
-REQ-002; the start control's placement is not selected.
+or patient can access Settings in v1; saving valid settings is the timer-start
+action under REQ-002.
 
 The appearance controls are conditional on the selected visualization. Offer
 a font choice only when it displays text, and a color choice only when it uses
-color. These are proposed caregiver settings, scoped to the selected
+color. These are proposed settings, scoped to the selected
 visualization; available choices, defaults, saving/persistence, and any
 reset-to-default action remain undecided. Any selected font or color must
 preserve readable text, non-colour progress/state cues, and the same remaining
 time semantics. Contrast and legibility need accessibility and usability
 review; no conformance baseline or user preference is claimed.
 
-The optional-music area identifies a product capability without choosing a
-provider, connection screen, playback control, default, start behavior, or
-completion sound. Those details require later product, provider, platform, and
-usability review. If a later integration presents an audio failure, it must
-not interrupt timer operation or imply that playback succeeded; this record
-does not select that feedback UI.
+There is no music area or audio control in the v1 Settings design. Music
+integration is deferred to v2. Provider, connection, playback controls, start
+behavior, volume controls/limits, completion sounds, and audio-failure
+presentation are not decided for v2 and require later product, provider,
+platform, and usability review.
 
 ### About screen
 
@@ -194,23 +198,23 @@ countdown progress. It does not implement pause, restart controls, persistence,
 audio, or interruption recovery. Styling previews are shared across shapes for
 the current page session only; nothing is saved across reloads.
 
-## Open decisions and evidence gaps
+## Product decisions and evidence gaps
 
-The designs intentionally leave these candidate requirement decisions and
-appearance questions unresolved:
+The following product decisions define the current v1 proposal. They do not
+establish competent risk review, design approval, or verification:
 
 | Decision | Design boundary |
 |---|---|
-| D-01: caregiver protection mechanism | Caregiver-only Settings is shown as a conceptual gate only; its mechanism and placement are not designed. |
-| D-02: patient-accessible and caregiver-configured volume limits | A labelled volume adjustment target is identified; limits, range, and default remain open. |
-| D-03: music start behavior and completion sounds | Music remains optional; provider, connection, start behavior, and any completion sound remain open. |
-| D-04: manual pause and reset behavior | Required states are illustrated; controls and transitions are not selected. |
-| D-05: interruption detection and recovery | The interrupted presentation avoids implying continuity; detection, persistence, and recovery are not selected. |
+| D-01: caregiver protection mechanism | Product owner accepts unprotected Settings for v1; the design shows no access gate. RISK-004 acceptability remains subject to competent review; no control effectiveness is claimed. |
+| D-02: volume controls and limits | No in-app volume controls in v1. Reassess audio/volume requirements if a later version adds music. |
+| D-03: music and audio behavior | Music is deferred to v2. No music start behavior or completion sound is included in v1; future audio behavior remains undecided. |
+| D-04: timer start and Settings lifecycle | Saving valid settings starts a new countdown from the full saved duration; opening Settings while running pauses it. |
+| D-05: interruption recovery | No recovery behavior is provided or promised in v1. Retain the interrupted-state warning and never imply timing continuity when uncertain. |
 | Visualization appearance | Font and color are proposed as conditional per-visualization settings; option lists, defaults, and persistence remain undecided and require accessibility/usability review. |
 
 Required product-design, accessibility, usability, and specialist review
-appointments are unassigned. No caregiver or representative-patient review,
-feedback, finding, disposition, requirement approval, or design approval is
+appointments remain unassigned. No caregiver or representative-patient review
+of these revised decisions, design approval, or requirement approval is
 claimed. The static SVGs remain non-interactive; the browser demo provides
 interactive view switching but has not been tested for screen readers,
 keyboard, touch, or any target platform. Record actual reviewer scopes,
@@ -234,3 +238,5 @@ and limitations explicit.
 | 1.1 | Unify the demo into one shape selector and shared settings; merge Circle into Disk; retain hidden text preferences and ring thickness across shape changes. |
 | 1.2 | Separate remaining-time visibility from shape-specific progress markers; add ring numerals and battery divisions; replace fan folding with a fixed-edge sweep and clipped stationary separators. |
 | 1.3 | Replace Show progress with an Off/2–12-section Show details slider; subdivide Battery/Fan/Ring, keep Clock fill continuous, and label Clock only; remove shape explanations. Rename prototype Disk to Clock and use seconds below ten configured minutes, compact decimal minutes otherwise, with one unit label; no time-of-day display or product-boundary change. |
+| 1.4 | Align the proposed Main and Settings flows with v1 decisions: no caregiver gate or volume/music controls, saving settings starts a full-duration countdown, opening Settings pauses it, and interruption recovery is not provided. |
+| 1.5 | Update the linked risk-assessment source revision to 0.5; preserve the v1 product decisions and pending risk/design review. |

@@ -3,13 +3,13 @@
 | Field | Value |
 |---|---|
 | Document ID | M1-DOC-004 |
-| Revision | 0.4 |
+| Revision | 0.5 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Software-safety reviewer: unassigned; blocking |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#4](https://github.com/Entreco/elchrono/issues/4) |
-| Review PR | [PR #14](https://github.com/Entreco/elchrono/pull/14); [PR #16](https://github.com/Entreco/elchrono/pull/16) |
+| Review PR | Prior baselines: [PR #14](https://github.com/Entreco/elchrono/pull/14), [PR #16](https://github.com/Entreco/elchrono/pull/16); revision 0.5: [PR #32](https://github.com/Entreco/elchrono/pull/32) |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [Lifecycle and approval](../governance/document-control.md#lifecycle-and-approval).
@@ -153,8 +153,8 @@ ownership, intended-use trace, and planned verification are in the
 |---|---|---|---|---|---:|---:|---|---|---|---|---|---|---|---|
 | RISK-001 | A timing defect, inaccurate elapsed-time source, wall-clock change, duration-boundary error, or inconsistent visual mapping causes progress or completion to be early, late, frozen, or misleading. | [HAZ-01](#hazards) | The person waiting or caregiver relies on the incorrect display or completion state to judge whether the wait has ended or how much remains. | [HARM-01](#harms), [HARM-02](#harms), [HARM-04](#harms) | 2 | 2 | 4 (Medium) | Confusion, distress, conflict, or an unnecessarily extended or interrupted ordinary wait; more serious consequences are possible if misused for a consequential purpose outside intended use. | [RC-001-1 to RC-001-4](#risk-controls). | Pending | Pending | Pending | Not assessed; controls unverified. | Undetermined; qualified review required. |
 | RISK-002 | Backgrounding, sleep, process termination, or device restart results in resumption, reset, lost state, or a displayed state inconsistent with elapsed time. | [HAZ-02](#hazards) | The person waiting or caregiver relies on an apparently running, paused, or completed timer without knowing timing continuity is uncertain. | [HARM-01](#harms), [HARM-02](#harms) | 2 | 2 | 4 (Medium) | Confusion, distress, an unexpectedly extended wait, or premature action. | [RC-002-1 to RC-002-2](#risk-controls). | Pending | Pending | Pending | Not assessed; controls unverified. | Undetermined; qualified review required. |
-| RISK-003 | Optional music or a future completion sound starts unexpectedly, is too loud, stops or fails while playback appears successful, or distracts from the timer. | [HAZ-03](#hazards) | The person waiting is startled, distressed, or distracted, or the caregiver believes failed audio is playing and misinterprets the experience. | [HARM-01](#harms), [HARM-02](#harms), [HARM-03](#harms) | 2 | 2 | 4 (Medium) | Discomfort, distress, interruption of the wait, or confusion about timer operation. | [RC-003-1 to RC-003-3](#risk-controls). | Pending | Pending | Pending | Not assessed; controls unverified. | Undetermined; qualified review required. |
-| RISK-004 | The person waiting reaches caregiver controls or unintentionally changes duration, theme, or music settings. | [HAZ-04](#hazards) | The person waiting or caregiver relies on a timer whose configuration no longer matches the intended wait. | [HARM-01](#harms), [HARM-02](#harms) | 2 | 2 | 4 (Medium) | Confusion, distress, or an unexpectedly shortened or extended ordinary wait. | [RC-004-1 to RC-004-2](#risk-controls). | Pending | Pending | Pending | Not assessed; controls unverified. | Undetermined; qualified review required. |
+| RISK-003 | Future optional music or a completion sound starts unexpectedly, is too loud, stops or fails while playback appears successful, or distracts from the timer. Audio is excluded from v1 and planned for v2. | [HAZ-03](#hazards) | In a future audio-enabled version, the person waiting is startled, distressed, or distracted, or the caregiver believes failed audio is playing and misinterprets the experience. | [HARM-01](#harms), [HARM-02](#harms), [HARM-03](#harms) | 2 | 2 | 4 (Medium) | Discomfort, distress, interruption of the wait, or confusion about timer operation. | [RC-003-1 to RC-003-3](#risk-controls). | Pending | Pending | Pending | Not assessed; controls unverified. | Undetermined; qualified review required before audio is introduced. |
+| RISK-004 | In v1, a patient can open Settings without a caregiver-protection mechanism and change duration or theme, intentionally or unintentionally. | [HAZ-04](#hazards) | The person waiting or caregiver relies on a timer whose configuration no longer matches the intended wait. | [HARM-01](#harms), [HARM-02](#harms) | 2 | 2 | 4 (Medium) | Confusion, distress, or an unexpectedly shortened or extended ordinary wait. | [RC-004-1](#risk-controls). | Pending | Pending | Pending | Not assessed; no access-control mechanism is credited. | Undetermined; product-owner disposition is recorded, but competent risk review remains required. |
 | RISK-005 | Progress or timer states cannot be distinguished because of color-only information, ambiguous shapes or motion, insufficient contrast, or inaccessible labels. | [HAZ-05](#hazards) | The person waiting or caregiver incorrectly believes the wait has ended, remains running, or has been interrupted. | [HARM-01](#harms), [HARM-02](#harms) | 2 | 2 | 4 (Medium) | Confusion, distress, unnecessary waiting, or premature action in an ordinary wait. | [RC-005-1 to RC-005-3](#risk-controls). | Pending | Pending | Pending | Not assessed; controls unverified. | Undetermined; qualified review required. |
 | RISK-006 | A user relies on the timer for medication, a procedure, emergency response, a deadline guarantee, or another consequential action despite the exclusion. | [HAZ-06](#hazards) | A user acts, delays action, or omits another required timing or safety system based on the display or completion state. | [HARM-04](#harms) | 3 | 2 | 6 (High) | Serious harm is plausible in this out-of-scope use. | [RC-006-1 to RC-006-2](#risk-controls). | Pending | Pending | Pending | Not assessed; controls unverified. | Undetermined; qualified review and disposition required. |
 
@@ -175,29 +175,28 @@ Individual effects cannot be added to calculate the overall post-control score.
 | RC-001-1 | Use an appropriate monotonic source during active execution instead of frames or callback counts. | Likelihood: reduce timing errors from callback delays or wall-clock changes during active execution. |
 | RC-001-2 | Prevent negative remaining time and duplicate completion. | Likelihood: reduce misleading timer states and repeated completion signals. |
 | RC-001-3 | Keep remaining-time visual semantics consistent across themes and platforms. | Likelihood: reduce misleading or inconsistent interpretation of progress. |
-| RC-001-4 | Implement the reviewed completion behavior; define manual pause/reset behavior before implementation. | Likelihood: establish consistent behavior that can be implemented and verified. Immediate reset to the configured duration and stopping optional music at completion are proposed, subject to review and approval. |
+| RC-001-4 | Start the countdown when valid settings are saved; pause it when Settings open; saving starts a new countdown at the full saved duration. At zero, reset immediately without a completed state. | Likelihood: explicit save/pause behavior avoids an implicit continuation while configuring settings. The selected behavior remains unimplemented and unverified. Music stop-at-zero applies only if music is introduced in v2. |
 
 ### RISK-002 controls
 
 | ID | Proposed control | Intended effect and rationale |
 |---|---|---|
-| RC-002-1 | Define interruption detection, persistence, and recovery requirements; choose recovery behavior through requirements and risk/UX review. | Likelihood: reduce undetected interruptions and incorrect recovery; effect depends on the chosen behavior and platform support. |
-| RC-002-2 | Distinguish running, paused, and interrupted states; at completion, reset immediately to the configured duration without displaying a completed state. Do not imply continuity when unknown. | Likelihood: reduce reliance on an apparently reliable state when timing continuity is uncertain; completion behavior is proposed and remains subject to review and approval. |
+| RC-002-1 | No interruption recovery behavior is provided or promised in v1. | This is an explicit product scope limitation, not a risk control or evidence of acceptable residual risk. |
+| RC-002-2 | Distinguish running, paused, and interrupted states; when continuity is uncertain, show an interrupted warning and do not imply current progress. At completion, reset immediately without a completed state. | Likelihood: the warning may reduce reliance on apparently reliable progress; effectiveness is unverified. |
 
 ### RISK-003 controls
 
 | ID | Proposed control | Intended effect and rationale |
 |---|---|---|
-| RC-003-1 | Define and review volume limits, sound initiation, and completion sounds; avoid sudden or unnecessarily loud audio. | Severity: seek to limit discomfort if sound occurs; likelihood: reduce unexpected or excessive sound. Actual effect depends on decisions and usability evidence. |
-| RC-003-2 | Preserve timer operation without music or internet. | Likelihood: reduce interruption of the wait when audio or connectivity fails. |
-| RC-003-3 | Define meaningful playback-failure presentation and do not show successful playback after failure. | Likelihood: reduce mistaken belief that playback succeeded; presentation remains undecided. |
+| RC-003-1 | Defer music, in-app volume controls, and completion sounds from v1; separately review and define audio behavior before v2 integration. | Scope exclusion avoids introducing audio behavior in v1; it does not reduce or accept the future audio risk. |
+| RC-003-2 | Keep timer operation independent of network connectivity. | Likelihood: avoid connectivity being a timer prerequisite; no v1 music is provided. |
+| RC-003-3 | Before v2 audio integration, define meaningful playback-failure presentation and do not show successful playback after failure. | Future requirement; no audio-failure control is implemented or verified in v1. |
 
 ### RISK-004 controls
 
 | ID | Proposed control | Intended effect and rationale |
 |---|---|---|
-| RC-004-1 | Define separate patient and caregiver capabilities and select and review a caregiver protection mechanism. | Likelihood: reduce unauthorized access to or alteration of caregiver settings; mechanism remains undecided. |
-| RC-004-2 | Preserve patient access to the approved volume control without exposing caregiver timer settings. | Likelihood: reduce settings exposure while allowing volume adjustment; design and limits remain undecided. |
+| RC-004-1 | Record the product owner's v1 decision to provide no caregiver-protection mechanism and retain the resulting risk for competent review; do not imply restricted access. | This records an explicit choice; it is not an implemented control or risk reduction. |
 
 ### RISK-005 controls
 
@@ -214,19 +213,24 @@ Individual effects cannot be added to calculate the overall post-control score.
 | RC-006-1 | Keep intended-use limits and claims consistent, exclude consequential timing from claims, and provide relevant limitations in product information. | Likelihood: seek to reduce reliance in out-of-scope situations; warnings alone do not ensure correct use. |
 | RC-006-2 | Escalate conflicting actual use, functions, or claims before affected work continues and reassess qualification when needed. | Likelihood: seek to prevent unresolved scope conflicts from continuing; effectiveness depends on detection and action. |
 
-## Decisions and follow-up
+## Product decisions and risk rationale
 
-The following behavior and control decisions remain unresolved and require
-requirements and risk/UX review, primarily in M2:
+The product owner supplied the following v1 decisions on 2026-11-17. These
+decisions are recorded as product scope; they do not complete the competent
+software-safety review or determine residual-risk acceptability.
 
-- manual pause/reset and interruption/recovery behavior; the proposed
-  immediate reset/music-stop completion behavior requires review and approval;
-- caregiver protection and patient access to timer settings;
-- volume limits, audio initiation, completion sounds, and playback-failure
-  presentation; and
-- the accessible presentation and validation of progress and timer states.
+| Decision | Product disposition | Scope rationale and remaining risk |
+|---|---|---|
+| D-01 — Caregiver protection | No caregiver-protection mechanism in v1; patients may access Settings and change duration/theme. The product owner accepts this exposure for now. | The v1 purpose is ordinary waiting-time support, not safety-critical timing, and Settings contain only duration/theme controls; however, unintended changes can cause confusion or extend/shorten a wait. No access control is credited and RISK-004 acceptability remains undetermined until competent review. Reassess before expanding Settings, adding personal data or audio accounts, or claiming broader use. |
+| D-02 — Volume controls | No in-app volume controls in v1; revisit only if a later product scope adds audio. | No audio is provided in v1, so there is no app playback volume to adjust. This avoids an unused control, but does not choose system-volume behavior or promise controls in v2. |
+| D-03 — Music and sound | Defer music integration and its start behavior to v2; no music or completion sound in v1. | With no v1 audio capability, there is no playback start or volume behavior to select or misrepresent. Provider, consent/data flow, playback restrictions, audio failure, and sound behavior require separate review before v2. |
+| D-04 — Settings lifecycle | Opening Settings while running pauses the countdown; saving valid settings starts a new countdown at the full saved duration. | The explicit save is the start action and avoids silently resuming a possibly changed configuration. Settings remain unprotected, and the behavior is not implemented or verified. |
+| D-05 — Interruption recovery | No recovery behavior is provided or promised in v1; retain an interrupted warning when continuity is uncertain. | The product will not claim continuity or reliable progress after interruption. Recovery is outside v1 scope, not an accepted RISK-002 residual-risk determination; assess before supporting platform lifecycle recovery or consequential timing. |
 
-Do not silently choose these behaviors during implementation. M1-DOC-005
+These are bounded product-scope justifications, not evidence that the risks
+are eliminated, controls are effective, or residual risk is acceptable. The
+user-facing non-medical and ordinary-waiting boundary remains essential; it
+does not remove the need for qualified review. M1-DOC-005
 revision 0.2 records that IEC 62304 software safety classification is not
 applicable to the defined non-medical software scope. These product risks and
 controls remain subject to their own qualified review and verification; this
@@ -244,11 +248,13 @@ That review has not occurred.
   walkthrough; this remains a blocking review gap. The reviewer appointment
   for M1-DOC-005 is scoped to IEC 62304 applicability and does not by itself
   complete this risk review.
-- No approved requirement IDs, implemented controls, residual-risk
-  assessments, verification results, or representative patient usability
-  findings exist in this record.
-- Initial ratings and proposed controls require competent review; no risk is
-  declared acceptable.
+- Requirement identifiers and product-owner decisions are now recorded in
+  M2-DOC-001 and M2-DOC-007, but this risk assessment remains a candidate.
+  No implemented controls, residual-risk assessments, or verification results
+  are evidenced.
+- The product owner has recorded a provisional scope decision for RISK-004;
+  no competent risk reviewer has accepted its residual risk. Initial ratings,
+  this rationale, and proposed controls require competent review.
 - The intended-use candidate's exact-revision approval and the qualification
   record's PR acceptance remain unresolved in their source documents. Issue
   closure or document lifecycle status does not establish that evidence.
@@ -267,3 +273,4 @@ they are not waived by this initial assessment.
 | 0.2 | Replace the proposed IEC 62304 classification dependency with the M1-DOC-005 non-applicability conclusion; retain the separate risk-review and verification gates |
 | 0.3 | Align proposed risk controls and open decisions with M2 requirements for caregiver-only Settings and immediate timer reset/music stop at completion; keep controls unverified and review pending |
 | 0.4 | Remove requirement-ID cross-references; retain the risk controls and verification here while requirement-risk-test links are maintained in the M2 traceability matrix |
+| 0.5 | Align risk scenarios and controls with the v1 product-owner decisions on Settings access, volume/audio scope, save-to-start pause behavior, and no interruption recovery; retain risk-review and verification gates. |

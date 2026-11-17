@@ -3,13 +3,13 @@
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-006 |
-| Revision | 0.5 |
+| Revision | 0.6 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Product usability, accessibility, and safeguarding/privacy reviewers: unassigned |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#24](https://github.com/Entreco/elchrono/issues/24) |
-| Review PR | Prior baseline: [PR #30](https://github.com/Entreco/elchrono/pull/30); revision 0.5: [PR #32](https://github.com/Entreco/elchrono/pull/32) |
+| Review PR | Prior baseline: [PR #30](https://github.com/Entreco/elchrono/pull/30) and [PR #32](https://github.com/Entreco/elchrono/pull/32); revision 0.6: [PR #33](https://github.com/Entreco/elchrono/pull/33) |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](../governance/document-control.md#lifecycle-and-approval).
@@ -23,7 +23,8 @@ remaining evidence gaps. The sessions reviewed
 merged through [PR #29](https://github.com/Entreco/elchrono/pull/29). The
 candidate requirement baseline for those sessions is
 [M2-DOC-001 revision 0.3](../product/requirements.md); the current v1 decisions
-are in revision 0.4 and were not part of those sessions.
+are in revision 0.5 and were not part of those sessions, including D-06's
+decision not to provide separate manual pause, resume, or reset controls.
 The applicable proposed risks are RISK-001 through RISK-005 in
 [M1-DOC-004 revision 0.5](../safety/risk-assessment.md).
 
@@ -121,8 +122,8 @@ estimates or evidence that all intended users share a preference.
 |---|---|---|---|---|
 | M2-DOC-006-G01 | M2-DOC-005 was created after the 2026-11-16 sessions and did not govern them. No pre-session protocol or prior protocol approval evidence was supplied. The facilitator reports consent/permission and safeguarding arrangements were in place, but their scope and review evidence are not documented here. | M2-DOC-005; all session findings | RISK-001 through RISK-005 | Process/evidence gap remains open. Do not present these sessions as having followed M2-DOC-005. Product owner to document the actual arrangements and obtain appropriate review of the retrospective evidence before relying on it. |
 | M2-DOC-006-G02 | No contemporaneous facilitator notes or recordings exist. Session details and feedback are based on facilitator recollection provided the following day; the Session B screenshots are the only retained session artifacts. | All session findings | RISK-005 | Limitation on detail and interpretation. Do not add unremembered prompts, responses, task outcomes, or participant attributes. |
-| M2-DOC-006-G03 | Only two people from the intended user population participated. The expected caregiver was unavailable; their reported delegation to Participant B is not direct caregiver feedback. The small qualitative sample does not establish representative preferences or caregiver workflow usability. | REQ-001 through REQ-006, REQ-008 through REQ-010; M2-DOC-004 | RISK-001 through RISK-005 | Owner @Entreco elects to skip a replacement caregiver session for this formative round under the bounded rationale above. Retain the caregiver evidence gap; reassess against the revised v1 workflow, especially unprotected Settings and save-to-start behavior. No milestone gate or risk-control verification is waived. |
-| M2-DOC-006-G04 | The sessions explored the interactive controls and shapes, but no reported evidence establishes comprehension of sequential duration entry, Settings-open pause/save-to-start, open Settings access, interruption behavior, completion behavior, or About content. Music and volume are not v1 capabilities and were not tested. | REQ-001 through REQ-006, REQ-008 through REQ-010; M2-DOC-004 static flows and prototype limits | RISK-001 through RISK-005 | Unresolved; revised settings and lifecycle behaviors were not part of the sessions. Do not claim these areas were tested. |
+| M2-DOC-006-G03 | Only two people from the intended user population participated. The expected caregiver was unavailable; their reported delegation to Participant B is not direct caregiver feedback. The small qualitative sample does not establish representative preferences or caregiver workflow usability. | REQ-001 through REQ-006, REQ-008 through REQ-010; M2-DOC-004 | RISK-001 through RISK-005 | Owner @Entreco elects to skip a replacement caregiver session for this formative round under the bounded rationale above. Retain the caregiver evidence gap; reassess against the revised v1 workflow, especially unprotected Settings, save-to-start behavior, and omission of separate manual timer controls. No milestone gate or risk-control verification is waived. |
+| M2-DOC-006-G04 | The sessions explored the interactive controls and shapes, but no reported evidence establishes comprehension of sequential duration entry, Settings-open pause/save-to-start, absence of separate manual pause/resume/reset controls, open Settings access, interruption behavior, completion behavior, or About content. Music and volume are not v1 capabilities and were not tested. | REQ-001 through REQ-006, REQ-008 through REQ-010; M2-DOC-004 static flows and prototype limits | RISK-001 through RISK-005 | Unresolved; revised settings and lifecycle behaviors were not part of the sessions. Do not claim these areas were tested. |
 | M2-DOC-006-G05 | No screen-reader, keyboard, touch, or other assistive-technology evaluation is reported. Viewport size and browser zoom for the clipped display are unknown. | REQ-003 through REQ-006; M2-DOC-004 revision 1.3 | RISK-005 | Accessibility and layout evidence remains incomplete. Investigate clipping across relevant viewport/layout conditions and evaluate applicable input methods separately; no conformance result is claimed. |
 
 RISK-001 through RISK-005 remain proposed and subject to review; these sessions
@@ -160,3 +161,4 @@ themselves establish completed validation.
 | 0.3 | Record the owner-reported caregiver unavailability and delegation, the decision to skip a replacement session for this formative round, and the bounded sufficiency rationale for continued M2 design iteration; retain caregiver evidence and milestone review gaps. |
 | 0.4 | Record the PR #32 prototype clipping correction with browser/layout verification pending; align the unresolved caregiver and untested-flow gaps with the revised v1 product scope without retroactively attributing feedback. |
 | 0.5 | Record the owner-reported clipping resolution and the Chrome layout check at 500 × 1000 px and 1440 × 1200 px; close the prototype-specific finding for those layouts while retaining the undefined supported-layout and actual-product verification gaps. |
+| 0.6 | Record that the current no-manual-controls decision was not included in the retrospective sessions; preserve the resulting usability evidence gaps. |

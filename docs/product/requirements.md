@@ -3,13 +3,13 @@
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-001 |
-| Revision | 0.4 |
+| Revision | 0.5 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Product requirements and accessibility reviewers: unassigned |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#22](https://github.com/Entreco/elchrono/issues/22) |
-| Review PR | [PR #32](https://github.com/Entreco/elchrono/pull/32) |
+| Review PR | Prior baseline: [PR #32](https://github.com/Entreco/elchrono/pull/32); current review: [PR #33](https://github.com/Entreco/elchrono/pull/33) |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](../governance/document-control.md#lifecycle-and-approval).
@@ -44,7 +44,7 @@ findings resolution, and acceptance are recorded.
 | ID | Requirement |
 |---|---|
 | REQ-001 | A caregiver shall be able to configure every whole-minute waiting duration from 00:01 through 24:00 using two numeric fields, Hours and Minutes, populated by sequential digits. The first digit enters the minute ones place, the second the minute tens place, and each subsequent digit shifts the existing digits left, moving them into the hour field. |
-| REQ-002 | Saving valid timer settings shall start the countdown from the saved duration. Opening Settings while a countdown is running shall pause it; saving Settings shall start a new countdown from the full saved duration. |
+| REQ-002 | Saving valid timer settings shall start the countdown from the saved duration. Opening Settings while a countdown is running shall pause it; saving valid Settings shall start a new countdown from the full saved duration. In v1, no separate manual pause, resume, or reset controls shall be provided; the Settings-open pause and valid-save start behavior are the only selected timer controls. |
 | REQ-003 | A patient shall be able to see the timer's remaining-time presentation while it is running, paused, or interrupted. Each available visualization shall specify whether it shows numeric remaining time, visual progress, or both; no visualization shall show a clock face or time of day. |
 | REQ-004 | The product shall provide Main, Settings, and About screens. Main shall contain the selected timer visualization; Settings shall provide controls for duration and theme; About shall contain the company logo, version/build details, support information, privacy policy, relevant licences, intended use, and limitations. Music integration and in-app volume controls are excluded from v1. |
 | REQ-005 | In v1, Settings shall not require a caregiver-protection mechanism. |
@@ -67,6 +67,7 @@ before v2 or any change to the intended use.
 | D-03 | Music start behavior and completion sounds | Music integration is deferred to v2; no music start behavior or in-app playback is needed in v1. No completion sound is included in v1; v2 audio behavior requires separate review and requirements. |
 | D-04 | Timer start, Settings opening, and saving | Saving valid Settings starts a countdown from the full saved duration. Opening Settings while running pauses the countdown; saving starts a new countdown from the full saved duration rather than resuming the prior remaining time. |
 | D-05 | Interruption detection and recovery | No interruption recovery behavior is provided or promised in v1. If timing continuity is uncertain, the product must not imply that progress is current; the usability/design limitation and RISK-002 remain subject to review. |
+| D-06 | Manual pause, resume, and reset controls | No separate manual pause, resume, or reset controls are included in v1. Opening Settings while running is the selected pause behavior; saving valid Settings is the only selected start/restart action and starts from the full saved duration. |
 
 Requirement REQ-007 was retired before approval at the product owner's
 direction; it must not be reused. No WCAG conformance baseline is selected by
@@ -103,3 +104,4 @@ does not establish that they were resolved.
 | 0.2 | Make duration entry whole-minute and digit-based; clarify caregiver start, patient visibility, Settings access, and theme selection; propose immediate timer reset and music stop at completion; retire ELC-REQ-007 and remove the WCAG baseline at the product owner's direction. |
 | 0.3 | Use REQ-NNN identifiers and keep the requirements register to requirement statements; assign acceptance criteria to the test protocol and requirement-risk-test links to the traceability matrix. |
 | 0.4 | Record the v1 product decisions for unprotected Settings, no volume controls, v2 music deferral, save-to-start/settings-open pause behavior, and no interruption recovery; retain competent review and verification gaps. |
+| 0.5 | Resolve the v1 manual pause/resume/reset decision: no separate controls; Settings-open pauses and valid Save starts from the full saved duration. |

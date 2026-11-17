@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M1-DOC-001 |
-| Revision | 2.36 |
+| Revision | 2.37 |
 | Product owner | @Entreco |
 | Document owner and approver | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
@@ -277,6 +277,7 @@ M1-DOC-003 records the qualified EU/US regulatory qualification conclusion.
 | M2-DOC-005 | [Usability review plan](../usability/usability-plan.md) | [#24](https://github.com/Entreco/elchrono/issues/24) | Owner @Entreco; revision 0.6 candidate in PR #41; current future-task scope aligns to the candidate requirements/design; created after two sessions and did not govern them |
 | M2-DOC-006 | [Usability findings and evidence status](../usability/usability-findings.md) | [#24](https://github.com/Entreco/elchrono/issues/24) | Owner @Entreco; revision 0.6 candidate in PR #41; records two retrospective sessions, no caregiver session, and limited prototype layout checks; supported-layout, accessibility, and review gaps remain |
 | M2-DOC-007 | [M2 evidence baseline review and M3 handoff](m2-evidence-handoff.md) | [#26](https://github.com/Entreco/elchrono/issues/26) | Owner @Entreco; revision 0.8 candidate in PR #41; reconciles merged PR #32 acceptance scope, current M2 source revisions, D-06, and remaining gate blockers; no M2 approval claimed |
+| M3-DOC-001 | [Browser and desktop platform feasibility findings](../architecture/platform-feasibility-findings.md) | [#33](https://github.com/Entreco/elchrono/issues/33) | Owner @Entreco; revision 0.1 candidate records macOS/Chrome browser and desktop prototype results; default browser port 8080 was occupied, additional hosts and offline startup were not tested, review PR pending; no support baseline or M2 approval claimed |
 
 For each created record, replace its reserved path with a working link and record
 its owner, revision, review PR, and commit-pinned merged baseline when available.
@@ -392,3 +393,4 @@ merge, or the Approved and effective lifecycle status.
 | 2.34 | Align the evidence index with updated usability-plan and requirements-traceability revisions; retain the blocked M2 gate and review requirements |
 | 2.35 | Clarify that the limited prototype layout probe and agent integration review do not substitute for complete product verification or specialist acceptance |
 | 2.36 | Reconcile merged PR #32 acceptance scope and index the PR #41 M2 gate-review candidate, including the manual timer-controls decision and retained limitations |
+| 2.37 | Reserve and index M3-DOC-001 with issue #33 browser/desktop findings and retain the host, default-port, offline, and review limitations |

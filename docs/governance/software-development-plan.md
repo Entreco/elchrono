@@ -3,13 +3,13 @@
 | Field | Value |
 |---|---|
 | Document ID | M1-DOC-007 |
-| Revision | 0.5 |
+| Revision | 0.6 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Software development/lifecycle reviewer: unassigned; software-safety reviewer for risk-process scope: unassigned; other review scopes as assigned below |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#7](https://github.com/Entreco/elchrono/issues/7); duration-verification update in [#22](https://github.com/Entreco/elchrono/issues/22) |
-| Review PR | [PR #20](https://github.com/Entreco/elchrono/pull/20); issue #22 update PR pending |
+| Review PR | [PR #20](https://github.com/Entreco/elchrono/pull/20); issue #22 update in [PR #32](https://github.com/Entreco/elchrono/pull/32) |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [Lifecycle and approval](document-control.md#lifecycle-and-approval).
@@ -55,7 +55,7 @@ decisions from candidate records and unresolved evidence.
 | Standards and documentation applicability | [M1-DOC-006 revision 0.1 at its accepted PR #18 merge](https://github.com/Entreco/elchrono/blob/4e695cbdce992cedf7de2751448115aa74f2d3ab/docs/governance/applicability-matrix.md), accepted at PR #18 head `fce218225968af2e1f5b2c766186b1a1eb0c9835`. [Revision 0.2 at the preparation baseline](https://github.com/Entreco/elchrono/blob/6d2cd083155d247786fbc9d7cac44421eed03bfe/docs/governance/applicability-matrix.md) reconciles that evidence in PR #19, but its acceptance record still has the human and reviewed-head fields pending. | The accepted revision establishes the matrix's scoped decisions and staged applicability gates. Use revision 0.2 as current context, not as proof of fresh acceptance. Pending legal, privacy, accessibility, cybersecurity, and market determinations remain gates before affected work or distribution. |
 | Intended use | M1-DOC-002 revision 0.8 is the current candidate on this change branch; its exact-revision approval evidence is unresolved. The assessed revision 0.6 is cited at commit `9b5054691ae14a08fcbf591a6b0f073e49c54b79`. | Preserve its ordinary-waiting, non-medical boundary and exclusions as proposed scope. Do not describe the current intended-use candidate as approved or use it as an approved input until its required acceptance is evidenced. |
 | Qualification and target-market assessment | [M1-DOC-003 revision 0.6 at the preparation baseline](https://github.com/Entreco/elchrono/blob/6d2cd083155d247786fbc9d7cac44421eed03bfe/docs/regulatory/qualification-and-classification.md) records a qualified EU/US conclusion against M1-DOC-002 revision 0.6. Its human acceptance remains pending. | Use only within the reviewed scope; do not extend it to unselected states, channels, functions, or markets. Resolve exact-revision acceptance and assigned applicability follow-ups before affected work or distribution. |
-| Initial risks and risk traceability | M1-DOC-004 revision 0.4 and M1-DOC-009 revision 0.4 are candidates. The required risk walkthrough/review is pending; controls, residual risks, and verification are not established. | Treat listed risks and controls as proposed. RISK-002 is used for the process walkthrough below, not as an approved risk disposition or proof of a verified recovery control. |
+| Initial risks and risk traceability | M1-DOC-004 revision 0.5 and M1-DOC-009 revision 0.7 are candidates in PR #32. The required risk walkthrough/review is pending; controls, residual risks, and verification are not established. | Treat listed risks and controls as proposed. RISK-002 is used for the process walkthrough below, not as an approved risk disposition or proof of a verified recovery control. |
 | Software-safety applicability | [M1-DOC-005 revision 0.2 at the accepted PR #16 head](https://github.com/Entreco/elchrono/blob/2a8791c9a1cf76a96768e3033a88af3f51f81732/docs/safety/software-safety-classification.md), accepted at head `dc01e2ebc25f1458ef0a9a901a28128cdf7464ea`. [Revision 0.3 at the preparation baseline](https://github.com/Entreco/elchrono/blob/6d2cd083155d247786fbc9d7cac44421eed03bfe/docs/safety/software-safety-classification.md) records that acceptance in the current record. | Use the non-applicability conclusion for the defined scope only. Reassess if purpose, functions, claims, or qualification change; do not assign an IEC 62304 class by default. |
 | Document and review controls | [M1-DOC-001 revision 2.1 at the preparation baseline](https://github.com/Entreco/elchrono/blob/6d2cd083155d247786fbc9d7cac44421eed03bfe/docs/governance/document-control.md); this change updates its evidence index in candidate revision 2.2. Its PR #19 acceptance identity/head and other specialist-review evidence remain unresolved. | Apply its exact-revision, reviewer-competence, PR acceptance, change-impact, issue-closure, and lifecycle rules. Review M1-DOC-001 revision 2.2 with this change; do not represent its historical evidence gaps as resolved by this plan. |
 
@@ -258,7 +258,7 @@ does not count as that independent human review.
 
 - M1-DOC-002 revision 0.8 and M1-DOC-003 revision 0.6 do not yet have
   evidenced exact-revision human acceptance in their records.
-- M1-DOC-004 revision 0.4 and M1-DOC-009 revision 0.5 remain candidates; the
+- M1-DOC-004 revision 0.5 and M1-DOC-009 revision 0.7 remain candidates; the
   required risk walkthrough/review is pending, and no proposed control,
   residual risk, or verification result is established.
 - M1-DOC-006 revision 0.1 is the exact accepted applicability-matrix input.
@@ -288,3 +288,4 @@ not by itself prove these reviews, verification, or M1 completion.
 | 0.3 | Align M2/M5 lifecycle gates with available-theme selection, caregiver-only Settings, and the proposed immediate reset/music-stop completion behavior; keep required reviews pending. |
 | 0.4 | Separate M2 requirement statements, protocol acceptance criteria, and complete traceability relationships into their respective controlled records. |
 | 0.5 | Reconcile the current M1 risk-record revisions and the M2 requirements/test/traceability document structure. |
+| 0.6 | Update the M1 risk source revisions for the recorded v1 product decisions; preserve pending risk review, verification, and approval gates. |

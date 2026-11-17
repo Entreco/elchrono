@@ -113,8 +113,8 @@
         ? String(Math.round(durationSeconds * fraction))
         : String(Math.round(durationSeconds / 60 * fraction * 10) / 10);
       const angle = index / sections * 2 * Math.PI - Math.PI / 2;
-      label.style.left = `calc(${50 + Math.cos(angle) * 50}% + ${Math.cos(angle) * 32}px)`;
-      label.style.top = `calc(${50 + Math.sin(angle) * 50}% + ${Math.sin(angle) * 32}px)`;
+      label.style.left = `calc(${50 + Math.cos(angle) * 50}% + ${Math.cos(angle) * 20}px)`;
+      label.style.top = `calc(${50 + Math.sin(angle) * 50}% + ${Math.sin(angle) * 20}px)`;
       label.setAttribute("aria-hidden", "true");
       diskLabels.append(label);
     }

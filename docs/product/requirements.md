@@ -3,13 +3,13 @@
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-001 |
-| Revision | 0.3 |
+| Revision | 0.4 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Product requirements and accessibility reviewers: unassigned |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#22](https://github.com/Entreco/elchrono/issues/22) |
-| Review PR | Pending |
+| Review PR | [PR #32](https://github.com/Entreco/elchrono/pull/32) |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](../governance/document-control.md#lifecycle-and-approval).
@@ -44,28 +44,29 @@ findings resolution, and acceptance are recorded.
 | ID | Requirement |
 |---|---|
 | REQ-001 | A caregiver shall be able to configure every whole-minute waiting duration from 00:01 through 24:00 using two numeric fields, Hours and Minutes, populated by sequential digits. The first digit enters the minute ones place, the second the minute tens place, and each subsequent digit shifts the existing digits left, moving them into the hour field. |
-| REQ-002 | A caregiver shall be able to start the countdown after configuring a valid duration. |
+| REQ-002 | Saving valid timer settings shall start the countdown from the saved duration. Opening Settings while a countdown is running shall pause it; saving Settings shall start a new countdown from the full saved duration. |
 | REQ-003 | A patient shall be able to see the timer's remaining-time presentation while it is running, paused, or interrupted. Each available visualization shall specify whether it shows numeric remaining time, visual progress, or both; no visualization shall show a clock face or time of day. |
-| REQ-004 | The product shall provide Main, Settings, and About screens. Main shall contain the selected timer visualization and accessible volume control; Settings shall provide caregiver controls for duration, theme, and optional music; About shall contain the company logo, version/build details, support information, privacy policy, relevant licences, intended use, and limitations. |
-| REQ-005 | Only a caregiver shall be able to access Settings and its duration, theme, and music controls. A patient shall be able to change volume from Main without accessing Settings. |
+| REQ-004 | The product shall provide Main, Settings, and About screens. Main shall contain the selected timer visualization; Settings shall provide controls for duration and theme; About shall contain the company logo, version/build details, support information, privacy policy, relevant licences, intended use, and limitations. Music integration and in-app volume controls are excluded from v1. |
+| REQ-005 | In v1, Settings shall not require a caregiver-protection mechanism. |
 | REQ-006 | A caregiver shall be able to select a theme from the themes available in Settings. |
-| REQ-008 | Timer operation and remaining-time presentation shall not depend on music or internet connectivity. Audio failure shall not interrupt the timer or be represented as successful playback. |
+| REQ-008 | Timer operation and remaining-time presentation shall not depend on internet connectivity. Music integration and associated playback-failure handling are deferred to v2 and are not v1 capabilities. |
 | REQ-009 | Product screens and user-facing claims shall describe ordinary waiting-time support only; they shall not present El Chrono as a clock, deadline guarantee, medical function, or safety-critical timer. |
-| REQ-010 | When the countdown reaches zero, the timer shall reset immediately to the configured duration and optional music playback shall stop. The product shall not display a completed timer state. |
+| REQ-010 | When the countdown reaches zero, the timer shall reset immediately to the configured duration and shall not display a completed timer state. If optional music is introduced in v2, playback shall stop at zero. |
 
-## Decisions that remain open
+## Product decisions and scope
 
-The following are decision records, not implied defaults or additional
-requirements. Resolve them through product, risk, and UX review before the
-affected behavior is designed for implementation:
+The following product-owner decisions were provided on 2026-11-17 and are
+recorded here as v1 scope. They do not establish competent risk acceptance,
+design approval, or verification. Reassess affected risks and requirements
+before v2 or any change to the intended use.
 
 | ID | Decision | Current disposition |
 |---|---|---|
-| D-01 | Caregiver protection mechanism | Open. Settings are caregiver-only by REQ-005; the protection mechanism remains undecided. |
-| D-02 | Patient-accessible and caregiver-configured volume limits | Open. |
-| D-03 | Music start behavior and whether to provide any completion sound | Open. Music remains optional; no completion sound is authorized by this record. Provider-specific details remain for later platform review. |
-| D-04 | Manual pause and reset behavior | Open. Automatic reset on completion is specified in REQ-010; manual pause/reset behavior is not selected here. |
-| D-05 | Interruption detection and recovery after backgrounding, sleep, process termination, restart, or wall-clock changes | Open. No recovery behavior is selected here. |
+| D-01 | Caregiver protection mechanism | Product owner accepts the risk of unprotected Settings for v1; Settings may be accessed by patients. No control or risk reduction is claimed. Competent review of RISK-004 and the acceptance rationale remains pending. |
+| D-02 | Volume controls and limits | No in-app volume controls are included in v1. Reassess if audio is introduced in a later version; this decision does not promise volume controls in v2. |
+| D-03 | Music start behavior and completion sounds | Music integration is deferred to v2; no music start behavior or in-app playback is needed in v1. No completion sound is included in v1; v2 audio behavior requires separate review and requirements. |
+| D-04 | Timer start, Settings opening, and saving | Saving valid Settings starts a countdown from the full saved duration. Opening Settings while running pauses the countdown; saving starts a new countdown from the full saved duration rather than resuming the prior remaining time. |
+| D-05 | Interruption detection and recovery | No interruption recovery behavior is provided or promised in v1. If timing continuity is uncertain, the product must not imply that progress is current; the usability/design limitation and RISK-002 remain subject to review. |
 
 Requirement REQ-007 was retired before approval at the product owner's
 direction; it must not be reused. No WCAG conformance baseline is selected by
@@ -86,11 +87,13 @@ accessibility standard or conformance baseline. Accessibility and usability
 review under the project's general requirements remains necessary before
 approval and implementation.
 
-Other evidence gaps include the exact-revision approval of the intended-use
-record, the required review of the risk assessment, appointment of competent
-requirements/accessibility reviewers, and decisions D-01 through D-05. Keep
-these gaps visible in review and downstream traceability; issue closure or
-document lifecycle does not establish that they were resolved.
+Other evidence gaps include exact-revision approval of the intended-use record,
+the required review of the risk assessment, appointment of competent
+requirements/accessibility reviewers, and the review/verification needed for
+these product decisions. In particular, the product owner's D-01 disposition
+does not replace qualified review or formally determine RISK-004
+acceptability. Keep these gaps visible; issue closure or document lifecycle
+does not establish that they were resolved.
 
 ## Revision history
 
@@ -99,3 +102,4 @@ document lifecycle does not establish that they were resolved.
 | 0.1 | Establish the initial proposed requirements and explicit open decisions for issue #22; define the ELC-REQ-NNN identifier scheme and record initial accessibility criteria as a voluntary project baseline without claiming legal applicability or conformance. |
 | 0.2 | Make duration entry whole-minute and digit-based; clarify caregiver start, patient visibility, Settings access, and theme selection; propose immediate timer reset and music stop at completion; retire ELC-REQ-007 and remove the WCAG baseline at the product owner's direction. |
 | 0.3 | Use REQ-NNN identifiers and keep the requirements register to requirement statements; assign acceptance criteria to the test protocol and requirement-risk-test links to the traceability matrix. |
+| 0.4 | Record the v1 product decisions for unprotected Settings, no volume controls, v2 music deferral, save-to-start/settings-open pause behavior, and no interruption recovery; retain competent review and verification gaps. |

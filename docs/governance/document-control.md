@@ -280,6 +280,11 @@ For each created record, replace its reserved path with a working link and recor
 its owner, revision, review PR, and commit-pinned merged baseline when available.
 Document owners keep the index consistent with the records.
 
+The issue #24 updates to M1-DOC-001 revision 2.25, M2-DOC-003 revision 1.7,
+and M2-DOC-005/006 revision 0.3 are submitted in
+[PR #30](https://github.com/Entreco/elchrono/pull/30); required review and
+human acceptance remain pending.
+
 ## Initial process walkthrough
 
 This is an author walkthrough of this record, not a human review.

@@ -9,7 +9,7 @@
 | Required reviewers | Requirements and software-safety reviewers: unassigned |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#25](https://github.com/Entreco/elchrono/issues/25) |
-| Review PR | M2-DOC-003 revision 1.4 in [PR #29](https://github.com/Entreco/elchrono/pull/29); current revision pending |
+| Review PR | M2-DOC-003 revision 1.4 in [PR #29](https://github.com/Entreco/elchrono/pull/29); revision 1.7 in [PR #30](https://github.com/Entreco/elchrono/pull/30) |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](../governance/document-control.md#lifecycle-and-approval).

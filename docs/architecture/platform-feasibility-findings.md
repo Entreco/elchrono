@@ -3,13 +3,13 @@
 | Field | Value |
 |---|---|
 | Document ID | M3-DOC-001 |
-| Revision | 0.1 |
+| Revision | 0.2 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Platform feasibility and browser/desktop scopes; appointments and competence confirmation pending |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#33](https://github.com/Entreco/elchrono/issues/33) |
-| Review PR | Pending; link the review PR when opened |
+| Review PR | [PR #42](https://github.com/Entreco/elchrono/pull/42) (draft; required review scopes pending) |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](../governance/document-control.md#lifecycle-and-approval).
@@ -112,3 +112,4 @@ implementation. No platform support baseline is selected by these findings.
 | Revision | Change |
 |---|---|
 | 0.1 | Record issue #33 browser and desktop prototype evidence, tested host/tool versions, and remaining platform-feasibility limitations. |
+| 0.2 | Link draft review PR #42; required reviewer scopes and human acceptance remain pending. |

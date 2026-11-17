@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M1-DOC-001 |
-| Revision | 2.22 |
+| Revision | 2.25 |
 | Product owner | @Entreco |
 | Document owner and approver | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
@@ -271,12 +271,19 @@ M1-DOC-003 records the qualified EU/US regulatory qualification conclusion.
 | M1-DOC-009 | [Risk traceability matrix](../safety/risk-traceability-matrix.md) | [#4](https://github.com/Entreco/elchrono/issues/4) | Owner @Entreco; revision 0.5 candidate aligns planned verification with the proposed 1-minute duration range and digit entry; M2 requirement-risk-test links are maintained in M2-DOC-003; [PR #14](https://github.com/Entreco/elchrono/pull/14) is prior review evidence; planned verification and test evidence pending; software-safety reviewer unassigned |
 | M2-DOC-001 | [Product requirements](../product/requirements.md) | [#22](https://github.com/Entreco/elchrono/issues/22) | Owner @Entreco; revision 0.3 candidate; nine proposed requirements using REQ-NNN IDs, including whole-minute durations from 1 minute to 24 hours and sequential Hours/Minutes entry; REQ-007 is retired and not reusable; source-record approval and requirements reviewer remain pending |
 | M2-DOC-002 | [Product test protocol](../testing/test-protocol.md) | [#25](https://github.com/Entreco/elchrono/issues/25) | Owner @Entreco; revision 0.1 candidate; planned test procedures and acceptance criteria for REQ-001 through REQ-006 and REQ-008 through REQ-010; test execution and review pending |
-| M2-DOC-003 | [Requirements traceability matrix](../safety/requirements-traceability-matrix.md) | [#25](https://github.com/Entreco/elchrono/issues/25) | Owner @Entreco; revision 1.4 candidate; links requirements to intended use, risks, design/usability evidence (including the interactive preview), test cases, and verification evidence; mappings and evidence remain pending |
-| M2-DOC-004 | [Accessible screen flows and theme prototypes](../design/accessible-screen-flows-and-theme-prototypes.md) | [#23](https://github.com/Entreco/elchrono/issues/23) | Owner @Entreco; revision 1.3 candidate submitted for review in [PR #29](https://github.com/Entreco/elchrono/pull/29); revision 0.2 reviewed in merged [PR #28](https://github.com/Entreco/elchrono/pull/28); local prototype has one shape selector, shared colors, independent remaining and Off/2–12-section details controls, duration-based circular labels, conditional thickness, battery divisions, and a fixed-edge fan sweep; usability/specialist reviews pending |
+| M2-DOC-003 | [Requirements traceability matrix](../safety/requirements-traceability-matrix.md) | [#25](https://github.com/Entreco/elchrono/issues/25) | Owner @Entreco; revision 1.7 candidate; traces two facilitator-reported sessions, Clock clipping, the caregiver-participation limitation, and bounded formative sufficiency rationale; mappings and review remain pending |
+| M2-DOC-004 | [Accessible screen flows and theme prototypes](../design/accessible-screen-flows-and-theme-prototypes.md) | [#23](https://github.com/Entreco/elchrono/issues/23) | Owner @Entreco; revision 1.3 in merged [PR #29](https://github.com/Entreco/elchrono/pull/29); revision 0.2 reviewed in merged [PR #28](https://github.com/Entreco/elchrono/pull/28); local prototype has one shape selector, shared colors, independent remaining and Off/2–12-section details controls, duration-based circular labels, conditional thickness, battery divisions, and a fixed-edge fan sweep; usability/specialist reviews pending |
+| M2-DOC-005 | [Usability review plan](../usability/usability-plan.md) | [#24](https://github.com/Entreco/elchrono/issues/24) | Owner @Entreco; revision 0.3 candidate; proposes participant criteria, safeguarding prerequisites, neutral tasks, and privacy-limited evidence handling; links the limited formative disposition; created after two sessions and did not govern them |
+| M2-DOC-006 | [Usability findings and evidence status](../usability/usability-findings.md) | [#24](https://github.com/Entreco/elchrono/issues/24) | Owner @Entreco; revision 0.3 candidate; two facilitator-reported sessions and Session B screenshots; records caregiver unavailability and the owner's decision to skip a replacement for this formative round; supports continued iteration only, with Clock clipping, process gaps, and milestone review gates retained |
 
 For each created record, replace its reserved path with a working link and record
 its owner, revision, review PR, and commit-pinned merged baseline when available.
 Document owners keep the index consistent with the records.
+
+The issue #24 updates to M1-DOC-001 revision 2.25, M2-DOC-003 revision 1.7,
+and M2-DOC-005/006 revision 0.3 are submitted in
+[PR #30](https://github.com/Entreco/elchrono/pull/30); required review and
+human acceptance remain pending.
 
 ## Initial process walkthrough
 
@@ -361,3 +368,6 @@ merge, or the Approved and effective lifecycle status.
 | 2.20 | Index unified prototype shape selection and shared settings with retained conditional options |
 | 2.21 | Index independent remaining/progress controls, shape markers, and fixed-edge fan sweep |
 | 2.22 | Index Show details section slider and configured-duration subdivision labels |
+| 2.23 | Reserve M2-DOC-005 and M2-DOC-006 for issue #24; index the usability protocol and evidence-gap record and update M2 traceability for the prototype revision 1.3 baseline |
+| 2.24 | Update M2-DOC-005 to clarify it postdates the sessions; index M2-DOC-006 revision 0.2 and M2-DOC-003 revision 1.6 with session feedback, screenshots, and evidence limitations |
+| 2.25 | Index the caregiver-participation explanation and bounded formative sufficiency rationale in M2-DOC-005/006 revision 0.3 and M2-DOC-003 revision 1.7; retain milestone and review gates |

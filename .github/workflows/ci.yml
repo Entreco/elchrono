@@ -1,0 +1,40 @@
+name: Kotlin CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  linux:
+    name: Linux build and checks
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Discover modules
+        run: ./kotlin show modules
+
+      - name: Build JVM targets
+        run: ./kotlin build -p jvm
+
+      - name: Build browser Wasm target
+        run: ./kotlin build -m browser
+
+      - name: Run JVM tests
+        run: ./kotlin test -p jvm -m common -m localization
+
+      - name: Run checks
+        run: ./kotlin check -m common -m localization

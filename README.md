@@ -79,6 +79,60 @@ Desktop launch is verified on the current macOS host; other desktop operating
 systems require their own packaging/verification. Android TV, Apple TV, Wear OS,
 and watchOS remain planned, not configured targets.
 
+## Developer setup and CI
+
+The checked-in `kotlin` and `kotlin.bat` wrappers pin Kotlin Toolchain 0.13.0
+and verify its distribution checksum. The first invocation downloads the
+toolchain and its runtime, so network access is required; a global Kotlin or
+Gradle installation is not required. Project configuration is kept in
+`project.yaml`, each module's `module.yaml`, and `libs.versions.toml`.
+Examples below use `./kotlin` on macOS/Linux; use `kotlin.bat` on Windows.
+
+Keep machine-specific paths and credentials outside tracked files. Set
+platform-specific SDK paths in the local shell or CI environment (for example,
+`ANDROID_HOME` or `ANDROID_SDK_ROOT` for Android). The wrapper's optional
+`KOTLIN_CLI_*` overrides are also environment configuration, not project
+configuration. Build outputs and Kotlin caches are ignored. Do not commit
+signing keys, tokens, patient data, local environment files, or `.idea` project
+models; project policy permits only intentionally shared
+`.idea/codeStyles/` and `.idea/inspectionProfiles/` files.
+The CI workflow needs no repository secrets and requests only `contents: read`.
+
+`.github/workflows/ci.yml` runs for pull requests and pushes to `main` on
+`ubuntu-24.04` with Java 17. It discovers all declared modules, builds the JVM
+targets and browser Wasm target in separate invocations, and runs the existing
+common/localization JVM tests and checks. The exact CI commands are:
+
+```sh
+./kotlin show modules
+./kotlin build -p jvm
+./kotlin build -m browser
+./kotlin test -p jvm -m common -m localization
+./kotlin check -m common -m localization
+```
+
+Observed on the current macOS worktree: a first-use wrapper bootstrap with an
+empty `KOTLIN_CLI_BOOTSTRAP_CACHE_DIR` downloaded the pinned toolchain/runtime
+and listed all ten declared modules. Both build commands, the JVM test command,
+and the check command completed successfully; the test command passed all four
+tests.
+
+Combining the JVM and Wasm builds in one `./kotlin build -p jvm -p wasmJs`
+invocation produced a Kotlin Toolchain `FileAlreadyExistsException` while
+extracting the shared Wasm Skiko runtime; running the platform builds
+separately succeeded. The GitHub-hosted workflow has not yet run for this
+branch, so its result remains pending. `./kotlin build -m android` also
+completed successfully on this macOS host with its installed Android SDK; no
+Android device launch was attempted.
+
+CI does not provision an Android SDK or run Android builds, emulator/device
+launches, or iOS builds. Android builds can be run on a suitably provisioned
+host with `./kotlin build -m android`; iOS compilation and simulator work
+require macOS and Xcode. Physical-device installation may additionally require
+signing. CI cannot establish support for other desktop operating systems,
+Android TV, Apple TV, Wear OS, or watchOS; TV and watch remain unconfigured
+targets.
+
 See [AGENTS.md](./AGENTS.md) for project goals, platform targets, accessibility
 requirements, voluntary documentation controls, and development instructions.
 

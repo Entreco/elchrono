@@ -120,8 +120,8 @@ tests.
 Combining the JVM and Wasm builds in one `./kotlin build -p jvm -p wasmJs`
 invocation produced a Kotlin Toolchain `FileAlreadyExistsException` while
 extracting the shared Wasm Skiko runtime; running the platform builds
-separately succeeded. The GitHub-hosted workflow has not yet run for this
-branch, so its result remains pending. `./kotlin build -m android` also
+separately succeeded. The GitHub-hosted [CI run for PR #51](https://github.com/Entreco/elchrono/actions/runs/44389945776)
+passed all workflow steps. `./kotlin build -m android` also
 completed successfully on this macOS host with its installed Android SDK; no
 Android device launch was attempted.
 

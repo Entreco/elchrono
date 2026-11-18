@@ -133,6 +133,7 @@ signing. CI cannot establish support for other desktop operating systems,
 Android TV, Apple TV, Wear OS, or watchOS; TV and watch remain unconfigured
 targets.
 
+
 See [AGENTS.md](./AGENTS.md) for project goals, platform targets, accessibility
 requirements, voluntary documentation controls, and development instructions.
 

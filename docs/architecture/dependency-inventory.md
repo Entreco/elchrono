@@ -1,0 +1,169 @@
+# Dependency and third-party component inventory
+
+| Field | Value |
+|---|---|
+| Document ID | M3-DOC-005 |
+| Revision | 0.1 |
+| Document owner | @Entreco |
+| Author | Copilot; human accountability remains with the owner |
+| Required reviewers | Architecture/dependency, licensing, and security reviewers as applicable; appointments and competence confirmation pending |
+| Approver | @Entreco, after required reviews and findings resolution |
+| Related issue | [#38](https://github.com/Entreco/elchrono/issues/38) |
+| Review PR | [PR #52](https://github.com/Entreco/elchrono/pull/52); required specialist reviews and human acceptance pending |
+
+Lifecycle status is derived from the branch and PR context, not stored in this
+table. See [document controls](../governance/document-control.md#lifecycle-and-approval).
+
+## Purpose and limits
+
+This is the initial inventory of external dependencies directly declared by
+El Chrono's module manifests, with a proportionate preliminary assessment of
+their roles, provenance, published licence metadata, maintenance evidence, and
+open actions. It also records the build-tool-managed Kotlin runtime used by
+the current modules. It is a voluntary engineering control, not a claim that
+IEC 62304 applies or is followed, not a safety classification, and not a
+completed legal, security, or licence review.
+
+The inventory is limited to the configured ten modules in `project.yaml` and
+their current direct production/test declarations. It does not attempt to
+inventory every transitive dependency, operating-system component, compiler
+plug-in, SDK, browser engine, or provider component. A resolved dependency
+graph is used to confirm direct versions and platform variants; the graph
+includes many transitive dependencies that are outside this record's direct
+inventory scope. Re-run the discovery and review when module manifests,
+versions, targets, toolchain defaults, or distribution choices change.
+
+The current app is a starter screen, not an implemented timer. No dependency
+assessment here establishes application behavior, support, or release
+readiness. No dependency update is made by this record.
+
+## Evidence basis
+
+Repository configuration and resolution were inspected on 2026-11-18:
+
+| Evidence | Observed result and limit |
+|---|---|
+| [`project.yaml`](../../project.yaml) and the ten `module.yaml` files | Establish configured module paths and direct declaration scopes, including the JVM test-only declarations in `core/localization/module.yaml`. |
+| [`libs.versions.toml`](../../libs.versions.toml) | Establishes catalog versions for AndroidX Activity, AndroidX Lifecycle, Kotlin Coroutines, and Logback. |
+| `./kotlin show modules` | Resolved the ten configured modules. |
+| `./kotlin show dependencies --all-modules --include-tests` | Resolved module/platform dependency graphs; confirms versions and the macOS ARM64 selection of `currentOs` on the inspected host. The generated report is not retained as a controlled artifact. |
+| `./kotlin show settings -m android -m ios` | Reports Kotlin 2.4.20, Compose 1.12.1, Android `versionCode` 1 and `versionName` `unspecified` defaults. These defaults are not release approval. |
+| Published POMs and upstream release pages linked below | Provide publisher-declared license, source, version, or release-history evidence. A published POM or release does not establish a support SLA, suitability, or legal approval. |
+
+Declared internal module dependencies are first-party project modules, not
+third-party components; they are not repeated in the external component table.
+Toolchain-generated Kotlin test libraries and the JUnit test engine are
+distinguished from dependencies explicitly declared in `module.yaml`. Their
+versions may change with the Kotlin Toolchain and test configuration.
+
+## Direct external dependencies
+
+The module names below are the unique leaf selectors reported by the Kotlin
+Toolchain. The `module.yaml` files remain the source of truth for module
+ownership and dependency scope. `main` means declared for production
+compilation; `jvmTest` means declared only for the JVM tests.
+
+| Declaration / resolved component | Direct module scope | Version and provenance | Published licence metadata | Preliminary SOUP assessment and open action |
+|---|---|---|---|---|
+| `$compose.runtime`, `org.jetbrains.compose.runtime:runtime` | `common`, `design`, `music`, `settings`, `timer` (`main`); also toolchain-added in Compose-enabled source sets | 1.12.1; resolved by the Kotlin Toolchain's Compose defaults | Apache-2.0; [published POM](https://repo.maven.apache.org/maven2/org/jetbrains/compose/runtime/runtime/1.12.1/runtime-1.12.1.pom) | Core Compose composition/runtime dependency. Changes can affect all rendered feature surfaces; require targeted cross-platform build and UI verification after updates. JetBrains' release feed displayed 1.13.0-rc01 on the review date, a prerelease; select and review a supported release before product release rather than upgrading automatically. |
+| `$compose.foundation`, `org.jetbrains.compose.foundation:foundation` | `common` (`main`) | 1.12.1; Compose Toolchain | Apache-2.0; [published POM](https://repo.maven.apache.org/maven2/org/jetbrains/compose/foundation/foundation/1.12.1/foundation-1.12.1.pom) and [release history](https://github.com/JetBrains/compose-multiplatform/releases) | Shared layout/input foundation. Cross-platform UI impact is material; validate interaction and accessibility after changes. No platform support or release approval follows from its presence. |
+| `$compose.material3`, `org.jetbrains.compose.material3:material3` | `common`, `design` (`main`) | 1.12.0-alpha03; Compose Toolchain | Apache-2.0; [published POM](https://repo.maven.apache.org/maven2/org/jetbrains/compose/material3/material3/1.12.0-alpha03/material3-1.12.0-alpha03.pom) | Direct dependency is explicitly an alpha release. Review API/stability and the intended stable-version policy before relying on it in a shipped UI; no change is made here. |
+| `$compose.ui`, `org.jetbrains.compose.ui:ui` | `browser`, `common`, `ios`, `music`, `settings`, `timer` (`main`) | 1.12.1; Compose Toolchain | Apache-2.0; [published POM](https://repo.maven.apache.org/maven2/org/jetbrains/compose/ui/ui/1.12.1/ui-1.12.1.pom) and [release history](https://github.com/JetBrains/compose-multiplatform/releases) | Rendering/input dependency across configured app targets. High product-surface impact; validate rendering, semantics, keyboard/touch, and platform-specific behavior on updates. TV/watch support is not established by the configured modules. |
+| `$compose.components.resources`, `org.jetbrains.compose.components:components-resources` | `common`, `design`, `localization` (`main`); also added to Compose-enabled source sets | 1.12.1; Compose Toolchain | Apache-2.0; [published POM](https://repo.maven.apache.org/maven2/org/jetbrains/compose/components/components-resources/1.12.1/components-resources-1.12.1.pom) and [release history](https://github.com/JetBrains/compose-multiplatform/releases) | Design and localization resource loading is shared app infrastructure. Check resource generation/rendering on configured platforms after updates; externalized resource service behavior is not used or assessed here. |
+| `$compose.preview`, `org.jetbrains.compose.ui:ui-tooling-preview` | `common`, `desktop`, `android` (`main`) | 1.12.1; Compose Toolchain | Apache-2.0; [published POM](https://repo.maven.apache.org/maven2/org/jetbrains/compose/ui/ui-tooling-preview/1.12.1/ui-tooling-preview-1.12.1.pom) and [release history](https://github.com/JetBrains/compose-multiplatform/releases) | Preview-oriented API is declared in production source sets. Confirm whether this is intentionally needed in production artifacts and whether its declaration should be narrowed; do not change scope without build evidence. |
+| `$compose.uiTooling`, `org.jetbrains.compose.ui:ui-tooling` | `common` (`android` source set), `android` (`main`) | 1.12.1; Compose Toolchain | Apache-2.0; [published POM](https://repo.maven.apache.org/maven2/org/jetbrains/compose/ui/ui-tooling/1.12.1/ui-tooling-1.12.1.pom) and [release history](https://github.com/JetBrains/compose-multiplatform/releases) | Android tooling dependency is declared for the Android app and common Android source set. Confirm release packaging excludes development-only tooling where appropriate. |
+| `$compose.desktop.currentOs`, `org.jetbrains.compose.desktop:desktop-jvm-macos-arm64` | `desktop` (`main`); `localization` (`jvmTest`, runtime-only) | 1.12.1; resolves to macOS ARM64 on the inspected host; other hosts resolve different native variants | Apache-2.0; [published POM](https://repo.maven.apache.org/maven2/org/jetbrains/compose/desktop/desktop-jvm-macos-arm64/1.12.1/desktop-jvm-macos-arm64-1.12.1.pom) | Platform-specific desktop runtime and test-resource support. This report only confirms the current host variant; packaging and runtime evidence are needed for each supported desktop OS/architecture. Transitive Skiko/native artifacts are outside this direct-dependency assessment. |
+| `$compose.hotReload.runtimeApi`, `org.jetbrains.compose.hot-reload:hot-reload-runtime-api` | `common` (`main`) | 1.2.0; Compose Toolchain | Apache-2.0; [published POM](https://repo.maven.apache.org/maven2/org/jetbrains/compose/hot-reload/hot-reload-runtime-api/1.2.0/hot-reload-runtime-api-1.2.0.pom) | A hot-reload runtime API is declared in a production source set. The upstream release feed displayed 1.3.0-rc01 on the review date. Determine whether this is required at runtime, whether it belongs in production packaging, and which stable version is supported before release. |
+| `$libs.androidx.lifecycle.viewmodel.compose`, `org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose`; `$libs.androidx.lifecycle.runtime.compose`, `org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose` | `common` (`main`) | 2.11.0; versions pinned in `libs.versions.toml`, resolved across configured common targets | Apache-2.0; [ViewModel POM](https://repo.maven.apache.org/maven2/org/jetbrains/androidx/lifecycle/lifecycle-viewmodel-compose/2.11.0/lifecycle-viewmodel-compose-2.11.0.pom) and [Runtime POM](https://repo.maven.apache.org/maven2/org/jetbrains/androidx/lifecycle/lifecycle-runtime-compose/2.11.0/lifecycle-runtime-compose-2.11.0.pom) | Lifecycle/ViewModel integration can affect state ownership and platform lifecycle handling. Confirm actual use and supported targets before relying on it for timer recovery; the current dependency presence is not recovery verification. |
+| `$libs.androidx.activity.compose`, `androidx.activity:activity-compose` | `android` (`main`) | 1.13.0; pinned in `libs.versions.toml` and resolved from Google Maven | Apache-2.0; [published POM](https://dl.google.com/dl/android/maven2/androidx/activity/activity-compose/1.13.0/activity-compose-1.13.0.pom) and [official release notes](https://developer.android.com/jetpack/androidx/releases/activity) | Android launcher/activity integration. Platform-critical but narrowly scoped; review release notes and test Android lifecycle/launch behavior when updated. |
+| `$libs.kotlinx.coroutines.swing`, `org.jetbrains.kotlinx:kotlinx-coroutines-swing` | `desktop` (`main`) | 1.11.0; pinned in `libs.versions.toml` | Apache-2.0; [published POM](https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-swing/1.11.0/kotlinx-coroutines-swing-1.11.0.pom) and [upstream releases](https://github.com/Kotlin/kotlinx.coroutines/releases) | Desktop Swing coroutine dispatcher integration. No direct source imports/usages were found in the repository search; confirm whether it is required by the app or toolchain and retain/remove only through a reviewed change. |
+| `$libs.kotlinx.coroutines.test`, `org.jetbrains.kotlinx:kotlinx-coroutines-test` | `localization` (`jvmTest`) | 1.11.0; pinned in `libs.versions.toml` | Apache-2.0; [published POM](https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-test/1.11.0/kotlinx-coroutines-test-1.11.0.pom) and [upstream releases](https://github.com/Kotlin/kotlinx.coroutines/releases) | Test-only deterministic coroutine support; no production runtime exposure from this declaration. Keep aligned with the production coroutine family and existing tests. |
+| `$libs.logback.classic`, `ch.qos.logback:logback-classic` | `desktop` (`main`) | 1.6.2; pinned in `libs.versions.toml` | EPL-2.0 or LGPL-2.1-only; [published parent POM](https://repo.maven.apache.org/maven2/ch/qos/logback/logback-parent/1.6.2/logback-parent-1.6.2.pom) | Desktop logging backend. No direct app logging calls were found in the repository search. Upstream released 1.6.7 on 2026-11-14; review the patch gap, compatibility, and licence obligations before distribution. Do not log patient data or identifiable information. |
+
+Compose and Compose Multiplatform artifact license statements above are the
+publisher's Apache-2.0 metadata. The published dependency families include
+transitive third-party components with their own licences; this direct
+inventory does not establish a complete distributed-artifact licence
+manifest. Generate and review a platform-specific transitive licence manifest
+before distribution.
+
+## Toolchain-managed runtime and test dependencies
+
+These are resolved direct dependencies of generated source sets, but are not
+explicit module-manifest declarations. They are listed separately to
+distinguish Kotlin Toolchain defaults from project-selected catalog entries.
+
+| Component | Scope and resolved version | Published licence and source | Preliminary assessment and open action |
+|---|---|---|---|
+| Kotlin standard library, `org.jetbrains.kotlin:kotlin-stdlib` | Toolchain-provided production runtime; 2.4.20 | Apache-2.0; [published POM](https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-stdlib/2.4.20/kotlin-stdlib-2.4.20.pom), source repository `JetBrains/kotlin` | Core language runtime. Version is coupled to the toolchain rather than `libs.versions.toml`; review release notes, compatibility, and the platform-resolved artifacts when changing the toolchain. |
+| Kotlin test libraries, including `kotlin-test` and the JUnit 5 adapter | Generated test source sets; 2.4.20 | Apache-2.0; [Kotlin Test POM](https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-test/2.4.20/kotlin-test-2.4.20.pom) and [JUnit 5 adapter POM](https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-test-junit5/2.4.20/kotlin-test-junit5-2.4.20.pom), source repository `JetBrains/kotlin` | Test-only assertions/adapters. Not a production runtime declaration; keep test execution and generated variants aligned with the toolchain. |
+| JUnit test engine | Toolchain default `junit-5`; JUnit Platform version 6.1.3 in effective settings | JUnit Platform transitive licence not assessed in this direct inventory | Test-only infrastructure; include its exact artifacts/licences in test-tooling records if test outputs are distributed. It is not evidence that production dependencies or platforms are supported. |
+
+The Kotlin Toolchain version observed in the existing platform-feasibility
+record is 0.13.0; toolchain defaults can change separately from
+`libs.versions.toml`. Transitive production dependencies remain outside this
+direct inventory; verify and record their exact licences in the
+platform-specific distributed-artifact review.
+
+The dependency graph is host-sensitive: `currentOs` resolved to the macOS
+ARM64 desktop artifact for this assessment. This does not inventory or verify
+the artifacts selected on Windows, Linux, Intel macOS, or any unconfigured
+platform.
+
+## Assessment method and follow-up
+
+This preliminary screening considers component role, declaration scope,
+platform reach, upstream publication/release evidence, explicit preview
+status, and whether direct use is observable in repository source. It does
+not assign IEC 62304 terminology as an applicable compliance obligation,
+calculate quantitative product risk, determine legal acceptability, or
+approve a dependency. No known security advisory or vulnerability scan was
+performed.
+
+Before a release, the product owner and assigned reviewers should:
+
+1. Re-resolve dependencies for every configured release target and record
+   exact coordinates, versions, and any host/platform substitutions.
+2. Verify each direct and packaged transitive licence against the distributed
+   binaries, assess notices/attribution obligations, and retain the actual
+   licence evidence.
+3. Review upstream maintenance, supported versions, advisories, compatibility,
+   and update/retirement options for the exact versions selected.
+4. Resolve the Material3 alpha, production-source-set preview/tooling and
+   hot-reload declarations, and the unused-looking desktop logging/coroutine
+   declarations before treating them as intentional release dependencies.
+5. Test dependency changes against approved requirements, risks, platforms,
+   privacy boundaries, and release evidence. Keep unresolved anomalies,
+   unsupported targets, and reviewer gaps explicit.
+
+The dependency assessment does not approve provider integrations, add data
+flows, or make the timer dependent on internet access. El Chrono remains
+within its defined non-medical visual waiting-time purpose. If actual intended
+use, functions, claims, markets, or applicable obligations change, escalate
+and reassess before relying on this inventory.
+
+## Sources
+
+- Repository declarations: [`project.yaml`](../../project.yaml), the module
+  manifests under `apps/`, `core/`, and `features/`, and
+  [`libs.versions.toml`](../../libs.versions.toml).
+- Kotlin Toolchain command help and dependency report, commands and scope
+  recorded in Evidence basis.
+- [Compose Multiplatform releases](https://github.com/JetBrains/compose-multiplatform/releases)
+  and artifact POMs linked in the inventory.
+- [Compose Hot Reload releases](https://github.com/JetBrains/compose-hot-reload/releases)
+  and its artifact POM linked above.
+- [AndroidX Activity release notes](https://developer.android.com/jetpack/androidx/releases/activity)
+  and Google Maven POM linked above.
+- [Kotlin Coroutines releases](https://github.com/Kotlin/kotlinx.coroutines/releases)
+  and artifact POMs linked above.
+- [Logback releases](https://github.com/qos-ch/logback/releases) and its
+  published parent POM linked above.
+- [M1-DOC-006 — applicability matrix](../governance/applicability-matrix.md)
+  and [M1-DOC-001 — document controls](../governance/document-control.md).
+
+## Revision history
+
+| Revision | Change |
+|---|---|
+| 0.1 | Establish the initial direct dependency/SOUP inventory and preserve evidence limits, preliminary assessments, and open review actions for issue #38. |

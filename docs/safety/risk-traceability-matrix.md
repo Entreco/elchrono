@@ -9,7 +9,7 @@
 | Required reviewers | Software-safety reviewer: unassigned; blocking |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#4](https://github.com/Entreco/elchrono/issues/4); duration/traceability update in [#22](https://github.com/Entreco/elchrono/issues/22); provider-feasibility update in [#36](https://github.com/Entreco/elchrono/issues/36) |
-| Review PR | Prior baseline: [PR #14](https://github.com/Entreco/elchrono/pull/14); revision 0.7: [PR #32](https://github.com/Entreco/elchrono/pull/32); revision 0.8 candidate in issue #36 worktree, review PR pending |
+| Review PR | Prior baseline: [PR #14](https://github.com/Entreco/elchrono/pull/14); revision 0.7: [PR #32](https://github.com/Entreco/elchrono/pull/32); revision 0.8 in [PR #49](https://github.com/Entreco/elchrono/pull/49); required reviews and human acceptance pending |
 
 Lifecycle status is derived from the branch and PR context; see
 [document controls](../governance/document-control.md#lifecycle-and-approval).

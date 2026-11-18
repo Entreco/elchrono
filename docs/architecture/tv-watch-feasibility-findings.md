@@ -9,7 +9,7 @@
 | Required reviewers | TV/watch platform feasibility, interaction/accessibility, and platform-tooling scopes; appointments and competence confirmation pending |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#34](https://github.com/Entreco/elchrono/issues/34); provider feasibility follow-up [#36](https://github.com/Entreco/elchrono/issues/36) |
-| Review PR | Revision 0.1 in [PR #43](https://github.com/Entreco/elchrono/pull/43); revision 0.2 candidate in issue #36 worktree, review PR pending |
+| Review PR | Revision 0.1 in [PR #43](https://github.com/Entreco/elchrono/pull/43); revision 0.2 in [PR #49](https://github.com/Entreco/elchrono/pull/49); required reviews and human acceptance pending |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](../governance/document-control.md#lifecycle-and-approval).

@@ -9,7 +9,7 @@
 | Required reviewers | Provider/platform feasibility, privacy, licensing/policy, and accessibility scopes; appointments and competence confirmation pending |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#36](https://github.com/Entreco/elchrono/issues/36) |
-| Review PR | Pending; link when opened |
+| Review PR | [PR #49](https://github.com/Entreco/elchrono/pull/49); required reviews and human acceptance pending |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](../governance/document-control.md#lifecycle-and-approval).

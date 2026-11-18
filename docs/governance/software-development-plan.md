@@ -9,7 +9,7 @@
 | Required reviewers | Software development/lifecycle reviewer: unassigned; software-safety reviewer for risk-process scope: unassigned; other review scopes as assigned below |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#7](https://github.com/Entreco/elchrono/issues/7); duration-verification update in [#22](https://github.com/Entreco/elchrono/issues/22); M3 provider feasibility update in [#36](https://github.com/Entreco/elchrono/issues/36) |
-| Review PR | [PR #20](https://github.com/Entreco/elchrono/pull/20); issue #22 update in [PR #32](https://github.com/Entreco/elchrono/pull/32); revision 0.7 candidate in issue #36 worktree, review PR pending |
+| Review PR | [PR #20](https://github.com/Entreco/elchrono/pull/20); issue #22 update in [PR #32](https://github.com/Entreco/elchrono/pull/32); revision 0.7 in [PR #49](https://github.com/Entreco/elchrono/pull/49); required reviews and human acceptance pending |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [Lifecycle and approval](document-control.md#lifecycle-and-approval).

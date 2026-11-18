@@ -9,7 +9,7 @@
 | Required reviewers | TV/watch platform feasibility, interaction/accessibility, and platform-tooling scopes; appointments and competence confirmation pending |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#34](https://github.com/Entreco/elchrono/issues/34) |
-| Review PR | Pending; link when the review PR is submitted |
+| Review PR | [PR #43](https://github.com/Entreco/elchrono/pull/43); required reviews and human acceptance pending |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](../governance/document-control.md#lifecycle-and-approval).

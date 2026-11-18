@@ -9,7 +9,7 @@
 | Required reviewers | @Entreco reviewed and accepted revision 0.1 as product owner; specialist legal/privacy/accessibility determinations remain scoped as open follow-up gates below; accessibility reviewer for this update: unassigned |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#6](https://github.com/Entreco/elchrono/issues/6) |
-| Review PR | [PR #18](https://github.com/Entreco/elchrono/pull/18); [evidence reconciliation PR](https://github.com/Entreco/elchrono/pull/19); issue #22 update in [PR #32](https://github.com/Entreco/elchrono/pull/32); revision 0.8 in [PR #49](https://github.com/Entreco/elchrono/pull/49); issue #38 update pending; specialist review and human acceptance pending |
+| Review PR | [PR #18](https://github.com/Entreco/elchrono/pull/18); [evidence reconciliation PR](https://github.com/Entreco/elchrono/pull/19); issue #22 update in [PR #32](https://github.com/Entreco/elchrono/pull/32); revision 0.8 in [PR #49](https://github.com/Entreco/elchrono/pull/49); issue #38 revision 0.9 in [PR #52](https://github.com/Entreco/elchrono/pull/52); specialist review and human acceptance pending |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [Lifecycle and approval](document-control.md#lifecycle-and-approval).

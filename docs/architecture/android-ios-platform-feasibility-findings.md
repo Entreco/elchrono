@@ -2,8 +2,8 @@
 
 | Field | Value |
 |---|---|
-| Document ID | M3-DOC-003 |
-| Revision | 0.2 |
+| Document ID | M3-DOC-004 |
+| Revision | 0.3 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Android/iOS platform feasibility, platform tooling, lifecycle/background execution, audio/system-volume, and accessibility/input scopes; appointments and competence confirmation pending |
@@ -174,3 +174,4 @@ change; recheck them before implementation or a support decision.
 |---|---|
 | 0.1 | Record issue #35 Android/iOS build, packaging, simulator launch, shell rendering, lifecycle, audio, system-volume, offline, and signing evidence with limitations. |
 | 0.2 | Link the findings candidate to PR #50; required review scopes and human acceptance remain pending. |
+| 0.3 | Assign the next available document ID, M3-DOC-004, because the concurrent issue #36 provider-feasibility record uses M3-DOC-003; retain PR #50 and pending review. |

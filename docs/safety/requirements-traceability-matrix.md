@@ -3,13 +3,13 @@
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-003 |
-| Revision | 2.4 |
+| Revision | 2.5 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Requirements and software-safety reviewers: unassigned |
 | Approver | @Entreco, after required reviews and findings resolution |
-| Related issue | [#25](https://github.com/Entreco/elchrono/issues/25); provider-feasibility trace update in [#36](https://github.com/Entreco/elchrono/issues/36) |
-| Review PR | Prior baselines: revision 1.4 in [PR #29](https://github.com/Entreco/elchrono/pull/29), revision 1.7 in [PR #30](https://github.com/Entreco/elchrono/pull/30), revision 1.8 in [PR #31](https://github.com/Entreco/elchrono/pull/31), and revision 2.2 in [PR #32](https://github.com/Entreco/elchrono/pull/32); revision 2.3 in [PR #41](https://github.com/Entreco/elchrono/pull/41); revision 2.4 in [PR #49](https://github.com/Entreco/elchrono/pull/49); required reviews and human acceptance pending |
+| Related issue | [#25](https://github.com/Entreco/elchrono/issues/25); provider-feasibility trace update in [#36](https://github.com/Entreco/elchrono/issues/36); platform architecture trace update in [#39](https://github.com/Entreco/elchrono/issues/39) |
+| Review PR | Prior baselines: revision 1.4 in [PR #29](https://github.com/Entreco/elchrono/pull/29), revision 1.7 in [PR #30](https://github.com/Entreco/elchrono/pull/30), revision 1.8 in [PR #31](https://github.com/Entreco/elchrono/pull/31), and revision 2.2 in [PR #32](https://github.com/Entreco/elchrono/pull/32); revision 2.3 in [PR #41](https://github.com/Entreco/elchrono/pull/41); revision 2.4 in [PR #49](https://github.com/Entreco/elchrono/pull/49); revision 2.5 in this PR; required reviews and human acceptance pending |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](../governance/document-control.md#lifecycle-and-approval).
@@ -37,6 +37,7 @@ actual evidence is recorded.
 | [M2-DOC-004, accessible screen flows and theme prototypes](../design/accessible-screen-flows-and-theme-prototypes.md) | 1.6 candidate | Main/Settings/About and theme proposals aligned with v1 decisions; design review pending |
 | [M2-DOC-005, usability review plan](../usability/usability-plan.md) | 0.6 candidate | Proposed participant approach and tasks; created after the two sessions and did not govern them |
 | [M2-DOC-006, usability findings and evidence status](../usability/usability-findings.md) | 0.6 candidate | Two retrospective sessions and retained screenshots; Clock clipping and caregiver/usability limitations retained |
+| [M3-DOC-007, platform architecture decision and support matrix](../architecture/platform-architecture-and-support-matrix.md) | 0.1 candidate | Retains the configured Kotlin Multiplatform/Compose architecture without a support commitment; records platform evidence and unresolved minimum-version, TV/watch, provider, lifecycle, and review decisions |
 
 ## Traceability
 
@@ -159,3 +160,4 @@ test procedures or acceptance criteria in this matrix.
 | 2.2 | Update the current usability-plan revision link after aligning its design source to M2-DOC-004 revision 1.5. |
 | 2.3 | Align source revisions with the M2 review candidate and trace D-06's omission of separate manual pause, resume, and reset controls to REQ-002 and TP-REQ-002. |
 | 2.4 | Link M3-DOC-003 feasibility findings to REQ-008 and D-03 without changing v1 audio deferral or claiming provider verification. |
+| 2.5 | Add M3-DOC-007 as a cross-platform architecture trace input while retaining the M2 gate, all requirement/risk verification gaps, and unresolved support baselines. |

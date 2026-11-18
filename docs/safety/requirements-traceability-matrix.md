@@ -43,15 +43,15 @@ actual evidence is recorded.
 
 | Requirement | Intended-use source | Applicable risks | Design/usability evidence | Test protocol | Verification evidence |
 |---|---|---|---|---|---|
-| [REQ-001](../product/requirements.md#requirement-identification) | [Duration and supported waiting use](../product/intended-use.md#supported-role-of-visual-time-and-optional-audio) | RISK-001 | [Settings duration entry](../design/accessible-screen-flows-and-theme-prototypes.md#settings-screen); planned [U-03](../usability/usability-plan.md#tasks-and-neutral-prompts); session scope [M2-DOC-006](../usability/usability-findings.md#session-scope-and-evidence-provenance), gap G04 | [TP-REQ-001](../testing/test-protocol.md#test-cases) | Pending |
-| [REQ-002](../product/requirements.md#requirement-identification) | [Users and roles](../product/intended-use.md#users-population-and-roles) | RISK-001 | [Settings-open pause, save-to-start, and no separate manual timer controls](../design/accessible-screen-flows-and-theme-prototypes.md#settings-screen); session gap G04 | [TP-REQ-002](../testing/test-protocol.md#test-cases) | Pending |
+| [REQ-001](../product/requirements.md#requirement-identification) | [Duration and supported waiting use](../product/intended-use.md#supported-role-of-visual-time-and-optional-audio) | RISK-001 | [Settings duration entry](../design/accessible-screen-flows-and-theme-prototypes.md#settings-screen); planned [U-03](../usability/usability-plan.md#tasks-and-neutral-prompts); session scope [M2-DOC-006](../usability/usability-findings.md#session-scope-and-evidence-provenance), gap G04 | [TP-REQ-001](../testing/test-protocol.md#test-cases) | Timer-domain range and whole-minute validation passed; sequential digit-entry UI remains unimplemented and unverified |
+| [REQ-002](../product/requirements.md#requirement-identification) | [Users and roles](../product/intended-use.md#users-population-and-roles) | RISK-001 | [Settings-open pause, save-to-start, and no separate manual timer controls](../design/accessible-screen-flows-and-theme-prototypes.md#settings-screen); session gap G04 | [TP-REQ-002](../testing/test-protocol.md#test-cases) | Domain pause/save transitions passed; Settings UI integration remains unimplemented and unverified |
 | [REQ-003](../product/requirements.md#requirement-identification) | [Visual remaining-time use and limitations](../product/intended-use.md#supported-role-of-visual-time-and-optional-audio) | RISK-001, RISK-002, RISK-005, RISK-006 | [Main states and visualization mapping](../design/accessible-screen-flows-and-theme-prototypes.md#main-screen-and-states); session findings [F01/F04](../usability/usability-findings.md#participant-feedback-and-observations); gaps G04/G05 | [TP-REQ-003](../testing/test-protocol.md#test-cases) | Pending |
 | [REQ-004](../product/requirements.md#requirement-identification) | [Users and roles](../product/intended-use.md#users-population-and-roles); screen/content inventory is M2 product scope in [#22](https://github.com/Entreco/elchrono/issues/22) | RISK-004, RISK-005, RISK-006 | [Main, Settings, and About designs](../design/accessible-screen-flows-and-theme-prototypes.md#screen-flows); no v1 audio/volume controls | [TP-REQ-004](../testing/test-protocol.md#test-cases) | Pending |
 | [REQ-005](../product/requirements.md#requirement-identification) | [Users and roles](../product/intended-use.md#users-population-and-roles) | RISK-004 | [Unprotected Settings v1 decision](../design/accessible-screen-flows-and-theme-prototypes.md#main-screen-and-states); prior sessions did not test access paths (G03/G04) | [TP-REQ-005](../testing/test-protocol.md#test-cases) | Pending; test does not establish risk acceptability |
 | [REQ-006](../product/requirements.md#requirement-identification) | No direct theme-selection statement in intended use; this product-level choice is scoped by [#22](https://github.com/Entreco/elchrono/issues/22) | RISK-004, RISK-005 | [Timer visualizations and conditional appearance options](../design/accessible-screen-flows-and-theme-prototypes.md#timer-visualizations); session findings [F01-F04](../usability/usability-findings.md#participant-feedback-and-observations); gaps G03/G04 | [TP-REQ-006](../testing/test-protocol.md#test-cases) | Pending |
 | [REQ-008](../product/requirements.md#requirement-identification) | [Offline use](../product/intended-use.md#supported-role-of-visual-time-and-optional-audio); future audio scope deferred | RISK-003 | Music and volume controls excluded from v1; future audio behavior requires separate review; [M3-DOC-003](../architecture/audio-provider-feasibility-findings.md) records feasibility constraints only | [TP-REQ-008](../testing/test-protocol.md#test-cases) | Network-independence test pending; v2 audio tests deferred |
 | [REQ-009](../product/requirements.md#requirement-identification) | [Exclusions and claims boundary](../product/intended-use.md#exclusions-and-claims-boundary) | RISK-006 | [About screen content](../design/accessible-screen-flows-and-theme-prototypes.md#about-screen); session gap G04 | [TP-REQ-009](../testing/test-protocol.md#test-cases) | Pending |
-| [REQ-010](../product/requirements.md#requirement-identification) | [Ordinary waiting use and limitations](../product/intended-use.md#foreseeable-use-and-limitations) | RISK-001, RISK-005; RISK-003 only if audio is added in v2 | Immediate reset without a completed state; no v1 audio | [TP-REQ-010](../testing/test-protocol.md#test-cases) | Pending; music-stop criterion deferred to v2 |
+| [REQ-010](../product/requirements.md#requirement-identification) | [Ordinary waiting use and limitations](../product/intended-use.md#foreseeable-use-and-limitations) | RISK-001, RISK-005; RISK-003 only if audio is added in v2 | Immediate reset without a completed state; no v1 audio | [TP-REQ-010](../testing/test-protocol.md#test-cases) | Timer-domain reset, non-negative remaining time, and once-per-cycle completion passed; app/UI integration unverified; music-stop criterion deferred to v2 |
 
 ## Reverse coverage
 
@@ -83,6 +83,26 @@ rationale.
 
 REQ-007 was retired before approval and is not an active requirement; it has
 no planned test. No test result is implied by these planned links.
+
+## Timer-domain verification record
+
+The timer domain implements and tests only the behavior attributable to
+TP-REQ-001, TP-REQ-002, and TP-REQ-010. The verification used the uncommitted
+working tree on `feat/45-v1-timer-engine`; it does not establish application,
+presentation, accessibility, usability, or platform-lifecycle behavior.
+
+| Verification | Result |
+|---|---|
+| `./kotlin test -m timer` | Passed: 12 tests on JVM, Wasm/JS, and iOS Simulator ARM64. Android test compilation succeeded; Android runtime tests were not run. |
+| `./kotlin build -m timer` | Passed: module compiled for JVM, Android, iOS ARM64, iOS Simulator ARM64, and Wasm/JS. |
+| Duration range | Passed: enumerated every allowed whole-minute duration (00:01–24:00); rejected zero, out-of-range values, and fractional-minute inputs. |
+| Lifecycle and completion boundaries | Passed at domain level: Settings-open pause, save-to-full-duration, exact-zero reset, no negative remainder, and no duplicate completion reporting. |
+
+Timer-to-Settings/application integration and user-facing behavior remain
+unverified. Interruption/restart recovery is not implemented or claimed.
+Android tests were compiled but not executed; no device/runtime verification
+is claimed. These results do not resolve usability evidence gaps or establish
+risk-control effectiveness.
 
 ## Findings, limitations, and decision follow-up
 
@@ -161,3 +181,4 @@ test procedures or acceptance criteria in this matrix.
 | 2.3 | Align source revisions with the M2 review candidate and trace D-06's omission of separate manual pause, resume, and reset controls to REQ-002 and TP-REQ-002. |
 | 2.4 | Link M3-DOC-003 feasibility findings to REQ-008 and D-03 without changing v1 audio deferral or claiming provider verification. |
 | 2.5 | Add M3-DOC-007 as a cross-platform architecture trace input while retaining the M2 gate, all requirement/risk verification gaps, and unresolved support baselines. |
+| 2.6 | Record timer-domain verification for the implemented duration, Settings lifecycle, and completion behavior; retain application/UI, Android runtime, accessibility, usability, and lifecycle limitations. |

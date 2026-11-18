@@ -1,0 +1,18 @@
+package nl.entreco.elchrono.features.timer
+
+import kotlin.time.TimeSource
+import kotlin.time.Duration.Companion.nanoseconds
+
+fun interface MonotonicClock {
+    fun nowNanos(): Long
+}
+
+internal class SystemMonotonicClock(
+    timeSource: TimeSource = TimeSource.Monotonic,
+) : MonotonicClock {
+    private val origin = timeSource.markNow()
+
+    override fun nowNanos(): Long = origin.elapsedNow().inWholeNanoseconds
+}
+
+internal val systemMonotonicClock: MonotonicClock = SystemMonotonicClock()

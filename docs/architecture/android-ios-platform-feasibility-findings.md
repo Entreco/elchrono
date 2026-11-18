@@ -3,13 +3,13 @@
 | Field | Value |
 |---|---|
 | Document ID | M3-DOC-003 |
-| Revision | 0.1 |
+| Revision | 0.2 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Android/iOS platform feasibility, platform tooling, lifecycle/background execution, audio/system-volume, and accessibility/input scopes; appointments and competence confirmation pending |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#35](https://github.com/Entreco/elchrono/issues/35) |
-| Review PR | Not opened; link the review PR when submitted |
+| Review PR | [PR #50](https://github.com/Entreco/elchrono/pull/50); required reviews and human acceptance pending |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](../governance/document-control.md#lifecycle-and-approval).
@@ -173,3 +173,4 @@ change; recheck them before implementation or a support decision.
 | Revision | Change |
 |---|---|
 | 0.1 | Record issue #35 Android/iOS build, packaging, simulator launch, shell rendering, lifecycle, audio, system-volume, offline, and signing evidence with limitations. |
+| 0.2 | Link the findings candidate to PR #50; required review scopes and human acceptance remain pending. |

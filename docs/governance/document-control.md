@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M1-DOC-001 |
-| Revision | 2.41 |
+| Revision | 2.42 |
 | Product owner | @Entreco |
 | Document owner and approver | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
@@ -279,7 +279,7 @@ M1-DOC-003 records the qualified EU/US regulatory qualification conclusion.
 | M2-DOC-007 | [M2 evidence baseline review and M3 handoff](m2-evidence-handoff.md) | [#26](https://github.com/Entreco/elchrono/issues/26) | Owner @Entreco; revision 0.8 candidate in PR #41; reconciles merged PR #32 acceptance scope, current M2 source revisions, D-06, and remaining gate blockers; no M2 approval claimed |
 | M3-DOC-001 | [Browser and desktop platform feasibility findings](../architecture/platform-feasibility-findings.md) | [#33](https://github.com/Entreco/elchrono/issues/33) | Owner @Entreco; revision 0.2 candidate in draft [PR #42](https://github.com/Entreco/elchrono/pull/42); records macOS/Chrome browser and desktop prototype results; default browser port 8080 was occupied, additional hosts and offline startup were not tested; required review scopes and human acceptance pending; no support baseline or M2 approval claimed |
 | M3-DOC-002 | [TV and watch platform feasibility findings](../architecture/tv-watch-feasibility-findings.md) | [#34](https://github.com/Entreco/elchrono/issues/34) | Owner @Entreco; revision 0.1 candidate in [PR #43](https://github.com/Entreco/elchrono/pull/43); records read-only toolchain evidence and official TV/watch constraints; Apple SDKs present without TV/watch simulator runtimes, Android target packages could not be confirmed and no usable AVD/device was available; required reviews and human acceptance pending; no platform support or M3 approval claimed |
-| M3-DOC-003 | [Android and iOS platform feasibility findings](../architecture/android-ios-platform-feasibility-findings.md) | [#35](https://github.com/Entreco/elchrono/issues/35) | Owner @Entreco; revision 0.1 candidate, review PR not yet opened; records successful Android/iOS builds and unsigned Android AAB packaging, no Android launch target, iPhone 18 Pro iOS simulator launch/rendering, and lifecycle/audio/offline/signing limits; required reviews and human acceptance pending; no platform support or M2 approval claimed |
+| M3-DOC-003 | [Android and iOS platform feasibility findings](../architecture/android-ios-platform-feasibility-findings.md) | [#35](https://github.com/Entreco/elchrono/issues/35) | Owner @Entreco; revision 0.2 candidate in [PR #50](https://github.com/Entreco/elchrono/pull/50); records successful Android/iOS builds and unsigned Android AAB packaging, no Android launch target, iPhone 18 Pro iOS simulator launch/rendering, and lifecycle/audio/offline/signing limits; required reviews and human acceptance pending; no platform support or M2 approval claimed |
 
 For each created record, replace its reserved path with a working link and record
 its owner, revision, review PR, and commit-pinned merged baseline when available.
@@ -400,3 +400,4 @@ merge, or the Approved and effective lifecycle status.
 | 2.39 | Reserve and index M3-DOC-002 with issue #34 TV/watch feasibility findings; retain unavailable test targets, pending reviews, and feasibility-only status |
 | 2.40 | Link M3-DOC-002 revision 0.1 and PR #43; retain pending review, human acceptance, and platform evidence gaps |
 | 2.41 | Reserve and index M3-DOC-003 with issue #35 Android/iOS prototype findings; retain the unavailable Android launch target, simulator-only iOS evidence, signing/offline limits, and pending review |
+| 2.42 | Link M3-DOC-003 revision 0.2 and PR #50; retain pending review, human acceptance, and platform evidence gaps |

@@ -9,7 +9,7 @@
 | Required reviewers | Requirements and software-safety reviewers: unassigned |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#25](https://github.com/Entreco/elchrono/issues/25); provider-feasibility trace update in [#36](https://github.com/Entreco/elchrono/issues/36); platform architecture trace update in [#39](https://github.com/Entreco/elchrono/issues/39) |
-| Review PR | Prior baselines: revision 1.4 in [PR #29](https://github.com/Entreco/elchrono/pull/29), revision 1.7 in [PR #30](https://github.com/Entreco/elchrono/pull/30), revision 1.8 in [PR #31](https://github.com/Entreco/elchrono/pull/31), and revision 2.2 in [PR #32](https://github.com/Entreco/elchrono/pull/32); revision 2.3 in [PR #41](https://github.com/Entreco/elchrono/pull/41); revision 2.4 in [PR #49](https://github.com/Entreco/elchrono/pull/49); revision 2.5 in this PR; required reviews and human acceptance pending |
+| Review PR | Prior baselines: revision 1.4 in [PR #29](https://github.com/Entreco/elchrono/pull/29), revision 1.7 in [PR #30](https://github.com/Entreco/elchrono/pull/30), revision 1.8 in [PR #31](https://github.com/Entreco/elchrono/pull/31), and revision 2.2 in [PR #32](https://github.com/Entreco/elchrono/pull/32); revision 2.3 in [PR #41](https://github.com/Entreco/elchrono/pull/41); revision 2.4 in [PR #49](https://github.com/Entreco/elchrono/pull/49); revision 2.5 in [PR #54](https://github.com/Entreco/elchrono/pull/54); required reviews and human acceptance pending |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](../governance/document-control.md#lifecycle-and-approval).

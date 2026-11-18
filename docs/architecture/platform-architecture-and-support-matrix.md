@@ -9,7 +9,7 @@
 | Required reviewers | Cross-platform architecture; browser/desktop; Android/iOS; TV/watch tooling and interaction; provider, privacy, licensing/policy, lifecycle/audio, and accessibility/input scopes; appointments and competence confirmation pending |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#39](https://github.com/Entreco/elchrono/issues/39) |
-| Review PR | Pending PR creation |
+| Review PR | [PR #54](https://github.com/Entreco/elchrono/pull/54); required reviews and human acceptance pending |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](../governance/document-control.md#lifecycle-and-approval).

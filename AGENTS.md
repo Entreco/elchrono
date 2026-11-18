@@ -232,6 +232,28 @@ or failed checks as limitations, never as passing verification.
 Documentation-only changes need no compilation unless documentation tooling
 requires it; check links, command accuracy, and the diff.
 
+Pull requests and pushes to `main` run `.github/workflows/ci.yml` on
+`ubuntu-24.04` with Java 17. It discovers modules, builds JVM and browser Wasm
+targets in separate invocations, and runs common/localization JVM tests and
+checks:
+
+```sh
+./kotlin show modules
+./kotlin build -p jvm
+./kotlin build -m browser
+./kotlin test -p jvm -m common -m localization
+./kotlin check -m common -m localization
+```
+
+This workflow does not provision an Android SDK or validate Android builds,
+emulator/device launches, or iOS builds. See the root README for the local
+workflow and platform prerequisites. Keep configuration in the repository's
+YAML module model and version catalog; supply machine-specific paths through
+the local shell or CI environment. Never commit credentials, signing keys,
+tokens, patient data, local environment files, or machine-local `.idea` files.
+Only shared `.idea/codeStyles/` and `.idea/inspectionProfiles/` files may be
+tracked.
+
 ## Required engineering skills and Android CLI guidance
 
 Relevant competencies are Kotlin/Compose Multiplatform, deterministic timer

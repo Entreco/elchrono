@@ -9,7 +9,7 @@
 | Required reviewers | M3 gate/integration; cross-platform architecture; browser/desktop; Android/iOS; TV/watch tooling and interaction; provider, privacy, licensing/policy, and lifecycle/audio; build/CI/configuration; dependency/SOUP; documentation control; appointments and competence confirmation pending |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#40](https://github.com/Entreco/elchrono/issues/40) |
-| Review PR | Pending; link this record to its review PR when opened |
+| Review PR | [PR #55](https://github.com/Entreco/elchrono/pull/55); required reviews and human acceptance pending |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](document-control.md#lifecycle-and-approval).

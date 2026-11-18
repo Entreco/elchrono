@@ -3,13 +3,13 @@
 | Field | Value |
 |---|---|
 | Document ID | M3-DOC-002 |
-| Revision | 0.1 |
+| Revision | 0.2 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | TV/watch platform feasibility, interaction/accessibility, and platform-tooling scopes; appointments and competence confirmation pending |
 | Approver | @Entreco, after required reviews and findings resolution |
-| Related issue | [#34](https://github.com/Entreco/elchrono/issues/34) |
-| Review PR | [PR #43](https://github.com/Entreco/elchrono/pull/43); required reviews and human acceptance pending |
+| Related issue | [#34](https://github.com/Entreco/elchrono/issues/34); provider feasibility follow-up [#36](https://github.com/Entreco/elchrono/issues/36) |
+| Review PR | Revision 0.1 in [PR #43](https://github.com/Entreco/elchrono/pull/43); revision 0.2 in [PR #49](https://github.com/Entreco/elchrono/pull/49); required reviews and human acceptance pending |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](../governance/document-control.md#lifecycle-and-approval).
@@ -140,18 +140,21 @@ remain unverified.
 ### Cross-platform audio and lifecycle
 
 No YouTube or Spotify integration, provider authentication, or cross-device
-handoff was tested. The platform-specific audio evidence and remaining work are:
+handoff was tested. Provider-specific policies and data-flow constraints are
+assessed separately in [M3-DOC-003, revision 0.1](audio-provider-feasibility-findings.md).
+The platform-specific audio evidence and remaining work are:
 
 | Platform | Evidence and limitation | Follow-up |
 |---|---|---|
-| Android TV | Output may route through TV speakers, HDMI, or Bluetooth; routes/formats can change and unsupported output can fail. This does not establish YouTube/Spotify support. | Issue #36 must assess provider APIs, playback restrictions, background behavior, and error handling for Android TV. |
-| Apple TV | No Apple TV target, test runtime, or device was available; provider playback, audio routing, and background behavior were not verified. | Issue #36 must assess provider eligibility and supported playback/authentication mechanisms for tvOS. |
-| Wear OS | Standalone status matters if a provider or phone connection is needed; no watch output route or provider SDK was tested. The timer's core/offline operation cannot depend on a paired phone or provider. | Issue #36 must assess watch connectivity, provider playback, background limits, and whether an optional phone companion is needed. |
-| watchOS | Independent app design is recommended by Apple, but no watchOS target or test runtime was available; provider playback and connectivity were not verified. | Issue #36 must assess provider eligibility, background/audio limits, and any optional companion role. |
+| Android TV | Output may route through TV speakers, HDMI, or Bluetooth; routes/formats can change and unsupported output can fail. This does not establish YouTube/Spotify support. | M3-DOC-003 records provider constraints but no TV-specific integration or test evidence; retain the unconfigured/unverified status. |
+| Apple TV | No Apple TV target, test runtime, or device was available; provider playback, audio routing, and background behavior were not verified. | M3-DOC-003 records no established tvOS provider path; retain the unconfigured/unverified status. |
+| Wear OS | Standalone status matters if a provider or phone connection is needed; no watch output route or provider SDK was tested. The timer's core/offline operation cannot depend on a paired phone or provider. | M3-DOC-003 distinguishes Spotify Connect routing from a Wear OS SDK; no direct integration or companion decision is established. |
+| watchOS | Independent app design is recommended by Apple, but no watchOS target or test runtime was available; provider playback and connectivity were not verified. | M3-DOC-003 records no established watchOS provider path; retain the unconfigured/unverified status. |
 
 These are evidence gaps, not claims that a provider is supported or
-unsupported. Until issue #36 and platform prototypes provide evidence, audio
-must remain optional and must not be represented as supported on TV or watch.
+unsupported. M3-DOC-003 is a documentation assessment, not an implementation
+or platform test. Audio remains optional and must not be represented as
+supported on TV or watch.
 
 The product's maximum 24-hour duration makes lifecycle, display refresh,
 power consumption, and recovery important open questions on watches. This
@@ -213,3 +216,4 @@ decision.
 | Revision | Change |
 |---|---|
 | 0.1 | Record read-only TV/watch tooling evidence, official platform constraints, feasibility status, and unresolved implementation/review gaps for issue #34. |
+| 0.2 | Link M3-DOC-003 provider findings and update TV/watch audio follow-up without claiming a provider path, platform support, or testing. |

@@ -35,7 +35,7 @@ hours. No accessibility conformance baseline is selected by this protocol.
 |---|---|---|---|
 | TP-REQ-001 | [REQ-001](../product/requirements.md#requirement-identification) | Enter representative digit sequences, test the allowed duration boundaries, exercise invalid values, and enumerate all whole-minute durations with a controllable input/test harness. | `2`, `20`, `205`, and `2400` display as `00:02`, `00:20`, `02:05`, and `24:00`. Every duration from `00:01` through `24:00` is representable. `00:00`, minute values above `59`, and values above `24:00` cannot be configured as valid durations. |
 | TP-REQ-002 | [REQ-002](../product/requirements.md#requirement-identification) | Inspect Main and Settings for manual timer controls. Save valid settings and advance the injected time source. While running, open Settings and record remaining time; keep Settings open while advancing time, then save valid settings. | No separate manual pause, resume, or reset controls are available in v1. Saving starts the countdown from the full saved duration. Opening Settings pauses it (remaining time does not change while Settings is open). Saving again starts a new countdown from the full saved duration, not the previously remaining time. |
-| TP-REQ-003 | [REQ-003](../product/requirements.md#requirement-identification) | Review Clock, Battery, Fan, and Ring and exercise running, paused, and interrupted presentations. In the browser, hide the page and return; observe the interruption warning, timer status, and valid-save behavior. Inspect each supported layout configuration in scope. | All four themes map consistently to remaining time and present numeric remaining time or visual progress. Remaining-time information is fully visible and not clipped or obscured. No clock face or time of day is presented, state meaning does not rely on colour alone, and numeric duration is not presented as time of day. A hidden-page interruption is clearly warned about, is not presented as current continuity, does not automatically resume, and valid Save starts from the full saved duration. |
+| TP-REQ-003 | [REQ-003](../product/requirements.md#requirement-identification) | Review Clock, Battery, Fan, and Ring and exercise running, paused, and interrupted presentations. In the app-state test harness, trigger repeated lifecycle stop/start events; on each configured runtime target, trigger stop/background and return. Observe the interruption warning, timer status, and valid-save behavior. Inspect each supported layout configuration in scope. | All four themes map consistently to remaining time and present numeric remaining time or visual progress. Remaining-time information is fully visible and not clipped or obscured. No clock face or time of day is presented, state meaning does not rely on colour alone, and numeric duration is not presented as time of day. Lifecycle stop pauses a running timer and shows interrupted; start does not automatically resume it, and valid Save starts from the full saved duration. Process-termination/restart recovery is not claimed. |
 | TP-REQ-004 | [REQ-004](../product/requirements.md#requirement-identification) | Inspect Main, Settings, and About against their required v1 content in each supported layout configuration in scope. Confirm music and volume controls are absent in v1. Check that unavailable company/support/policy/licence/build sources are explicitly identified as gaps. | Main includes the selected timer visualization. Settings includes duration and theme controls, with no v1 music or volume controls. About presents the required content categories; missing owned content is clearly marked as not provided and is not fabricated. All content is fully visible and not clipped or obscured. |
 | TP-REQ-005 | [REQ-005](../product/requirements.md#requirement-identification) | Open Settings without a gate as a patient and change/save duration or theme. | Settings is not protected by a caregiver gate in v1 and permits the access specified by the product decision. The test verifies this behavior; it does not establish that the resulting risk is acceptable or controlled. |
 | TP-REQ-006 | [REQ-006](../product/requirements.md#requirement-identification) | Select Clock, Battery, Fan, and Ring in Settings and inspect each timer presentation. | Exactly the four owner-approved v1 themes are available, each can be selected and becomes the selected timer theme, and each preserves the shared remaining-time mapping. Do not assert user preference without usability evidence. |
@@ -46,12 +46,18 @@ hours. No accessibility conformance baseline is selected by this protocol.
 
 ## Execution record
 
-Focused JVM domain tests pass for `TimerDuration`, `TimerEngine`, and settings
-digit entry. Run with
+Focused JVM tests pass for `TimerDuration`, `TimerEngine`, settings digit
+entry, and the app-state ViewModel. The ViewModel tests cover Settings-open
+pause/save-to-start, lifecycle-stop interruption, repeated stop events,
+no automatic resume, and completion. Run with
 `./kotlin test -p jvm -m common -m counter -m settings -m localization`.
-These tests do not verify the browser UI, timer/settings integration,
-interruption behavior, accessibility, layouts, offline operation, or TV
-targets. A
+`./kotlin build -p jvm`, `./kotlin build -m browser`, and
+`./kotlin check -m common -m counter -m settings -m localization` also passed.
+The browser server started with
+`./kotlin run -m browser --port 8081 --no-open-browser` and returned HTTP 200;
+port 8080 was occupied and left untouched. These checks do not verify rendered
+browser layout, animation, accessibility, offline operation, actual lifecycle
+event delivery on configured targets, or TV targets. A
 prototype-only layout check for F01 was run in Chrome 157.0.8103.79 at 500 ×
 1000 px and 1440 × 1200 px; see M2-DOC-006. It does not verify the application
 or establish complete coverage because supported layout configurations are
@@ -76,3 +82,4 @@ v2, not passed or waived.
 | 0.5 | Align TP-REQ-002 with the explicit v1 decision to omit separate manual pause, resume, and reset controls. |
 | 0.6 | Add measurable verification for the four approved themes, browser interrupted state, About content gaps, and Android TV/Apple TV input/readability without claiming support or results. |
 | 0.7 | Record focused counter and settings-domain test evidence after moving timer logic into core/counter; retain product UI, accessibility, interruption, offline, and platform verification limitations. |
+| 0.8 | Add deterministic app-state lifecycle tests and align TP-REQ-003 with pause-on-stop/no-auto-resume behavior; retain runtime lifecycle, layout, and platform verification as pending. |

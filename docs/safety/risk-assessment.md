@@ -183,7 +183,7 @@ Individual effects cannot be added to calculate the overall post-control score.
 
 | ID | Proposed control | Intended effect and rationale |
 |---|---|---|
-| RC-002-1 | No interruption recovery behavior is provided or promised in v1. | This is an explicit product scope limitation, not a risk control or evidence of acceptable residual risk. |
+| RC-002-1 | On `ON_STOP` while running, pause the timer and mark it interrupted; do not resume automatically on `ON_START`. Do not recover timer state after process termination or device restart. | The in-process lifecycle behavior avoids presenting uncertain progress as current; process termination/restart remains an explicit limitation, not a risk control or evidence of acceptable residual risk. Platform event delivery and effectiveness remain unverified. |
 | RC-002-2 | Distinguish running, paused, and interrupted states; when continuity is uncertain, show an interrupted warning and do not imply current progress. At completion, reset immediately without a completed state. | Likelihood: the warning may reduce reliance on apparently reliable progress; effectiveness is unverified. |
 
 ### RISK-003 controls
@@ -229,7 +229,7 @@ below do not demonstrate control effectiveness.
 | D-02 — Volume controls | No in-app volume controls in v1; revisit only if a later product scope adds audio. | No audio is provided in v1, so there is no app playback volume to adjust. This avoids an unused control, but does not choose system-volume behavior or promise controls in v2. |
 | D-03 — Music and sound | Defer music integration and its start behavior to v2; no music or completion sound in v1. | With no v1 audio capability, there is no playback start or volume behavior to select or misrepresent. Provider, consent/data flow, playback restrictions, audio failure, and sound behavior require separate review before v2. |
 | D-04 — Settings lifecycle | Opening Settings while running pauses the countdown; saving valid settings starts a new countdown at the full saved duration. | The explicit save is the start action and avoids silently resuming a possibly changed configuration. Counter-domain tests cover pause/save behavior; browser UI integration and product verification remain pending. Settings remain unprotected. |
-| D-05 — Interruption recovery | No recovery behavior is provided or promised in v1; retain an interrupted warning when continuity is uncertain. | The product will not claim continuity or reliable progress after interruption. Recovery is outside v1 scope, not an accepted RISK-002 residual-risk determination; assess before supporting platform lifecycle recovery or consequential timing. |
+| D-05 — Interruption detection and recovery | A configured app pauses and displays interrupted on lifecycle `ON_STOP` while running; `ON_START` does not resume it. A valid Settings save starts a new countdown from the full saved duration. State is not recovered across process termination or device restart. | This is an in-process interruption response, not recovery of timer continuity. Platform delivery and effectiveness remain unverified; process/restart recovery remains out of scope and RISK-002 review is pending. |
 
 These are bounded product-scope justifications, not evidence that the risks
 are eliminated, controls are effective, or residual risk is acceptable. The
@@ -281,3 +281,4 @@ they are not waived by this initial assessment.
 | 0.5 | Align risk scenarios and controls with the v1 product-owner decisions on Settings access, volume/audio scope, save-to-start pause behavior, and no interruption recovery; retain risk-review and verification gates. |
 | 0.6 | Record the bounded RISK-004 v1 product-owner disposition and a cause-to-harm walkthrough for timing, future audio, and Settings access; retain provisional ratings and unverified-control limitations. |
 | 0.7 | Align risk sources to the current intended-use and qualification candidates; record the counter/settings-domain implementation and focused test evidence without claiming product verification, control effectiveness, or risk acceptance. |
+| 0.8 | Align RISK-002 and D-05 with the lifecycle stop response: pause and mark interrupted without automatic resume, distinguish it from unavailable process/restart recovery, and retain platform verification and risk-review gaps. |

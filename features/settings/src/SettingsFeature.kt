@@ -43,11 +43,11 @@ import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun SettingsFeature(
-    visible: Boolean,
+fun SettingsScreen(
     initialSettings: TimerSettings,
     onSave: (TimerSettings) -> Unit,
     onShowAbout: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     var entry by remember(initialSettings) {
         mutableStateOf(DurationDigitEntry.fromDuration(initialSettings.duration))
@@ -55,10 +55,8 @@ fun SettingsFeature(
     var selectedTheme by remember(initialSettings) {
         mutableStateOf(initialSettings.theme)
     }
-    if (!visible) return
-
     Column(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(stringResource(Strings.string.duration), style = MaterialTheme.typography.titleLarge)

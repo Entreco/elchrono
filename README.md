@@ -79,6 +79,15 @@ For browser automation or running without opening a browser:
 ./kotlin run -m browser --port 8080 --no-open-browser
 ```
 
+If the default port is already in use, choose another available port, for example:
+
+```sh
+./kotlin run -m browser --port 8081 --no-open-browser
+```
+
+The server reports the URL it is listening on. Do not stop an existing process
+unless you have identified it and intend to close that specific server.
+
 Desktop launch is verified on the current macOS host; other desktop operating
 systems require their own packaging/verification. Android TV, Apple TV, Wear OS,
 and watchOS remain planned, not configured targets.

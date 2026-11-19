@@ -13,8 +13,9 @@ verified.
 
 Platform launchers in `apps/desktop`, `apps/browser`, and `apps/mobile/{android,ios}`
 depend on the shared `apps/common` application shell. The shell owns the main
-scaffold, screen routing, Settings visibility control, and composition of
-feature UI; it does not own timer-domain behavior or feature screens.
+Material 3 adaptive scaffold, screen routing, Settings visibility and lifecycle
+coordination through `AppViewModel`, and composition of feature UI; it does not
+own timer-domain behavior or feature-screen UI.
 `core/counter` owns shared, Compose-free duration and countdown logic.
 `features/timer` owns the countdown and visualization UI;
 `features/settings` owns duration/theme selection UI; `features/about` owns
@@ -42,12 +43,14 @@ Wasm/JS. These compilation targets do not establish TV/watch support.
   reusable design assets. The initial theme delegates to MaterialTheme.
 - Localization owns default-locale string resources. Generated accessors are
   public and use a distinct namespace from design resources.
-- Common owns the app scaffold, feature routing, the Settings visibility
-  control, and platform interruption hooks; it does not contain timer business
-  logic or timer/settings/about screen UI.
+- Common owns the adaptive app scaffold, feature routing, the `AppViewModel`
+  that coordinates `TimerEngine`, settings and lifecycle state, and lifecycle
+  event integration; it does not contain timer-domain logic or feature-screen
+  UI.
 - Counter owns `TimerDuration`, `MonotonicClock`, and `TimerEngine`, with
   deterministic domain tests in the same module.
-- Timer, settings, and about own their respective Compose screens; duration
+- Timer (`TimerFeature`), settings (`SettingsScreen`), and about own their
+  respective Compose screens; duration
   digit-entry behavior and tests belong to settings.
 - Music remains an empty v2 module with no app dependency or production
   behavior.

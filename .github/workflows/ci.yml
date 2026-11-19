@@ -34,7 +34,7 @@ jobs:
         run: ./kotlin build -m browser
 
       - name: Run JVM tests
-        run: ./kotlin test -p jvm -m common -m localization
+        run: ./kotlin test -p jvm -m common -m counter -m settings -m localization
 
       - name: Run checks
-        run: ./kotlin check -m common -m localization
+        run: ./kotlin check -m common -m counter -m settings -m localization

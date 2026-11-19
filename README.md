@@ -24,19 +24,23 @@ Toolchain wrappers `kotlin` (macOS/Linux) and `kotlin.bat` (Windows).
 
 | Directory | Responsibility |
 |---|---|
-| `apps/common` | Shared application composition and starter UI |
+| `apps/common` | Shared app scaffold, feature routing and Settings visibility |
 | `apps/desktop` | Desktop JVM launcher |
 | `apps/browser` | Kotlin/Wasm browser launcher |
 | `apps/mobile/android` | Android launcher, manifest and native resources |
 | `apps/mobile/ios` | iOS launcher, Swift bridge, Xcode project and assets |
 | `apps/television`, `apps/watch` | Reserved for future targets; not launchable |
-| `core/design` | Shared theme, design components and drawable resources |
+| `core/counter` | Shared timer duration and monotonic countdown logic; no Compose |
+| `core/design` | Shared theme, design types, reusable components and drawable resources |
 | `core/localization` | Shared translation-ready string resources |
-| `features/timer`, `features/settings`, `features/music` | Shared CMP feature library scaffolds; functionality not implemented |
+| `features/timer`, `features/settings`, `features/about` | Shared Compose UI features |
+| `features/music` | Empty v2 placeholder; not included in the app |
 
 Dependencies flow from platform launchers to `apps/common`, from the shell to
-features/core, and from features to core. Core must not depend on apps/features
-or platform SDKs. See [the module layout decision](docs/architecture/module-layout.md).
+features/core, and from features to core. Features do not depend on one another.
+Core must not depend on apps/features or platform SDKs. Timer settings are
+currently held in memory; no cross-restart persistence is specified.
+See [the module layout decision](docs/architecture/module-layout.md).
 
 Common Kotlin code belongs in each module's `src`; platform-specific source
 sets use `src@<platform>`. Tests use `test` and `test@<platform>`.
@@ -52,7 +56,7 @@ From the repository root:
 ./kotlin show modules
 ./kotlin build
 ./kotlin check
-./kotlin test -m common -m localization
+./kotlin test -p jvm -m common -m counter -m settings -m localization
 
 ./kotlin run -m desktop
 ./kotlin run -m browser
@@ -74,6 +78,15 @@ For browser automation or running without opening a browser:
 ```sh
 ./kotlin run -m browser --port 8080 --no-open-browser
 ```
+
+If the default port is already in use, choose another available port, for example:
+
+```sh
+./kotlin run -m browser --port 8081 --no-open-browser
+```
+
+The server reports the URL it is listening on. Do not stop an existing process
+unless you have identified it and intend to close that specific server.
 
 Desktop launch is verified on the current macOS host; other desktop operating
 systems require their own packaging/verification. Android TV, Apple TV, Wear OS,
@@ -100,22 +113,23 @@ The CI workflow needs no repository secrets and requests only `contents: read`.
 
 `.github/workflows/ci.yml` runs for pull requests and pushes to `main` on
 `ubuntu-24.04` with Java 17. It discovers all declared modules, builds the JVM
-targets and browser Wasm target in separate invocations, and runs the existing
-common/localization JVM tests and checks. The exact CI commands are:
+targets and browser Wasm target in separate invocations, and runs common,
+counter, settings, and localization JVM tests and checks. The exact CI
+commands are:
 
 ```sh
 ./kotlin show modules
 ./kotlin build -p jvm
 ./kotlin build -m browser
-./kotlin test -p jvm -m common -m localization
-./kotlin check -m common -m localization
+./kotlin test -p jvm -m common -m counter -m settings -m localization
+./kotlin check -m common -m counter -m settings -m localization
 ```
 
-Observed on the current macOS worktree: a first-use wrapper bootstrap with an
-empty `KOTLIN_CLI_BOOTSTRAP_CACHE_DIR` downloaded the pinned toolchain/runtime
-and listed all ten declared modules. Both build commands, the JVM test command,
-and the check command completed successfully; the test command passed all four
-tests.
+On the issue #47 candidate, module discovery lists 12 modules. The JVM and
+browser Wasm builds, selected JVM tests, and checks completed successfully on
+the current macOS worktree. The JVM test selection includes the counter and
+settings regression tests; this is not browser UI or platform-runtime
+verification.
 
 Combining the JVM and Wasm builds in one `./kotlin build -p jvm -p wasmJs`
 invocation produced a Kotlin Toolchain `FileAlreadyExistsException` while

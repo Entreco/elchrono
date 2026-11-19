@@ -8,4 +8,5 @@ class PlatformTest {
     fun `platform name is reported`() {
         assertTrue(getPlatform().name.isNotBlank())
     }
+
 }

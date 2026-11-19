@@ -3,13 +3,13 @@
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-005 |
-| Revision | 0.6 |
+| Revision | 0.7 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
-| Required reviewers | Product usability, accessibility, and safeguarding/privacy reviewers: unassigned |
+| Required reviewers | Product usability, accessibility, and safeguarding/privacy review: @Entreco, designated by the product owner on 2026-11-19; exact-revision acceptance pending |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#24](https://github.com/Entreco/elchrono/issues/24) |
-| Review PR | Prior baseline: [PR #30](https://github.com/Entreco/elchrono/pull/30) and [PR #32](https://github.com/Entreco/elchrono/pull/32); revision 0.6: [PR #41](https://github.com/Entreco/elchrono/pull/41) |
+| Review PR | Prior baselines: [PR #30](https://github.com/Entreco/elchrono/pull/30), [PR #32](https://github.com/Entreco/elchrono/pull/32), and [PR #41](https://github.com/Entreco/elchrono/pull/41); issue #47 review: [PR #59](https://github.com/Entreco/elchrono/pull/59); final exact-head acceptance pending |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](../governance/document-control.md#lifecycle-and-approval).
@@ -18,13 +18,14 @@ table. See [document controls](../governance/document-control.md#lifecycle-and-a
 
 This plan describes a proposed, safeguarded usability review of El Chrono's
 screen and timer-visualization prototypes. It is grounded in the proposed
-[requirements register, M2-DOC-001 revision 0.5](../product/requirements.md),
-the [test protocol, M2-DOC-002 revision 0.5](../testing/test-protocol.md), the
-[requirements traceability matrix, M2-DOC-003 revision 2.3](../safety/requirements-traceability-matrix.md),
-the [screen-flow and theme-prototype record, M2-DOC-004 revision 1.6](../design/accessible-screen-flows-and-theme-prototypes.md),
-and the proposed [risk assessment, M1-DOC-004 revision 0.5](../safety/risk-assessment.md).
-The design record is revision 1.6 in PR #41; it is still a proposal,
-not evidence that the designs are approved or usable.
+[requirements register, M2-DOC-001 revision 0.6](../product/requirements.md),
+the [test protocol, M2-DOC-002 revision 0.6](../testing/test-protocol.md), the
+[requirements traceability matrix, M2-DOC-003 revision 2.7](../safety/requirements-traceability-matrix.md),
+the [screen-flow and theme-prototype record, M2-DOC-004 revision 1.7](../design/accessible-screen-flows-and-theme-prototypes.md),
+and [risk assessment, M1-DOC-004 revision 0.6](../safety/risk-assessment.md).
+The product owner approved the four demo visualizations for the v1 theme
+selector; this plan does not claim their usability or representative-user
+preference.
 
 The review is intended to identify misunderstandings and design questions for
 ordinary waiting-time support. It is not clinical research, a medical
@@ -223,3 +224,4 @@ iteration, not validation of caregiver workflows or waiver of M2 gates.
 | 0.4 | Align future review tasks with the v1 decisions for open Settings, save-to-start pause behavior, and deferred v2 music/volume; retain the earlier sessions' evidence limitations. |
 | 0.5 | Update the exact design source revision to M2-DOC-004 revision 1.5 and retain all participant, safeguarding, and review prerequisites. |
 | 0.6 | Align requirements, protocol, traceability, and design references to the review candidate; include the no-manual-controls decision in future usability scope. |
+| 0.7 | Align source references with current product/design/risk candidates and record the owner's reviewer designation and four-theme scope without claiming usability validation. |

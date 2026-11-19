@@ -73,14 +73,17 @@ may require a companion app; do not assume standalone audio or feature parity.
 ## Existing implementation and conventions
 
 The project uses Kotlin Multiplatform and Compose Multiplatform, built with the
-Kotlin Toolchain wrappers `kotlin` and `kotlin.bat`. The current UI is a starter
-screen, not an implemented timer.
+Kotlin Toolchain wrappers `kotlin` and `kotlin.bat`. The issue #47 candidate
+contains a browser timer UI and a shared timer-domain implementation; product
+verification and platform support are not established by compilation.
 
 - `project.yaml` declares modules; each module uses `module.yaml`.
 - `libs.versions.toml` is the dependency version catalog.
 - `apps/common` composes shared feature UI and owns the application shell.
-- `features/{timer,settings,music}` are CMP library scaffolds, not implemented
-  product features. Feature UI and feature-owned logic belong here.
+- `core/counter` owns shared Compose-free timer-domain logic and tests.
+- `features/{timer,settings,about}` own shared Compose UI; settings-specific
+  digit-entry behavior and tests live with `features/settings`.
+- `features/music` remains an empty v2 placeholder.
 - `core/design` owns the shared theme/components and design resources.
 - `core/localization` owns string resources and translations; use generated
   Compose resource accessors rather than hard-coded visible text.
@@ -214,8 +217,8 @@ assuming globally installed Kotlin or Gradle:
 
 ```sh
 ./kotlin build -m common
-./kotlin test -m common -m localization
-./kotlin check -m common -m localization
+./kotlin test -p jvm -m common -m counter -m settings -m localization
+./kotlin check -m common -m counter -m settings -m localization
 ./kotlin build -m android
 ./kotlin run -m android --device-id <adb-serial>
 ./kotlin run -m desktop
@@ -234,15 +237,15 @@ requires it; check links, command accuracy, and the diff.
 
 Pull requests and pushes to `main` run `.github/workflows/ci.yml` on
 `ubuntu-24.04` with Java 17. It discovers modules, builds JVM and browser Wasm
-targets in separate invocations, and runs common/localization JVM tests and
-checks:
+targets in separate invocations, and runs JVM tests for common, counter,
+settings, and localization modules and checks:
 
 ```sh
 ./kotlin show modules
 ./kotlin build -p jvm
 ./kotlin build -m browser
-./kotlin test -p jvm -m common -m localization
-./kotlin check -m common -m localization
+./kotlin test -p jvm -m common -m counter -m settings -m localization
+./kotlin check -m common -m counter -m settings -m localization
 ```
 
 This workflow does not provision an Android SDK or validate Android builds,

@@ -3,25 +3,25 @@
 | Field | Value |
 |---|---|
 | Document ID | M1-DOC-002 |
-| Revision | 0.9 |
+| Revision | 1.0 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
-| Required reviewers | Regulatory qualification reviewer: @Entreco for M1-DOC-003; software-safety reviewer for this intended-use record: unassigned |
+| Required reviewers | Intended-use/product-boundary and software-safety scopes: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#2](https://github.com/Entreco/elchrono/issues/2); market selection follow-up in [#3](https://github.com/Entreco/elchrono/issues/3); duration update in [#22](https://github.com/Entreco/elchrono/issues/22) |
-| Review PR | [PR #13](https://github.com/Entreco/elchrono/pull/13); [PR #16](https://github.com/Entreco/elchrono/pull/16); issue #22 update PR pending |
+| Review PR | [PR #13](https://github.com/Entreco/elchrono/pull/13); [PR #16](https://github.com/Entreco/elchrono/pull/16); issue #47 review: [PR #59](https://github.com/Entreco/elchrono/pull/59); final exact-head acceptance pending |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [Lifecycle and approval](../governance/document-control.md#lifecycle-and-approval).
 
 ## Intended-use statement
 
-El Chrono is proposed as a non-medical visual aid for showing the amount of
+El Chrono is a non-medical visual aid for showing the amount of ordinary
 waiting time remaining. A caregiver configures a waiting duration, and a person
 who benefits from a visual representation of that duration can view its progress
-without seeing a clock face or time of day. Background music may optionally
-accompany the experience; it is not necessary to understand the visual remaining
-time or for the timer to operate as intended.
+without seeing a clock face or time of day. The v1 product scope excludes
+background music and in-app volume controls; timer operation and understanding
+remaining time do not depend on audio or network access.
 
 The timer is for ordinary waiting situations and is intended for general use.
 People with cognitive or intellectual disabilities may use it, but the product
@@ -30,10 +30,11 @@ medical condition. It provides the same general waiting-time display regardless
 of a person's diagnosis, disability, or health status; it does not assess or
 adapt to any such status.
 
-This is a proposed intended-use boundary, not a description of a completed
-product. The current application is a starter screen, not an implemented timer.
-The timer, audio behaviour, accessibility, and interruption handling require
-separate implementation and verification.
+This intended-use boundary does not assert that the product is verified or
+released. The issue #47 candidate implements a browser countdown, settings,
+and About UI. Product-level timing, accessibility, offline, and interruption
+behavior remain subject to verification; audio and in-app volume are outside
+v1.
 
 ## Users, population, and roles
 
@@ -74,14 +75,12 @@ and platforms and must not rely on colour alone. The presentation must not
 imply a clock face or time of day. These behaviours are requirements, not
 verified capabilities of the current starter application.
 
-Optional background music is intended only as accompaniment. It does not define
-or communicate the remaining duration. The intended product must remain usable
-without music or an internet connection, and audio failure must not interrupt
-the timer or be represented as successful playback. These are product
-requirements, not verified capabilities of the current starter application.
-Patients are intended to be able to change volume without gaining access to
-caregiver settings; the control and access details remain subject to
-requirements and review.
+V1 provides no background music, completion sounds, or in-app volume controls.
+Any future audio scope is deferred and is not authorized by this record; it
+requires separate requirements, provider/platform/privacy/licensing review,
+and usability assessment. The timer must operate without internet access.
+Offline operation remains a requirement, not a verified capability of the
+current application.
 
 ## Foreseeable use and limitations
 
@@ -92,10 +91,13 @@ not establish what action should follow. The caregiver remains responsible for
 choosing and explaining the duration and for determining what happens when the
 wait ends.
 
-Pause, reset, completion, patient access to caregiver settings, volume limits,
-and recovery after interruption are not decided by this record. Their
-requirements and associated risks need review; this statement does not define
-their behaviour.
+The v1 requirements specify that opening Settings pauses a running countdown,
+valid Save starts a fresh countdown at the full configured duration, and
+completion resets immediately without a completed state. Settings has no
+caregiver-protection gate. No separate manual pause, resume, or reset controls,
+interruption recovery, music, or in-app volume controls are included in v1.
+These requirements are not evidence of implementation or verification.
+Interruption detection must not imply timing continuity when it is uncertain.
 
 ## Exclusions and claims boundary
 
@@ -135,20 +137,19 @@ Selection for assessment does not authorize distribution.
 - [M1 milestone scope and completion gate](https://github.com/Entreco/elchrono/milestone/1)
 - [Foundation evidence index](../governance/document-control.md#foundation-evidence-index)
 
-M2-DOC-001 proposes requirement identifiers REQ-001 through REQ-010, with
-REQ-007 retired and not reusable; they remain candidates until reviewed and
-approved. M1-DOC-004 proposes risk identifiers RISK-001 through RISK-006; their
-review remains pending. Link applicable identifiers and source sections from
-the traceability matrix without presenting proposed identifiers as approved.
+M2-DOC-001 defines REQ-001 through REQ-010, with REQ-007 retired and not
+reusable. M1-DOC-004 defines RISK-001 through RISK-006. The exact-revision
+review and approval status for these records is recorded in their review PRs;
+link applicable identifiers and source sections from the traceability matrix.
 
-## Review evidence gaps
+## Review evidence and limitations
 
-- Issue #1 is closed and its PR #9 is merged. Its main documentation baseline
-  is Approved and effective under the lifecycle rule. However, PR #9's checked
-  acceptance box still lacks an accepting human and reviewed full head SHA,
-  and required specialist review evidence remains unresolved. Reconcile the
-  prerequisite review evidence before merging this record; lifecycle status
-  does not prove those reviews happened.
+- The product owner confirms @Entreco as the reviewer for the intended-use,
+  product-boundary, and software-safety scopes for this candidate. Final
+  acceptance must identify the exact PR head and findings disposition.
+- Historical PR #9 acceptance metadata remains incomplete. This candidate
+  does not reconstruct or claim missing historical acceptance; the current
+  exact-revision review is independent.
 - The EU and United States are selected for assessment in revision 0.3.
   Specific launch states, channels, and any non-EU European markets remain
   unspecified.
@@ -164,8 +165,6 @@ the traceability matrix without presenting proposed identifiers as approved.
   review or approval of this intended-use record. A reviewer for any required
   software-safety scope on this record remains unassigned. An open PR makes
   the branch In review but does not waive required review gates.
-- There are no approved requirement or risk IDs yet. Link real identifiers and
-  source sections when established; do not invent them.
 - No patient usability findings or verification evidence are established by
   this record.
 
@@ -182,3 +181,4 @@ the traceability matrix without presenting proposed identifiers as approved.
 | 0.7 | Clarify the scope of the M1-DOC-005 software-safety reviewer appointment; preserve this record's separate review gap |
 | 0.8 | Update the proposed waiting duration range to 1 minute through 24 hours in 1-minute increments, consistent with the M2 product requirements candidate |
 | 0.9 | Align the proposed requirement identifier prefix with REQ-NNN and direct trace links to the M2 requirements traceability matrix |
+| 1.0 | Clarify v1 intended use and exclusions: no music, completion sound, or in-app volume controls; align Settings/completion/interruption scope with the M2 v1 decisions and preserve offline-verification limitations. |

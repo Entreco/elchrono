@@ -1,0 +1,135 @@
+package nl.entreco.elchrono
+
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.minutes
+import nl.entreco.elchrono.core.counter.MonotonicClock
+import nl.entreco.elchrono.core.counter.TimerDuration
+import nl.entreco.elchrono.core.counter.TimerEngine
+import nl.entreco.elchrono.core.counter.TimerStatus
+import nl.entreco.elchrono.core.design.TimerTheme
+import nl.entreco.elchrono.features.settings.TimerSettings
+
+class AppViewModelTest {
+    @Test
+    fun `about navigation returns to settings and then timer`() {
+        val viewModel = AppViewModel(TimerEngine(TestMonotonicClock()))
+
+        viewModel.openSettings()
+        viewModel.showAbout()
+        assertEquals(AppScreen.ABOUT, viewModel.uiState.value.screen)
+
+        viewModel.backToSettings()
+        assertEquals(AppScreen.SETTINGS, viewModel.uiState.value.screen)
+        viewModel.closeSettings()
+        assertEquals(AppScreen.TIMER, viewModel.uiState.value.screen)
+    }
+
+    @Test
+    fun `opening settings pauses and saving starts a full new countdown`() {
+        val clock = TestMonotonicClock()
+        val viewModel = AppViewModel(TimerEngine(clock))
+        val settings = settings(5)
+        viewModel.saveSettings(settings)
+        clock.advance(2.minutes)
+
+        viewModel.openSettings()
+
+        assertEquals(AppScreen.SETTINGS, viewModel.uiState.value.screen)
+        assertEquals(TimerStatus.PAUSED, viewModel.uiState.value.timer.snapshot.status)
+        assertEquals(3.minutes, viewModel.uiState.value.timer.snapshot.remaining)
+
+        clock.advance(1.minutes)
+        viewModel.saveSettings(settings(2))
+
+        assertEquals(AppScreen.TIMER, viewModel.uiState.value.screen)
+        assertEquals(TimerStatus.RUNNING, viewModel.uiState.value.timer.snapshot.status)
+        assertEquals(2.minutes, viewModel.uiState.value.timer.snapshot.remaining)
+    }
+
+    @Test
+    fun `stopping while running pauses and marks interruption without automatic resume`() {
+        val clock = TestMonotonicClock()
+        val viewModel = AppViewModel(TimerEngine(clock))
+        viewModel.saveSettings(settings(5))
+        clock.advance(2.minutes)
+
+        viewModel.onAppStopped()
+        clock.advance(1.minutes)
+        viewModel.tick()
+
+        assertTrue(viewModel.uiState.value.interrupted)
+        assertEquals(TimerStatus.PAUSED, viewModel.uiState.value.timer.snapshot.status)
+        assertEquals(3.minutes, viewModel.uiState.value.timer.snapshot.remaining)
+    }
+
+    @Test
+    fun `repeated stop events do not change paused remaining time`() {
+        val clock = TestMonotonicClock()
+        val viewModel = AppViewModel(TimerEngine(clock))
+        viewModel.saveSettings(settings(5))
+        clock.advance(2.minutes)
+        viewModel.onAppStopped()
+        clock.advance(1.minutes)
+
+        viewModel.onAppStopped()
+
+        assertEquals(3.minutes, viewModel.uiState.value.timer.snapshot.remaining)
+        assertTrue(viewModel.uiState.value.interrupted)
+    }
+
+    @Test
+    fun `stopping before timer starts does not mark an interruption`() {
+        val viewModel = AppViewModel(TimerEngine(TestMonotonicClock()))
+
+        viewModel.onAppStopped()
+
+        assertFalse(viewModel.uiState.value.interrupted)
+        assertEquals(TimerStatus.NOT_CONFIGURED, viewModel.uiState.value.timer.snapshot.status)
+    }
+
+    @Test
+    fun `saving after interruption clears warning and restarts the full duration`() {
+        val viewModel = AppViewModel(TimerEngine(TestMonotonicClock()))
+        viewModel.saveSettings(settings(5))
+        viewModel.onAppStopped()
+
+        viewModel.saveSettings(settings(2))
+
+        assertFalse(viewModel.uiState.value.interrupted)
+        assertEquals(TimerStatus.RUNNING, viewModel.uiState.value.timer.snapshot.status)
+        assertEquals(2.minutes, viewModel.uiState.value.timer.snapshot.remaining)
+    }
+
+    @Test
+    fun `tick reports completion and timer remains running at full duration`() {
+        val clock = TestMonotonicClock()
+        val viewModel = AppViewModel(TimerEngine(clock))
+        viewModel.saveSettings(settings(1))
+        clock.advance(1.minutes)
+
+        viewModel.tick()
+
+        assertEquals(1, viewModel.uiState.value.timer.completedCycles)
+        assertEquals(TimerStatus.RUNNING, viewModel.uiState.value.timer.snapshot.status)
+        assertEquals(1.minutes, viewModel.uiState.value.timer.snapshot.remaining)
+    }
+
+    private fun settings(minutes: Int) = TimerSettings(
+        duration = checkNotNull(TimerDuration.fromMinutes(minutes)),
+        theme = TimerTheme.CLOCK,
+    )
+
+    private class TestMonotonicClock : MonotonicClock {
+        private var currentNanos = 0L
+
+        override fun nowNanos(): Long = currentNanos
+
+        fun advance(duration: Duration) {
+            currentNanos += duration.inWholeNanoseconds
+        }
+    }
+}

@@ -3,13 +3,13 @@
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-006 |
-| Revision | 0.6 |
+| Revision | 0.7 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
-| Required reviewers | Product usability, accessibility, and safeguarding/privacy reviewers: unassigned |
+| Required reviewers | Product usability, accessibility, and safeguarding/privacy review: @Entreco, designated by the product owner on 2026-11-19; exact-revision acceptance pending |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#24](https://github.com/Entreco/elchrono/issues/24) |
-| Review PR | Prior baseline: [PR #30](https://github.com/Entreco/elchrono/pull/30) and [PR #32](https://github.com/Entreco/elchrono/pull/32); revision 0.6: [PR #41](https://github.com/Entreco/elchrono/pull/41) |
+| Review PR | Prior baselines: [PR #30](https://github.com/Entreco/elchrono/pull/30), [PR #32](https://github.com/Entreco/elchrono/pull/32), and [PR #41](https://github.com/Entreco/elchrono/pull/41); issue #47 review: [PR #59](https://github.com/Entreco/elchrono/pull/59); final exact-head acceptance pending |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](../governance/document-control.md#lifecycle-and-approval).
@@ -23,10 +23,10 @@ remaining evidence gaps. The sessions reviewed
 merged through [PR #29](https://github.com/Entreco/elchrono/pull/29). The
 candidate requirement baseline for those sessions is
 [M2-DOC-001 revision 0.3](../product/requirements.md); the current v1 decisions
-are in revision 0.5 and were not part of those sessions, including D-06's
+are in revision 0.6 and were not part of those sessions, including D-06's
 decision not to provide separate manual pause, resume, or reset controls.
 The applicable proposed risks are RISK-001 through RISK-005 in
-[M1-DOC-004 revision 0.5](../safety/risk-assessment.md).
+[M1-DOC-004 revision 0.6](../safety/risk-assessment.md).
 
 ## Session scope and evidence provenance
 
@@ -162,3 +162,4 @@ themselves establish completed validation.
 | 0.4 | Record the PR #32 prototype clipping correction with browser/layout verification pending; align the unresolved caregiver and untested-flow gaps with the revised v1 product scope without retroactively attributing feedback. |
 | 0.5 | Record the owner-reported clipping resolution and the Chrome layout check at 500 × 1000 px and 1440 × 1200 px; close the prototype-specific finding for those layouts while retaining the undefined supported-layout and actual-product verification gaps. |
 | 0.6 | Record that the current no-manual-controls decision was not included in the retrospective sessions; preserve the resulting usability evidence gaps. |
+| 0.7 | Update current requirements and risk references and record the owner's reviewer designation; preserve the retrospective, caregiver, preference, and assistive-technology evidence gaps. |

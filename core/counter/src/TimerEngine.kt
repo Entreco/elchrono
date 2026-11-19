@@ -1,4 +1,4 @@
-package nl.entreco.elchrono.features.timer
+package nl.entreco.elchrono.core.counter
 
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.nanoseconds

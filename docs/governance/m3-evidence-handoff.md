@@ -3,33 +3,49 @@
 | Field | Value |
 |---|---|
 | Document ID | M3-DOC-008 |
-| Revision | 0.1 |
+| Revision | 0.6 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
-| Required reviewers | M3 gate/integration; cross-platform architecture; browser/desktop; Android/iOS; TV/watch tooling and interaction; provider, privacy, licensing/policy, and lifecycle/audio; build/CI/configuration; dependency/SOUP; documentation control; appointments and competence confirmation pending |
+| Required reviewers | M3 gate/integration; cross-platform architecture; browser/desktop; Android/iOS; TV input; provider, privacy, licensing/policy, lifecycle/audio, build/CI/configuration, dependency/SOUP, and documentation-control scopes: @Entreco, designated by the product owner on 2026-11-19; exact-head acceptance pending |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#40](https://github.com/Entreco/elchrono/issues/40) |
-| Review PR | [PR #55](https://github.com/Entreco/elchrono/pull/55); required reviews and human acceptance pending |
+| Review PR | Prior baseline: [PR #55](https://github.com/Entreco/elchrono/pull/55); issue #47 review: [PR #59](https://github.com/Entreco/elchrono/pull/59); final exact-head acceptance pending |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](document-control.md#lifecycle-and-approval).
 
 ## Review outcome
 
-**NOT APPROVED — the M3 completion gate is not ready to close.** M3 records,
-setup, templates, dependency assessment, and an automated CI run are present.
-However, the required M3 specialist reviews and exact-head human acceptance are
-not evidenced, and the M2 predecessor remains explicitly not approved in
-[M2-DOC-007, revision 0.8](https://github.com/Entreco/elchrono/blob/6248cb5afd8724b8f8f9e4ec5250e4c3778a438b/docs/governance/m2-evidence-handoff.md).
-The M3 source PRs being merged and issues #33–#39 being closed do not establish
-review completion or milestone approval. Do not close M3 on this evidence
-alone.
+**Owner-approved M3 review scope; exact final PR-head acceptance pending.**
+On 2026-11-19, @Entreco confirmed they are the human reviewer for all
+applicable disciplines and approved the M1, M2, and M3 reviews with their
+evidence limitations. M2-DOC-007 revision 1.3 records the M2 design baseline
+approval for #47. Android TV and Apple TV are primary future targets, while
+Wear OS and watchOS are outside v1. M3-DOC-007 revision 0.2 retains Kotlin
+Multiplatform/Compose without claiming platform support.
 
-This is an integration check of the records, stated revisions, linked PR
-descriptions, and GitHub review metadata inspected on 2026-11-18. It is not a
-qualified architecture, platform, privacy, licensing, dependency, accessibility,
-or software-safety review. This record does not provide missing review,
-verification, or approval evidence.
+The #47 architecture candidate assigns duration/countdown behavior to
+Compose-free `core/counter`, reusable keypad UI to `core/design`, input policy
+to `features/settings`, feature screens to timer/settings/about, and app
+routing/adaptive supporting-pane composition to `apps/common`. Focused
+domain/policy tests and multiplatform builds are separate from product
+verification; rendered UI, runtime keyboard behavior, platform verification,
+and the M4 reliability/lifecycle gate remain incomplete. The current #47
+candidate also updates M3-DOC-005 revision 0.2 with the adaptive-layout
+dependency and revised shared-design dependency scopes.
+
+The owner designation is self-attested; no independent credential audit is
+claimed. The source PR review metadata and CI evidence below are historical.
+This M3 integration record is updated for the current review, but its final
+human acceptance must still identify the exact head of the current PR. This
+does not convert evidence gaps into verification results or close a release
+gate.
+
+The source evidence table below describes the historical snapshot inspected on
+2026-11-18. The current owner disposition is recorded above and in the current
+PR; it does not change those historical results or provide missing platform,
+privacy, licensing, accessibility, dependency, verification, or release
+evidence.
 
 ## Evidence baseline
 
@@ -39,15 +55,15 @@ specialist review or human acceptance.
 
 | M3 deliverable | Evidence inspected | Observed outcome and limitation |
 |---|---|---|
-| Architecture decision and platform support matrix | [M3-DOC-007, revision 0.1](https://github.com/Entreco/elchrono/blob/e6c121ec1724f6c6851decae7a5f215b65cdf36f/docs/architecture/platform-architecture-and-support-matrix.md), [PR #54](https://github.com/Entreco/elchrono/pull/54) | Retains the configured Kotlin Multiplatform/Compose approach for further evaluation. It does not establish a release support baseline, minimum OS/browser versions, or TV/watch targets. Its required reviews and human acceptance remain pending. |
+| Architecture decision and platform support matrix | [M3-DOC-007, revision 0.2](../architecture/platform-architecture-and-support-matrix.md); prior baseline [revision 0.1](https://github.com/Entreco/elchrono/blob/e6c121ec1724f6c6851decae7a5f215b65cdf36f/docs/architecture/platform-architecture-and-support-matrix.md), [PR #54](https://github.com/Entreco/elchrono/pull/54) | Retains Kotlin Multiplatform/Compose; records Android TV/Apple TV as primary future targets and Wear/watch outside v1. It does not establish a release support baseline, minimum OS/browser versions, or configured TV targets. |
 | Browser and desktop feasibility | [M3-DOC-001, revision 0.2](https://github.com/Entreco/elchrono/blob/345c0acf413cf55bd521d49fe0123e388ad4bc9c/docs/architecture/platform-feasibility-findings.md), [PR #42](https://github.com/Entreco/elchrono/pull/42) | Browser and desktop starter-shell demonstrations were limited to the recorded macOS/Chrome environment. The default browser port conflict, other hosts, offline behavior, accessibility/input, and minimum versions remain unresolved. |
-| TV and watch feasibility | [M3-DOC-002, revision 0.2](https://github.com/Entreco/elchrono/blob/54d7c7f7711f0b5b7ae939eb2dc24ea25bb4705c/docs/architecture/tv-watch-feasibility-findings.md), [PR #49](https://github.com/Entreco/elchrono/pull/49) | Android TV, Apple TV, Wear OS, and watchOS remain unconfigured feasibility candidates. No remote/watch interaction, packaging, lifecycle, provider behavior, or usability is demonstrated. Do not present them as supported products. |
+| TV and watch feasibility | [M3-DOC-002, revision 0.2](https://github.com/Entreco/elchrono/blob/54d7c7f7711f0b5b7ae939eb2dc24ea25bb4705c/docs/architecture/tv-watch-feasibility-findings.md), [PR #49](https://github.com/Entreco/elchrono/pull/49) | Android TV and Apple TV are primary future targets but remain unconfigured. Wear OS/watchOS are outside v1. No TV/watch interaction, packaging, lifecycle, provider behavior, or usability is demonstrated. |
 | Provider and background-execution feasibility | [M3-DOC-003, revision 0.1](https://github.com/Entreco/elchrono/blob/54d7c7f7711f0b5b7ae939eb2dc24ea25bb4705c/docs/architecture/audio-provider-feasibility-findings.md), [PR #49](https://github.com/Entreco/elchrono/pull/49) | Official YouTube/Spotify and platform constraints, data-flow implications, and testability limits are documented. No provider, playback, credentials, tokens, integration, or platform support is selected or verified; provider/privacy/licensing reviews remain pending. |
 | Android and iOS feasibility | [M3-DOC-004, revision 0.3](https://github.com/Entreco/elchrono/blob/4766634e45ffa74203761ea42f8ba6430ec056c3/docs/architecture/android-ios-platform-feasibility-findings.md), [PR #50](https://github.com/Entreco/elchrono/pull/50) | Android build/AAB packaging and an iOS simulator shell run are recorded. Android launch, physical-device behavior, signing, accessibility, lifecycle, offline operation, and audio remain unverified. These demonstrations are not support commitments. |
 | Reproducible developer setup and automated checks | [README setup and CI guidance](https://github.com/Entreco/elchrono/blob/d537cc321429a0339d0606cc1a071021c8af6b87/README.md), [CI workflow](https://github.com/Entreco/elchrono/blob/d537cc321429a0339d0606cc1a071021c8af6b87/.github/workflows/ci.yml), [PR #51](https://github.com/Entreco/elchrono/pull/51), [observed CI run](https://github.com/Entreco/elchrono/actions/runs/44389945776) | The Kotlin wrapper, repository configuration, local commands, and Linux workflow are documented. The observed workflow passed module discovery, JVM and browser Wasm builds, common/localization JVM tests, and checks. It does not provision Android or validate Android/iOS, TV/watch, physical devices, or other desktop OSs. |
-| Dependency/SOUP inventory and release conventions | [M3-DOC-005, revision 0.1](https://github.com/Entreco/elchrono/blob/54d28b79fcf641aea78da182675d7188fb89f7bb/docs/architecture/dependency-inventory.md) and [M3-DOC-006, revision 0.1](https://github.com/Entreco/elchrono/blob/54d28b79fcf641aea78da182675d7188fb89f7bb/docs/architecture/build-release-versioning.md), [PR #52](https://github.com/Entreco/elchrono/pull/52) | Direct dependency declarations and preliminary assessments plus proposed build/version/artifact conventions are recorded. Transitive distributed-artifact licence review, maintenance/licensing actions, competent dependency review, and release-baseline decisions remain open. |
+| Dependency/SOUP inventory and release conventions | [M3-DOC-005, revision 0.1](https://github.com/Entreco/elchrono/blob/54d28b79fcf641aea78da182675d7188fb89f7bb/docs/architecture/dependency-inventory.md) and [M3-DOC-006, revision 0.1](https://github.com/Entreco/elchrono/blob/54d28b79fcf641aea78da182675d7188fb89f7bb/docs/architecture/build-release-versioning.md), [PR #52](https://github.com/Entreco/elchrono/pull/52) | The inspected historical baseline records direct dependency declarations and preliminary assessments plus proposed build/version/artifact conventions. Transitive distributed-artifact licence review, maintenance/licensing actions, competent dependency review, and release-baseline decisions remain open. |
 | Reusable documentation templates | [Template index](https://github.com/Entreco/elchrono/blob/54d28b79fcf641aea78da182675d7188fb89f7bb/docs/templates/README.md), [PR #52](https://github.com/Entreco/elchrono/pull/52) | Seven starting templates are present. They are not completed evidence, approvals, or product requirements. |
-| M2 prerequisite and traceability | [M2-DOC-007, revision 0.8](https://github.com/Entreco/elchrono/blob/6248cb5afd8724b8f8f9e4ec5250e4c3778a438b/docs/governance/m2-evidence-handoff.md), [M2-DOC-003, revision 2.5](https://github.com/Entreco/elchrono/blob/e6c121ec1724f6c6851decae7a5f215b65cdf36f/docs/safety/requirements-traceability-matrix.md), [PR #54](https://github.com/Entreco/elchrono/pull/54) | The M2 handoff explicitly says the M2 gate remains not approved, with exact-revision review, usability/risk disposition, and verification gaps. M3 does not clear that dependency. The traceability matrix links M3-DOC-007; no product requirement or risk is asserted approved by this integration record. |
+| M2 prerequisite and traceability | [M2-DOC-007, revision 0.9](https://github.com/Entreco/elchrono/blob/6d2cd083155d247786fbc9d7cac44421eed03bfe/docs/governance/m2-evidence-handoff.md), [M2-DOC-003, revision 2.8](https://github.com/Entreco/elchrono/blob/6d2cd083155d247786fbc9d7cac44421eed03bfe/docs/safety/requirements-traceability-matrix.md) | At the inspected historical snapshot, the product owner had not yet approved the M2 design baseline for #47; current disposition is recorded above. The historical records retain usability and product-verification limitations. |
 
 ## Review evidence and findings
 
@@ -73,7 +89,7 @@ candidate; the human acceptance in this record's review PR must identify the
 accepting human and full reviewed head SHA. Agents must leave that acceptance
 unchecked.
 
-## M3 completion-gate cross-check
+## M3 completion-gate cross-check (historical snapshot)
 
 The gate items follow the [M3 milestone definition](https://github.com/Entreco/elchrono/milestone/3).
 “Evidence present” does not mean reviewed, approved, supported, or verified.
@@ -87,23 +103,26 @@ The gate items follow the [M3 milestone definition](https://github.com/Entreco/e
 | Dependency/SOUP inventory and assessment | M3-DOC-005 contains a direct dependency inventory and preliminary assessment, with transitive licensing and other review actions open. | **Initial inventory present; assessment/review is incomplete.** |
 | Documentation templates | Seven reusable templates are indexed in the repository. | **Templates present; they are structures, not evidence or approval.** |
 | Data-flow and patient-data boundary | M3-DOC-003 describes provider data-flow and privacy implications. No patient account, identifiable patient data, telemetry, provider credentials, or tokens were introduced by the M3 work reviewed here. | **Boundaries documented for the feasibility scope; no integration/data-flow implementation is approved.** |
-| M2 predecessor gate | M2-DOC-007 says M2 remains not approved and records outstanding review, usability, risk, and verification issues. | **Blocking dependency unresolved; do not rely on M3 evidence as M2 approval.** |
+| M2 predecessor gate | At the reviewed snapshot, M2-DOC-007 said M2 remained not approved and recorded outstanding review, usability, risk, and verification issues. | **Historical outcome: blocking dependency unresolved at that snapshot. See the current review disposition above; do not infer milestone completion.** |
 
-The M3 evidence package covers the named deliverables, and the documented CI
-scope has passed. The M3 completion gate as a whole remains **not approved**
-because required source reviews and exact-head acceptance are not evidenced
-and the M2 dependency is unresolved. A successful build, merged document,
-closed work item, or this agent integration check cannot substitute for those
-gates.
+The owner approves the M3 review gate for issue #47 as an engineering
+foundation with the limitations retained above. This does not declare the M3
+milestone complete or establish platform support, provider approval, or release
+readiness. The historical table above records that M2 was unresolved at the
+snapshot; the owner has since approved the scoped M2 baseline for #47, so the
+missing-reviewer dependency no longer blocks this implementation. Final
+exact-head acceptance remains pending in the current PR. A successful build,
+merged document, closed work item, or this integration record cannot establish
+platform support or release readiness.
 
 ## M4 handoff and follow-up
 
 | Follow-up | Owner / issue | Required action and evidence |
 |---|---|---|
-| Resolve the M2 prerequisite before relying on product inputs | @Entreco; [M2-DOC-007](m2-evidence-handoff.md), [M2 issue #26](https://github.com/Entreco/elchrono/issues/26) | Obtain required exact-revision product, usability/accessibility, and risk review; disposition findings and limitations; resolve the M2 gate under its own review controls. M2 issue closure or PR merge alone does not clear the documented gate. |
+| Record final owner acceptance of the M2 review package before relying on its product inputs | @Entreco; [M2-DOC-007](m2-evidence-handoff.md), [M2 issue #26](https://github.com/Entreco/elchrono/issues/26) | The owner has approved the documented M2 design baseline for #47. Record acceptance against the final PR head; retain usability, risk, and verification limitations. |
 | Reconcile timer-engine scope with approved requirements | @Entreco; [#44](https://github.com/Entreco/elchrono/issues/44) | Establish the accepted timer-engine scope against reviewed requirements, risks, architecture, and test criteria. Do not invent pause/reset, completion, caregiver protection, volume, or interruption behavior. |
 | Implement and verify the timer engine | @Entreco; [#45](https://github.com/Entreco/elchrono/issues/45) | After prerequisite reviews, implement domain timing independently from rendering/music; verify allowed durations and boundaries with an injected time source and preserve explicit lifecycle limitations. |
-| Reconcile and implement the browser MVP | @Entreco; [#46](https://github.com/Entreco/elchrono/issues/46), [#47](https://github.com/Entreco/elchrono/issues/47), [#48](https://github.com/Entreco/elchrono/issues/48) | Align scope to approved v1 requirements, then implement Main/Settings/About and verify browser behavior/accessibility. Do not claim theme preference, broader platform support, or unverified behavior. |
+| Complete and review the browser MVP | @Entreco; [#47](https://github.com/Entreco/elchrono/issues/47) | Implement Main/Settings/About against the owner-approved v1 requirements, run focused tests, and preserve the explicit gaps. Do not claim theme preference or broader platform support. |
 | Track M6 music and volume work | @Entreco; no M6 issue was present in the inspected issue inventory | Create/link an owned issue before work is treated as tracked. Use M3-DOC-003 as feasibility input only; resolve provider, licensing/policy, privacy/data-flow, platform, and failure-handling decisions before integration. Keep timer operation independent of music and internet. |
 
 These are handoff actions, not authorization to proceed past unresolved
@@ -126,3 +145,8 @@ approve residual risk. Record these as gaps rather than inferred results.
 | Revision | Change |
 |---|---|
 | 0.1 | Record the M3 evidence baseline, actual review gaps, completion-gate outcome, M2 dependency, and tracked M4/M5/M6 handoff for issue #40. |
+| 0.2 | Record the owner's M1/M2/M3 reviewer designation and review disposition, align TV/watch scope and current M2/M3 candidates, and retain exact-head acceptance and platform/release limitations. |
+| 0.3 | Record owner approval of the M3 review gate for issue #47, clarify that the historical M2 blocker is resolved for this scoped implementation, and preserve the distinction from milestone completion, platform support, and release readiness. |
+| 0.4 | Align the current M2 review reference and record the #47 core/feature ownership boundary and focused domain-test evidence without claiming M4 completion, product verification, or platform support. |
+| 0.5 | Update the #47 architecture handoff for core keypad ownership, adaptive supporting-pane composition, keyboard-capability adapters, and the current dependency inventory; retain UI, platform, M4, and exact-head review limitations. |
+| 0.6 | Align the M2 handoff link with its current revision and retain the documented Wasm test-runner, rendered-UI, platform, and exact-head acceptance limitations. |

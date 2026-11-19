@@ -4,8 +4,10 @@ modules:
   - apps/desktop
   - apps/mobile/android
   - apps/mobile/ios
+  - core/counter
   - core/design
   - core/localization
+  - features/about
   - features/music
   - features/settings
   - features/timer

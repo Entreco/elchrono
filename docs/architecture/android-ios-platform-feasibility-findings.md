@@ -19,10 +19,12 @@ table. See [document controls](../governance/document-control.md#lifecycle-and-a
 This record evaluates the configured Android and iOS launchers as technical
 proofs for the shared Compose application shell. It builds on the starter-demo
 evidence in the [module layout decision](module-layout.md) and follows the
-[M2 evidence handoff](../governance/m2-evidence-handoff.md), which keeps the
-M2 gate open. This evaluation does not clear that dependency.
+[M2 evidence handoff](../governance/m2-evidence-handoff.md). At the source
+snapshot reviewed for this feasibility record, the M2 gate remained open; this
+evaluation did not clear that historical dependency.
 
-The current app is a starter shell, not a timer. Successful compilation,
+At the source snapshot used for these technical proofs, the app was a starter
+shell, not a timer. Successful compilation,
 packaging, or a simulator launch is not product validation, a supported-
 platform commitment, or evidence that timer behavior survives interruptions.
 No timer recovery, pause/reset, volume limit, completion behavior, or other

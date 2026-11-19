@@ -3,13 +3,13 @@
 | Field | Value |
 |---|---|
 | Document ID | M1-DOC-003 |
-| Revision | 0.6 |
+| Revision | 0.7 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Regulatory qualification reviewer: @Entreco (qualified; conclusion recorded below) |
 | Approver | @Entreco, after PR human acceptance and findings resolution |
 | Related issue | [#3](https://github.com/Entreco/elchrono/issues/3) |
-| Review PR | [PR #13](https://github.com/Entreco/elchrono/pull/13); [PR #16](https://github.com/Entreco/elchrono/pull/16) |
+| Review PR | Prior reviews: [PR #13](https://github.com/Entreco/elchrono/pull/13) and [PR #16](https://github.com/Entreco/elchrono/pull/16); issue #47 review: [PR #59](https://github.com/Entreco/elchrono/pull/59); final exact-head acceptance pending |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](../governance/document-control.md#lifecycle-and-approval).
@@ -23,16 +23,16 @@ device class applies. This is the conclusion of @Entreco, acting as the
 qualified regulatory reviewer for this assessment, based on the intended
 purpose and functions documented in the intended-use record. It is not legal
 advice, a regulator's determination, product approval, certification, or
-authorization to distribute. The source review date is 2026-11-15.
+authorization to distribute. The source review date is 2026-11-19.
 
-The assessment applies the proposed intended use in
-[M1-DOC-002, revision 0.6](../product/intended-use.md), a candidate revision on
-this branch. Issue #2 is closed, but its closure and earlier PR history do not
-establish approval of this revision. The qualification decision below records
-the qualified reviewer's assessment of the intended purpose, relevant market
-tests, and plausible alternative interpretations. Final PR acceptance and
-approval of this controlled revision remain governed by the human-acceptance
-process; neither is represented as already completed.
+The assessment applies the intended use in
+[M1-DOC-002, revision 1.0](../product/intended-use.md). On 2026-11-19,
+@Entreco confirmed their review of this scope as the qualified EU/US reviewer.
+The product remains a general-purpose non-medical visual aid for ordinary
+waiting; the current revision clarifies v1's no-audio boundary and platform
+priorities without changing that purpose. This review does not determine
+platform support, resolve open market obligations, or authorize distribution.
+Final PR acceptance remains governed by the human-acceptance process.
 
 This record separates:
 
@@ -47,11 +47,11 @@ This record separates:
 ## Product and intended-use facts assessed
 
 The product facts and proposed intended-use boundary assessed here are defined
-in [M1-DOC-002, revision 0.6](../product/intended-use.md). That record is the
+in [M1-DOC-002, revision 1.0](../product/intended-use.md). That record is the
 source for the intended-use statement, users and roles, supported situations
 and functions, exclusions, claims boundary, and implementation status; this
 assessment does not restate them. The conclusions below apply only to that
-candidate revision. Its approval remains pending. Differences between that
+reviewed revision. Differences between that
 record and actual functionality, public claims, or distribution scope require
 reassessment.
 
@@ -88,7 +88,7 @@ person with a disability may use a general-purpose timer does not, by itself,
 make disability compensation the product's intended purpose.
 
 **Qualification conclusion: El Chrono, as specified in M1-DOC-002 revision
-0.6, is not a medical device under the EU MDR.** The product does not meet the
+1.0, is not a medical device under the EU MDR.** The product does not meet the
 medical-purpose element of Article 2(1) on its defined intended purpose and
 functions. Accordingly, no MDR regulatory device class is assigned, and MDR
 device conformity-assessment and CE-marking obligations do not apply on this
@@ -100,7 +100,7 @@ compensate for disability—is considered and rejected by the qualified reviewer
 because disability is neither an indication nor the function served: the same
 ordinary-waiting timer is offered to all users without condition-specific
 assessment, adaptation, or medical claims. This conclusion applies to the
-intended purpose and functionality specified in M1-DOC-002 revision 0.6. If
+intended purpose and functionality specified in M1-DOC-002 revision 1.0. If
 the facts or claims differ, reassess and escalate any conflict before affected
 work continues.
 
@@ -156,7 +156,7 @@ definition. The product is not yet fully implemented, so actual functionality
 and public-facing claims must remain within this documented intended use.
 
 **Qualification conclusion: El Chrono, as specified in M1-DOC-002 revision
-0.6, is not a medical device under the FD&C Act.** Its intended use is a
+1.0, is not a medical device under the FD&C Act.** Its intended use is a
 general-purpose aid to understand ordinary waiting time. It is not intended
 for diagnosis, cure, mitigation, treatment, or prevention of disease, to
 affect body structure or function, or for another medical purpose. It also
@@ -169,7 +169,7 @@ exemption, and premarket-submission requirements do not apply on this
 qualification basis. Software-function exclusions under section 520(o) need
 not be relied on to reach this conclusion. This is the qualified reviewer's
 assessment of the intended purpose and functions specified in M1-DOC-002
-revision 0.6, not an FDA decision or clearance.
+revision 1.0, not an FDA decision or clearance.
 
 ### Other obligations and limits
 
@@ -189,12 +189,12 @@ This is a screening list, not an exhaustive federal or state legal review.
 
 | Market | Qualification conclusion | Regulatory class |
 |---|---|---|
-| European Union | Not a medical device under the MDR as specified in M1-DOC-002 revision 0.6; no medical purpose, including no intended disability compensation. | Not applicable; no regulatory device class is assigned. |
-| United States | Not a medical device under the FD&C Act as specified in M1-DOC-002 revision 0.6; no intended medical use. | Not applicable; no regulatory device class is assigned. |
+| European Union | Not a medical device under the MDR as specified in M1-DOC-002 revision 1.0; no medical purpose, including no intended disability compensation. | Not applicable; no regulatory device class is assigned. |
+| United States | Not a medical device under the FD&C Act as specified in M1-DOC-002 revision 1.0; no intended medical use. | Not applicable; no regulatory device class is assigned. |
 
 The qualification review is performed by @Entreco, who confirms qualification
 as a reviewer for the EU and US scope. The reviewer considered the intended
-purpose and functions in M1-DOC-002 revision 0.6, the MDR disability-
+purpose and functions in M1-DOC-002 revision 1.0, the MDR disability-
 compensation interpretation, the FD&C Act medical-purpose test, and the
 conditional obligations identified here. The reviewer concludes that El
 Chrono is not a medical device in either market and that no regulatory device
@@ -203,7 +203,7 @@ acceptance and controlled-record approval remain pending until the human
 acceptance process is completed.
 
 The assessment is bounded by the intended use and claims documented in
-M1-DOC-002 revision 0.6.
+M1-DOC-002 revision 1.0.
 Evidence of a medical purpose, condition-specific function, disability-
 compensation intent, or inconsistent public claim requires reassessment and
 escalation before affected work continues. Do not silently change the product
@@ -260,3 +260,4 @@ subject to routine review when markets, claims, or functionality change.
 | 0.4 | Record the qualified-review disposition and PR acceptance status, and assess M1-DOC-002 revision 0.5 |
 | 0.5 | Reference M1-DOC-002 as the authoritative source for intended-use facts instead of restating them; assess revision 0.6 |
 | 0.6 | Link the M1-DOC-005 IEC 62304 non-applicability conclusion and distinguish it from regulatory device classification |
+| 0.7 | Record the qualified reviewer's confirmation that intended-use revision 1.0 retains the assessed non-medical purpose; preserve all market-applicability and exact-PR-head limitations. |

@@ -9,7 +9,7 @@
 | Required reviewers | Regulatory qualification reviewer: @Entreco (qualified; conclusion recorded below) |
 | Approver | @Entreco, after PR human acceptance and findings resolution |
 | Related issue | [#3](https://github.com/Entreco/elchrono/issues/3) |
-| Review PR | Prior reviews: [PR #13](https://github.com/Entreco/elchrono/pull/13) and [PR #16](https://github.com/Entreco/elchrono/pull/16); current exact-head review: pending |
+| Review PR | Prior reviews: [PR #13](https://github.com/Entreco/elchrono/pull/13) and [PR #16](https://github.com/Entreco/elchrono/pull/16); issue #47 review: [PR #59](https://github.com/Entreco/elchrono/pull/59); final exact-head acceptance pending |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](../governance/document-control.md#lifecycle-and-approval).

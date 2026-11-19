@@ -9,7 +9,7 @@
 | Required reviewers | M1 product-boundary, qualification, software-safety, risk, and lifecycle scopes: @Entreco, designated by the product owner on 2026-11-19; final exact-head acceptance pending |
 | Approver | @Entreco, designated M1 milestone approver; exact-head acceptance pending |
 | Related issue | [#8](https://github.com/Entreco/elchrono/issues/8) |
-| Review PR | Prior baseline: [PR #21](https://github.com/Entreco/elchrono/pull/21); current exact-head review: pending |
+| Review PR | Prior baseline: [PR #21](https://github.com/Entreco/elchrono/pull/21); issue #47 review: [PR #59](https://github.com/Entreco/elchrono/pull/59); final exact-head acceptance pending |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](document-control.md#lifecycle-and-approval).

@@ -9,7 +9,7 @@
 | Required reviewers | M1/M2/M3 product, requirements, design/usability, accessibility, test/traceability, software-safety, and platform-architecture scopes: @Entreco, designated by the product owner on 2026-11-19; review of this final PR head remains pending |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#26](https://github.com/Entreco/elchrono/issues/26) |
-| Review PR | Prior evidence baseline: [PR #32](https://github.com/Entreco/elchrono/pull/32); current exact-head review: pending |
+| Review PR | Prior evidence baseline: [PR #32](https://github.com/Entreco/elchrono/pull/32); issue #47 review: [PR #59](https://github.com/Entreco/elchrono/pull/59); final exact-head acceptance pending |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](document-control.md#lifecycle-and-approval).

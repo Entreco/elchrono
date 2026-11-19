@@ -9,7 +9,7 @@
 | Required reviewers | Product requirements and accessibility: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#22](https://github.com/Entreco/elchrono/issues/22) |
-| Review PR | Prior baseline: [PR #32](https://github.com/Entreco/elchrono/pull/32); prior review: [PR #41](https://github.com/Entreco/elchrono/pull/41); current review: pending |
+| Review PR | Prior baseline: [PR #32](https://github.com/Entreco/elchrono/pull/32); prior review: [PR #41](https://github.com/Entreco/elchrono/pull/41); issue #47 review: [PR #59](https://github.com/Entreco/elchrono/pull/59); final exact-head acceptance pending |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](../governance/document-control.md#lifecycle-and-approval).

@@ -9,7 +9,7 @@
 | Required reviewers | M3 gate/integration; cross-platform architecture; browser/desktop; Android/iOS; TV input; provider, privacy, licensing/policy, lifecycle/audio, build/CI/configuration, dependency/SOUP, and documentation-control scopes: @Entreco, designated by the product owner on 2026-11-19; exact-head acceptance pending |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#40](https://github.com/Entreco/elchrono/issues/40) |
-| Review PR | Prior baseline: [PR #55](https://github.com/Entreco/elchrono/pull/55); current exact-head review: pending |
+| Review PR | Prior baseline: [PR #55](https://github.com/Entreco/elchrono/pull/55); issue #47 review: [PR #59](https://github.com/Entreco/elchrono/pull/59); final exact-head acceptance pending |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](document-control.md#lifecycle-and-approval).

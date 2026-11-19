@@ -9,7 +9,7 @@
 | Required reviewers | @Entreco is designated by the product owner as human reviewer across applicable M1/M2/M3 disciplines for issue #47; designation is self-attested. Legal, privacy, accessibility, cybersecurity, and market-specific determinations remain open follow-up gates below. |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#6](https://github.com/Entreco/elchrono/issues/6) |
-| Review PR | [PR #18](https://github.com/Entreco/elchrono/pull/18); [evidence reconciliation PR](https://github.com/Entreco/elchrono/pull/19); issue #22 update in [PR #32](https://github.com/Entreco/elchrono/pull/32); revision 0.8 in [PR #49](https://github.com/Entreco/elchrono/pull/49); issue #38 revision 0.9 in [PR #52](https://github.com/Entreco/elchrono/pull/52); issue #47 current review PR: pending; final exact-head acceptance pending |
+| Review PR | [PR #18](https://github.com/Entreco/elchrono/pull/18); [evidence reconciliation PR](https://github.com/Entreco/elchrono/pull/19); issue #22 update in [PR #32](https://github.com/Entreco/elchrono/pull/32); revision 0.8 in [PR #49](https://github.com/Entreco/elchrono/pull/49); issue #38 revision 0.9 in [PR #52](https://github.com/Entreco/elchrono/pull/52); issue #47 update: [PR #59](https://github.com/Entreco/elchrono/pull/59); final exact-head acceptance pending |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [Lifecycle and approval](document-control.md#lifecycle-and-approval).

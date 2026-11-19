@@ -9,7 +9,7 @@
 | Required reviewers | Cross-platform architecture; browser/desktop; Android/iOS; TV input; provider, privacy, licensing/policy, lifecycle/audio, and accessibility/input scopes: @Entreco, designated by the product owner on 2026-11-19; final exact-head acceptance pending |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#39](https://github.com/Entreco/elchrono/issues/39) |
-| Review PR | Prior baseline: [PR #54](https://github.com/Entreco/elchrono/pull/54); current exact-head review: pending |
+| Review PR | Prior baseline: [PR #54](https://github.com/Entreco/elchrono/pull/54); issue #47 update: [PR #59](https://github.com/Entreco/elchrono/pull/59); final exact-head acceptance pending |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](../governance/document-control.md#lifecycle-and-approval).

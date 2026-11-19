@@ -78,10 +78,12 @@ The existing wrappers and YAML build model are retained; the shared adaptive
 layout module is added at the existing adaptive version. The counter module
 remains Compose-free. The common shell uses the Compose Multiplatform
 Navigation 3 `NavDisplay` with Material Adaptive scene strategies. The app
-state owns the Timer → Settings → About back stack. The list-detail scene uses
-the left slot for Settings and the remaining space for Timer on wider windows;
-single-pane windows show the active destination. About replaces Settings in
-the same pane. Navigation 3 and
+state owns the Timer → Settings → About back stack. The Material Adaptive
+directive selects the split scene when the window allows at least two
+horizontal partitions. In that scene Settings occupies the left slot and
+Timer the remaining space; About replaces Settings in the same slot.
+Navigation 3 slides between single-pane destinations and fades between
+Timer-only and split scenes on wider windows. Navigation 3 and
 its adaptive scene own the Android predictive-back gesture and transition;
 the app does not track gesture progress or offsets.
 

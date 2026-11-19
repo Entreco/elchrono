@@ -1,7 +1,10 @@
 package nl.entreco.elchrono
 
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -11,12 +14,15 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfoV2
+import androidx.compose.material3.adaptive.layout.calculatePaneScaffoldDirective
 import androidx.compose.material3.adaptive.navigation.BackNavigationBehavior
 import androidx.compose.material3.adaptive.navigation3.ListDetailSceneStrategy
 import androidx.compose.material3.adaptive.navigation3.rememberListDetailSceneStrategy
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
@@ -29,6 +35,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.scene.SceneStrategy
 import androidx.navigation3.ui.NavDisplay
 import kotlinx.coroutines.delay
 import nl.entreco.elchrono.core.counter.TimerStatus
@@ -59,10 +66,35 @@ private fun AppContent(
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val keyboardAvailable = allowKeyboardInput && isKeyboardAvailable()
-    val panes = rememberListDetailSceneStrategy<AppScreen>(
-        shouldHandleSinglePaneLayout = true,
-        backNavigationBehavior = BackNavigationBehavior.PopLatest,
-    )
+    val directive = calculatePaneScaffoldDirective(currentWindowAdaptiveInfoV2())
+    val useTwoPanes = directive.maxHorizontalPartitions >= 2
+    val sceneStrategies = if (useTwoPanes) {
+        val panes = rememberListDetailSceneStrategy<AppScreen>(
+            directive = directive,
+            backNavigationBehavior = BackNavigationBehavior.PopLatest,
+        )
+        remember(panes) {
+            listOf(
+                SceneStrategy<AppScreen> { entries ->
+                    // Material can reserve two slots even with only the Timer entry.
+                    if (entries.size > 1) with(panes) { calculateScene(entries) } else null
+                },
+            )
+        }
+    } else {
+        emptyList()
+    }
+
+    val openTransition = if (useTwoPanes) {
+        fadeIn() togetherWith fadeOut()
+    } else {
+        slideInHorizontally { -it } togetherWith slideOutHorizontally { it }
+    }
+    val backTransition = if (useTwoPanes) {
+        fadeIn() togetherWith fadeOut()
+    } else {
+        slideInHorizontally { it } togetherWith slideOutHorizontally { -it }
+    }
     // Material's list slot is on the left; Timer takes the remaining detail space.
     val settingsPane = ListDetailSceneStrategy.listPane() +
         ListDetailSceneStrategy.preferredPaneSize(width = 440.dp) +
@@ -95,7 +127,10 @@ private fun AppContent(
             backStack = state.backStack,
             onBack = viewModel::onBackPressed,
             modifier = Modifier.fillMaxSize().padding(contentPadding).padding(horizontal = 24.dp, vertical = 16.dp),
-            sceneStrategies = listOf(panes),
+            sceneStrategies = sceneStrategies,
+            transitionSpec = { openTransition },
+            popTransitionSpec = { backTransition },
+            predictivePopTransitionSpec = { backTransition },
             entryProvider = entryProvider {
                 entry(
                     AppScreen.TIMER,

@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-003 |
-| Revision | 3.1 |
+| Revision | 3.2 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Requirements and software-safety review: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
@@ -32,12 +32,12 @@ actual evidence is recorded.
 | [M1-DOC-002, intended use](../product/intended-use.md) | 1.0 candidate | Product purpose, roles, use, and limitations |
 | [M2-DOC-001, product requirements](../product/requirements.md) | 0.8 candidate | Ten active requirements incorporating the v1 product decisions, including the four themes, adaptive Settings pane, and target-specific duration input methods |
 | [M1-DOC-004, risk assessment](risk-assessment.md) | 0.7 candidate | RISK-001 through RISK-006 traced below; D-01 disposition is not evidence of a control or risk reduction |
-| [M1-DOC-009, risk traceability matrix](risk-traceability-matrix.md) | 1.0 candidate | Risk-to-source and planned verification; review pending |
+| [M1-DOC-009, risk traceability matrix](risk-traceability-matrix.md) | 1.2 candidate | Risk-to-source and planned verification; review pending |
 | [M2-DOC-002, product test protocol](../testing/test-protocol.md) | 1.0 candidate | Test procedures and acceptance criteria traced below; audio tests deferred to v2; no manual pause/resume/reset controls in v1 |
 | [M2-DOC-004, accessible screen flows and theme prototypes](../design/accessible-screen-flows-and-theme-prototypes.md) | 1.8 candidate | Main/Settings/About, supporting-pane Settings, keyboard/keypad policy, and four owner-approved themes; exact-head review pending |
 | [M2-DOC-005, usability review plan](../usability/usability-plan.md) | 0.7 candidate | Proposed participant approach and tasks; created after the two sessions and did not govern them |
 | [M2-DOC-006, usability findings and evidence status](../usability/usability-findings.md) | 0.7 candidate | Two retrospective sessions and retained screenshots; Clock clipping and caregiver/usability limitations retained |
-| [M3-DOC-007, platform architecture decision and support matrix](../architecture/platform-architecture-and-support-matrix.md) | 0.2 candidate | Retains the configured Kotlin Multiplatform/Compose architecture; records TV priorities, Wear/watch exclusion, evidence limits, and no support commitment |
+| [M3-DOC-007, platform architecture decision and support matrix](../architecture/platform-architecture-and-support-matrix.md) | 0.3 candidate | Retains the configured Kotlin Multiplatform/Compose architecture; records TV priorities, Wear/watch exclusion, evidence limits, and no support commitment |
 
 ## Traceability
 
@@ -52,7 +52,7 @@ actual evidence is recorded.
 | [REQ-008](../product/requirements.md#requirement-identification) | [Offline use](../product/intended-use.md#supported-role-of-visual-time-and-optional-audio); future audio scope deferred | RISK-003 | Music and volume controls excluded from v1; future audio behavior requires separate review; [M3-DOC-003](../architecture/audio-provider-feasibility-findings.md) records feasibility constraints only | [TP-REQ-008](../testing/test-protocol.md#test-cases) | Network-independence test pending; v2 audio tests deferred |
 | [REQ-009](../product/requirements.md#requirement-identification) | [Exclusions and claims boundary](../product/intended-use.md#exclusions-and-claims-boundary) | RISK-006 | [About screen content](../design/accessible-screen-flows-and-theme-prototypes.md#about-screen); session gap G04 | [TP-REQ-009](../testing/test-protocol.md#test-cases) | Pending |
 | [REQ-010](../product/requirements.md#requirement-identification) | [Ordinary waiting use and limitations](../product/intended-use.md#foreseeable-use-and-limitations) | RISK-001, RISK-005; RISK-003 only if audio is added in v2 | Immediate reset without a completed state; no v1 audio | [TP-REQ-010](../testing/test-protocol.md#test-cases) | Timer-domain reset, non-negative remaining time, and once-per-cycle completion passed; app/UI integration unverified; music-stop criterion deferred to v2 |
-| [REQ-011](../product/requirements.md#requirement-identification) | [Roles and ordinary use](../product/intended-use.md#users-population-and-roles); TV viewing/input boundaries | RISK-005, RISK-006 | [TV priority and v1 boundary](../design/accessible-screen-flows-and-theme-prototypes.md#design-principles); TV interaction and platform support remain unverified | [TP-REQ-011](../testing/test-protocol.md#test-cases) | Pending; Android TV/Apple TV targets are not configured and no support claim is made |
+| [REQ-011](../product/requirements.md#requirement-identification) | [Roles and ordinary use](../product/intended-use.md#users-population-and-roles); TV viewing/input boundaries | RISK-005, RISK-006 | [TV priority and v1 boundary](../design/accessible-screen-flows-and-theme-prototypes.md#design-principles); TV interaction and platform support remain unverified | [TP-REQ-011](../testing/test-protocol.md#test-cases) | Pending; Android TV has a candidate launcher; Apple TV is unconfigured. No TV support claim is made |
 
 ## Reverse coverage
 
@@ -190,3 +190,4 @@ test procedures or acceptance criteria in this matrix.
 | 2.9 | Align risk/protocol source revisions and record the counter/settings-domain test scope after the timer logic moved to core/counter; retain UI and product-verification limitations. |
 | 3.0 | Trace adaptive supporting-pane Settings and target-specific keyboard/keypad entry criteria; record focused input-policy tests while retaining rendered layout/input and no-clipping verification gaps. |
 | 3.1 | Align the test-protocol revision and record the successful JVM tests/builds plus unresolved Skiko Wasm test-runner failure; retain product-level verification gaps. |
+| 3.2 | Trace the Android TV launcher candidate while retaining the TV interaction, usability, and support-verification gaps. |

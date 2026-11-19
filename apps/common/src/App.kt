@@ -2,12 +2,10 @@ package nl.entreco.elchrono
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -50,6 +48,7 @@ import nl.entreco.elchrono.features.settings.SettingsScreen
 import nl.entreco.elchrono.features.settings.TimerSettings
 import nl.entreco.elchrono.features.timer.TimerFeature
 import org.jetbrains.compose.resources.stringResource
+import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
 @Preview
@@ -57,7 +56,7 @@ fun App(allowKeyboardInput: Boolean = false) {
     ElChronoTheme { AppContent(allowKeyboardInput) }
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3AdaptiveApi::class)
+@OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @Composable
 private fun AppContent(
     allowKeyboardInput: Boolean,
@@ -66,8 +65,7 @@ private fun AppContent(
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
     val windowAdaptiveInfo = currentWindowAdaptiveInfoV2()
-    val isExpanded = windowAdaptiveInfo.windowSizeClass
-        .isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND)
+    val isExpanded = windowAdaptiveInfo.windowSizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND)
     val keyboardAvailable = allowKeyboardInput && isKeyboardAvailable()
 
     LifecycleEventEffect(Lifecycle.Event.ON_STOP) {
@@ -139,7 +137,10 @@ private fun AppContent(
             supportingPane = {
                 AnimatedPane(
                     modifier = if (isExpanded) {
-                        Modifier.widthIn(min = SETTINGS_PANE_MIN_WIDTH, max = SETTINGS_PANE_MAX_WIDTH)
+                        Modifier.widthIn(
+                            min = SETTINGS_PANE_MIN_WIDTH,
+                            max = SETTINGS_PANE_MAX_WIDTH
+                        )
                     } else {
                         Modifier.widthIn(max = SETTINGS_PANE_MAX_WIDTH)
                     },
@@ -207,7 +208,7 @@ private fun paneValue(isExpanded: Boolean, screen: AppScreen) =
         tertiary = PaneAdaptedValue.Hidden,
     )
 
-private const val TIMER_REFRESH_MILLIS = 250L
+private val TIMER_REFRESH_MILLIS = 250.milliseconds
 private val SETTINGS_PANE_MIN_WIDTH = 320.dp
 private val SETTINGS_PANE_MAX_WIDTH = 440.dp
 private const val SETTINGS_ICON = "\u2699"

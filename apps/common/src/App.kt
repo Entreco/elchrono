@@ -63,6 +63,8 @@ private fun AppContent(
     allowKeyboardInput: Boolean,
     viewModel: AppViewModel = viewModel { AppViewModel() },
 ) {
+
+    
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val keyboardAvailable = allowKeyboardInput && isKeyboardAvailable()

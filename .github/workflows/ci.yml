@@ -14,6 +14,9 @@ jobs:
     name: Linux build and checks
     runs-on: ubuntu-24.04
     timeout-minutes: 30
+    env:
+      KOTLIN_SHARED_CACHE_DIR: ${{ runner.temp }}/kotlin-cache
+      KOTLIN_CLI_BOOTSTRAP_CACHE_DIR: ${{ runner.temp }}/kotlin-cache/cli
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -24,6 +27,23 @@ jobs:
           distribution: temurin
           java-version: '17'
 
+      - name: Restore Kotlin downloads
+        id: kotlin-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            ${{ runner.temp }}/kotlin-cache/.m2.cache
+            ${{ runner.temp }}/kotlin-cache/download.cache
+            ${{ runner.temp }}/kotlin-cache/cli
+            !${{ runner.temp }}/kotlin-cache/**/*.tmp
+            !${{ runner.temp }}/kotlin-cache/**/*.part
+            !${{ runner.temp }}/kotlin-cache/**/*.lock
+            !${{ runner.temp }}/kotlin-cache/cli/download-*.bin
+          key: kotlin-downloads-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('kotlin', 'kotlin.bat') }}-${{ hashFiles('project.yaml', '**/module.yaml', '**/module-test.yaml', 'libs.versions.toml') }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            kotlin-downloads-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('kotlin', 'kotlin.bat') }}-${{ hashFiles('project.yaml', '**/module.yaml', '**/module-test.yaml', 'libs.versions.toml') }}-
+            kotlin-downloads-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('kotlin', 'kotlin.bat') }}-
+
       - name: Discover modules
         run: ./kotlin show modules
 
@@ -32,6 +52,19 @@ jobs:
 
       - name: Build browser Wasm target
         run: ./kotlin build -m browser
+
+      - name: Save Kotlin downloads
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            ${{ runner.temp }}/kotlin-cache/.m2.cache
+            ${{ runner.temp }}/kotlin-cache/download.cache
+            ${{ runner.temp }}/kotlin-cache/cli
+            !${{ runner.temp }}/kotlin-cache/**/*.tmp
+            !${{ runner.temp }}/kotlin-cache/**/*.part
+            !${{ runner.temp }}/kotlin-cache/**/*.lock
+            !${{ runner.temp }}/kotlin-cache/cli/download-*.bin
+          key: ${{ steps.kotlin-cache.outputs.cache-primary-key }}
 
       - name: Run JVM tests
         run: ./kotlin test -p jvm -m common -m counter -m settings -m localization

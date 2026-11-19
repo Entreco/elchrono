@@ -1,0 +1,11 @@
+product: android/app
+
+dependencies:
+  - //apps/common
+  - $libs.androidx.activity.compose
+
+settings:
+  compose: enabled
+  android:
+    namespace: nl.entreco.elchrono.tv
+    applicationId: nl.entreco.elchrono.tv

@@ -29,7 +29,8 @@ Toolchain wrappers `kotlin` (macOS/Linux) and `kotlin.bat` (Windows).
 | `apps/browser` | Kotlin/Wasm browser launcher |
 | `apps/mobile/android` | Android launcher, manifest and native resources |
 | `apps/mobile/ios` | iOS launcher, Swift bridge, Xcode project and assets |
-| `apps/television`, `apps/watch` | Reserved for future targets; not launchable |
+| `apps/television/androidtv` | Candidate Android TV launcher and banner |
+| `apps/television` (Apple TV), `apps/watch` | Reserved for future targets; not launchable |
 | `core/counter` | Shared timer duration and monotonic countdown logic; no Compose |
 | `core/design` | Shared theme, design types, reusable components and drawable resources |
 | `core/localization` | Shared translation-ready string resources |
@@ -61,6 +62,7 @@ From the repository root:
 ./kotlin run -m desktop
 ./kotlin run -m browser
 ./kotlin run -m android --device-id <adb-serial>
+./kotlin run -m androidtv --device-id <adb-serial>
 ./kotlin run -m ios -p iosSimulatorArm64 --device-id <simulator-uuid>
 ```
 
@@ -89,8 +91,15 @@ The server reports the URL it is listening on. Do not stop an existing process
 unless you have identified it and intend to close that specific server.
 
 Desktop launch is verified on the current macOS host; other desktop operating
-systems require their own packaging/verification. Android TV, Apple TV, Wear OS,
+systems require their own packaging/verification. The Android TV candidate
+launches on a TV emulator, but launcher artwork, remote interaction,
+accessibility, lifecycle and usability are not verified. Apple TV, Wear OS,
 and watchOS remain planned, not configured targets.
+
+The supplied artwork in `docs/design/icons` is used by the browser, mobile,
+desktop window and Android TV candidate. Native desktop application packaging
+and icons, browser install icons, Apple TV, and visual icon checks remain
+unverified. Foldable behavior requires testing on suitable devices.
 
 ## Developer setup and CI
 
@@ -125,7 +134,35 @@ commands are:
 ./kotlin check -m common -m counter -m settings -m localization
 ```
 
-On the issue #47 candidate, module discovery lists 12 modules. The JVM and
+CI restores Kotlin Toolchain bootstrap and dependency downloads before module
+discovery and saves them after both builds succeed, before tests and checks.
+The workflow explicitly sets `KOTLIN_SHARED_CACHE_DIR` and
+`KOTLIN_CLI_BOOTSTRAP_CACHE_DIR` under the runner's temporary directory. It caches
+only `.m2.cache`, `download.cache`, and `cli`; workspace build outputs, extracted
+caches, telemetry, and temporary download/lock files are excluded.
+Cache keys separate runner OS/architecture and wrapper versions, prefer matching
+dependency configuration, and allow reuse from the same wrapper version after
+dependency changes. Each run attempt saves a new immutable entry so additional
+downloads can be retained. GitHub cache scope and eviction still apply.
+
+An HTTP `429 Too Many Requests` from Maven Central is a dependency-download
+failure, not a failing application test or proof of an individual artifact-size
+limit. [Sonatype's consumption-limit guidance](https://central.sonatype.org/faq/429-error/)
+explains that aggregate traffic, including
+[shared hosted-CI egress](https://central.sonatype.org/faq/429-shared-egress/),
+can trigger throttling. Caching reduces repeat downloads but does not guarantee
+that a cold cache or shared runner avoids limits. Allow a block to expire rather
+than repeatedly rerunning builds; do not disable checksum verification or switch
+between `repo1.maven.org` and `repo.maven.apache.org` as a bypass (both serve
+Maven Central). Persistent failures require provider/Sonatype investigation;
+a managed caching proxy is a separate infrastructure option.
+
+Hosted cold-cache population and subsequent warm-cache restoration for this
+configuration remain unverified until the workflow runs. The earlier
+[main run's truncated Skiko Wasm failure](https://github.com/Entreco/elchrono/actions/runs/44599279733)
+is a separate unresolved issue; download caching is not evidence that it is fixed.
+
+On the issue #47 candidate, module discovery listed 12 modules. The JVM and
 browser Wasm builds, selected JVM tests, and checks completed successfully on
 the current macOS worktree. The JVM test selection includes the counter and
 settings regression tests; this is not browser UI or platform-runtime
@@ -144,8 +181,8 @@ launches, or iOS builds. Android builds can be run on a suitably provisioned
 host with `./kotlin build -m android`; iOS compilation and simulator work
 require macOS and Xcode. Physical-device installation may additionally require
 signing. CI cannot establish support for other desktop operating systems,
-Android TV, Apple TV, Wear OS, or watchOS; TV and watch remain unconfigured
-targets.
+Android TV, Apple TV, Wear OS, or watchOS; only the Android TV candidate is
+configured.
 
 See [AGENTS.md](./AGENTS.md) for project goals, platform targets, accessibility
 requirements, voluntary documentation controls, and development instructions.

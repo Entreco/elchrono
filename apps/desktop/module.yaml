@@ -4,10 +4,15 @@ dependencies:
   - //apps/common
   - $compose.desktop.currentOs
   - $compose.preview
+  - $compose.components.resources
   - $libs.kotlinx.coroutines.swing
   - $libs.logback.classic
 
 settings:
-  compose: enabled
+  compose:
+    enabled: true
+    resources:
+      packageName: nl.entreco.elchrono.desktop.resources
+      exposedAccessors: true
   jvm:
     mainClass: nl.entreco.elchrono.MainKt

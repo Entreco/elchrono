@@ -4,6 +4,7 @@ modules:
   - apps/desktop
   - apps/mobile/android
   - apps/mobile/ios
+  - apps/television/androidtv
   - core/counter
   - core/design
   - core/localization

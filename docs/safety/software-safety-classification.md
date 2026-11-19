@@ -33,7 +33,8 @@ functions, exclusions, and qualified EU/US assessment are considered together.
 The assessment covers the El Chrono application as a whole: caregiver
 configuration of an ordinary waiting duration, visual communication of
 remaining waiting time and timer state, the patient's volume control, and
-optional background music. The current app is a starter screen, and these
+optional background music. At the exact PR #15 source baseline, the app was a
+starter screen, and these
 timer and audio behaviors are not yet implemented or verified. The conclusion
 is about the product's defined purpose and scope, not verification of a
 released implementation. Browser, Android/iOS, and desktop are scaffolded

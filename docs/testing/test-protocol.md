@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-002 |
-| Revision | 0.6 |
+| Revision | 0.7 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Test and product requirements review: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
@@ -46,9 +46,10 @@ hours. No accessibility conformance baseline is selected by this protocol.
 
 ## Execution record
 
-Product-level execution evidence is not yet recorded in this candidate
-protocol. The common UI source and duration-entry domain tests are covered by
-the current implementation check; these do not verify the browser UI, timing
+Focused JVM domain tests pass for `TimerDuration`, `TimerEngine`, and settings
+digit entry. Run with
+`./kotlin test -p jvm -m common -m counter -m settings -m localization`.
+These tests do not verify the browser UI, timer/settings integration,
 interruption behavior, accessibility, layouts, offline operation, or TV
 targets. A
 prototype-only layout check for F01 was run in Chrome 157.0.8103.79 at 500 ×
@@ -74,3 +75,4 @@ v2, not passed or waived.
 | 0.4 | Record the limited F01 prototype layout check separately from product test execution; retain blocked status for undefined supported layouts and unverified application behavior. |
 | 0.5 | Align TP-REQ-002 with the explicit v1 decision to omit separate manual pause, resume, and reset controls. |
 | 0.6 | Add measurable verification for the four approved themes, browser interrupted state, About content gaps, and Android TV/Apple TV input/readability without claiming support or results. |
+| 0.7 | Record focused counter and settings-domain test evidence after moving timer logic into core/counter; retain product UI, accessibility, interruption, offline, and platform verification limitations. |

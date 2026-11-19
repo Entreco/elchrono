@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M1-DOC-004 |
-| Revision | 0.6 |
+| Revision | 0.7 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Software-safety and product-risk review: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
@@ -22,12 +22,13 @@ harms, assumptions, and controls for review and follow-up. It is not a
 completed safety assessment, a determination that any risk is acceptable, or
 evidence that a proposed control has been implemented or verified.
 
-The current application is a starter screen, not an implemented timer. There
-are no patient usability findings, operational data, or verified timer, audio,
-accessibility, or interruption controls to support frequency estimates. The
-assessment therefore uses provisional screening ratings and explicitly records
-the assumptions behind them. A qualified software-safety reviewer must review
-the method, scenarios, ratings, and proposed controls before approval.
+The issue #47 candidate implements browser timer and settings UI, but product
+verification, patient usability findings, operational data, and verified
+accessibility or interruption controls are not available to support frequency
+estimates. The assessment therefore uses provisional screening ratings and
+explicitly records the assumptions behind them. The documented risk scenarios
+and product decisions do not establish control effectiveness or residual-risk
+acceptability.
 
 This voluntary risk record does not change El Chrono's proposed non-medical
 intended use, add a medical claim, or establish IEC 62304 conformity or
@@ -37,10 +38,10 @@ including medication, procedure, or emergency timing.
 ## Assessed scope and sources
 
 The proposed product boundary and ordinary-waiting use are defined in
-[M1-DOC-002, revision 0.6](../product/intended-use.md). That revision is a
+[M1-DOC-002, revision 1.0](../product/intended-use.md). That revision is a
 candidate; its exact-revision approval evidence remains unresolved. The
 EU/US qualification conclusion in
-[M1-DOC-003, revision 0.5](../regulatory/qualification-and-classification.md)
+[M1-DOC-003, revision 0.7](../regulatory/qualification-and-classification.md)
 is bounded by that intended-use candidate and is also subject to its recorded
 review and approval process. This assessment does not independently establish
 either record's approval.
@@ -84,7 +85,8 @@ assessment, consider the situation before the proposed controls:
 | 2 | Plausible in foreseeable use or misuse; relevant evidence is incomplete. |
 | 3 | Expected or recurrent without a control, supported by evidence. |
 
-No evidence supports a frequency estimate for this unimplemented product.
+The candidate is not in field use, and no operational or representative-user
+evidence supports a frequency estimate.
 Ratings of L=2 are provisional screening judgments, not measured probabilities;
 L=1 also indicates an assumption requiring review. Do not assign L=3 without
 supporting evidence.
@@ -175,7 +177,7 @@ Individual effects cannot be added to calculate the overall post-control score.
 | RC-001-1 | Use an appropriate monotonic source during active execution instead of frames or callback counts. | Likelihood: reduce timing errors from callback delays or wall-clock changes during active execution. |
 | RC-001-2 | Prevent negative remaining time and duplicate completion. | Likelihood: reduce misleading timer states and repeated completion signals. |
 | RC-001-3 | Keep remaining-time visual semantics consistent across themes and platforms. | Likelihood: reduce misleading or inconsistent interpretation of progress. |
-| RC-001-4 | Start the countdown when valid settings are saved; pause it when Settings open; saving starts a new countdown at the full saved duration. At zero, reset immediately without a completed state. | Likelihood: explicit save/pause behavior avoids an implicit continuation while configuring settings. The selected behavior remains unimplemented and unverified. Music stop-at-zero applies only if music is introduced in v2. |
+| RC-001-4 | Start the countdown when valid settings are saved; pause it when Settings open; saving starts a new countdown at the full saved duration. At zero, reset immediately without a completed state. | The candidate implements this behavior in the counter domain and app shell; focused domain tests pass. Browser UI integration and full protocol verification remain pending. Music stop-at-zero applies only if music is introduced in v2. |
 
 ### RISK-002 controls
 
@@ -226,7 +228,7 @@ below do not demonstrate control effectiveness.
 | D-01 — Caregiver protection | No caregiver-protection mechanism in v1; patients may access Settings and change duration/theme. The product owner accepts this bounded exposure for v1. | The v1 purpose is ordinary waiting-time support, and Settings contain only duration/theme controls; unintended changes can still cause confusion or extend/shorten a wait. No access control is credited and no risk reduction or post-control score is claimed. Reassess before expanding Settings, adding personal data or audio accounts, or claiming broader use. |
 | D-02 — Volume controls | No in-app volume controls in v1; revisit only if a later product scope adds audio. | No audio is provided in v1, so there is no app playback volume to adjust. This avoids an unused control, but does not choose system-volume behavior or promise controls in v2. |
 | D-03 — Music and sound | Defer music integration and its start behavior to v2; no music or completion sound in v1. | With no v1 audio capability, there is no playback start or volume behavior to select or misrepresent. Provider, consent/data flow, playback restrictions, audio failure, and sound behavior require separate review before v2. |
-| D-04 — Settings lifecycle | Opening Settings while running pauses the countdown; saving valid settings starts a new countdown at the full saved duration. | The explicit save is the start action and avoids silently resuming a possibly changed configuration. Settings remain unprotected, and the behavior is not implemented or verified. |
+| D-04 — Settings lifecycle | Opening Settings while running pauses the countdown; saving valid settings starts a new countdown at the full saved duration. | The explicit save is the start action and avoids silently resuming a possibly changed configuration. Counter-domain tests cover pause/save behavior; browser UI integration and product verification remain pending. Settings remain unprotected. |
 | D-05 — Interruption recovery | No recovery behavior is provided or promised in v1; retain an interrupted warning when continuity is uncertain. | The product will not claim continuity or reliable progress after interruption. Recovery is outside v1 scope, not an accepted RISK-002 residual-risk determination; assess before supporting platform lifecycle recovery or consequential timing. |
 
 These are bounded product-scope justifications, not evidence that the risks
@@ -278,3 +280,4 @@ they are not waived by this initial assessment.
 | 0.4 | Remove requirement-ID cross-references; retain the risk controls and verification here while requirement-risk-test links are maintained in the M2 traceability matrix |
 | 0.5 | Align risk scenarios and controls with the v1 product-owner decisions on Settings access, volume/audio scope, save-to-start pause behavior, and no interruption recovery; retain risk-review and verification gates. |
 | 0.6 | Record the bounded RISK-004 v1 product-owner disposition and a cause-to-harm walkthrough for timing, future audio, and Settings access; retain provisional ratings and unverified-control limitations. |
+| 0.7 | Align risk sources to the current intended-use and qualification candidates; record the counter/settings-domain implementation and focused test evidence without claiming product verification, control effectiveness, or risk acceptance. |

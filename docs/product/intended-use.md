@@ -30,10 +30,11 @@ medical condition. It provides the same general waiting-time display regardless
 of a person's diagnosis, disability, or health status; it does not assess or
 adapt to any such status.
 
-This is a proposed intended-use boundary, not a description of a completed
-product. The current application is a starter screen, not an implemented timer.
-The timer, audio behaviour, accessibility, and interruption handling require
-separate implementation and verification.
+This intended-use boundary does not assert that the product is verified or
+released. The issue #47 candidate implements a browser countdown, settings,
+and About UI. Product-level timing, accessibility, offline, and interruption
+behavior remain subject to verification; audio and in-app volume are outside
+v1.
 
 ## Users, population, and roles
 

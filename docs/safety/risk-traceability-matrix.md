@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M1-DOC-009 |
-| Revision | 0.9 |
+| Revision | 1.0 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Software-safety review: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
@@ -17,7 +17,7 @@ Lifecycle status is derived from the branch and PR context; see
 ## Purpose and use
 
 This matrix links the scenarios and proposed controls in
-[M1-DOC-004 revision 0.6](risk-assessment.md#risk-analysis) to intended-use
+[M1-DOC-004 revision 0.7](risk-assessment.md#risk-analysis) to intended-use
 sources, assessment assumptions, and planned verification. Each risk and
 follow-up is owned by the product owner, @Entreco. The M2
 [requirements traceability matrix](requirements-traceability-matrix.md) is the
@@ -26,12 +26,12 @@ does not establish that controls are implemented, verified, or effective, or
 that residual risks are acceptable.
 
 The source is [M1-DOC-002 revision 1.0](../product/intended-use.md); its
-exact-revision approval evidence remains unresolved. Test results are not
-available for the proposed controls. After relevant verification is performed,
-update the corresponding row with each relevant control ID, the actual test or
-review, result, tested revision/platform, and a durable evidence link. Record
-failures, limitations, and pending control coverage as well as passes; do not
-treat unrelated app tests as evidence of a risk control. A qualified review
+exact-revision approval evidence remains unresolved. Focused JVM tests cover
+counter and settings-domain behavior, but do not establish control effectiveness
+or product verification. Update each row with relevant test/review, result,
+tested revision/platform, and a durable evidence link. Record failures,
+limitations, and pending control coverage as well as passes; do not treat
+unrelated app tests as evidence of a risk control. A qualified review
 of the combined controls is needed before recording a post-control score in
 M1-DOC-004; a passing test does not itself establish a reduction or
 acceptability. Review findings and human acceptance remain in the PR under
@@ -41,12 +41,13 @@ acceptability. Review findings and human acceptance remain in the PR under
 
 Each risk ID links to the assessment table; the
 [control tables](risk-assessment.md#risk-controls) identify the proposed
-controls and their intended effects. All verification below is **planned**,
-not performed; evidence and results are pending for every control.
+controls and their intended effects. Product-level verification remains
+planned; focused domain-test results are recorded for RISK-001. No result
+establishes control effectiveness or residual-risk acceptability.
 
 | Risk and proposed controls | Intended-use trace | Assessment basis and assumptions | Planned verification | Test/review evidence and result |
 |---|---|---|---|---|
-| [RISK-001](risk-assessment.md#risk-analysis) | [Visual time and audio](../product/intended-use.md#supported-role-of-visual-time-and-optional-audio); [limitations](../product/intended-use.md#foreseeable-use-and-limitations) | Ordinary waiting, consistent remaining-time semantics, and whole-minute durations from 1 minute to 24 hours. Timer behavior is not implemented or verified; duration boundaries, digit entry, pause on Settings-open, start/reset from full saved duration, and immediate completion reset require verification. | Deterministic tests with an injected time source for all 1,440 durations, invalid configuration and digit-entry values, Settings-open pause/save-to-start, completion boundary, wall-clock changes, and consistent visual semantics. | Pending; no control verification or result. |
+| [RISK-001](risk-assessment.md#risk-analysis) | [Visual time and audio](../product/intended-use.md#supported-role-of-visual-time-and-optional-audio); [limitations](../product/intended-use.md#foreseeable-use-and-limitations) | The browser candidate implements a timer and Settings UI, but is not in field use; operational and representative-user evidence is unavailable. Product UI, layout, accessibility, and interruption behavior remain unverified. | Verify all 1,440 durations, invalid configuration and digit entry, Settings-open pause/save-to-start, completion boundary, and consistent visual semantics with deterministic inputs; separately verify UI, supported layouts, accessibility, and interruption paths. | JVM tests pass for `TimerDurationTest`, `TimerEngineTest`, and `DurationDigitEntryTest`, covering all duration values, invalid boundaries, injected-time countdown/pause/save/reset, and digit entry. Run: `./kotlin test -p jvm -m common -m counter -m settings -m localization`. These domain results do not establish UI/control effectiveness; product verification and risk acceptance remain pending. |
 | [RISK-002](risk-assessment.md#risk-analysis) | [Visual time and audio](../product/intended-use.md#supported-role-of-visual-time-and-optional-audio); [limitations](../product/intended-use.md#foreseeable-use-and-limitations) | Product decision: no recovery behavior is provided or promised in v1. The browser MVP records a hidden-page/page-hide event, pauses when detected, and warns that progress may be out of date; this behavior is not yet product-verified. | Verify browser hidden/return transitions, the warning and pause behavior, no automatic resume, and fresh-start behavior after valid Save. Reassess before adding recovery or expanding supported behavior. | Pending; no control verification or result. |
 | [RISK-003](risk-assessment.md#risk-analysis) | [Visual time and audio](../product/intended-use.md#supported-role-of-visual-time-and-optional-audio) | Music and in-app volume controls are excluded from v1 and deferred for future consideration. [M3-DOC-003](../architecture/audio-provider-feasibility-findings.md) records provider policy, platform, data-flow, and testability constraints; no future provider or playback behavior is approved. | No v1 audio behavior to verify. Before v2 audio, review provider/data flows, playback limits/failure, volume, start and completion sound behavior, then verify timer independence and audio behavior. | Deferred; no audio implementation or verification is claimed. |
 | [RISK-004](risk-assessment.md#risk-analysis) | [Users and roles](../product/intended-use.md#users-population-and-roles); [visual time and audio](../product/intended-use.md#supported-role-of-visual-time-and-optional-audio) | Product owner accepts unprotected Settings for v1; patients can change duration/theme. No gate or access-control effect is claimed. An unintended change may cause confusion or alter a wait; competent review of RISK-004 acceptability remains pending. | Verify the implemented behavior matches the approved open-access decision and clearly reports saved configuration; complete competent risk/UX review of the unprotected Settings exposure. | Pending; no control verification, risk acceptance review, or result. |
@@ -66,3 +67,4 @@ not performed; evidence and results are pending for every control.
 | 0.7 | Update the linked M1-DOC-004 source revision to 0.5; retain all risk review and verification gaps. |
 | 0.8 | Link M3-DOC-003 provider-feasibility evidence to RISK-003 without changing its assessment, controls, or pending verification. |
 | 0.9 | Align the M1 source revisions and add current browser-interruption and primary-TV verification limitations without claiming control effectiveness or platform support. |
+| 1.0 | Align the current risk source and record focused counter/settings-domain test evidence while retaining pending product-level verification and risk review. |

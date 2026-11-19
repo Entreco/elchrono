@@ -3,9 +3,10 @@ product:
   platforms: [ jvm, android, iosArm64, iosSimulatorArm64, wasmJs ]
 
 dependencies:
+  - //core/counter
   - //core/design
   - //core/localization
-  - //features/music
+  - //features/about
   - //features/settings
   - //features/timer
   - $compose.runtime
@@ -15,8 +16,6 @@ dependencies:
   - $compose.components.resources
   - $compose.preview
   - $compose.hotReload.runtimeApi
-  - $libs.androidx.lifecycle.viewmodel.compose
-  - $libs.androidx.lifecycle.runtime.compose
 
 dependencies@android:
   - $compose.uiTooling

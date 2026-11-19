@@ -8,13 +8,29 @@ for all documents under `docs/`; no status is stored in this record.
 Organize the existing Kotlin Toolchain project into app launchers, reusable
 platform-agnostic core libraries, and shared Compose feature libraries.
 This is an engineering structure decision, not medical-device classification,
-regulatory approval, or a claim that product features are implemented.
+regulatory approval, or evidence that product features are implemented or
+verified.
 
 Platform launchers in `apps/desktop`, `apps/browser`, and `apps/mobile/{android,ios}`
-depend on the shared `apps/common` application shell. The shell composes
-`features/{timer,settings,music}` and core libraries. Features can use
-`core/design` and `core/localization`; core must not depend on features or apps.
-Platform lifecycle/integration code stays outside core.
+depend on the shared `apps/common` application shell. The shell owns the main
+scaffold, screen routing, Settings visibility control, and composition of
+feature UI; it does not own timer-domain behavior or feature screens.
+`core/counter` owns shared, Compose-free duration and countdown logic.
+`features/timer` owns the countdown and visualization UI;
+`features/settings` owns duration/theme selection UI; `features/about` owns
+About UI; and `features/music` remains an empty v2 placeholder.
+
+Features may depend on core libraries, but not on one another. Core modules
+must not depend on features or apps. `core/design` owns shared design types,
+components, and theme assets; `core/localization` owns all user-visible
+strings. Platform lifecycle/integration code stays outside core.
+
+The issue #47 implementation of this boundary is recorded in
+[PR #59](https://github.com/Entreco/elchrono/pull/59).
+
+No `core/prefs` module is added: cross-restart persistence has not been
+specified or approved. Current settings live only in app memory; add local
+storage only against an approved persistence requirement.
 
 The shared libraries target JVM, Android, iOS ARM64, iOS simulator ARM64, and
 Wasm/JS. These compilation targets do not establish TV/watch support.
@@ -22,15 +38,19 @@ Wasm/JS. These compilation targets do not establish TV/watch support.
 
 ## Ownership
 
-- Design owns `ElChronoTheme` and reusable design assets. The initial theme
-  delegates to MaterialTheme to preserve the starter appearance.
+- Design owns `ElChronoTheme`, the shared `TimerTheme` selection type, and
+  reusable design assets. The initial theme delegates to MaterialTheme.
 - Localization owns default-locale string resources. Generated accessors are
   public and use a distinct namespace from design resources.
-- Common owns the starter `App` and `expect`/`actual` platform-name demonstration.
-  The obsolete hard-coded `Greeting` helper is replaced by formatted string
-  resources; its formatting regression coverage lives in localization tests.
-- Features are configured library scaffolds with no invented product screens
-  or domain/provider behaviour.
+- Common owns the app scaffold, feature routing, the Settings visibility
+  control, and platform interruption hooks; it does not contain timer business
+  logic or timer/settings/about screen UI.
+- Counter owns `TimerDuration`, `MonotonicClock`, and `TimerEngine`, with
+  deterministic domain tests in the same module.
+- Timer, settings, and about own their respective Compose screens; duration
+  digit-entry behavior and tests belong to settings.
+- Music remains an empty v2 module with no app dependency or production
+  behavior.
 
 Keep package identities, Android application ID, desktop main class, and iOS
 Swift/Kotlin bridge stable. The iOS Xcode wrapper path must point from the
@@ -43,12 +63,8 @@ making core depend on feature UI. Small explicit feature modules establish
 ownership without a new framework or a catch-all utilities library.
 
 The existing wrappers, YAML build model, and dependency versions are retained.
-The only added library is test-scoped `kotlinx-coroutines-test`, aligned to the
-existing coroutine version, for reading and formatting suspend-based Compose
-string resources in JVM regression tests. Those tests also use the existing
-Compose desktop runtime alias at runtime because resource environment detection
-loads the host's Skiko native library. Neither adds production data flow.
-No additional translations or runtime privacy behaviour are introduced.
+The new counter module has no Compose dependency. The about feature is separate
+so the app shell remains a thin coordinator and each feature owns its UI.
 
 ## Verification
 
@@ -57,10 +73,11 @@ Verification must cover module discovery and dependency direction, preserved
 platform tests, localized-string formatting, all configured app builds, and
 actual desktop/browser/Android/iOS simulator launches with resources rendered.
 Record observed outcomes separately from unsupported targets or signing limits.
-The feature modules have no product-behaviour tests because they contain no
-product implementation.
+Counter behavior and settings duration entry have focused JVM regression
+tests. Compose feature layout/accessibility and interactive browser behavior
+remain unverified by UI-level tests.
 
-Restructure verification outcomes:
+Historical scaffold verification outcomes (not evidence for the #47 UI):
 
 | Check | Observed outcome |
 |---|---|

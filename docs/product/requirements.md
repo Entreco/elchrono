@@ -21,9 +21,12 @@ non-medical visual support for ordinary waiting. It records the product
 requirements that guide design and implementation. Acceptance criteria and
 verification procedures belong in the test protocol; requirement, risk,
 design, usability, and test relationships belong in the traceability matrix.
-The current application is a starter screen, not an implemented timer.
+The issue #47 candidate implements a browser MVP against this proposed
+requirements baseline. Product-level verification, usability, accessibility,
+offline behavior, and platform support are not established by its builds or
+domain tests.
 
-The [intended-use record, M1-DOC-002 revision 0.9](intended-use.md) is a
+The [intended-use record, M1-DOC-002 revision 1.0](intended-use.md) is a
 candidate whose review/approval gaps remain open. This register does not
 approve that source record, resolve its gaps, expand the intended use, or claim
 medical-device qualification, legal conformance, or certification.

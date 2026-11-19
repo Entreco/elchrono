@@ -24,16 +24,17 @@ the current modules. It is a voluntary engineering control, not a claim that
 IEC 62304 applies or is followed, not a safety classification, and not a
 completed legal, security, or licence review.
 
-The inventory is limited to the configured ten modules in `project.yaml` and
-their current direct production/test declarations. It does not attempt to
-inventory every transitive dependency, operating-system component, compiler
+The inventory is limited to the ten modules configured in `project.yaml` at
+the 2026-11-18 source snapshot and their direct production/test declarations.
+It does not attempt to inventory every transitive dependency, operating-system component, compiler
 plug-in, SDK, browser engine, or provider component. A resolved dependency
 graph is used to confirm direct versions and platform variants; the graph
 includes many transitive dependencies that are outside this record's direct
 inventory scope. Re-run the discovery and review when module manifests,
 versions, targets, toolchain defaults, or distribution choices change.
 
-The current app is a starter screen, not an implemented timer. No dependency
+At the inspected source snapshot, the app was a starter screen, not an
+implemented timer. No dependency
 assessment here establishes application behavior, support, or release
 readiness. No dependency update is made by this record.
 

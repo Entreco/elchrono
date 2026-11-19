@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M3-DOC-008 |
-| Revision | 0.3 |
+| Revision | 0.4 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | M3 gate/integration; cross-platform architecture; browser/desktop; Android/iOS; TV input; provider, privacy, licensing/policy, lifecycle/audio, build/CI/configuration, dependency/SOUP, and documentation-control scopes: @Entreco, designated by the product owner on 2026-11-19; exact-head acceptance pending |
@@ -19,10 +19,15 @@ table. See [document controls](document-control.md#lifecycle-and-approval).
 **Owner-approved M3 review scope; exact final PR-head acceptance pending.**
 On 2026-11-19, @Entreco confirmed they are the human reviewer for all
 applicable disciplines and approved the M1, M2, and M3 reviews with their
-evidence limitations. M2-DOC-007 revision 0.9 records the M2 design baseline
+evidence limitations. M2-DOC-007 revision 1.1 records the M2 design baseline
 approval for #47. Android TV and Apple TV are primary future targets, while
 Wear OS and watchOS are outside v1. M3-DOC-007 revision 0.2 retains Kotlin
 Multiplatform/Compose without claiming platform support.
+
+The #47 architecture candidate assigns timer-domain behavior to Compose-free
+`core/counter`, shared UI to the timer/settings/about features, and app routing
+to `apps/common`. Focused domain tests pass; UI integration, platform
+verification, and the M4 reliability/lifecycle gate remain incomplete.
 
 The owner designation is self-attested; no independent credential audit is
 claimed. The source PR review metadata and CI evidence below are historical.
@@ -137,3 +142,4 @@ approve residual risk. Record these as gaps rather than inferred results.
 | 0.1 | Record the M3 evidence baseline, actual review gaps, completion-gate outcome, M2 dependency, and tracked M4/M5/M6 handoff for issue #40. |
 | 0.2 | Record the owner's M1/M2/M3 reviewer designation and review disposition, align TV/watch scope and current M2/M3 candidates, and retain exact-head acceptance and platform/release limitations. |
 | 0.3 | Record owner approval of the M3 review gate for issue #47, clarify that the historical M2 blocker is resolved for this scoped implementation, and preserve the distinction from milestone completion, platform support, and release readiness. |
+| 0.4 | Align the current M2 review reference and record the #47 core/feature ownership boundary and focused domain-test evidence without claiming M4 completion, product verification, or platform support. |

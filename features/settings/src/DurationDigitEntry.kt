@@ -1,8 +1,8 @@
-package nl.entreco.elchrono
+package nl.entreco.elchrono.features.settings
 
-import nl.entreco.elchrono.features.timer.TimerDuration
+import nl.entreco.elchrono.core.counter.TimerDuration
 
-data class DurationDigitEntry private constructor(
+class DurationDigitEntry private constructor(
     private val digits: String,
 ) {
     private val fourDigits: String

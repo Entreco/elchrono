@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-003 |
-| Revision | 2.9 |
+| Revision | 3.1 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Requirements and software-safety review: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
@@ -19,8 +19,8 @@ table. See [document controls](../governance/document-control.md#lifecycle-and-a
 This matrix is the authoritative cross-reference between the intended-use
 source, product requirements, risks, design/usability evidence, and test
 protocol. Requirement statements live in
-[M2-DOC-001, revision 0.6](../product/requirements.md); acceptance criteria and
-procedures live in [M2-DOC-002, revision 0.7](../testing/test-protocol.md).
+[M2-DOC-001, revision 0.8](../product/requirements.md); acceptance criteria and
+procedures live in [M2-DOC-002, revision 1.0](../testing/test-protocol.md).
 Do not duplicate those statements or criteria here.
 
 The mappings below are initial and proposed. Design links are included when
@@ -30,11 +30,11 @@ actual evidence is recorded.
 | Source record | Revision | Relationship |
 |---|---|---|
 | [M1-DOC-002, intended use](../product/intended-use.md) | 1.0 candidate | Product purpose, roles, use, and limitations |
-| [M2-DOC-001, product requirements](../product/requirements.md) | 0.6 candidate | Ten active requirements incorporating the v1 product decisions, including the four themes and TV input requirement |
+| [M2-DOC-001, product requirements](../product/requirements.md) | 0.8 candidate | Ten active requirements incorporating the v1 product decisions, including the four themes, adaptive Settings pane, and target-specific duration input methods |
 | [M1-DOC-004, risk assessment](risk-assessment.md) | 0.7 candidate | RISK-001 through RISK-006 traced below; D-01 disposition is not evidence of a control or risk reduction |
 | [M1-DOC-009, risk traceability matrix](risk-traceability-matrix.md) | 1.0 candidate | Risk-to-source and planned verification; review pending |
-| [M2-DOC-002, product test protocol](../testing/test-protocol.md) | 0.7 candidate | Test procedures and acceptance criteria traced below; audio tests deferred to v2; no manual pause/resume/reset controls in v1 |
-| [M2-DOC-004, accessible screen flows and theme prototypes](../design/accessible-screen-flows-and-theme-prototypes.md) | 1.7 candidate | Main/Settings/About and four owner-approved themes aligned with v1 decisions; exact-head review pending |
+| [M2-DOC-002, product test protocol](../testing/test-protocol.md) | 1.0 candidate | Test procedures and acceptance criteria traced below; audio tests deferred to v2; no manual pause/resume/reset controls in v1 |
+| [M2-DOC-004, accessible screen flows and theme prototypes](../design/accessible-screen-flows-and-theme-prototypes.md) | 1.8 candidate | Main/Settings/About, supporting-pane Settings, keyboard/keypad policy, and four owner-approved themes; exact-head review pending |
 | [M2-DOC-005, usability review plan](../usability/usability-plan.md) | 0.7 candidate | Proposed participant approach and tasks; created after the two sessions and did not govern them |
 | [M2-DOC-006, usability findings and evidence status](../usability/usability-findings.md) | 0.7 candidate | Two retrospective sessions and retained screenshots; Clock clipping and caregiver/usability limitations retained |
 | [M3-DOC-007, platform architecture decision and support matrix](../architecture/platform-architecture-and-support-matrix.md) | 0.2 candidate | Retains the configured Kotlin Multiplatform/Compose architecture; records TV priorities, Wear/watch exclusion, evidence limits, and no support commitment |
@@ -43,10 +43,10 @@ actual evidence is recorded.
 
 | Requirement | Intended-use source | Applicable risks | Design/usability evidence | Test protocol | Verification evidence |
 |---|---|---|---|---|---|
-| [REQ-001](../product/requirements.md#requirement-identification) | [Duration and supported waiting use](../product/intended-use.md#supported-role-of-visual-time-and-optional-audio) | RISK-001 | [Settings duration entry](../design/accessible-screen-flows-and-theme-prototypes.md#settings-screen); planned [U-03](../usability/usability-plan.md#tasks-and-neutral-prompts); session scope [M2-DOC-006](../usability/usability-findings.md#session-scope-and-evidence-provenance), gap G04 | [TP-REQ-001](../testing/test-protocol.md#test-cases) | Core duration and settings digit-entry JVM tests pass, including all 1,440 durations, boundaries, and sequential digit entry; browser Settings UI remains unverified |
+| [REQ-001](../product/requirements.md#requirement-identification) | [Duration and supported waiting use](../product/intended-use.md#supported-role-of-visual-time-and-optional-audio) | RISK-001 | [Settings duration entry](../design/accessible-screen-flows-and-theme-prototypes.md#settings-screen); planned [U-03](../usability/usability-plan.md#tasks-and-neutral-prompts); session scope [M2-DOC-006](../usability/usability-findings.md#session-scope-and-evidence-provenance), gap G04 | [TP-REQ-001](../testing/test-protocol.md#test-cases) | Focused JVM duration-entry and input-policy tests pass; all configured target builds compile. Rendered input behavior remains unverified, and the Wasm settings test runner fails during Skiko WebAssembly instantiation as recorded in M2-DOC-002. |
 | [REQ-002](../product/requirements.md#requirement-identification) | [Users and roles](../product/intended-use.md#users-population-and-roles) | RISK-001 | [Settings-open pause, save-to-start, and no separate manual timer controls](../design/accessible-screen-flows-and-theme-prototypes.md#settings-screen); session gap G04 | [TP-REQ-002](../testing/test-protocol.md#test-cases) | Counter-domain pause/save JVM tests pass; browser Settings integration and accessibility remain unverified |
 | [REQ-003](../product/requirements.md#requirement-identification) | [Visual remaining-time use and limitations](../product/intended-use.md#supported-role-of-visual-time-and-optional-audio) | RISK-001, RISK-002, RISK-005, RISK-006 | [Main states and visualization mapping](../design/accessible-screen-flows-and-theme-prototypes.md#main-screen-and-states); session findings [F01/F04](../usability/usability-findings.md#participant-feedback-and-observations); gaps G04/G05 | [TP-REQ-003](../testing/test-protocol.md#test-cases) | AppViewModel JVM tests cover stop/pause/interrupted, repeated stop, no auto-resume, and save-to-restart; Compose lifecycle delivery and configured-platform runtime behavior remain unverified |
-| [REQ-004](../product/requirements.md#requirement-identification) | [Users and roles](../product/intended-use.md#users-population-and-roles); screen/content inventory is M2 product scope in [#22](https://github.com/Entreco/elchrono/issues/22) | RISK-004, RISK-005, RISK-006 | [Main, Settings, and About designs](../design/accessible-screen-flows-and-theme-prototypes.md#screen-flows); no v1 audio/volume controls | [TP-REQ-004](../testing/test-protocol.md#test-cases) | Pending |
+| [REQ-004](../product/requirements.md#requirement-identification) | [Users and roles](../product/intended-use.md#users-population-and-roles); screen/content inventory is M2 product scope in [#22](https://github.com/Entreco/elchrono/issues/22) | RISK-004, RISK-005, RISK-006 | [Main, Settings, and About designs](../design/accessible-screen-flows-and-theme-prototypes.md#screen-flows); supporting-pane Settings; no v1 audio/volume controls | [TP-REQ-004](../testing/test-protocol.md#test-cases) | Pending; expanded/compact rendering, resizing, and no-clipping behavior remain unverified |
 | [REQ-005](../product/requirements.md#requirement-identification) | [Users and roles](../product/intended-use.md#users-population-and-roles) | RISK-004 | [Unprotected Settings v1 decision](../design/accessible-screen-flows-and-theme-prototypes.md#main-screen-and-states); prior sessions did not test access paths (G03/G04) | [TP-REQ-005](../testing/test-protocol.md#test-cases) | Pending; test does not establish risk acceptability |
 | [REQ-006](../product/requirements.md#requirement-identification) | No direct theme-selection statement in intended use; this product-level choice is scoped by [#22](https://github.com/Entreco/elchrono/issues/22) | RISK-004, RISK-005 | [Four owner-approved timer visualizations](../design/accessible-screen-flows-and-theme-prototypes.md#timer-visualizations); session findings [F01-F04](../usability/usability-findings.md#participant-feedback-and-observations); gaps G03/G04 | [TP-REQ-006](../testing/test-protocol.md#test-cases) | Pending; user preference and application/platform behavior are not inferred |
 | [REQ-008](../product/requirements.md#requirement-identification) | [Offline use](../product/intended-use.md#supported-role-of-visual-time-and-optional-audio); future audio scope deferred | RISK-003 | Music and volume controls excluded from v1; future audio behavior requires separate review; [M3-DOC-003](../architecture/audio-provider-feasibility-findings.md) records feasibility constraints only | [TP-REQ-008](../testing/test-protocol.md#test-cases) | Network-independence test pending; v2 audio tests deferred |
@@ -188,3 +188,5 @@ test procedures or acceptance criteria in this matrix.
 | 2.7 | Align source revisions with the current M1/M2/M3 candidates; add REQ-011/TP-REQ-011 links and the four-theme, browser interruption, and TV-target verification scope. |
 | 2.8 | Align usability source references to revision 0.7 and record the implemented browser UI and focused duration-entry tests without claiming product verification. |
 | 2.9 | Align risk/protocol source revisions and record the counter/settings-domain test scope after the timer logic moved to core/counter; retain UI and product-verification limitations. |
+| 3.0 | Trace adaptive supporting-pane Settings and target-specific keyboard/keypad entry criteria; record focused input-policy tests while retaining rendered layout/input and no-clipping verification gaps. |
+| 3.1 | Align the test-protocol revision and record the successful JVM tests/builds plus unresolved Skiko Wasm test-runner failure; retain product-level verification gaps. |

@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-004 |
-| Revision | 1.7 |
+| Revision | 1.8 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Product design, accessibility, and usability: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
@@ -148,6 +148,16 @@ Requirements: REQ-001 (duration entry), REQ-002 (no separate manual timer
 controls, save-to-start, and Settings-open pause), REQ-004 (screen content), REQ-005 (v1 access decision),
 and REQ-006 (theme selection). Optional music is deferred to v2.
 
+When the window can support multiple panes, Settings appears in a supporting
+side pane while the Timer remains the main pane. On compact windows, Settings
+is the single visible destination and remains reachable through the shell
+controls. Mobile targets accept sequential digits from the system keyboard
+when available and show the reusable numeric keypad as a fallback. Desktop
+and browser targets use that keypad without keyboard-based duration entry;
+the same keypad is the planned TV input even though no TV launcher is
+configured. These flows preserve `205` as `02:05`; layout, input, focus,
+accessibility, and no-clipping behavior remain unverified.
+
 The v1 flow has no caregiver-only access gate: Settings can be opened without
 protection. The user configures duration and visualization, then saves; saving
 starts a new countdown from the full saved duration. The duration entry starts
@@ -231,6 +241,7 @@ establish competent risk review, design approval, or verification:
 | D-04: timer start and Settings lifecycle | Saving valid settings starts a new countdown from the full saved duration; opening Settings while running pauses it. |
 | D-05: interruption recovery | No recovery behavior is provided or promised in v1. Retain the interrupted-state warning and never imply timing continuity when uncertain. |
 | D-06: manual pause, resume, and reset controls | No separate controls are provided in v1. Settings-open is the selected pause behavior; saving valid Settings is the only selected start/restart action and starts from the full saved duration. |
+| D-09: adaptive Settings and duration input | Use Settings as a supporting side pane when the window supports multiple panes, with a reachable compact destination. Mobile uses available system keyboard input and falls back to the shared keypad; desktop, browser, and future TV flows use the keypad without keyboard-based duration entry. TV support is not established. |
 | Visualization appearance | Font and color are proposed as conditional per-visualization settings; option lists, defaults, and persistence remain undecided and require accessibility/usability review. |
 
 The product owner approved the four demo visualizations for the v1 design.
@@ -262,3 +273,4 @@ PR.
 | 1.5 | Update the linked risk-assessment source revision to 0.5; preserve the v1 product decisions and pending risk/design review. |
 | 1.6 | Record the v1 decision to omit separate manual pause, resume, and reset controls; the existing prototype designs remain the review scope. |
 | 1.7 | Record the product owner's approval of the four demo visualizations (Clock, Battery, Fan, Ring) for the v1 theme set; distinguish that decision from user preference and validation, and add TV-target interaction/layout limitations. |
+| 1.8 | Record the supporting-pane Settings flow and target-specific keyboard/keypad policy; preserve usability, accessibility, layout, and platform verification limitations. |

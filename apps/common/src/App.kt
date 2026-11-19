@@ -1,21 +1,8 @@
 package nl.entreco.elchrono
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.expandHorizontally
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkHorizontally
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
@@ -27,11 +14,16 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfoV2
+import androidx.compose.material3.adaptive.layout.AnimatedPane
+import androidx.compose.material3.adaptive.layout.PaneAdaptedValue
+import androidx.compose.material3.adaptive.layout.SupportingPaneScaffold
+import androidx.compose.material3.adaptive.layout.ThreePaneScaffoldValue
+import androidx.compose.material3.adaptive.layout.calculatePaneScaffoldDirective
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -61,17 +53,22 @@ import org.jetbrains.compose.resources.stringResource
 
 @Composable
 @Preview
-fun App() {
-    ElChronoTheme { AppContent() }
+fun App(allowKeyboardInput: Boolean = false) {
+    ElChronoTheme { AppContent(allowKeyboardInput) }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3AdaptiveApi::class)
 @Composable
-private fun AppContent(viewModel: AppViewModel = viewModel { AppViewModel() }) {
+private fun AppContent(
+    allowKeyboardInput: Boolean,
+    viewModel: AppViewModel = viewModel { AppViewModel() },
+) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
-    val isExpanded = currentWindowAdaptiveInfoV2().windowSizeClass
+    val windowAdaptiveInfo = currentWindowAdaptiveInfoV2()
+    val isExpanded = windowAdaptiveInfo.windowSizeClass
         .isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND)
+    val keyboardAvailable = allowKeyboardInput && isKeyboardAvailable()
 
     LifecycleEventEffect(Lifecycle.Event.ON_STOP) {
         viewModel.onAppStopped()
@@ -122,17 +119,15 @@ private fun AppContent(viewModel: AppViewModel = viewModel { AppViewModel() }) {
             )
         },
     ) { contentPadding ->
-        Row(
+        SupportingPaneScaffold(
+            directive = calculatePaneScaffoldDirective(windowAdaptiveInfo),
+            value = paneValue(isExpanded, state.screen),
             modifier = Modifier
                 .fillMaxSize()
                 .padding(contentPadding)
                 .padding(horizontal = 24.dp, vertical = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(24.dp),
-        ) {
-            Box(Modifier.weight(1f).fillMaxHeight()) {
-                if (state.screen == AppScreen.ABOUT) {
-                    AboutFeature()
-                } else {
+            mainPane = {
+                AnimatedPane {
                     TimerFeature(
                         snapshot = state.timer.snapshot,
                         theme = state.settings.theme,
@@ -140,54 +135,28 @@ private fun AppContent(viewModel: AppViewModel = viewModel { AppViewModel() }) {
                         modifier = Modifier.fillMaxSize(),
                     )
                 }
-
-                if (!isExpanded) {
-                    CompactSettingsOverlay(
-                        visible = state.screen == AppScreen.SETTINGS,
-                        settings = state.settings,
-                        onSave = viewModel::saveSettings,
-                        onShowAbout = viewModel::showAbout,
-                    )
-                }
-            }
-
-            if (isExpanded) {
-                AnimatedVisibility(
-                    visible = state.screen == AppScreen.SETTINGS,
-                    enter = expandedSettingsEnter(),
-                    exit = expandedSettingsExit(),
+            },
+            supportingPane = {
+                AnimatedPane(
+                    modifier = if (isExpanded) {
+                        Modifier.widthIn(min = SETTINGS_PANE_MIN_WIDTH, max = SETTINGS_PANE_MAX_WIDTH)
+                    } else {
+                        Modifier.widthIn(max = SETTINGS_PANE_MAX_WIDTH)
+                    },
                 ) {
-                    SettingsPanel(
-                        initialSettings = state.settings,
-                        modifier = Modifier
-                            .widthIn(min = SETTINGS_PANE_MIN_WIDTH, max = SETTINGS_PANE_MAX_WIDTH)
-                            .fillMaxHeight(),
-                        onSave = viewModel::saveSettings,
-                        onShowAbout = viewModel::showAbout,
-                    )
+                    if (state.screen == AppScreen.ABOUT) {
+                        AboutFeature()
+                    } else {
+                        SettingsPanel(
+                            initialSettings = state.settings,
+                            keyboardInputEnabled = allowKeyboardInput,
+                            keyboardAvailable = keyboardAvailable,
+                            onSave = viewModel::saveSettings,
+                            onShowAbout = viewModel::showAbout,
+                        )
+                    }
                 }
-            }
-        }
-    }
-}
-
-@Composable
-private fun CompactSettingsOverlay(
-    visible: Boolean,
-    settings: TimerSettings,
-    onSave: (TimerSettings) -> Unit,
-    onShowAbout: () -> Unit,
-) {
-    AnimatedVisibility(
-        visible = visible,
-        modifier = Modifier.fillMaxSize(),
-        enter = compactSettingsEnter(),
-        exit = compactSettingsExit(),
-    ) {
-        SettingsPanel(
-            initialSettings = settings,
-            onSave = onSave,
-            onShowAbout = onShowAbout,
+            },
         )
     }
 }
@@ -195,12 +164,13 @@ private fun CompactSettingsOverlay(
 @Composable
 private fun SettingsPanel(
     initialSettings: TimerSettings,
-    modifier: Modifier = Modifier,
+    keyboardInputEnabled: Boolean,
+    keyboardAvailable: Boolean,
     onSave: (TimerSettings) -> Unit,
     onShowAbout: () -> Unit,
 ) {
     Surface(
-        modifier = modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.surfaceVariant,
         tonalElevation = 2.dp,
     ) {
@@ -212,6 +182,8 @@ private fun SettingsPanel(
         ) {
             SettingsScreen(
                 initialSettings = initialSettings,
+                keyboardInputEnabled = keyboardInputEnabled,
+                keyboardAvailable = keyboardAvailable,
                 onSave = onSave,
                 onShowAbout = onShowAbout,
             )
@@ -219,24 +191,23 @@ private fun SettingsPanel(
     }
 }
 
-private fun compactSettingsEnter(): EnterTransition =
-    fadeIn(tween(SETTINGS_ANIMATION_MILLIS)) +
-        slideInVertically(tween(SETTINGS_ANIMATION_MILLIS)) { it / 6 }
-
-private fun compactSettingsExit(): ExitTransition =
-    fadeOut(tween(SETTINGS_ANIMATION_MILLIS)) +
-        slideOutVertically(tween(SETTINGS_ANIMATION_MILLIS)) { it / 6 }
-
-private fun expandedSettingsEnter(): EnterTransition =
-    fadeIn(tween(SETTINGS_ANIMATION_MILLIS)) +
-        expandHorizontally(tween(SETTINGS_ANIMATION_MILLIS), expandFrom = Alignment.End)
-
-private fun expandedSettingsExit(): ExitTransition =
-    fadeOut(tween(SETTINGS_ANIMATION_MILLIS)) +
-        shrinkHorizontally(tween(SETTINGS_ANIMATION_MILLIS), shrinkTowards = Alignment.End)
+@OptIn(ExperimentalMaterial3AdaptiveApi::class)
+private fun paneValue(isExpanded: Boolean, screen: AppScreen) =
+    ThreePaneScaffoldValue(
+        primary = if (screen != AppScreen.TIMER && !isExpanded) {
+            PaneAdaptedValue.Hidden
+        } else {
+            PaneAdaptedValue.Expanded
+        },
+        secondary = if (screen == AppScreen.TIMER) {
+            PaneAdaptedValue.Hidden
+        } else {
+            PaneAdaptedValue.Expanded
+        },
+        tertiary = PaneAdaptedValue.Hidden,
+    )
 
 private const val TIMER_REFRESH_MILLIS = 250L
-private const val SETTINGS_ANIMATION_MILLIS = 220
 private val SETTINGS_PANE_MIN_WIDTH = 320.dp
 private val SETTINGS_PANE_MAX_WIDTH = 440.dp
 private const val SETTINGS_ICON = "\u2699"

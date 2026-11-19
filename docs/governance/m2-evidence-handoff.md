@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-007 |
-| Revision | 1.1 |
+| Revision | 1.3 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | M1/M2/M3 product, requirements, design/usability, accessibility, test/traceability, software-safety, and platform-architecture scopes: @Entreco, designated by the product owner on 2026-11-19; review of this final PR head remains pending |
@@ -53,14 +53,14 @@ acceptance.
 
 | Record | Exact source revision and evidence inspected |
 |---|---|
-| [M2-DOC-001 — Product requirements](../product/requirements.md) | Revision 0.6 candidate; ten active requirements, D-01–D-08, and owner-approved four-theme scope |
-| [M2-DOC-004 — Accessible screen flows and theme prototypes](../design/accessible-screen-flows-and-theme-prototypes.md) | Revision 1.7 candidate; Main/Settings/About flow, four owner-approved themes, and TV limitations |
+| [M2-DOC-001 — Product requirements](../product/requirements.md) | Revision 0.8 candidate; ten active requirements, D-01–D-09, four owner-approved themes, adaptive Settings, and target-specific input methods |
+| [M2-DOC-004 — Accessible screen flows and theme prototypes](../design/accessible-screen-flows-and-theme-prototypes.md) | Revision 1.8 candidate; Main/Settings/About flow, four owner-approved themes, supporting-pane Settings, keyboard/keypad policy, and TV limitations |
 | [M2-DOC-005 — Usability review plan](../usability/usability-plan.md) | Revision 0.7; future tasks align to the current requirements/design; earlier sessions were not governed by it |
 | [M2-DOC-006 — Usability findings and evidence status](../usability/usability-findings.md) | Revision 0.7; preserves retrospective evidence, caregiver gap, and limited F01 layout checks |
-| [M2-DOC-002 — Product test protocol](../testing/test-protocol.md) | Revision 0.7 candidate; measurable procedures for ten active requirements and focused domain-test results; product-level tests remain unexecuted |
-| [M2-DOC-003 — Requirements traceability matrix](../safety/requirements-traceability-matrix.md) | Revision 2.9 candidate; current source revisions, REQ-011, test results, and TV-target test link recorded |
+| [M2-DOC-002 — Product test protocol](../testing/test-protocol.md) | Revision 1.0 candidate; measurable procedures for ten active requirements, passing focused JVM tests/builds, and the unresolved Skiko Wasm test-runner failure; rendered UI/product-level tests remain unexecuted |
+| [M2-DOC-003 — Requirements traceability matrix](../safety/requirements-traceability-matrix.md) | Revision 3.1 candidate; current source revisions, test/build evidence, Wasm test-runner limitation, and adaptive-layout/input verification gaps recorded |
 | [M1-DOC-004 — Risk assessment](../safety/risk-assessment.md) | Revision 0.7 candidate; bounded D-01 disposition and scenario walkthrough recorded; domain tests do not establish control effectiveness or a post-control score |
-| [M1-DOC-009 — Risk traceability matrix](../safety/risk-traceability-matrix.md) | Revision 1.0 candidate; current M1 sources, focused domain-test evidence, and browser/TV verification scope linked |
+| [M1-DOC-009 — Risk traceability matrix](../safety/risk-traceability-matrix.md) | Revision 1.1 candidate; current M1 sources, focused input-policy/domain-test evidence, and browser/TV verification scope linked |
 | [M3-DOC-007 — Platform architecture and support matrix](../architecture/platform-architecture-and-support-matrix.md) | Revision 0.2 candidate; KMP/Compose retained, TV primary, Wear/watch excluded from v1; no support commitment |
 
 The source PRs are merged. PR #32 merged at
@@ -88,12 +88,12 @@ mean the item is approved, verified, or accepted for milestone completion.
 
 | Gate item | Evidence and review check | Outcome |
 |---|---|---|
-| Stable requirements and measurable acceptance criteria | M2-DOC-001 revision 0.6 contains ten active REQ-NNN statements. M2-DOC-002 revision 0.7 has ten corresponding planned test cases with measurable criteria and records focused domain-test results; M2-DOC-003 revision 2.9 links requirements, risks, design/usability evidence, and tests. Product tests remain necessary before product verification or release claims. | **Owner-approved requirements baseline for issue #47; domain tests do not establish product verification. Exact PR-head acceptance remains pending.** |
+| Stable requirements and measurable acceptance criteria | M2-DOC-001 revision 0.8 contains ten active REQ-NNN statements. M2-DOC-002 revision 1.0 has ten corresponding planned test cases, including supporting-pane and target-specific input criteria; M2-DOC-003 revision 3.1 links requirements, risks, design/usability evidence, tests, and remaining UI/test-runner gaps. Product tests remain necessary before product verification or release claims. | **Owner-approved requirements baseline for issue #47; focused JVM tests and builds do not establish product verification. Exact PR-head acceptance remains pending.** |
 | Usability plan and findings, or documented participant-review limitation | M2-DOC-005/006 revision 0.7 preserve two 2026-11-16 retrospective intended-user sessions and their limitations. There was no caregiver session, no assistive-technology evaluation, and no representative theme preference evidence. The owner accepts these limitations for the current design-baseline decision. | **Accepted as documented limitations for this M2 design baseline; the sessions remain retrospective and do not establish caregiver workflow usability, representative preference, or validation. Do not claim those outcomes.** |
-| Design review and approval | M2-DOC-004 revision 1.7 specifies Main/Settings/About and the four demo visualizations approved by the product owner: Clock, Battery, Fan, and Ring. Clock is the initial selection matching the demo, not a preference claim. Android TV and Apple TV are primary targets; TV-specific interaction and support remain unverified. | **Product/design scope approved by the owner; application verification and TV-specific review remain required. Final exact-head acceptance is pending.** |
-| Initial requirements-to-risk-to-test traceability | M2-DOC-003 revision 2.9 maps ten active requirements to six risks and ten planned test cases, includes reverse coverage, and links findings, limitations, and decisions. It records focused domain tests without claiming product verification, control effectiveness, residual-risk acceptance, or platform support. | **Traceability baseline is owner-approved for issue #47; product-level execution and risk-control results remain unverified.** |
+| Design review and approval | M2-DOC-004 revision 1.8 specifies Main/Settings/About, the four demo visualizations approved by the product owner, adaptive supporting-pane Settings, and target-specific duration input. Android TV and Apple TV are primary targets; TV-specific interaction and support remain unverified. | **Product/design scope approved by the owner; application verification and TV-specific review remain required. Final exact-head acceptance is pending.** |
+| Initial requirements-to-risk-to-test traceability | M2-DOC-003 revision 3.1 maps ten active requirements to six risks and ten planned test cases, includes reverse coverage, and links findings, limitations, and decisions. It records passing focused JVM tests/builds and the unresolved Wasm test-runner failure without claiming product verification, control effectiveness, residual-risk acceptance, or platform support. | **Traceability baseline is owner-approved for issue #47; rendered UI/product-level execution and risk-control results remain unverified.** |
 | Required completion and Settings behavior | REQ-002 specifies Settings-open pause and valid-save start from the full saved duration, with no separate manual pause/resume/reset controls. REQ-010 specifies immediate reset with no completed state; music is deferred to v2 and stops at zero only if later introduced. Counter-domain tests cover pause/save and completion behavior; UI integration remains unverified. | **Product decisions recorded; focused domain tests pass, while product/UI verification remains pending.** |
-| Usability and interface findings | M2-DOC-006-F01 records Clock remaining-time clipping, corroborated by the Session B screenshot. The owner-reported prototype correction was checked at 500 × 1000 px and 1440 × 1200 px. The browser MVP implementation now exists; its layouts have not yet been product-tested. | **Specific prototype finding closed only for checked layouts; browser UI no-clipping criterion remains unverified.** |
+| Usability and interface findings | M2-DOC-006-F01 records Clock remaining-time clipping, corroborated by the Session B screenshot. The owner-reported prototype correction was checked at 500 × 1000 px and 1440 × 1200 px. The browser MVP and adaptive Settings/input implementation now exist; their rendered layouts and interactions have not yet been product-tested. | **Specific prototype finding closed only for checked layouts; browser UI no-clipping, pane resizing, and keyboard/keypad behavior remain unverified.** |
 | v1 caregiver-protection risk disposition | The product owner explicitly accepts unprotected Settings for v1. M1-DOC-004 revision 0.7 records the bounded decision; no control, risk reduction, or post-control score is claimed. | **Owner-approved product disposition; exact-head review remains pending. Do not treat this as evidence of a protective control.** |
 
 The usability findings retain G01–G05: retrospective session evidence and no
@@ -106,8 +106,8 @@ work, or risk-control verification.
 ## Product decisions and v1 justification
 
 The product owner supplied the dispositions below. They define
-the current v1 scope and are recorded in M2-DOC-001 revision 0.6 and
-M2-DOC-004 revision 1.7.
+the current v1 scope and are recorded in M2-DOC-001 revision 0.8 and
+M2-DOC-004 revision 1.8.
 
 | Decision | Current evidence and disposition |
 |---|---|
@@ -119,6 +119,7 @@ M2-DOC-004 revision 1.7.
 | D-06 — Manual pause, resume, and reset controls | No separate manual pause, resume, or reset controls are included in v1. Settings-open is the selected pause behavior; saving valid Settings is the only selected start/restart action and starts from the full saved duration. The candidate implements this behavior in the counter domain; focused tests pass, while browser UI verification remains pending. |
 | D-07 — Primary platforms and v1 exclusions | Android TV and Apple TV are primary product targets. Wear OS and watchOS are outside v1. The browser remains the M5 implementation target; no TV support is claimed. |
 | D-08 — V1 visualization set | Clock, Battery, Fan, and Ring are approved v1 choices as presented in the demo; Clock is the initial selection, not a user-preference claim. |
+| D-09 — Adaptive Settings and duration input methods | Settings uses a supporting pane when space permits and a reachable single-pane destination on compact windows. Mobile uses an available system keyboard with the shared keypad as fallback; desktop/browser and future TV flows use keypad-only entry. TV support is not established. Implementation and policy tests do not verify rendered layout, runtime keyboard selection, accessibility, or clipping. |
 
 These are product-scope justifications, not evidence that risks are eliminated,
 controls are effective, or residual risks are acceptable. The non-medical
@@ -142,9 +143,9 @@ head acceptance and product verification remain outstanding.
 |---|---|---|
 | Review and accept the exact current PR head, record review scope/findings and the full SHA, and keep the acceptance box unchecked until the human does so. | @Entreco; current M1/M2/M3 candidates; [document controls](document-control.md) | Product owner has designated self as reviewer and approved the scope decisions; final full-head acceptance is pending. |
 | Retain caregiver/usability and participant-evidence limitations. | @Entreco; M2-DOC-005/006, G01–G05 | Owner accepts the documented limitations for the M2 design baseline; no caregiver session, assistive-technology evaluation, or representative validation is claimed. |
-| Verify the browser implementation against supported layouts and the exact protocol. | @Entreco; M2-DOC-006-F01, M2-DOC-002 revision 0.7, M2-DOC-003 revision 2.9 | The PR #32 probe checks only the prototype at 500 × 1000 px and 1440 × 1200 px. The browser UI now exists; its layout and interaction tests remain pending. |
-| Keep unexecuted product-test cases visible and complete them before product verification/release claims. | @Entreco; M2-DOC-002 revision 0.7, M2-DOC-003 revision 2.9 | Protocol criteria are documented; compilation and domain tests do not establish browser usability, accessibility, offline operation, or TV support. |
-| Implement D-01 through D-08 without adding unreviewed behaviors. | @Entreco; M2-DOC-001 revision 0.6, M2-DOC-004 revision 1.7, M1-DOC-002 revision 1.0, M1-DOC-004 revision 0.7 | The owner has approved the listed product decisions; no control effectiveness, residual-risk score, or user-preference finding is inferred. |
+| Verify the browser implementation against supported layouts and the exact protocol. | @Entreco; M2-DOC-006-F01, M2-DOC-002 revision 1.0, M2-DOC-003 revision 3.1 | The PR #32 probe checks only the prototype at 500 × 1000 px and 1440 × 1200 px. The browser UI exists; layout, pane resizing, input, and interaction tests remain pending. |
+| Keep unexecuted product-test cases visible and complete them before product verification/release claims. | @Entreco; M2-DOC-002 revision 1.0, M2-DOC-003 revision 3.1 | Protocol criteria are documented; passing compilation/JVM tests and the unresolved Wasm test-runner failure do not establish browser usability, accessibility, offline operation, or TV support. |
+| Implement D-01 through D-09 without adding unreviewed behaviors. | @Entreco; M2-DOC-001 revision 0.8, M2-DOC-004 revision 1.8, M1-DOC-002 revision 1.0, M1-DOC-004 revision 0.7 | The owner has approved the listed product decisions; no control effectiveness, residual-risk score, or user-preference finding is inferred. |
 | For M3, complete its own architecture decision record; platform-support matrix and provider-feasibility findings; reproducible development setup; documentation templates; dependency/SOUP inventory and assessment; and working automated checks. Document data flows and avoid identifiable patient data unless an approved requirement makes it necessary. | @Entreco; [M3 milestone](https://github.com/Entreco/elchrono/milestone/3) | M3-specific reviewed and verified evidence, with limitations and traceability. M3 work does not substitute for M2 closure. |
 
 No reviewer-appointment or theme-selection blocker remains for issue #47.
@@ -178,3 +179,5 @@ branch-derived lifecycle as evidence that the final PR head has been accepted.
 | 0.9 | Record the owner's M1/M2/M3 reviewer designation and approved design/platform scope; accept documented usability limitations for the design baseline while retaining empirical, verification, platform-support, and final-PR-head gaps. |
 | 1.0 | Record owner approval of the M2 review gate and four-theme design baseline for issue #47; update current traceability references and retain usability, accessibility, risk-control, product-verification, and exact-head acceptance limitations. |
 | 1.1 | Align risk, test-protocol, traceability, and development-plan references with the core/counter refactor; record focused domain-test evidence while retaining product-level verification gaps. |
+| 1.2 | Update the evidence baseline for D-09 and the adaptive supporting-pane/keypad implementation; keep rendered behavior, accessibility, TV support, and exact-head acceptance pending. |
+| 1.3 | Record the test-protocol/traceability revisions, passing JVM tests and target builds, and unresolved Skiko Wasm test-runner failure; retain product-verification and human-acceptance gaps. |

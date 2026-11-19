@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -19,9 +20,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import nl.entreco.elchrono.core.counter.DurationDigitEntry
+import nl.entreco.elchrono.core.design.NumericKeypad
 import nl.entreco.elchrono.core.design.TimerTheme
 import nl.entreco.elchrono.core.localization.resources.Res as Strings
 import nl.entreco.elchrono.core.localization.resources.about
@@ -47,8 +51,14 @@ fun SettingsScreen(
     initialSettings: TimerSettings,
     onSave: (TimerSettings) -> Unit,
     onShowAbout: () -> Unit,
+    keyboardInputEnabled: Boolean,
+    keyboardAvailable: Boolean,
     modifier: Modifier = Modifier,
 ) {
+    val inputMode = DurationEntryInputMode(
+        keyboardInputEnabled = keyboardInputEnabled,
+        keyboardAvailable = keyboardAvailable,
+    )
     var entry by remember(initialSettings) {
         mutableStateOf(DurationDigitEntry.fromDuration(initialSettings.duration))
     }
@@ -67,17 +77,29 @@ fun SettingsScreen(
         ) {
             OutlinedTextField(
                 value = entry.hours.toString().padStart(2, '0'),
-                onValueChange = {},
+                onValueChange = { edited ->
+                    entry = entry.applyTextEdit(
+                        previousText = entry.hours.toString().padStart(2, '0'),
+                        editedText = edited,
+                    )
+                },
                 modifier = Modifier.weight(1f),
-                readOnly = true,
+                readOnly = inputMode.fieldsReadOnly,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 label = { Text(stringResource(Strings.string.hours)) },
                 singleLine = true,
             )
             OutlinedTextField(
                 value = entry.minutes.toString().padStart(2, '0'),
-                onValueChange = {},
+                onValueChange = { edited ->
+                    entry = entry.applyTextEdit(
+                        previousText = entry.minutes.toString().padStart(2, '0'),
+                        editedText = edited,
+                    )
+                },
                 modifier = Modifier.weight(1f),
-                readOnly = true,
+                readOnly = inputMode.fieldsReadOnly,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 label = { Text(stringResource(Strings.string.minutes)) },
                 singleLine = true,
             )
@@ -88,11 +110,15 @@ fun SettingsScreen(
             textAlign = TextAlign.Center,
         )
         Spacer(Modifier.height(12.dp))
-        DigitKeypad(
-            onAppendDigit = { entry = entry.append(it) },
-            onDeleteDigit = { entry = entry.deleteLast() },
-            onClearDigits = { entry = entry.clear() },
-        )
+        if (inputMode.showNumericKeypad) {
+            NumericKeypad(
+                clearLabel = stringResource(Strings.string.clear),
+                deleteLabel = stringResource(Strings.string.delete),
+                onDigit = { entry = entry.append(it) },
+                onDelete = { entry = entry.deleteLast() },
+                onClear = { entry = entry.clear() },
+            )
+        }
         if (entry.duration == null) {
             Spacer(Modifier.height(8.dp))
             Text(
@@ -133,58 +159,6 @@ fun SettingsScreen(
             Text(stringResource(Strings.string.about))
         }
     }
-}
-
-@Composable
-private fun DigitKeypad(
-    onAppendDigit: (Int) -> Unit,
-    onDeleteDigit: () -> Unit,
-    onClearDigits: () -> Unit,
-) {
-    val rows = listOf(
-        listOf(Key.Digit(1), Key.Digit(2), Key.Digit(3)),
-        listOf(Key.Digit(4), Key.Digit(5), Key.Digit(6)),
-        listOf(Key.Digit(7), Key.Digit(8), Key.Digit(9)),
-        listOf(Key.Clear, Key.Digit(0), Key.Delete),
-    )
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(4.dp),
-    ) {
-        rows.forEach { row ->
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(4.dp),
-            ) {
-                row.forEach { key ->
-                    Button(
-                        modifier = Modifier.weight(1f),
-                        onClick = {
-                            when (key) {
-                                is Key.Digit -> onAppendDigit(key.value)
-                                Key.Clear -> onClearDigits()
-                                Key.Delete -> onDeleteDigit()
-                            }
-                        },
-                    ) {
-                        Text(
-                            when (key) {
-                                is Key.Digit -> key.value.toString()
-                                Key.Clear -> stringResource(Strings.string.clear)
-                                Key.Delete -> stringResource(Strings.string.delete)
-                            },
-                        )
-                    }
-                }
-            }
-        }
-    }
-}
-
-private sealed interface Key {
-    data class Digit(val value: Int) : Key
-    data object Clear : Key
-    data object Delete : Key
 }
 
 private val TimerTheme.label: StringResource

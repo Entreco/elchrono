@@ -12,19 +12,26 @@ regulatory approval, or evidence that product features are implemented or
 verified.
 
 Platform launchers in `apps/desktop`, `apps/browser`, and `apps/mobile/{android,ios}`
-depend on the shared `apps/common` application shell. The shell owns the main
-Material 3 adaptive scaffold, screen routing, Settings visibility and lifecycle
-coordination through `AppViewModel`, and composition of feature UI; it does not
-own timer-domain behavior or feature-screen UI.
-`core/counter` owns shared, Compose-free duration and countdown logic.
+depend on the shared `apps/common` application shell. The shell owns the
+Material 3 app scaffold and adaptive supporting-pane layout, screen routing,
+Settings visibility and lifecycle coordination through `AppViewModel`, and
+composition of feature UI; it does not own timer-domain behavior or
+feature-screen UI. `core/counter` owns shared, Compose-free duration,
+sequential duration-entry, and countdown logic.
 `features/timer` owns the countdown and visualization UI;
-`features/settings` owns duration/theme selection UI; `features/about` owns
-About UI; and `features/music` remains an empty v2 placeholder.
+`core/design` owns the reusable numeric keypad UI;
+`features/settings` owns duration/theme selection UI and the input-mode policy;
+`features/about` owns About UI; and `features/music` remains an empty v2
+placeholder.
 
 Features may depend on core libraries, but not on one another. Core modules
 must not depend on features or apps. `core/design` owns shared design types,
 components, and theme assets; `core/localization` owns all user-visible
-strings. Platform lifecycle/integration code stays outside core.
+strings. Platform lifecycle and keyboard-capability integration stay outside
+core. Android uses the experimental Compose `mediaQuery` API for keyboard
+availability; iOS uses its system keyboard, while desktop and browser use the
+numeric keypad and do not enable keyboard duration entry. Future TV launchers
+must explicitly use keypad-only entry; no TV support is established.
 
 The issue #47 implementation of this boundary is recorded in
 [PR #59](https://github.com/Entreco/elchrono/pull/59).
@@ -47,11 +54,13 @@ Wasm/JS. These compilation targets do not establish TV/watch support.
   that coordinates `TimerEngine`, settings and lifecycle state, and lifecycle
   event integration; it does not contain timer-domain logic or feature-screen
   UI.
-- Counter owns `TimerDuration`, `MonotonicClock`, and `TimerEngine`, with
-  deterministic domain tests in the same module.
+- Counter owns `TimerDuration`, `DurationDigitEntry`, `MonotonicClock`, and
+  `TimerEngine`, with deterministic tests in the same module.
+- Design owns the shared `NumericKeypad`; its labels are supplied by callers
+  from localization resources.
 - Timer (`TimerFeature`), settings (`SettingsScreen`), and about own their
-  respective Compose screens; duration
-  digit-entry behavior and tests belong to settings.
+  respective Compose screens; Settings input-mode policy and tests belong to
+  settings.
 - Music remains an empty v2 module with no app dependency or production
   behavior.
 
@@ -65,9 +74,13 @@ A shared application shell avoids duplicating composition across launchers or
 making core depend on feature UI. Small explicit feature modules establish
 ownership without a new framework or a catch-all utilities library.
 
-The existing wrappers, YAML build model, and dependency versions are retained.
-The new counter module has no Compose dependency. The about feature is separate
-so the app shell remains a thin coordinator and each feature owns its UI.
+The existing wrappers and YAML build model are retained; the shared adaptive
+layout module is added at the existing adaptive version. The counter module
+remains Compose-free. The AndroidX Navigation 3 supporting-pane UI artifact
+does not support all configured iOS/Wasm targets, so the common shell uses the
+Material 3 Adaptive `SupportingPaneScaffold` directly and keeps navigation
+state in the testable app state. The about feature is separate so the app shell
+remains a thin coordinator and each feature owns its UI.
 
 ## Verification
 
@@ -76,9 +89,9 @@ Verification must cover module discovery and dependency direction, preserved
 platform tests, localized-string formatting, all configured app builds, and
 actual desktop/browser/Android/iOS simulator launches with resources rendered.
 Record observed outcomes separately from unsupported targets or signing limits.
-Counter behavior and settings duration entry have focused JVM regression
-tests. Compose feature layout/accessibility and interactive browser behavior
-remain unverified by UI-level tests.
+Counter behavior and settings input policy have focused JVM regression tests.
+Compose feature layout/accessibility and interactive browser behavior remain
+unverified by UI-level tests.
 
 Historical scaffold verification outcomes (not evidence for the #47 UI):
 

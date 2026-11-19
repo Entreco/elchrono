@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M3-DOC-005 |
-| Revision | 0.1 |
+| Revision | 0.2 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Architecture/dependency, licensing, and security reviewers as applicable; appointments and competence confirmation pending |
@@ -24,8 +24,8 @@ the current modules. It is a voluntary engineering control, not a claim that
 IEC 62304 applies or is followed, not a safety classification, and not a
 completed legal, security, or licence review.
 
-The inventory is limited to the ten modules configured in `project.yaml` at
-the 2026-11-18 source snapshot and their direct production/test declarations.
+The inventory is limited to the twelve modules configured in `project.yaml` at
+the 2026-11-19 source snapshot and their direct production/test declarations.
 It does not attempt to inventory every transitive dependency, operating-system component, compiler
 plug-in, SDK, browser engine, or provider component. A resolved dependency
 graph is used to confirm direct versions and platform variants; the graph
@@ -45,7 +45,7 @@ Repository configuration and resolution were inspected on 2026-11-18:
 | Evidence | Observed result and limit |
 |---|---|
 | [`project.yaml`](../../project.yaml) and the ten `module.yaml` files | Establish configured module paths and direct declaration scopes, including the JVM test-only declarations in `core/localization/module.yaml`. |
-| [`libs.versions.toml`](../../libs.versions.toml) | Establishes catalog versions for AndroidX Activity, AndroidX Lifecycle, Kotlin Coroutines, and Logback. |
+| [`libs.versions.toml`](../../libs.versions.toml) | Establishes catalog versions for AndroidX Activity, AndroidX Lifecycle, Compose Multiplatform Adaptive, Kotlin Coroutines, and Logback. |
 | `./kotlin show modules` | Resolved the ten configured modules. |
 | `./kotlin show dependencies --all-modules --include-tests` | Resolved module/platform dependency graphs; confirms versions and the macOS ARM64 selection of `currentOs` on the inspected host. The generated report is not retained as a controlled artifact. |
 | `./kotlin show settings -m android -m ios` | Reports Kotlin 2.4.20, Compose 1.12.1, Android `versionCode` 1 and `versionName` `unspecified` defaults. These defaults are not release approval. |
@@ -67,10 +67,11 @@ compilation; `jvmTest` means declared only for the JVM tests.
 | Declaration / resolved component | Direct module scope | Version and provenance | Published licence metadata | Preliminary SOUP assessment and open action |
 |---|---|---|---|---|
 | `$compose.runtime`, `org.jetbrains.compose.runtime:runtime` | `common`, `design`, `music`, `settings`, `timer` (`main`); also toolchain-added in Compose-enabled source sets | 1.12.1; resolved by the Kotlin Toolchain's Compose defaults | Apache-2.0; [published POM](https://repo.maven.apache.org/maven2/org/jetbrains/compose/runtime/runtime/1.12.1/runtime-1.12.1.pom) | Core Compose composition/runtime dependency. Changes can affect all rendered feature surfaces; require targeted cross-platform build and UI verification after updates. JetBrains' release feed displayed 1.13.0-rc01 on the review date, a prerelease; select and review a supported release before product release rather than upgrading automatically. |
-| `$compose.foundation`, `org.jetbrains.compose.foundation:foundation` | `common` (`main`) | 1.12.1; Compose Toolchain | Apache-2.0; [published POM](https://repo.maven.apache.org/maven2/org/jetbrains/compose/foundation/foundation/1.12.1/foundation-1.12.1.pom) and [release history](https://github.com/JetBrains/compose-multiplatform/releases) | Shared layout/input foundation. Cross-platform UI impact is material; validate interaction and accessibility after changes. No platform support or release approval follows from its presence. |
+| `$compose.foundation`, `org.jetbrains.compose.foundation:foundation` | `common`, `design` (`main`) | 1.12.1; Compose Toolchain | Apache-2.0; [published POM](https://repo.maven.apache.org/maven2/org/jetbrains/compose/foundation/foundation/1.12.1/foundation-1.12.1.pom) and [release history](https://github.com/JetBrains/compose-multiplatform/releases) | Shared layout/input foundation. `core/design` uses it for the reusable numeric keypad. Cross-platform UI impact is material; validate interaction and accessibility after changes. No platform support or release approval follows from its presence. |
 | `$compose.material3`, `org.jetbrains.compose.material3:material3` | `common`, `design` (`main`) | 1.12.0-alpha03; Compose Toolchain | Apache-2.0; [published POM](https://repo.maven.apache.org/maven2/org/jetbrains/compose/material3/material3/1.12.0-alpha03/material3-1.12.0-alpha03.pom) | Direct dependency is explicitly an alpha release. Review API/stability and the intended stable-version policy before relying on it in a shipped UI; no change is made here. |
 | `$libs.compose.material3.adaptive`, `org.jetbrains.compose.material3.adaptive:adaptive` | `common` (`main`) | 1.3.0; pinned in `libs.versions.toml`, stable Compose Multiplatform release | Apache-2.0; [published POM](https://repo.maven.apache.org/maven2/org/jetbrains/compose/material3/adaptive/adaptive/1.3.0/adaptive-1.3.0.pom) and [official release notes](https://developer.android.com/jetpack/androidx/releases/compose-material3-adaptive) | Shared window-size adaptation dependency. The app uses common window adaptive information to select its compact/expanded shell; target rendering, resizing, and accessibility still require verification. |
-| `$compose.ui`, `org.jetbrains.compose.ui:ui` | `browser`, `common`, `ios`, `music`, `settings`, `timer` (`main`) | 1.12.1; Compose Toolchain | Apache-2.0; [published POM](https://repo.maven.apache.org/maven2/org/jetbrains/compose/ui/ui/1.12.1/ui-1.12.1.pom) and [release history](https://github.com/JetBrains/compose-multiplatform/releases) | Rendering/input dependency across configured app targets. High product-surface impact; validate rendering, semantics, keyboard/touch, and platform-specific behavior on updates. TV/watch support is not established by the configured modules. |
+| `$libs.compose.material3.adaptive.layout`, `org.jetbrains.compose.material3.adaptive:adaptive-layout` | `common` (`main`) | 1.3.0; pinned in `libs.versions.toml`, stable Compose Multiplatform release | Apache-2.0; [published POM](https://repo.maven.apache.org/maven2/org/jetbrains/compose/material3/adaptive/adaptive-layout/1.3.0/adaptive-layout-1.3.0.pom) and [official release notes](https://developer.android.com/jetpack/androidx/releases/compose-material3-adaptive) | The common app shell uses `SupportingPaneScaffold` and `AnimatedPane` for adaptive Settings presentation. Navigation 3's UI integration was not selected because the published UI artifacts do not cover all configured targets. Builds do not establish adaptive rendering, resize behavior, or TV support. |
+| `$compose.ui`, `org.jetbrains.compose.ui:ui` | `browser`, `common`, `design`, `ios`, `music`, `settings`, `timer` (`main`) | 1.12.1; Compose Toolchain | Apache-2.0; [published POM](https://repo.maven.apache.org/maven2/org/jetbrains/compose/ui/ui/1.12.1/ui-1.12.1.pom) and [release history](https://github.com/JetBrains/compose-multiplatform/releases) | Rendering/input dependency across configured app targets. Android uses the experimental `mediaQuery` keyboard capability API, which requires enabling `ComposeUiFlags.isMediaQueryIntegrationEnabled`; the documented API is not available on the configured iOS/Wasm targets, which use explicit fallbacks. Validate rendering, semantics, keyboard/touch, and platform-specific behavior on updates. TV/watch support is not established by the configured modules. |
 | `$compose.components.resources`, `org.jetbrains.compose.components:components-resources` | `common`, `design`, `localization` (`main`); also added to Compose-enabled source sets | 1.12.1; Compose Toolchain | Apache-2.0; [published POM](https://repo.maven.apache.org/maven2/org/jetbrains/compose/components/components-resources/1.12.1/components-resources-1.12.1.pom) and [release history](https://github.com/JetBrains/compose-multiplatform/releases) | Design and localization resource loading is shared app infrastructure. Check resource generation/rendering on configured platforms after updates; externalized resource service behavior is not used or assessed here. |
 | `$compose.preview`, `org.jetbrains.compose.ui:ui-tooling-preview` | `common`, `desktop`, `android` (`main`) | 1.12.1; Compose Toolchain | Apache-2.0; [published POM](https://repo.maven.apache.org/maven2/org/jetbrains/compose/ui/ui-tooling-preview/1.12.1/ui-tooling-preview-1.12.1.pom) and [release history](https://github.com/JetBrains/compose-multiplatform/releases) | Preview-oriented API is declared in production source sets. Confirm whether this is intentionally needed in production artifacts and whether its declaration should be narrowed; do not change scope without build evidence. |
 | `$compose.uiTooling`, `org.jetbrains.compose.ui:ui-tooling` | `common` (`android` source set), `android` (`main`) | 1.12.1; Compose Toolchain | Apache-2.0; [published POM](https://repo.maven.apache.org/maven2/org/jetbrains/compose/ui/ui-tooling/1.12.1/ui-tooling-1.12.1.pom) and [release history](https://github.com/JetBrains/compose-multiplatform/releases) | Android tooling dependency is declared for the Android app and common Android source set. Confirm release packaging excludes development-only tooling where appropriate. |
@@ -112,6 +113,13 @@ The dependency graph is host-sensitive: `currentOs` resolved to the macOS
 ARM64 desktop artifact for this assessment. This does not inventory or verify
 the artifacts selected on Windows, Linux, Intel macOS, or any unconfigured
 platform.
+
+## Revision history
+
+| Revision | Change |
+|---|---|
+| 0.1 | Establish the initial direct dependency inventory and preliminary assessments. |
+| 0.2 | Add the direct adaptive-layout dependency, update design/UI dependency scopes, and record the scoped experimental keyboard MediaQuery integration and platform limitations. |
 
 ## Assessment method and follow-up
 

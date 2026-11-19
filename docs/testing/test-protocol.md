@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-002 |
-| Revision | 0.7 |
+| Revision | 1.0 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Test and product requirements review: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
@@ -17,7 +17,7 @@ table. See [document controls](../governance/document-control.md#lifecycle-and-a
 ## Purpose and limits
 
 This protocol contains planned test procedures and acceptance criteria for
-[M2-DOC-001, revision 0.6, Product requirements](../product/requirements.md).
+[M2-DOC-001, revision 0.8, Product requirements](../product/requirements.md).
 The exact source revisions and requirement-to-source, risk, design, usability,
 and test relationships are identified in the
 [requirements traceability matrix](../safety/requirements-traceability-matrix.md).
@@ -33,10 +33,10 @@ hours. No accessibility conformance baseline is selected by this protocol.
 
 | Test ID | Requirement | Procedure | Acceptance criteria |
 |---|---|---|---|
-| TP-REQ-001 | [REQ-001](../product/requirements.md#requirement-identification) | Enter representative digit sequences, test the allowed duration boundaries, exercise invalid values, and enumerate all whole-minute durations with a controllable input/test harness. | `2`, `20`, `205`, and `2400` display as `00:02`, `00:20`, `02:05`, and `24:00`. Every duration from `00:01` through `24:00` is representable. `00:00`, minute values above `59`, and values above `24:00` cannot be configured as valid durations. |
+| TP-REQ-001 | [REQ-001](../product/requirements.md#requirement-identification) | Enter representative digit sequences through the mobile system-keyboard route and the on-screen keypad route. Confirm desktop/browser use the keypad without keyboard-based entry. Test duration boundaries, invalid values, and all whole-minute durations with a controllable input/test harness. | Both available input routes preserve the sequential mapping: `2`, `20`, `205`, and `2400` display as `00:02`, `00:20`, `02:05`, and `24:00`. Every duration from `00:01` through `24:00` is representable. `00:00`, minute values above `59`, and values above `24:00` cannot be configured as valid durations. On mobile, keypad visibility follows keyboard availability; desktop, browser, and TV use the keypad and do not expose keyboard-based duration entry. |
 | TP-REQ-002 | [REQ-002](../product/requirements.md#requirement-identification) | Inspect Main and Settings for manual timer controls. Save valid settings and advance the injected time source. While running, open Settings and record remaining time; keep Settings open while advancing time, then save valid settings. | No separate manual pause, resume, or reset controls are available in v1. Saving starts the countdown from the full saved duration. Opening Settings pauses it (remaining time does not change while Settings is open). Saving again starts a new countdown from the full saved duration, not the previously remaining time. |
 | TP-REQ-003 | [REQ-003](../product/requirements.md#requirement-identification) | Review Clock, Battery, Fan, and Ring and exercise running, paused, and interrupted presentations. In the app-state test harness, trigger repeated lifecycle stop/start events; on each configured runtime target, trigger stop/background and return. Observe the interruption warning, timer status, and valid-save behavior. Inspect each supported layout configuration in scope. | All four themes map consistently to remaining time and present numeric remaining time or visual progress. Remaining-time information is fully visible and not clipped or obscured. No clock face or time of day is presented, state meaning does not rely on colour alone, and numeric duration is not presented as time of day. Lifecycle stop pauses a running timer and shows interrupted; start does not automatically resume it, and valid Save starts from the full saved duration. Process-termination/restart recovery is not claimed. |
-| TP-REQ-004 | [REQ-004](../product/requirements.md#requirement-identification) | Inspect Main, Settings, and About against their required v1 content in each supported layout configuration in scope. Confirm music and volume controls are absent in v1. Check that unavailable company/support/policy/licence/build sources are explicitly identified as gaps. | Main includes the selected timer visualization. Settings includes duration and theme controls, with no v1 music or volume controls. About presents the required content categories; missing owned content is clearly marked as not provided and is not fabricated. All content is fully visible and not clipped or obscured. |
+| TP-REQ-004 | [REQ-004](../product/requirements.md#requirement-identification) | Inspect Main, Settings, and About against their required v1 content. At expanded widths confirm Settings appears in a supporting side pane beside Timer; at compact widths confirm it is a reachable single-pane destination. Resize across the breakpoint while Settings is open. Confirm music and volume controls are absent and unavailable About sources are identified as gaps. | Main includes the selected timer visualization. Settings uses the supporting pane when space permits and remains available on compact windows. Settings includes duration and theme controls, with no v1 music or volume controls. About presents the required content categories; missing owned content is clearly marked as not provided and is not fabricated. All content is fully visible and not clipped or obscured. |
 | TP-REQ-005 | [REQ-005](../product/requirements.md#requirement-identification) | Open Settings without a gate as a patient and change/save duration or theme. | Settings is not protected by a caregiver gate in v1 and permits the access specified by the product decision. The test verifies this behavior; it does not establish that the resulting risk is acceptable or controlled. |
 | TP-REQ-006 | [REQ-006](../product/requirements.md#requirement-identification) | Select Clock, Battery, Fan, and Ring in Settings and inspect each timer presentation. | Exactly the four owner-approved v1 themes are available, each can be selected and becomes the selected timer theme, and each preserves the shared remaining-time mapping. Do not assert user preference without usability evidence. |
 | TP-REQ-008 | [REQ-008](../product/requirements.md#requirement-identification) | For v1, run the timer with network unavailable. Defer audio-failure and playback checks until a v2 music integration is approved and implemented. | Timer operation and remaining-time presentation do not depend on network connectivity. No v1 music integration or playback-failure behavior is claimed. The v2 audio criteria require review before that scope begins. |
@@ -46,13 +46,35 @@ hours. No accessibility conformance baseline is selected by this protocol.
 
 ## Execution record
 
-Focused JVM tests pass for `TimerDuration`, `TimerEngine`, settings digit
-entry, and the app-state ViewModel. The ViewModel tests cover Settings-open
-pause/save-to-start, lifecycle-stop interruption, repeated stop events,
-no automatic resume, and completion. Run with
-`./kotlin test -p jvm -m common -m counter -m settings -m localization`.
-`./kotlin build -p jvm`, `./kotlin build -m browser`, and
-`./kotlin check -m common -m counter -m settings -m localization` also passed.
+The focused JVM test command
+`./kotlin test -p jvm -m common -m counter -m design -m settings -m localization`
+passed, including duration/input-policy tests and app-state tests for
+Settings-open pause/save-to-start, lifecycle-stop interruption, repeated stop
+events, no automatic resume, and completion. The following target builds also
+passed: `./kotlin build -p jvm`, `./kotlin build -m browser`,
+`./kotlin build -m android`, and `./kotlin build -p iosSimulatorArm64`.
+`./kotlin check -m settings tests` failed in its Kotlin/Wasm settings test
+runner: Skiko's WebAssembly module reported a truncated data section during
+instantiation. The JVM settings tests pass; the Wasm test failure remains
+unresolved and must not be reported as a pass.
+These checks do not verify rendered browser layout, animation, accessibility,
+offline operation, actual lifecycle event delivery on configured targets, or
+TV targets.
+The browser server started with
+`./kotlin run -m browser --port 8081 --no-open-browser` and returned HTTP 200;
+port 8080 was occupied and left untouched. A prototype-only layout check for
+F01 was run in Chrome 157.0.8103.79 at 500 × 1000 px and 1440 × 1200 px; see
+M2-DOC-006. It does not verify the application or establish complete coverage
+because supported layout configurations are undefined. Record actual
+product-test evidence in the requirements traceability matrix, including
+protocol revision, test/build revision, platform, result, reviewer, evidence
+link, and limitations. If the supported layout configurations needed to
+evaluate content visibility are not defined or available, record the affected
+test as blocked rather than passed. Keep failures and blocked tests visible;
+do not report planned criteria as passed. The clipping reported in M2-DOC-006
+is resolved in the prototype for the two checked layouts; the complete product
+no-clipping criterion remains unverified. Music/audio tests are deferred until
+v2, not passed or waived.
 The browser server started with
 `./kotlin run -m browser --port 8081 --no-open-browser` and returned HTTP 200;
 port 8080 was occupied and left untouched. These checks do not verify rendered
@@ -83,3 +105,5 @@ v2, not passed or waived.
 | 0.6 | Add measurable verification for the four approved themes, browser interrupted state, About content gaps, and Android TV/Apple TV input/readability without claiming support or results. |
 | 0.7 | Record focused counter and settings-domain test evidence after moving timer logic into core/counter; retain product UI, accessibility, interruption, offline, and platform verification limitations. |
 | 0.8 | Add deterministic app-state lifecycle tests and align TP-REQ-003 with pause-on-stop/no-auto-resume behavior; retain runtime lifecycle, layout, and platform verification as pending. |
+| 0.9 | Add adaptive supporting-pane Settings and target-specific keyboard/keypad acceptance criteria; record core duration-entry and Settings input-policy test ownership without treating builds as UI verification. |
+| 1.0 | Record passing focused JVM tests and JVM/browser/Android/iOS builds; document the unresolved Skiko WebAssembly test-runner failure without treating builds as product verification. |

@@ -1,6 +1,4 @@
-package nl.entreco.elchrono.features.settings
-
-import nl.entreco.elchrono.core.counter.TimerDuration
+package nl.entreco.elchrono.core.counter
 
 class DurationDigitEntry private constructor(
     private val digits: String,
@@ -25,6 +23,26 @@ class DurationDigitEntry private constructor(
     fun deleteLast(): DurationDigitEntry = DurationDigitEntry(digits.dropLast(1))
 
     fun clear(): DurationDigitEntry = empty()
+
+    fun applyTextEdit(previousText: String, editedText: String): DurationDigitEntry {
+        val prefixLength = previousText.commonPrefixWith(editedText).length
+        var suffixLength = 0
+        while (
+            suffixLength < previousText.length - prefixLength &&
+            suffixLength < editedText.length - prefixLength &&
+            previousText[previousText.lastIndex - suffixLength] ==
+            editedText[editedText.lastIndex - suffixLength]
+        ) {
+            suffixLength++
+        }
+
+        val removedDigits = previousText.length - prefixLength - suffixLength
+        val insertedDigits = editedText.substring(prefixLength, editedText.length - suffixLength)
+        var updated = this
+        repeat(removedDigits) { updated = updated.deleteLast() }
+        insertedDigits.filter { it in '0'..'9' }.forEach { updated = updated.append(it.digitToInt()) }
+        return updated
+    }
 
     companion object {
         fun empty(): DurationDigitEntry = DurationDigitEntry("")

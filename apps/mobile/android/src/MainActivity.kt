@@ -5,14 +5,18 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.ComposeUiFlags
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.tooling.preview.Preview
 
 class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalComposeUiApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
+        ComposeUiFlags.isMediaQueryIntegrationEnabled = true
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContent {
-            App()
+            App(allowKeyboardInput = true)
         }
     }
 }
@@ -20,5 +24,5 @@ class MainActivity : ComponentActivity() {
 @Preview
 @Composable
 fun AppAndroidPreview() {
-    App()
+    App(allowKeyboardInput = true)
 }

@@ -19,6 +19,7 @@ dependencies:
   - $libs.androidx.lifecycle.runtime.compose
   - $libs.androidx.lifecycle.viewmodel.compose
   - $libs.compose.material3.adaptive
+  - $libs.compose.material3.adaptive.layout
   - $libs.kotlinx.coroutines.core
 
 dependencies@android:

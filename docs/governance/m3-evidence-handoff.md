@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M3-DOC-008 |
-| Revision | 0.4 |
+| Revision | 0.6 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | M3 gate/integration; cross-platform architecture; browser/desktop; Android/iOS; TV input; provider, privacy, licensing/policy, lifecycle/audio, build/CI/configuration, dependency/SOUP, and documentation-control scopes: @Entreco, designated by the product owner on 2026-11-19; exact-head acceptance pending |
@@ -19,15 +19,20 @@ table. See [document controls](document-control.md#lifecycle-and-approval).
 **Owner-approved M3 review scope; exact final PR-head acceptance pending.**
 On 2026-11-19, @Entreco confirmed they are the human reviewer for all
 applicable disciplines and approved the M1, M2, and M3 reviews with their
-evidence limitations. M2-DOC-007 revision 1.1 records the M2 design baseline
+evidence limitations. M2-DOC-007 revision 1.3 records the M2 design baseline
 approval for #47. Android TV and Apple TV are primary future targets, while
 Wear OS and watchOS are outside v1. M3-DOC-007 revision 0.2 retains Kotlin
 Multiplatform/Compose without claiming platform support.
 
-The #47 architecture candidate assigns timer-domain behavior to Compose-free
-`core/counter`, shared UI to the timer/settings/about features, and app routing
-to `apps/common`. Focused domain tests pass; UI integration, platform
-verification, and the M4 reliability/lifecycle gate remain incomplete.
+The #47 architecture candidate assigns duration/countdown behavior to
+Compose-free `core/counter`, reusable keypad UI to `core/design`, input policy
+to `features/settings`, feature screens to timer/settings/about, and app
+routing/adaptive supporting-pane composition to `apps/common`. Focused
+domain/policy tests and multiplatform builds are separate from product
+verification; rendered UI, runtime keyboard behavior, platform verification,
+and the M4 reliability/lifecycle gate remain incomplete. The current #47
+candidate also updates M3-DOC-005 revision 0.2 with the adaptive-layout
+dependency and revised shared-design dependency scopes.
 
 The owner designation is self-attested; no independent credential audit is
 claimed. The source PR review metadata and CI evidence below are historical.
@@ -56,9 +61,9 @@ specialist review or human acceptance.
 | Provider and background-execution feasibility | [M3-DOC-003, revision 0.1](https://github.com/Entreco/elchrono/blob/54d7c7f7711f0b5b7ae939eb2dc24ea25bb4705c/docs/architecture/audio-provider-feasibility-findings.md), [PR #49](https://github.com/Entreco/elchrono/pull/49) | Official YouTube/Spotify and platform constraints, data-flow implications, and testability limits are documented. No provider, playback, credentials, tokens, integration, or platform support is selected or verified; provider/privacy/licensing reviews remain pending. |
 | Android and iOS feasibility | [M3-DOC-004, revision 0.3](https://github.com/Entreco/elchrono/blob/4766634e45ffa74203761ea42f8ba6430ec056c3/docs/architecture/android-ios-platform-feasibility-findings.md), [PR #50](https://github.com/Entreco/elchrono/pull/50) | Android build/AAB packaging and an iOS simulator shell run are recorded. Android launch, physical-device behavior, signing, accessibility, lifecycle, offline operation, and audio remain unverified. These demonstrations are not support commitments. |
 | Reproducible developer setup and automated checks | [README setup and CI guidance](https://github.com/Entreco/elchrono/blob/d537cc321429a0339d0606cc1a071021c8af6b87/README.md), [CI workflow](https://github.com/Entreco/elchrono/blob/d537cc321429a0339d0606cc1a071021c8af6b87/.github/workflows/ci.yml), [PR #51](https://github.com/Entreco/elchrono/pull/51), [observed CI run](https://github.com/Entreco/elchrono/actions/runs/44389945776) | The Kotlin wrapper, repository configuration, local commands, and Linux workflow are documented. The observed workflow passed module discovery, JVM and browser Wasm builds, common/localization JVM tests, and checks. It does not provision Android or validate Android/iOS, TV/watch, physical devices, or other desktop OSs. |
-| Dependency/SOUP inventory and release conventions | [M3-DOC-005, revision 0.1](https://github.com/Entreco/elchrono/blob/54d28b79fcf641aea78da182675d7188fb89f7bb/docs/architecture/dependency-inventory.md) and [M3-DOC-006, revision 0.1](https://github.com/Entreco/elchrono/blob/54d28b79fcf641aea78da182675d7188fb89f7bb/docs/architecture/build-release-versioning.md), [PR #52](https://github.com/Entreco/elchrono/pull/52) | Direct dependency declarations and preliminary assessments plus proposed build/version/artifact conventions are recorded. Transitive distributed-artifact licence review, maintenance/licensing actions, competent dependency review, and release-baseline decisions remain open. |
+| Dependency/SOUP inventory and release conventions | [M3-DOC-005, revision 0.1](https://github.com/Entreco/elchrono/blob/54d28b79fcf641aea78da182675d7188fb89f7bb/docs/architecture/dependency-inventory.md) and [M3-DOC-006, revision 0.1](https://github.com/Entreco/elchrono/blob/54d28b79fcf641aea78da182675d7188fb89f7bb/docs/architecture/build-release-versioning.md), [PR #52](https://github.com/Entreco/elchrono/pull/52) | The inspected historical baseline records direct dependency declarations and preliminary assessments plus proposed build/version/artifact conventions. Transitive distributed-artifact licence review, maintenance/licensing actions, competent dependency review, and release-baseline decisions remain open. |
 | Reusable documentation templates | [Template index](https://github.com/Entreco/elchrono/blob/54d28b79fcf641aea78da182675d7188fb89f7bb/docs/templates/README.md), [PR #52](https://github.com/Entreco/elchrono/pull/52) | Seven starting templates are present. They are not completed evidence, approvals, or product requirements. |
-| M2 prerequisite and traceability | [M2-DOC-007, revision 0.9](m2-evidence-handoff.md), [M2-DOC-003, revision 2.8](../safety/requirements-traceability-matrix.md) | The product owner approved the M2 design baseline for #47 while retaining usability and product-verification limitations. Final current-PR-head acceptance remains pending. |
+| M2 prerequisite and traceability | [M2-DOC-007, revision 0.9](https://github.com/Entreco/elchrono/blob/6d2cd083155d247786fbc9d7cac44421eed03bfe/docs/governance/m2-evidence-handoff.md), [M2-DOC-003, revision 2.8](https://github.com/Entreco/elchrono/blob/6d2cd083155d247786fbc9d7cac44421eed03bfe/docs/safety/requirements-traceability-matrix.md) | At the inspected historical snapshot, the product owner had not yet approved the M2 design baseline for #47; current disposition is recorded above. The historical records retain usability and product-verification limitations. |
 
 ## Review evidence and findings
 
@@ -143,3 +148,5 @@ approve residual risk. Record these as gaps rather than inferred results.
 | 0.2 | Record the owner's M1/M2/M3 reviewer designation and review disposition, align TV/watch scope and current M2/M3 candidates, and retain exact-head acceptance and platform/release limitations. |
 | 0.3 | Record owner approval of the M3 review gate for issue #47, clarify that the historical M2 blocker is resolved for this scoped implementation, and preserve the distinction from milestone completion, platform support, and release readiness. |
 | 0.4 | Align the current M2 review reference and record the #47 core/feature ownership boundary and focused domain-test evidence without claiming M4 completion, product verification, or platform support. |
+| 0.5 | Update the #47 architecture handoff for core keypad ownership, adaptive supporting-pane composition, keyboard-capability adapters, and the current dependency inventory; retain UI, platform, M4, and exact-head review limitations. |
+| 0.6 | Align the M2 handoff link with its current revision and retain the documented Wasm test-runner, rendered-UI, platform, and exact-head acceptance limitations. |

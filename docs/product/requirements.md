@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-001 |
-| Revision | 0.6 |
+| Revision | 0.8 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Product requirements and accessibility: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
@@ -46,10 +46,10 @@ exact-revision review and acceptance are recorded in the current review PR.
 
 | ID | Requirement |
 |---|---|
-| REQ-001 | A caregiver shall be able to configure every whole-minute waiting duration from 00:01 through 24:00 using two numeric fields, Hours and Minutes, populated by sequential digits. The first digit enters the minute ones place, the second the minute tens place, and each subsequent digit shifts the existing digits left, moving them into the hour field. |
+| REQ-001 | A caregiver shall be able to configure every whole-minute waiting duration from 00:01 through 24:00 using two numeric fields, Hours and Minutes, populated by sequential digits. The first digit enters the minute ones place, the second the minute tens place, and each subsequent digit shifts the existing digits left, moving them into the hour field. Mobile targets shall accept system-keyboard input when a keyboard is available and provide an on-screen numeric keypad otherwise. Desktop, browser, and TV targets shall use the on-screen numeric keypad and shall not expose keyboard-based duration entry. |
 | REQ-002 | Saving valid timer settings shall start the countdown from the saved duration. Opening Settings while a countdown is running shall pause it; saving valid Settings shall start a new countdown from the full saved duration. In v1, no separate manual pause, resume, or reset controls shall be provided; the Settings-open pause and valid-save start behavior are the only selected timer controls. |
 | REQ-003 | A patient shall be able to see the timer's remaining-time presentation while it is running, paused, or interrupted. Each available visualization shall specify whether it shows numeric remaining time, visual progress, or both; no visualization shall show a clock face or time of day. |
-| REQ-004 | The product shall provide Main, Settings, and About screens. Main shall contain the selected timer visualization; Settings shall provide controls for duration and theme; About shall contain the company logo, version/build details, support information, privacy policy, relevant licences, intended use, and limitations. Music integration and in-app volume controls are excluded from v1. |
+| REQ-004 | The product shall provide Main, Settings, and About screens. Main shall contain the selected timer visualization; Settings shall provide controls for duration and theme and appear as a supporting side pane alongside Main when the available window supports multiple panes, with a reachable single-pane destination on compact windows; About shall contain the company logo, version/build details, support information, privacy policy, relevant licences, intended use, and limitations. Music integration and in-app volume controls are excluded from v1. |
 | REQ-005 | In v1, Settings shall not require a caregiver-protection mechanism. |
 | REQ-006 | A caregiver shall be able to select one of the four v1 themes available in Settings: Clock, Battery, Fan, and Ring. |
 | REQ-008 | Timer operation and remaining-time presentation shall not depend on internet connectivity. Music integration and associated playback-failure handling are deferred to v2 and are not v1 capabilities. |
@@ -61,11 +61,12 @@ exact-revision review and acceptance are recorded in the current review PR.
 
 The product-owner decisions below define the v1 scope. D-01 through D-06 were
 provided on 2026-11-17. On 2026-11-19, the product owner approved the four
-demo visualizations for v1 and designated Android TV and Apple TV as primary
-product targets, with Wear OS and watchOS outside v1. These decisions do not
-establish representative-user preference, platform support, or verification.
-Reassess affected risks and requirements before v2 or any change to intended
-use.
+demo visualizations for v1, designated Android TV and Apple TV as primary
+product targets with Wear OS and watchOS outside v1, and specified adaptive
+Settings presentation and target-specific duration input methods. These
+decisions do not establish representative-user preference, platform support,
+or verification. Reassess affected risks and requirements before v2 or any
+change to intended use.
 
 | ID | Decision | Current disposition |
 |---|---|---|
@@ -77,6 +78,7 @@ use.
 | D-06 | Manual pause, resume, and reset controls | No separate manual pause, resume, or reset controls are included in v1. Opening Settings while running is the selected pause behavior; saving valid Settings is the only selected start/restart action and starts from the full saved duration. |
 | D-07 | Primary platforms and v1 exclusions | Android TV and Apple TV are the primary product targets. Wear OS and watchOS are outside v1 scope. The browser remains the M5 implementation/verification target; its completion does not establish TV support. TV support requires separate target configuration, packaging, remote/focus, viewing-distance, lifecycle, accessibility, and usability verification. |
 | D-08 | V1 visualization set | The v1 theme choices are Clock, Battery, Fan, and Ring, as shown in the approved demo. Clock is the initial selection, matching the demo; this default is not evidence of user preference. The visual mapping and use of each theme still require application verification and appropriate usability/accessibility review. |
+| D-09 | Adaptive Settings and duration input methods | Show Settings in a supporting side pane when the available window supports multiple panes and as a reachable single-pane destination on compact windows. Mobile may use an available system keyboard, with the on-screen keypad as fallback; desktop, browser, and TV use the on-screen keypad and do not expose keyboard-based duration entry. This does not establish support for unconfigured TV targets. |
 
 Requirement REQ-007 was retired before approval at the product owner's
 direction; it must not be reused. No WCAG conformance baseline is selected by
@@ -116,3 +118,4 @@ does not establish that they were resolved.
 | 0.5 | Resolve the v1 manual pause/resume/reset decision: no separate controls; Settings-open pauses and valid Save starts from the full saved duration. |
 | 0.6 | Add the owner-approved Clock, Battery, Fan, and Ring v1 theme set, define Clock as the demo-matching initial selection, designate Android TV and Apple TV as primary targets and Wear/watch as outside v1, and retain separate verification/support gates. |
 | 0.7 | Clarify the existing in-process interruption behavior for common lifecycle stop/start events: pause and mark interrupted on stop, do not automatically resume, and retain no process-termination or restart recovery; keep platform verification and risk review pending. |
+| 0.8 | Add the owner-directed supporting-pane Settings layout and target-specific duration-input methods; retain sequential digit semantics and keep layout, keyboard, accessibility, and TV verification pending. |

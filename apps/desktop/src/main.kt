@@ -9,7 +9,7 @@ import org.jetbrains.compose.resources.painterResource
 fun main() = application {
     Window(
         onCloseRequest = ::exitApplication,
-        title = "ElChrono",
+        title = "El Chrono",
         icon = painterResource(Res.drawable.app_icon),
     ) {
         App()

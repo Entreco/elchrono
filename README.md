@@ -134,6 +134,34 @@ commands are:
 ./kotlin check -m common -m counter -m settings -m localization
 ```
 
+CI restores Kotlin Toolchain bootstrap and dependency downloads before module
+discovery and saves them after both builds succeed, before tests and checks.
+The workflow explicitly sets `KOTLIN_SHARED_CACHE_DIR` and
+`KOTLIN_CLI_BOOTSTRAP_CACHE_DIR` under the runner's temporary directory. It caches
+only `.m2.cache`, `download.cache`, and `cli`; workspace build outputs, extracted
+caches, telemetry, and temporary download/lock files are excluded.
+Cache keys separate runner OS/architecture and wrapper versions, prefer matching
+dependency configuration, and allow reuse from the same wrapper version after
+dependency changes. Each run attempt saves a new immutable entry so additional
+downloads can be retained. GitHub cache scope and eviction still apply.
+
+An HTTP `429 Too Many Requests` from Maven Central is a dependency-download
+failure, not a failing application test or proof of an individual artifact-size
+limit. [Sonatype's consumption-limit guidance](https://central.sonatype.org/faq/429-error/)
+explains that aggregate traffic, including
+[shared hosted-CI egress](https://central.sonatype.org/faq/429-shared-egress/),
+can trigger throttling. Caching reduces repeat downloads but does not guarantee
+that a cold cache or shared runner avoids limits. Allow a block to expire rather
+than repeatedly rerunning builds; do not disable checksum verification or switch
+between `repo1.maven.org` and `repo.maven.apache.org` as a bypass (both serve
+Maven Central). Persistent failures require provider/Sonatype investigation;
+a managed caching proxy is a separate infrastructure option.
+
+Hosted cold-cache population and subsequent warm-cache restoration for this
+configuration remain unverified until the workflow runs. The earlier
+[main run's truncated Skiko Wasm failure](https://github.com/Entreco/elchrono/actions/runs/44599279733)
+is a separate unresolved issue; download caching is not evidence that it is fixed.
+
 On the issue #47 candidate, module discovery listed 12 modules. The JVM and
 browser Wasm builds, selected JVM tests, and checks completed successfully on
 the current macOS worktree. The JVM test selection includes the counter and

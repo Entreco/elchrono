@@ -16,12 +16,16 @@ enum class AppScreen {
     ABOUT,
 }
 
+private val TimerBackStack = listOf(AppScreen.TIMER)
+
 data class AppUiState(
     val timer: TimerUpdate,
     val settings: TimerSettings,
-    val screen: AppScreen = AppScreen.TIMER,
+    val backStack: List<AppScreen> = TimerBackStack,
     val interrupted: Boolean = false,
-)
+) {
+    val screen: AppScreen get() = backStack.last()
+}
 
 class AppViewModel(
     private val timerEngine: TimerEngine = TimerEngine(),
@@ -38,31 +42,34 @@ class AppViewModel(
 
     fun openSettings() {
         val state = mutableUiState.value
+        if (state.screen != AppScreen.TIMER) return
         val timer = if (state.timer.snapshot.status == TimerStatus.RUNNING) {
             timerEngine.openSettings()
         } else {
             state.timer
         }
-        mutableUiState.value = state.copy(screen = AppScreen.SETTINGS, timer = timer)
-    }
-
-    fun closeSettings() {
-        mutableUiState.value = mutableUiState.value.copy(screen = AppScreen.TIMER)
+        mutableUiState.value = state.copy(backStack = state.backStack + AppScreen.SETTINGS, timer = timer)
     }
 
     fun showAbout() {
-        mutableUiState.value = mutableUiState.value.copy(screen = AppScreen.ABOUT)
+        val state = mutableUiState.value
+        if (state.screen == AppScreen.SETTINGS) {
+            mutableUiState.value = state.copy(backStack = state.backStack + AppScreen.ABOUT)
+        }
     }
 
-    fun backToSettings() {
-        mutableUiState.value = mutableUiState.value.copy(screen = AppScreen.SETTINGS)
+    fun onBackPressed() {
+        val state = mutableUiState.value
+        if (state.backStack.size > 1) {
+            mutableUiState.value = state.copy(backStack = state.backStack.dropLast(1))
+        }
     }
 
     fun saveSettings(settings: TimerSettings) {
         mutableUiState.value = mutableUiState.value.copy(
             timer = timerEngine.saveSettings(settings.duration),
             settings = settings,
-            screen = AppScreen.TIMER,
+            backStack = TimerBackStack,
             interrupted = false,
         )
     }

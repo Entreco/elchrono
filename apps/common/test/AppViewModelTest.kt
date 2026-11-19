@@ -22,10 +22,48 @@ class AppViewModelTest {
         viewModel.showAbout()
         assertEquals(AppScreen.ABOUT, viewModel.uiState.value.screen)
 
-        viewModel.backToSettings()
+        viewModel.onBackPressed()
         assertEquals(AppScreen.SETTINGS, viewModel.uiState.value.screen)
-        viewModel.closeSettings()
+        viewModel.onBackPressed()
         assertEquals(AppScreen.TIMER, viewModel.uiState.value.screen)
+    }
+
+    @Test
+    fun `back closes settings and returns from about before closing settings`() {
+        val viewModel = AppViewModel(TimerEngine(TestMonotonicClock()))
+
+        viewModel.openSettings()
+        viewModel.onBackPressed()
+        assertEquals(AppScreen.TIMER, viewModel.uiState.value.screen)
+
+        viewModel.openSettings()
+        viewModel.showAbout()
+        viewModel.onBackPressed()
+        assertEquals(AppScreen.SETTINGS, viewModel.uiState.value.screen)
+
+        viewModel.onBackPressed()
+        assertEquals(AppScreen.TIMER, viewModel.uiState.value.screen)
+    }
+
+    @Test
+    fun `navigation never removes the timer root or pushes duplicate destinations`() {
+        val viewModel = AppViewModel(TimerEngine(TestMonotonicClock()))
+
+        viewModel.onBackPressed()
+        viewModel.showAbout()
+        assertEquals(listOf(AppScreen.TIMER), viewModel.uiState.value.backStack)
+
+        viewModel.openSettings()
+        viewModel.openSettings()
+        viewModel.showAbout()
+        viewModel.showAbout()
+        assertEquals(
+            listOf(AppScreen.TIMER, AppScreen.SETTINGS, AppScreen.ABOUT),
+            viewModel.uiState.value.backStack,
+        )
+
+        viewModel.saveSettings(settings(5))
+        assertEquals(listOf(AppScreen.TIMER), viewModel.uiState.value.backStack)
     }
 
     @Test

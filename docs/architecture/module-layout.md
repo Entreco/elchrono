@@ -13,7 +13,7 @@ verified.
 
 Platform launchers in `apps/desktop`, `apps/browser`, and `apps/mobile/{android,ios}`
 depend on the shared `apps/common` application shell. The shell owns the
-Material 3 app scaffold and adaptive supporting-pane layout, screen routing,
+Material 3 app scaffold and adaptive pane layout, screen routing,
 Settings visibility and lifecycle coordination through `AppViewModel`, and
 composition of feature UI; it does not own timer-domain behavior or
 feature-screen UI. `core/counter` owns shared, Compose-free duration,
@@ -58,9 +58,9 @@ Wasm/JS. These compilation targets do not establish TV/watch support.
   `TimerEngine`, with deterministic tests in the same module.
 - Design owns the shared `NumericKeypad`; its labels are supplied by callers
   from localization resources.
-- Timer (`TimerFeature`), settings (`SettingsScreen`), and about own their
-  respective Compose screens; Settings input-mode policy and tests belong to
-  settings.
+- Timer (`TimerFeature`), settings (`SettingsPanel` and `SettingsScreen`), and
+  about own their respective Compose screens; the settings panel container,
+  input-mode policy, and tests belong to settings.
 - Music remains an empty v2 module with no app dependency or production
   behavior.
 
@@ -76,11 +76,14 @@ ownership without a new framework or a catch-all utilities library.
 
 The existing wrappers and YAML build model are retained; the shared adaptive
 layout module is added at the existing adaptive version. The counter module
-remains Compose-free. The AndroidX Navigation 3 supporting-pane UI artifact
-does not support all configured iOS/Wasm targets, so the common shell uses the
-Material 3 Adaptive `SupportingPaneScaffold` directly and keeps navigation
-state in the testable app state. The about feature is separate so the app shell
-remains a thin coordinator and each feature owns its UI.
+remains Compose-free. The common shell uses the Compose Multiplatform
+Navigation 3 `NavDisplay` with Material Adaptive scene strategies. The app
+state owns the Timer → Settings → About back stack. The list-detail scene uses
+the left slot for Settings and the remaining space for Timer on wider windows;
+single-pane windows show the active destination. About replaces Settings in
+the same pane. Navigation 3 and
+its adaptive scene own the Android predictive-back gesture and transition;
+the app does not track gesture progress or offsets.
 
 ## Verification
 

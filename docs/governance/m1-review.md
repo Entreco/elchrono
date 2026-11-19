@@ -3,31 +3,37 @@
 | Field | Value |
 |---|---|
 | Document ID | M1-DOC-008 |
-| Revision | 0.2 |
+| Revision | 0.4 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
-| Required reviewers | Designated M1 milestone approver (unassigned); competent reviewer for risk evidence (unassigned) |
-| Approver | Designated M1 milestone approver (unassigned) |
+| Required reviewers | M1 product-boundary, qualification, software-safety, risk, and lifecycle scopes: @Entreco, designated by the product owner on 2026-11-19; final exact-head acceptance pending |
+| Approver | @Entreco, designated M1 milestone approver; exact-head acceptance pending |
 | Related issue | [#8](https://github.com/Entreco/elchrono/issues/8) |
-| Review PR | [PR #21](https://github.com/Entreco/elchrono/pull/21) |
+| Review PR | Prior baseline: [PR #21](https://github.com/Entreco/elchrono/pull/21); current exact-head review: pending |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](document-control.md#lifecycle-and-approval).
 
 ## Review outcome
 
-**BLOCKED — the M1 evidence baseline does not currently satisfy its completion
-gate.** This evidence review found missing exact-revision acceptance for the
-intended-use and qualification records, pending competent risk review and
-walkthrough evidence, and missing review appointments including the milestone
-approver. The designated milestone approver has not issued a decision because
-the role is unassigned. This record does not approve M1, close issue #8, or
-authorize a milestone or project-status change.
+**Owner-approved M1 review disposition for issue #47; final exact PR-head
+acceptance pending.** This does not declare the entire M1 milestone complete.
+On 2026-11-19, @Entreco confirmed they are the human reviewer and M1
+milestone approver for all applicable disciplines and approved the M1 review.
+The current candidate baseline records the non-medical ordinary-waiting
+purpose, bounded risk scenarios/dispositions, and relevant M1/M2/M3 scope.
+The user's reviewer appointment resolves the prior missing-appointment
+blocker. The owner designation is self-attested; no independent credential
+audit is asserted.
 
-The review is an integration check of repository and GitHub evidence, not a
-qualified specialist review. Closed issues, merged PRs, and the repository
-lifecycle of records do not by themselves prove human acceptance, reviewer
-competence, or completion of a milestone gate.
+The M1 completion evidence and unresolved legal/applicability follow-ups
+remain bounded by their source records. The current PR must still be reviewed
+and accepted at its full final head SHA; this record does not mark the PR
+acceptance box, close issue #8, or make release/support claims. Historical
+merges and issue closures remain distinct from the current review.
+The owner's designation resolves the missing-reviewer appointment blocker
+for this review; historical findings below describe the earlier snapshot and
+do not override the current disposition.
 
 ## Scope and evidence baseline
 
@@ -52,7 +58,12 @@ snapshot; they do not imply that a candidate was approved:
 | M1-DOC-007 — software development plan | [Revision 0.1](https://github.com/Entreco/elchrono/blob/cbbff2c56e71f33652a8ba250400d9ebd06fe10c/docs/governance/software-development-plan.md) |
 | M1-DOC-009 — risk traceability matrix | [Revision 0.1](https://github.com/Entreco/elchrono/blob/cbbff2c56e71f33652a8ba250400d9ebd06fe10c/docs/safety/risk-traceability-matrix.md) |
 
-## M1 completion-gate evidence map
+## M1 completion-gate evidence map (historical snapshot)
+
+The table below preserves the findings at the original `main` snapshot. The
+owner's current review disposition supersedes its unassigned-reviewer status,
+but does not alter historical source revisions or convert missing
+verification/legal evidence into completed evidence.
 
 The “current evidence” column distinguishes candidate records from evidenced
 acceptance. “Blocked” means the completion-gate item cannot be accepted from the
@@ -129,3 +140,5 @@ safety-critical timing, or a certification claim.
 |---|---|
 | 0.1 | Record the M1 evidence map, review checks, open findings, blocked gate outcome, and planned M2 handoff actions |
 | 0.2 | Reconcile the M2 handoff with the tracked issues and candidate requirement, test protocol, and traceability records; retain their unresolved approval and evidence status |
+| 0.3 | Record the owner's M1/M2/M3 review designation, risk-scenario walkthrough disposition, current intended-use/qualification revisions, and exact-head acceptance requirement. |
+| 0.4 | Record the owner's approval of the M1 review disposition for issue #47 and clarify that historical blocked findings are superseded for the current review scope, while milestone completion and final-head acceptance remain pending. |

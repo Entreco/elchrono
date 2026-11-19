@@ -3,13 +3,13 @@
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-003 |
-| Revision | 2.5 |
+| Revision | 2.8 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
-| Required reviewers | Requirements and software-safety reviewers: unassigned |
+| Required reviewers | Requirements and software-safety review: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#25](https://github.com/Entreco/elchrono/issues/25); provider-feasibility trace update in [#36](https://github.com/Entreco/elchrono/issues/36); platform architecture trace update in [#39](https://github.com/Entreco/elchrono/issues/39) |
-| Review PR | Prior baselines: revision 1.4 in [PR #29](https://github.com/Entreco/elchrono/pull/29), revision 1.7 in [PR #30](https://github.com/Entreco/elchrono/pull/30), revision 1.8 in [PR #31](https://github.com/Entreco/elchrono/pull/31), and revision 2.2 in [PR #32](https://github.com/Entreco/elchrono/pull/32); revision 2.3 in [PR #41](https://github.com/Entreco/elchrono/pull/41); revision 2.4 in [PR #49](https://github.com/Entreco/elchrono/pull/49); revision 2.5 in [PR #54](https://github.com/Entreco/elchrono/pull/54); required reviews and human acceptance pending |
+| Review PR | Prior baselines: revision 1.4 in [PR #29](https://github.com/Entreco/elchrono/pull/29), revision 1.7 in [PR #30](https://github.com/Entreco/elchrono/pull/30), revision 1.8 in [PR #31](https://github.com/Entreco/elchrono/pull/31), revision 2.2 in [PR #32](https://github.com/Entreco/elchrono/pull/32), revision 2.3 in [PR #41](https://github.com/Entreco/elchrono/pull/41), revision 2.4 in [PR #49](https://github.com/Entreco/elchrono/pull/49), and revision 2.5 in [PR #54](https://github.com/Entreco/elchrono/pull/54); current review: pending |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](../governance/document-control.md#lifecycle-and-approval).
@@ -19,8 +19,8 @@ table. See [document controls](../governance/document-control.md#lifecycle-and-a
 This matrix is the authoritative cross-reference between the intended-use
 source, product requirements, risks, design/usability evidence, and test
 protocol. Requirement statements live in
-[M2-DOC-001, revision 0.5](../product/requirements.md); acceptance criteria and
-procedures live in [M2-DOC-002, revision 0.5](../testing/test-protocol.md).
+[M2-DOC-001, revision 0.6](../product/requirements.md); acceptance criteria and
+procedures live in [M2-DOC-002, revision 0.6](../testing/test-protocol.md).
 Do not duplicate those statements or criteria here.
 
 The mappings below are initial and proposed. Design links are included when
@@ -29,15 +29,15 @@ actual evidence is recorded.
 
 | Source record | Revision | Relationship |
 |---|---|---|
-| [M1-DOC-002, intended use](../product/intended-use.md) | 0.9 candidate | Product purpose, roles, use, and limitations |
-| [M2-DOC-001, product requirements](../product/requirements.md) | 0.5 candidate | Nine proposed requirements incorporating the v1 product decisions, including no separate manual timer controls |
-| [M1-DOC-004, risk assessment](risk-assessment.md) | 0.5 candidate | RISK-001 through RISK-006 traced below; D-01 product-owner disposition is not competent risk acceptance |
-| [M1-DOC-009, risk traceability matrix](risk-traceability-matrix.md) | 0.7 candidate | Risk-to-source and planned verification; review pending |
-| [M2-DOC-002, product test protocol](../testing/test-protocol.md) | 0.5 candidate | Test procedures and acceptance criteria traced below; audio tests deferred to v2; no manual pause/resume/reset controls in v1 |
-| [M2-DOC-004, accessible screen flows and theme prototypes](../design/accessible-screen-flows-and-theme-prototypes.md) | 1.6 candidate | Main/Settings/About and theme proposals aligned with v1 decisions; design review pending |
-| [M2-DOC-005, usability review plan](../usability/usability-plan.md) | 0.6 candidate | Proposed participant approach and tasks; created after the two sessions and did not govern them |
-| [M2-DOC-006, usability findings and evidence status](../usability/usability-findings.md) | 0.6 candidate | Two retrospective sessions and retained screenshots; Clock clipping and caregiver/usability limitations retained |
-| [M3-DOC-007, platform architecture decision and support matrix](../architecture/platform-architecture-and-support-matrix.md) | 0.1 candidate | Retains the configured Kotlin Multiplatform/Compose architecture without a support commitment; records platform evidence and unresolved minimum-version, TV/watch, provider, lifecycle, and review decisions |
+| [M1-DOC-002, intended use](../product/intended-use.md) | 1.0 candidate | Product purpose, roles, use, and limitations |
+| [M2-DOC-001, product requirements](../product/requirements.md) | 0.6 candidate | Ten active requirements incorporating the v1 product decisions, including the four themes and TV input requirement |
+| [M1-DOC-004, risk assessment](risk-assessment.md) | 0.6 candidate | RISK-001 through RISK-006 traced below; D-01 disposition is not evidence of a control or risk reduction |
+| [M1-DOC-009, risk traceability matrix](risk-traceability-matrix.md) | 0.9 candidate | Risk-to-source and planned verification; review pending |
+| [M2-DOC-002, product test protocol](../testing/test-protocol.md) | 0.6 candidate | Test procedures and acceptance criteria traced below; audio tests deferred to v2; no manual pause/resume/reset controls in v1 |
+| [M2-DOC-004, accessible screen flows and theme prototypes](../design/accessible-screen-flows-and-theme-prototypes.md) | 1.7 candidate | Main/Settings/About and four owner-approved themes aligned with v1 decisions; exact-head review pending |
+| [M2-DOC-005, usability review plan](../usability/usability-plan.md) | 0.7 candidate | Proposed participant approach and tasks; created after the two sessions and did not govern them |
+| [M2-DOC-006, usability findings and evidence status](../usability/usability-findings.md) | 0.7 candidate | Two retrospective sessions and retained screenshots; Clock clipping and caregiver/usability limitations retained |
+| [M3-DOC-007, platform architecture decision and support matrix](../architecture/platform-architecture-and-support-matrix.md) | 0.2 candidate | Retains the configured Kotlin Multiplatform/Compose architecture; records TV priorities, Wear/watch exclusion, evidence limits, and no support commitment |
 
 ## Traceability
 
@@ -48,10 +48,11 @@ actual evidence is recorded.
 | [REQ-003](../product/requirements.md#requirement-identification) | [Visual remaining-time use and limitations](../product/intended-use.md#supported-role-of-visual-time-and-optional-audio) | RISK-001, RISK-002, RISK-005, RISK-006 | [Main states and visualization mapping](../design/accessible-screen-flows-and-theme-prototypes.md#main-screen-and-states); session findings [F01/F04](../usability/usability-findings.md#participant-feedback-and-observations); gaps G04/G05 | [TP-REQ-003](../testing/test-protocol.md#test-cases) | Pending |
 | [REQ-004](../product/requirements.md#requirement-identification) | [Users and roles](../product/intended-use.md#users-population-and-roles); screen/content inventory is M2 product scope in [#22](https://github.com/Entreco/elchrono/issues/22) | RISK-004, RISK-005, RISK-006 | [Main, Settings, and About designs](../design/accessible-screen-flows-and-theme-prototypes.md#screen-flows); no v1 audio/volume controls | [TP-REQ-004](../testing/test-protocol.md#test-cases) | Pending |
 | [REQ-005](../product/requirements.md#requirement-identification) | [Users and roles](../product/intended-use.md#users-population-and-roles) | RISK-004 | [Unprotected Settings v1 decision](../design/accessible-screen-flows-and-theme-prototypes.md#main-screen-and-states); prior sessions did not test access paths (G03/G04) | [TP-REQ-005](../testing/test-protocol.md#test-cases) | Pending; test does not establish risk acceptability |
-| [REQ-006](../product/requirements.md#requirement-identification) | No direct theme-selection statement in intended use; this product-level choice is scoped by [#22](https://github.com/Entreco/elchrono/issues/22) | RISK-004, RISK-005 | [Timer visualizations and conditional appearance options](../design/accessible-screen-flows-and-theme-prototypes.md#timer-visualizations); session findings [F01-F04](../usability/usability-findings.md#participant-feedback-and-observations); gaps G03/G04 | [TP-REQ-006](../testing/test-protocol.md#test-cases) | Pending |
+| [REQ-006](../product/requirements.md#requirement-identification) | No direct theme-selection statement in intended use; this product-level choice is scoped by [#22](https://github.com/Entreco/elchrono/issues/22) | RISK-004, RISK-005 | [Four owner-approved timer visualizations](../design/accessible-screen-flows-and-theme-prototypes.md#timer-visualizations); session findings [F01-F04](../usability/usability-findings.md#participant-feedback-and-observations); gaps G03/G04 | [TP-REQ-006](../testing/test-protocol.md#test-cases) | Pending; user preference and application/platform behavior are not inferred |
 | [REQ-008](../product/requirements.md#requirement-identification) | [Offline use](../product/intended-use.md#supported-role-of-visual-time-and-optional-audio); future audio scope deferred | RISK-003 | Music and volume controls excluded from v1; future audio behavior requires separate review; [M3-DOC-003](../architecture/audio-provider-feasibility-findings.md) records feasibility constraints only | [TP-REQ-008](../testing/test-protocol.md#test-cases) | Network-independence test pending; v2 audio tests deferred |
 | [REQ-009](../product/requirements.md#requirement-identification) | [Exclusions and claims boundary](../product/intended-use.md#exclusions-and-claims-boundary) | RISK-006 | [About screen content](../design/accessible-screen-flows-and-theme-prototypes.md#about-screen); session gap G04 | [TP-REQ-009](../testing/test-protocol.md#test-cases) | Pending |
 | [REQ-010](../product/requirements.md#requirement-identification) | [Ordinary waiting use and limitations](../product/intended-use.md#foreseeable-use-and-limitations) | RISK-001, RISK-005; RISK-003 only if audio is added in v2 | Immediate reset without a completed state; no v1 audio | [TP-REQ-010](../testing/test-protocol.md#test-cases) | Timer-domain reset, non-negative remaining time, and once-per-cycle completion passed; app/UI integration unverified; music-stop criterion deferred to v2 |
+| [REQ-011](../product/requirements.md#requirement-identification) | [Roles and ordinary use](../product/intended-use.md#users-population-and-roles); TV viewing/input boundaries | RISK-005, RISK-006 | [TV priority and v1 boundary](../design/accessible-screen-flows-and-theme-prototypes.md#design-principles); TV interaction and platform support remain unverified | [TP-REQ-011](../testing/test-protocol.md#test-cases) | Pending; Android TV/Apple TV targets are not configured and no support claim is made |
 
 ## Reverse coverage
 
@@ -66,8 +67,8 @@ rationale.
 | RISK-002 | REQ-003 |
 | RISK-003 | REQ-008; REQ-010 if audio is added in v2 |
 | RISK-004 | REQ-004, REQ-005, REQ-006 |
-| RISK-005 | REQ-003, REQ-004, REQ-006, REQ-010 |
-| RISK-006 | REQ-003, REQ-004, REQ-009 |
+| RISK-005 | REQ-003, REQ-004, REQ-006, REQ-010, REQ-011 |
+| RISK-006 | REQ-003, REQ-004, REQ-009, REQ-011 |
 
 | Planned test | Linked requirement |
 |---|---|
@@ -80,6 +81,7 @@ rationale.
 | TP-REQ-008 | REQ-008 |
 | TP-REQ-009 | REQ-009 |
 | TP-REQ-010 | REQ-010 |
+| TP-REQ-011 | REQ-011 |
 
 REQ-007 was retired before approval and is not an active requirement; it has
 no planned test. No test result is implied by these planned links.
@@ -182,3 +184,5 @@ test procedures or acceptance criteria in this matrix.
 | 2.4 | Link M3-DOC-003 feasibility findings to REQ-008 and D-03 without changing v1 audio deferral or claiming provider verification. |
 | 2.5 | Add M3-DOC-007 as a cross-platform architecture trace input while retaining the M2 gate, all requirement/risk verification gaps, and unresolved support baselines. |
 | 2.6 | Record timer-domain verification for the implemented duration, Settings lifecycle, and completion behavior; retain application/UI, Android runtime, accessibility, usability, and lifecycle limitations. |
+| 2.7 | Align source revisions with the current M1/M2/M3 candidates; add REQ-011/TP-REQ-011 links and the four-theme, browser interruption, and TV-target verification scope. |
+| 2.8 | Align usability source references to revision 0.7 and record the implemented browser UI and focused duration-entry tests without claiming product verification. |

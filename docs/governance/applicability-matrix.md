@@ -3,13 +3,13 @@
 | Field | Value |
 |---|---|
 | Document ID | M1-DOC-006 |
-| Revision | 0.9 |
+| Revision | 1.0 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
-| Required reviewers | @Entreco reviewed and accepted revision 0.1 as product owner; specialist legal/privacy/accessibility determinations remain scoped as open follow-up gates below; accessibility reviewer for this update: unassigned |
+| Required reviewers | @Entreco is designated by the product owner as human reviewer across applicable M1/M2/M3 disciplines for issue #47; designation is self-attested. Legal, privacy, accessibility, cybersecurity, and market-specific determinations remain open follow-up gates below. |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#6](https://github.com/Entreco/elchrono/issues/6) |
-| Review PR | [PR #18](https://github.com/Entreco/elchrono/pull/18); [evidence reconciliation PR](https://github.com/Entreco/elchrono/pull/19); issue #22 update in [PR #32](https://github.com/Entreco/elchrono/pull/32); revision 0.8 in [PR #49](https://github.com/Entreco/elchrono/pull/49); issue #38 revision 0.9 in [PR #52](https://github.com/Entreco/elchrono/pull/52); specialist review and human acceptance pending |
+| Review PR | [PR #18](https://github.com/Entreco/elchrono/pull/18); [evidence reconciliation PR](https://github.com/Entreco/elchrono/pull/19); issue #22 update in [PR #32](https://github.com/Entreco/elchrono/pull/32); revision 0.8 in [PR #49](https://github.com/Entreco/elchrono/pull/49); issue #38 revision 0.9 in [PR #52](https://github.com/Entreco/elchrono/pull/52); issue #47 current review PR: pending; final exact-head acceptance pending |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [Lifecycle and approval](document-control.md#lifecycle-and-approval).
@@ -110,7 +110,7 @@ mean its record, implementation, review, or verification is complete.
 | Maintenance, incident assessment, and post-release reassessment — M9 | Voluntary lifecycle controls; legal reporting or response duties depend on the ultimately applicable laws, product role, markets, data flows, and incident facts. | @Entreco; M9 and ongoing | Future maintenance/incident procedures, issue records, and revised applicability assessments | Appoint responsible roles and establish escalation, reporting, correction, and reassessment routes before release; assess obligations with a competent reviewer. |
 | Review responsibilities and exact-revision acceptance — M1-DOC-001 | Required project gate: specialist scope and competence must be explicit, findings resolved, and human acceptance tied to the exact final PR head. A merge, lifecycle status, or agent-authored text is not proof of qualified review. | @Entreco; M1 and every controlled-record change | [Document controls](document-control.md); review evidence in each record's PR | Required specialist reviewers and the M1 milestone approver remain unassigned for their outstanding scopes; do not imply their approval. Agents leave the human acceptance checkbox unchecked. |
 
-## M1 completion-gate reconciliation and follow-up gates
+## M1 completion-gate reconciliation and follow-up gates (historical snapshot)
 
 | M1 completion-gate deliverable | Current record/evidence | Disposition for this matrix |
 |---|---|---|
@@ -135,6 +135,23 @@ These are explicit follow-up actions, not completed legal determinations.
 Affected work remains gated until the assigned applicability assessment and
 evidence are recorded; do not infer approval, qualification, or a compliance
 outcome from this matrix acceptance.
+
+## Current review disposition for issue #47
+
+On 2026-11-19, the product owner designated @Entreco as the human reviewer
+across applicable M1/M2/M3 disciplines and approved the review scope. This
+resolves the absent-reviewer appointment blocker for the current review; it is
+self-attested and does not claim an independent credential audit. It does not
+close the staged market, legal, privacy, accessibility, cybersecurity, or
+platform follow-up gates above. Final exact-head acceptance remains pending
+in the issue #47 PR, and no new legal qualification or compliance conclusion
+is asserted here.
+
+The M1/M2/M3 review scope accepts the defined non-medical intended use and
+documented product decisions for issue #47. It does not establish that the
+product is legally qualified in every market, that accessibility requirements
+are met, or that unverified platforms are supported. Reassess the matrix if
+intended purpose, functions, claims, markets, channels, or data flows change.
 
 ## Reassessment triggers
 
@@ -184,3 +201,4 @@ applicability has been independently reviewed for this candidate.
 | 0.7 | Update current risk, development-plan, and M2 evidence source revisions; retain the unresolved applicability, review, and verification gates. |
 | 0.8 | Link M3-DOC-003 provider and data-flow findings to the conditional provider-terms gate; preserve unresolved legal/privacy applicability and provider-selection decisions. |
 | 0.9 | Link issue #38 dependency/SOUP and release-versioning records plus reusable templates; retain conditional provider/platform obligations, unresolved legal applicability, and review gates. |
+| 1.0 | Record the owner-designated M1/M2/M3 review scope for issue #47 and current human reviewer appointment; retain all market/legal follow-up gates and exact-head acceptance requirements. |

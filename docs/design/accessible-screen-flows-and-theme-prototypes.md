@@ -3,10 +3,10 @@
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-004 |
-| Revision | 1.6 |
+| Revision | 1.7 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
-| Required reviewers | Product design, accessibility, and usability reviewers: unassigned |
+| Required reviewers | Product design, accessibility, and usability: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#23](https://github.com/Entreco/elchrono/issues/23) |
 | Review PR | Prior baselines: [PR #28](https://github.com/Entreco/elchrono/pull/28) (revision 0.2), [PR #29](https://github.com/Entreco/elchrono/pull/29) (revision 1.3), and [PR #32](https://github.com/Entreco/elchrono/pull/32); revision 1.6: [PR #41](https://github.com/Entreco/elchrono/pull/41) |
@@ -16,11 +16,13 @@ table. See [document controls](../governance/document-control.md#lifecycle-and-a
 
 ## Purpose and limits
 
-This record proposes low-fidelity screen flows and three timer visualizations
-for review. It is design evidence for the proposed ordinary-waiting use, not
-application implementation, a usability finding, or approval of product
-requirements. The current application remains a starter screen, not an
-implemented timer.
+This record defines screen flows and the four timer visualizations approved by
+the product owner for the v1 theme selector: Clock, Battery, Fan, and Ring.
+The owner's decision on 2026-11-19 approves the visualizations as presented in
+the local demo and selects Clock as the demo-matching initial theme; this is
+not a claim of representative-user preference. The browser implementation is
+in progress under #47. It does not establish usability validation or platform
+support.
 
 An interactive, browser-based demonstration is available in the
 [local demo](demo/README.md). It has one configurable countdown, defaulting to
@@ -58,13 +60,13 @@ The prototype also permits duration selection from one minute through 24 hours
 and hiding or showing its personalization panel; these controls do not
 establish changed requirements.
 
-The requirement IDs cited below are candidates from
-[M2-DOC-001, revision 0.5](../product/requirements.md); they remain proposed
-pending required review and approval. The risk IDs are proposed in
-[M1-DOC-004, revision 0.5](../safety/risk-assessment.md); the related risk
-controls are not verified. Intended-use and risk-assessment review gaps remain
-open. This design does not establish medical-device qualification, legal
-conformance, or certification.
+The requirement IDs cited below are from
+[M2-DOC-001](../product/requirements.md); implementation and verification
+status is in [M2-DOC-003](../safety/requirements-traceability-matrix.md).
+The risk IDs are from [M1-DOC-004](../safety/risk-assessment.md); related
+controls are not verified and risk disposition is recorded separately. This
+design does not establish medical-device qualification, legal conformance, or
+certification.
 
 ## Design principles
 
@@ -83,11 +85,17 @@ conformance, or certification.
   record does not select an accessibility conformance baseline.
 - No flashing, countdown animation, sound, or motion is proposed by these
   static drawings.
-- The concepts do not establish user preference, a fixed number of themes, or
-  which themes will be available in a release.
-  This M2 review is limited to the designs and prototypes already documented
-  here. It adds no new design or theme; future designs/themes are deferred to
-  later versions and require their own usability review before selection.
+- The product owner selected the four shapes already in the demo for the v1
+  theme selector: Clock, Battery, Fan, and Ring. This is a product/design
+  decision, not a claim that users prefer one shape or that all intended users
+  can use each shape successfully.
+- Demo-only styling controls (font, colors, detail count, visibility, and ring
+  thickness) are exploratory and are not v1 application settings unless
+  separately required and reviewed.
+- Android TV and Apple TV are primary project targets. This visual design
+  source does not establish remote/D-pad focus behavior, viewing-distance
+  typography, TV layout limits, or platform support; those require target-
+  specific design and verification. Wear OS and watchOS are outside v1 scope.
 
 ## Screen flows
 
@@ -98,6 +106,10 @@ conformance, or certification.
 The running and paused examples retain the same illustrative progress shape.
 The interrupted example retains the shape but explicitly warns that progress
 may be out of date; it must not imply timing continuity when that is unknown.
+In the browser MVP, a hidden-page or page-hide event is recorded and the timer
+is paused on the next timer update after the page returns. The interrupted
+warning remains until valid Settings are saved; Save starts a fresh countdown
+from the full configured duration. No automatic recovery is provided.
 No in-app volume control is included in v1. Opening Settings while running
 pauses the countdown; saving valid settings starts a new countdown at the full
 saved duration. Settings has no caregiver-protection mechanism in v1. No
@@ -111,7 +123,7 @@ and saving valid Settings is the selected start/restart action.
 | Remaining progress | A theme's progress shape; accessible role: progress indicator; label: "Remaining waiting time"; value: percent of the configured duration remaining, 0-100. | REQ-003; RISK-001, RISK-005 |
 | Running state | Text label "Running" separate from progress semantics. | REQ-003; RISK-001, RISK-005 |
 | Paused state | Text label "Paused" separate from progress semantics. Opening Settings while running pauses the countdown. | REQ-002, REQ-003; RISK-001, RISK-005 |
-| Interrupted state | Text label "Timer interrupted" and "Progress may be out of date"; no recovery is provided or promised in v1. | REQ-003; RISK-002, RISK-005 |
+| Interrupted state | Text label "Timer interrupted" and "Progress may be out of date"; the browser MVP pauses after a detected hidden-page/page-hide event and does not automatically resume. Valid Save starts a fresh countdown. | REQ-003; RISK-002, RISK-005 |
 | Settings access | Settings is available without a caregiver-protection mechanism in v1. This is the product owner's explicit risk disposition, not a verified control; a patient may change the saved duration or theme. | REQ-005; RISK-004 |
 | Settings lifecycle | Opening Settings while running pauses the countdown. Saving valid settings starts a new countdown from the full saved duration. | REQ-002; RISK-001 |
 | Manual timer controls | No separate manual pause, resume, or reset controls are provided in v1. After Settings pauses a running timer, saving valid Settings starts a new countdown from the full saved duration. | REQ-002; RISK-001 |
@@ -138,15 +150,13 @@ and REQ-006 (theme selection). Optional music is deferred to v2.
 
 The v1 flow has no caregiver-only access gate: Settings can be opened without
 protection. The user configures duration and visualization, then saves; saving
-starts a new countdown from the full saved duration. Opening Settings while
+starts a new countdown from the full saved duration. The duration entry starts
+at 02:00, matching the demo; this is an initial field value, not saved
+preference. Clock is initially selected, also matching the demo. Opening Settings while
 the countdown is running pauses it. No separate manual pause, resume, or reset
 control is provided; valid Save is the only selected action that starts or
-restarts the timer. The proposed initial visualization is a Time Timer-inspired
-remaining-time disk. This adapts the supplied dial-like reference to the
-no-clock requirement: it has no clock face, numerals, tick marks, or hand. It
-is a design proposal, not a selected or approved product default. A caregiver
-or patient can access Settings in v1; saving valid settings is the timer-start
-action under REQ-002.
+restarts the timer. A caregiver or patient can access Settings in v1; saving
+valid settings is the timer-start action under REQ-002.
 
 The appearance controls are conditional on the selected visualization. Offer
 a font choice only when it displays text, and a color choice only when it uses
@@ -176,29 +186,31 @@ Requirements: REQ-004 (About content) and REQ-009 (non-medical claims boundary).
 The proposed intended-use and limitation copy is restricted to ordinary
 waiting-time support and says the app is not a clock or for medical or
 safety-critical timing. It does not claim a clinical benefit or guarantee that
-a wait has ended. The About entry point and navigation placement remain
-unselected.
+a wait has ended. The browser MVP exposes Main, Settings, and About in its
+primary navigation. The browser implementation explicitly identifies missing
+owned content as not provided; it does not fabricate a logo, build value,
+support contact, privacy policy, or licence list.
 
 ## Timer visualizations
 
-![Three proposed timer visualizations: a Time Timer-inspired remaining disk as the proposed default, a digital duration countdown, and a numeric circular progress indicator.](timer-visualizations.svg)
+The approved demo presents the four v1 choices: Clock, Battery, Fan, and Ring.
+The separate [interactive demo](demo/README.md) is the visual reference.
 
 | Visualization | Visual treatment | Remaining-time mapping | Requirement / risk links |
 |---|---|---|---|
-| Time Timer-inspired remaining disk (proposed default) | A filled disk sector shrinks as time elapses. No dial, face, numeral, tick mark, or hand is shown; the nearby "Remaining" label makes the duration meaning explicit. | Full disk means 100% remains; empty disk means zero. | REQ-003, REQ-006; RISK-001, RISK-005 |
-| Digital duration countdown | Prominent remaining duration (illustrated as `02:05`) with a textual "Remaining" label; it is not time of day. Font and, if used, text color are configurable proposals. | The duration value counts down; optional progress indication follows the same remaining-time fraction. Units and display precision require review. | REQ-003, REQ-006; RISK-001, RISK-005 |
-| Numeric circular progress | Circular progress ring with a central remaining-duration value (illustrated as `45 min`); no dial markings or hands. | Ring fill and numeric duration both represent time remaining; their mapping must stay consistent. | REQ-003, REQ-006; RISK-001, RISK-005 |
+| Clock | A remaining-time disk sector shrinks radially; no clock face, hand, numerals, or time-of-day markings. Clock is the initial selection matching the demo, not a user-preference claim. | The filled sector represents the fraction remaining; full is 100%, empty is zero. | REQ-003, REQ-006; RISK-001, RISK-005 |
+| Battery | A rectangular fill drains linearly and retains its terminal shape; no battery percentage or charge claim. Remaining duration is shown as a separate duration label when enabled. | Filled extent represents the same fraction remaining as Clock. | REQ-003, REQ-006; RISK-001, RISK-005 |
+| Fan | A fixed-radius 180-degree sector empties toward its fixed edge; separators do not fold or move with progress. | Filled sector represents the same fraction remaining as Clock. | REQ-003, REQ-006; RISK-001, RISK-005 |
+| Ring | A circular stroke depletes around a fixed track; remaining duration may be centered in the ring. | Stroke extent represents the same fraction remaining as Clock. | REQ-003, REQ-006; RISK-001, RISK-005 |
 
-The remaining disk is the proposed first/default visualization; digital
-countdown and numeric circular progress are alternatives inspired by the
-references supplied for this review. All three are unselected design proposals
-pending review, not a prescribed final theme count or a claim that any is
-preferred or usable by a representative patient. Their shared mapping is a
-design constraint; it has not been implemented or verified across durations,
-screen sizes, platforms, or assistive technology. The attached references
-inform the concepts but are not copied into the repository.
+These are the v1 theme choices approved by the product owner, not a claim that
+any shape is preferred or usable by every intended user. Their shared mapping
+is a design constraint; it has not been verified across the application,
+durations, layouts, platforms, or assistive technology. The interactive demo
+is the visual reference for these four shapes, not a substitute for application
+verification or TV-specific remote/focus design.
 
-The local demo makes these concepts interactive without establishing
+The local demo makes these shapes interactive without establishing
 requirements or product behavior. Its configurable countdown runs from a user
 action, uses the browser monotonic clock, and immediately resets to the chosen
 duration at completion without a completed state. Shape switching does not reset
@@ -221,14 +233,13 @@ establish competent risk review, design approval, or verification:
 | D-06: manual pause, resume, and reset controls | No separate controls are provided in v1. Settings-open is the selected pause behavior; saving valid Settings is the only selected start/restart action and starts from the full saved duration. |
 | Visualization appearance | Font and color are proposed as conditional per-visualization settings; option lists, defaults, and persistence remain undecided and require accessibility/usability review. |
 
-Required product-design, accessibility, usability, and specialist review
-appointments remain unassigned. No caregiver or representative-patient review
-of these revised decisions, design approval, or requirement approval is
-claimed. The static SVGs remain non-interactive; the browser demo provides
-interactive view switching but has not been tested for screen readers,
-keyboard, touch, or any target platform. Record actual reviewer scopes,
-feedback, findings, and dispositions in the review PR; keep unresolved findings
-and limitations explicit.
+The product owner approved the four demo visualizations for the v1 design.
+That decision does not close retrospective-evidence gaps or establish usability
+for caregivers, representative patients, assistive technologies, keyboard,
+touch, Android TV remote/D-pad, Apple TV focus, or any target platform. The
+static SVGs remain non-interactive. Record exact reviewer scope, findings,
+dispositions, limitations, and human acceptance of this revision in its review
+PR.
 
 ## Revision history
 
@@ -250,3 +261,4 @@ and limitations explicit.
 | 1.4 | Align the proposed Main and Settings flows with v1 decisions: no caregiver gate or volume/music controls, saving settings starts a full-duration countdown, opening Settings pauses it, and interruption recovery is not provided. |
 | 1.5 | Update the linked risk-assessment source revision to 0.5; preserve the v1 product decisions and pending risk/design review. |
 | 1.6 | Record the v1 decision to omit separate manual pause, resume, and reset controls; the existing prototype designs remain the review scope. |
+| 1.7 | Record the product owner's approval of the four demo visualizations (Clock, Battery, Fan, Ring) for the v1 theme set; distinguish that decision from user preference and validation, and add TV-target interaction/layout limitations. |

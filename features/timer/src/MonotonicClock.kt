@@ -1,7 +1,6 @@
 package nl.entreco.elchrono.features.timer
 
 import kotlin.time.TimeSource
-import kotlin.time.Duration.Companion.nanoseconds
 
 fun interface MonotonicClock {
     fun nowNanos(): Long

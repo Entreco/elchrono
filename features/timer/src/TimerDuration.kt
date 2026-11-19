@@ -8,30 +8,34 @@ import kotlin.time.Duration.Companion.minutes
 @JvmInline
 value class TimerDuration private constructor(val totalMinutes: Int) {
     val hours: Int
-        get() = totalMinutes / MINUTES_PER_HOUR
+        get() = asDuration.inWholeHours.toInt()
 
     val minutes: Int
-        get() = totalMinutes % MINUTES_PER_HOUR
+        get() = asDuration.toComponents { _, minutes, _, _ -> minutes }
 
     val asDuration: Duration
         get() = totalMinutes.minutes
 
     companion object {
-        const val MINUTES_PER_HOUR = 60
-        const val MAX_MINUTES = 24 * MINUTES_PER_HOUR
+        private const val MAX_HOURS = 24
+        private val MAX_DURATION = MAX_HOURS.hours
+
+        val MINUTES_PER_HOUR = 1.hours.inWholeMinutes.toInt()
+        val MAX_MINUTES = MAX_DURATION.inWholeMinutes.toInt()
 
         fun fromMinutes(totalMinutes: Int): TimerDuration? =
             totalMinutes.takeIf { it in 1..MAX_MINUTES }?.let(::TimerDuration)
 
         fun fromHoursAndMinutes(hours: Int, minutes: Int): TimerDuration? {
-            if (hours !in 0..24 || minutes !in 0 until MINUTES_PER_HOUR) return null
-            return fromMinutes(hours * MINUTES_PER_HOUR + minutes)
+            if (hours !in 0..MAX_HOURS || minutes !in 0 until MINUTES_PER_HOUR) return null
+            return fromDuration(hours.hours + minutes.minutes)
         }
 
         fun fromDuration(duration: Duration): TimerDuration? {
-            if (!duration.isFinite() || duration < 1.minutes || duration > 24.hours) return null
-            if (duration.inWholeNanoseconds % 1.minutes.inWholeNanoseconds != 0L) return null
-            return fromMinutes(duration.inWholeMinutes.toInt())
+            if (duration !in 1.minutes..MAX_DURATION) return null
+            val wholeMinutes = duration.inWholeMinutes.toInt()
+            if (wholeMinutes.minutes != duration) return null
+            return TimerDuration(wholeMinutes)
         }
     }
 }

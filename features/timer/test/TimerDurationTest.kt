@@ -2,22 +2,29 @@ package nl.entreco.elchrono.features.timer
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
 import kotlin.test.assertNull
+import kotlin.time.Duration
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
+import kotlin.time.Duration.Companion.nanoseconds
 import kotlin.time.Duration.Companion.seconds
 
 class TimerDurationTest {
     @Test
     fun `every whole minute in the supported range is representable`() {
         for (minutes in 1..TimerDuration.MAX_MINUTES) {
-            assertEquals(minutes, TimerDuration.fromMinutes(minutes)?.totalMinutes)
+            val duration = assertNotNull(TimerDuration.fromMinutes(minutes))
+            assertEquals(minutes, duration.totalMinutes)
+            assertEquals(duration, TimerDuration.fromHoursAndMinutes(duration.hours, duration.minutes))
+            assertEquals(duration, TimerDuration.fromDuration(minutes.minutes))
         }
     }
 
     @Test
-    fun `minimum and maximum durations expose their hour and minute fields`() {
+    fun `durations expose whole hours and remaining minutes`() {
         assertEquals(0 to 1, TimerDuration.fromMinutes(1)?.let { it.hours to it.minutes })
+        assertEquals(2 to 5, TimerDuration.fromMinutes(125)?.let { it.hours to it.minutes })
         assertEquals(24 to 0, TimerDuration.fromMinutes(1_440)?.let { it.hours to it.minutes })
     }
 
@@ -43,6 +50,8 @@ class TimerDurationTest {
         assertEquals(2, TimerDuration.fromDuration(2.minutes)?.totalMinutes)
         assertNull(TimerDuration.fromDuration(59.seconds))
         assertNull(TimerDuration.fromDuration(2.minutes + 1.seconds))
+        assertNull(TimerDuration.fromDuration(2.minutes + 1.nanoseconds))
         assertNull(TimerDuration.fromDuration(25.hours))
+        assertNull(TimerDuration.fromDuration(Duration.INFINITE))
     }
 }

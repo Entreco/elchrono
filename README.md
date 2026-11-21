@@ -36,6 +36,7 @@ Toolchain wrappers `kotlin` (macOS/Linux) and `kotlin.bat` (Windows).
 | `core/localization` | Shared translation-ready string resources |
 | `features/timer`, `features/settings`, `features/about` | Shared Compose UI features |
 | `features/music` | Empty v2 placeholder; not included in the app |
+| `tools/design-catalog` | Development-only desktop catalog for shared design components |
 
 Dependencies flow from platform launchers to `apps/common`, from the shell to
 features/core, and from features to core. Features do not depend on one another.
@@ -89,6 +90,39 @@ If the default port is already in use, choose another available port, for exampl
 
 The server reports the URL it is listening on. Do not stop an existing process
 unless you have identified it and intend to close that specific server.
+
+### Design catalog
+
+Run the standalone desktop catalog from the repository root:
+
+```sh
+./kotlin run -m design-catalog
+```
+
+The catalog displays interactive examples of the public `core/design`
+composables. Resize its window or select a preview width to inspect compact
+and wide layouts; the controls use sample state and do not change app settings.
+The catalog depends on the design module, but the released app modules do not
+depend on the catalog. It is not part of an app package. Because it is a
+registered JVM module, the all-JVM CI build also compiles it.
+
+The toolchain enables Compose Hot Reload for the desktop catalog by default.
+To request it explicitly, use
+`./kotlin run -m design-catalog --compose-hot-reload`; this uses JetBrains
+Runtime. Use `./kotlin run -m design-catalog --no-compose-hot-reload` to run
+without it. A desktop window and suitable graphical environment are required.
+
+Examples are maintained explicitly in `tools/design-catalog/src/DesignCatalog.kt`,
+not discovered automatically. When adding or changing a public design
+composable, update its example and exercise relevant states and widths. The
+catalog is a development aid, not evidence of device, accessibility, or
+usability verification.
+
+`ElChronoTheme` supplies shared Material colors, typography, and shapes to the
+app and catalog. The dark palette approximates the issue #61 screenshot; the
+font is a system sans-serif approximation because the source font is unknown.
+The sampled colors and visual appearance still require design and accessibility
+review across targets.
 
 Desktop launch is verified on the current macOS host; other desktop operating
 systems require their own packaging/verification. The Android TV candidate

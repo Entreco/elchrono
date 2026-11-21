@@ -1,0 +1,16 @@
+product: jvm/app
+
+dependencies:
+  - //core/design
+  - $compose.desktop.currentOs
+  - $compose.foundation
+  - $compose.material3
+  - $compose.runtime
+  - $compose.ui
+  - $libs.kotlinx.coroutines.swing
+
+settings:
+  compose:
+    enabled: true
+  jvm:
+    mainClass: nl.entreco.elchrono.catalog.MainKt

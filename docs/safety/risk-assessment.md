@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M1-DOC-004 |
-| Revision | 0.7 |
+| Revision | 0.8 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Software-safety and product-risk review: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
@@ -22,10 +22,10 @@ harms, assumptions, and controls for review and follow-up. It is not a
 completed safety assessment, a determination that any risk is acceptable, or
 evidence that a proposed control has been implemented or verified.
 
-The issue #47 candidate implements browser timer and settings UI, but product
-verification, patient usability findings, operational data, and verified
-accessibility or interruption controls are not available to support frequency
-estimates. The assessment therefore uses provisional screening ratings and
+Issues #47, #65, and #67 provide the browser shell, Settings, and About
+candidates; issue #66 updates the Timer presentation. Product verification,
+patient usability findings, operational data, and verified accessibility or
+interruption controls are not available to support frequency estimates. The assessment therefore uses provisional screening ratings and
 explicitly records the assumptions behind them. The documented risk scenarios
 and product decisions do not establish control effectiveness or residual-risk
 acceptability.
@@ -160,10 +160,10 @@ ownership, intended-use trace, and planned verification are in the
 | ID | Scenario | Hazard | Hazardous Situation | Harm | Pre-control S | Pre-control L | Risk | Description | Risk Controls | Post-control S | Post-control L | Reduced Risk | Reduced Risk Description | Acceptability |
 |---|---|---|---|---|---:|---:|---|---|---|---|---|---|---|---|
 | RISK-001 | A timing defect, inaccurate elapsed-time source, wall-clock change, duration-boundary error, or inconsistent visual mapping causes progress or completion to be early, late, frozen, or misleading. | [HAZ-01](#hazards) | The person waiting or caregiver relies on the incorrect display or completion state to judge whether the wait has ended or how much remains. | [HARM-01](#harms), [HARM-02](#harms), [HARM-04](#harms) | 2 | 2 | 4 (Medium) | Confusion, distress, conflict, or an unnecessarily extended or interrupted ordinary wait; more serious consequences are possible if misused for a consequential purpose outside intended use. | [RC-001-1 to RC-001-4](#risk-controls). | Pending | Pending | Pending | Not assessed; controls unverified. | Undetermined; qualified review required. |
-| RISK-002 | Backgrounding, sleep, process termination, or device restart results in resumption, reset, lost state, or a displayed state inconsistent with elapsed time. | [HAZ-02](#hazards) | The person waiting or caregiver relies on an apparently running, paused, or completed timer without knowing timing continuity is uncertain. | [HARM-01](#harms), [HARM-02](#harms) | 2 | 2 | 4 (Medium) | Confusion, distress, an unexpectedly extended wait, or premature action. | [RC-002-1 to RC-002-2](#risk-controls). | Pending | Pending | Pending | Not assessed; controls unverified. | Undetermined; qualified review required. |
+| RISK-002 | Backgrounding, sleep, process termination, or device restart results in resumption, reset, lost state, or a displayed state inconsistent with elapsed time; at detail 0 the text warning is intentionally hidden and an unclear replacement cue may fail to communicate stale progress. | [HAZ-02](#hazards) | The person waiting or caregiver relies on an apparently running, paused, or interrupted timer without understanding that timing continuity or progress is uncertain. | [HARM-01](#harms), [HARM-02](#harms) | 2 | 2 | 4 (Medium) | Confusion, distress, an unexpectedly extended wait, or premature action. | [RC-002-1 to RC-002-2](#risk-controls). | Pending | Pending | Pending | Not assessed; controls unverified. | Undetermined; qualified review required. |
 | RISK-003 | Future optional music or a completion sound starts unexpectedly, is too loud, stops or fails while playback appears successful, or distracts from the timer. Audio is excluded from v1 and planned for v2. | [HAZ-03](#hazards) | In a future audio-enabled version, the person waiting is startled, distressed, or distracted, or the caregiver believes failed audio is playing and misinterprets the experience. | [HARM-01](#harms), [HARM-02](#harms), [HARM-03](#harms) | 2 | 2 | 4 (Medium) | Discomfort, distress, interruption of the wait, or confusion about timer operation. | [RC-003-1 to RC-003-3](#risk-controls). | Pending | Pending | Pending | Not assessed; controls unverified. | Undetermined; qualified review required before audio is introduced. |
 | RISK-004 | In v1, a patient can open Settings without a caregiver-protection mechanism and change duration or theme, intentionally or unintentionally. | [HAZ-04](#hazards) | The person waiting or caregiver relies on a timer whose configuration no longer matches the intended wait. | [HARM-01](#harms), [HARM-02](#harms) | 2 | 2 | 4 (Medium) | Confusion, distress, or an unexpectedly shortened or extended ordinary wait. | [RC-004-1](#risk-controls). | Pending | Pending | Pending | Not assessed; no access-control mechanism is credited. | Product-owner acceptance of this bounded v1 exposure is recorded; no control effectiveness, risk reduction, or post-control score is claimed. |
-| RISK-005 | Progress or timer states cannot be distinguished because of color-only information, ambiguous shapes or motion, insufficient contrast, or inaccessible labels. | [HAZ-05](#hazards) | The person waiting or caregiver incorrectly believes the wait has ended, remains running, or has been interrupted. | [HARM-01](#harms), [HARM-02](#harms) | 2 | 2 | 4 (Medium) | Confusion, distress, unnecessary waiting, or premature action in an ordinary wait. | [RC-005-1 to RC-005-3](#risk-controls). | Pending | Pending | Pending | Not assessed; controls unverified. | Undetermined; qualified review required. |
+| RISK-005 | Progress or timer states cannot be distinguished because of color-only information, ambiguous shapes or motion, insufficient contrast, inaccessible labels, or misunderstood text-free state cues at detail 0. | [HAZ-05](#hazards) | The person waiting or caregiver incorrectly believes the wait has ended, remains running, or has been interrupted. | [HARM-01](#harms), [HARM-02](#harms) | 2 | 2 | 4 (Medium) | Confusion, distress, unnecessary waiting, or premature action in an ordinary wait. | [RC-005-1 to RC-005-3](#risk-controls). | Pending | Pending | Pending | Not assessed; controls unverified. | Undetermined; qualified review required. |
 | RISK-006 | A user relies on the timer for medication, a procedure, emergency response, a deadline guarantee, or another consequential action despite the exclusion. | [HAZ-06](#hazards) | A user acts, delays action, or omits another required timing or safety system based on the display or completion state. | [HARM-04](#harms) | 3 | 2 | 6 (High) | Serious harm is plausible in this out-of-scope use. | [RC-006-1 to RC-006-2](#risk-controls). | Pending | Pending | Pending | Not assessed; controls unverified. | Undetermined; qualified review and disposition required. |
 
 ## Risk controls
@@ -190,7 +190,7 @@ Individual effects cannot be added to calculate the overall post-control score.
 | ID | Proposed control | Intended effect and rationale |
 |---|---|---|
 | RC-002-1 | On `ON_STOP` while running, pause the timer and mark it interrupted; do not resume automatically on `ON_START`. Do not recover timer state after process termination or device restart. | The in-process lifecycle behavior avoids presenting uncertain progress as current; process termination/restart remains an explicit limitation, not a risk control or evidence of acceptable residual risk. Platform event delivery and effectiveness remain unverified. |
-| RC-002-2 | Distinguish running, paused, and interrupted states; when continuity is uncertain, show an interrupted warning and do not imply current progress. At completion, reset immediately without a completed state. | Likelihood: the warning may reduce reliance on apparently reliable progress; effectiveness is unverified. |
+| RC-002-2 | Distinguish running, paused, and interrupted states; when continuity is uncertain, show a text warning at detail 1-12 and a distinct visual cue plus accessible stale-progress description at detail 0. Do not imply current progress. At completion, reset immediately without a completed state. | Likelihood: the warning/cue may reduce reliance on apparently reliable progress. The revised detail-0 presentation and its accessibility/usability require human review; no effectiveness is credited. |
 
 ### RISK-003 controls
 
@@ -210,7 +210,7 @@ Individual effects cannot be added to calculate the overall post-control score.
 
 | ID | Proposed control | Intended effect and rationale |
 |---|---|---|
-| RC-005-1 | Use redundant, consistent visual and accessible semantics for progress and states. | Likelihood: reduce misunderstanding caused by inaccessible or ambiguous presentation. |
+| RC-005-1 | Use consistent non-color-only progress/state cues and accessible semantics; at detail 0, hide all Timer text and provide non-text state cues with screen-reader descriptions, including stale-progress meaning. | Likelihood: reduce misunderstanding caused by inaccessible or ambiguous presentation. The issue #66 detail-0 replacement for the text warning is unreviewed and unverified; no control effectiveness is credited. |
 | RC-005-2 | Avoid flashing and unnecessary motion. | Likelihood: reduce distracting presentation that may contribute to misunderstanding. |
 | RC-005-3 | Review themes and interactions with caregivers and representative patients under appropriate consent and safeguards. | Likelihood: identify and correct misunderstandings before release; review alone does not establish an effective control. |
 
@@ -236,6 +236,7 @@ below do not demonstrate control effectiveness.
 | D-03 — Music and sound | Defer music integration and its start behavior to v2; no music or completion sound in v1. | With no v1 audio capability, there is no playback start or volume behavior to select or misrepresent. Provider, consent/data flow, playback restrictions, audio failure, and sound behavior require separate review before v2. |
 | D-04 — Settings lifecycle | Opening Settings while running pauses the countdown; saving valid settings starts a new countdown at the full saved duration. | The explicit save is the start action and avoids silently resuming a possibly changed configuration. Counter-domain tests cover pause/save behavior; browser UI integration and product verification remain pending. Settings remain unprotected. |
 | D-05 — Interruption detection and recovery | A configured app pauses and displays interrupted on lifecycle `ON_STOP` while running; `ON_START` does not resume it. A valid Settings save starts a new countdown from the full saved duration. State is not recovered across process termination or device restart. | This is an in-process interruption response, not recovery of timer continuity. Platform delivery and effectiveness remain unverified; process/restart recovery remains out of scope and RISK-002 review is pending. |
+| D-10 — Text-free detail 0 | Issue #66 carries the owner-requested behavior to hide all on-screen Timer text, including interruption warnings, at detail 0 while retaining non-text state cues and accessible stale-progress descriptions. | This changes how the interruption warning is communicated. Human product, accessibility/usability, and risk review and browser verification remain pending; no equivalence or risk reduction is claimed. |
 
 These are bounded product-scope justifications, not evidence that the risks
 are eliminated, controls are effective, or residual risk is acceptable. The
@@ -288,3 +289,4 @@ they are not waived by this initial assessment.
 | 0.6 | Record the bounded RISK-004 v1 product-owner disposition and a cause-to-harm walkthrough for timing, future audio, and Settings access; retain provisional ratings and unverified-control limitations. |
 | 0.7 | Align risk sources to the current intended-use and qualification candidates; record the counter/settings-domain implementation and focused test evidence without claiming product verification, control effectiveness, or risk acceptance. |
 | 0.8 | Align RISK-002 and D-05 with the lifecycle stop response: pause and mark interrupted without automatic resume, distinguish it from unavailable process/restart recovery, and retain platform verification and risk-review gaps. |
+| 0.9 | Add issue #66's text-free detail-0 warning-cue change to RISK-002/RISK-005 and RC-002-2/RC-005-1; retain provisional ratings and require human review before crediting effectiveness. |

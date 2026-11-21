@@ -9,10 +9,15 @@
     <string name="timer_running">Running</string>
     <string name="timer_paused">Paused</string>
     <string name="timer_interrupted">Timer interrupted</string>
-    <string name="timer_not_configured">Not started</string>
+    <string name="timer_not_configured">Idle (not counting)</string>
     <string name="interruption_warning">This page was hidden. Progress may be out of date. Save a duration in Settings to start again.</string>
     <string name="remaining_time">%1$d hr %2$d min</string>
     <string name="remaining_time_accessibility">Remaining waiting time</string>
+    <string name="timer_running_accessibility">Timer is running. Remaining waiting time.</string>
+    <string name="timer_paused_accessibility">Timer is paused. Remaining waiting time.</string>
+    <string name="timer_interrupted_accessibility">Timer is interrupted. Progress may be out of date.</string>
+    <string name="timer_idle_accessibility">Timer is idle and not counting. Choose a duration in Settings to start.</string>
+    <string name="timer_zero_duration_accessibility">The configured duration is zero. The timer is idle, not counting, and not completed.</string>
     <string name="choose_duration_message">Choose a duration in Settings to start the timer.</string>
     <string name="open_settings">Open Settings</string>
     <string name="hide_settings">Hide Settings</string>

@@ -3,13 +3,13 @@
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-004 |
-| Revision | 1.9 |
+| Revision | 2.1 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Product design, accessibility, and usability: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#23](https://github.com/Entreco/elchrono/issues/23) |
-| Review PR | Prior baselines: [PR #28](https://github.com/Entreco/elchrono/pull/28) (revision 0.2), [PR #29](https://github.com/Entreco/elchrono/pull/29) (revision 1.3), and [PR #32](https://github.com/Entreco/elchrono/pull/32); revision 1.6: [PR #41](https://github.com/Entreco/elchrono/pull/41); #47 update: [PR #59](https://github.com/Entreco/elchrono/pull/59); #67 candidate: [draft PR #68](https://github.com/Entreco/elchrono/pull/68), final exact-head acceptance pending |
+| Review PR | Prior baselines: [PR #28](https://github.com/Entreco/elchrono/pull/28) (revision 0.2), [PR #29](https://github.com/Entreco/elchrono/pull/29) (revision 1.3), and [PR #32](https://github.com/Entreco/elchrono/pull/32); revision 1.6: [PR #41](https://github.com/Entreco/elchrono/pull/41); #47 update: [PR #59](https://github.com/Entreco/elchrono/pull/59); #67: [PR #68](https://github.com/Entreco/elchrono/pull/68); final exact-head acceptance pending |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](../governance/document-control.md#lifecycle-and-approval).
@@ -20,9 +20,10 @@ This record defines screen flows and the four timer visualizations approved by
 the product owner for the v1 theme selector: Clock, Battery, Fan, and Ring.
 The owner's decision on 2026-11-19 approves the visualizations as presented in
 the local demo and selects Clock as the demo-matching initial theme; this is
-not a claim of representative-user preference. The browser implementation is
-in progress under #47. It does not establish usability validation or platform
-support.
+not a claim of representative-user preference. The shared shell, Settings,
+and About implementations are merged through #47, #65, and #67. Issue #66
+completes the browser Timer candidate; no M5 usability validation or platform
+support is established by implementation or compilation.
 
 An interactive, browser-based demonstration is available in the
 [local demo](demo/README.md). It has one configurable countdown, defaulting to
@@ -77,12 +78,20 @@ certification.
   empty form represents zero. Static examples use the same illustrative 60%
   remaining.
 - Progress has a non-colour cue: filled extent and remaining track are
-  distinguishable by shape and position. State is also stated in text.
-- The proposed theme presentation is visual-only. Accessible semantics expose
-  a progress indicator named "Remaining waiting time" with a value from 0% to
-  100% remaining, plus a separate textual timer state. Exact spoken wording
-  and announcement cadence remain for accessibility/usability review; this
-  record does not select an accessibility conformance baseline.
+  distinguishable by shape and position. State labels and an interruption
+  warning appear at detail 1-12; detail 0 uses distinct visual cues and
+  accessible state descriptions instead of any on-screen timer text.
+- At detail 0, running, paused, interrupted, and idle states use a play
+  triangle, pause bars, an outlined warning triangle, and an empty circle,
+  respectively. The interrupted accessible description says that progress
+  may be out of date. This is the issue #66 implementation candidate, not an
+  approved usability design; review of the revised warning remains pending.
+- For non-idle timers, accessible semantics expose a progress indicator named
+  "Remaining waiting time" with a value from 0% to 100% remaining. The
+  zero-duration idle state is described as not counting and not completed,
+  rather than as a 0%-remaining countdown. Exact spoken wording and
+  announcement cadence remain for accessibility/usability review; this record
+  does not select an accessibility conformance baseline.
 - No flashing, countdown animation, sound, or motion is proposed by these
   static drawings.
 - The product owner selected the four shapes already in the demo for the v1
@@ -104,8 +113,10 @@ certification.
 ![Three illustrative Main screen states: running, paused, and interrupted. The same progress shape appears in each, with text labels distinguishing state.](main-states.svg)
 
 The running and paused examples retain the same illustrative progress shape.
-The interrupted example retains the shape but explicitly warns that progress
-may be out of date; it must not imply timing continuity when that is unknown.
+The interrupted example retains the shape but explicitly warns at detail 1-12
+that progress may be out of date; at detail 0, an outlined warning cue and an
+accessible stale-progress description replace all on-screen Timer text. It
+must not imply timing continuity when that is unknown.
 In the browser MVP, a hidden-page or page-hide event is recorded and the timer
 is paused on the next timer update after the page returns. The interrupted
 warning remains until valid Settings are saved; Save starts a fresh countdown
@@ -120,20 +131,48 @@ and saving valid Settings is the selected start/restart action.
 
 | Main element | Proposed presentation and semantics | Requirement / risk links |
 |---|---|---|
-| Remaining progress | A theme's progress shape; accessible role: progress indicator; label: "Remaining waiting time"; value: percent of the configured duration remaining, 0-100. | REQ-003; RISK-001, RISK-005 |
-| Running state | Text label "Running" separate from progress semantics. | REQ-003; RISK-001, RISK-005 |
-| Paused state | Text label "Paused" separate from progress semantics. Opening Settings while running pauses the countdown. | REQ-002, REQ-003; RISK-001, RISK-005 |
-| Interrupted state | Text label "Timer interrupted" and "Progress may be out of date"; the browser MVP pauses after a detected hidden-page/page-hide event and does not automatically resume. Valid Save starts a fresh countdown. | REQ-003; RISK-002, RISK-005 |
+| Remaining progress | A theme's progress shape; accessible role: progress indicator; label: "Remaining waiting time"; value: percent of the configured duration remaining, 0-100. At idle 00:00, expose an idle/not-completed description without a countdown progress value. | REQ-002, REQ-003; RISK-001, RISK-005 |
+| Running state | Text label "Running" at detail 1-12; a play-triangle cue and accessible running description at detail 0. | REQ-003, REQ-013; RISK-001, RISK-005 |
+| Paused state | Text label "Paused" at detail 1-12; pause bars and an accessible paused description at detail 0. Opening Settings while running pauses the countdown. | REQ-002, REQ-003, REQ-013; RISK-001, RISK-005 |
+| Interrupted state | At detail 1-12, show "Timer interrupted" and "Progress may be out of date"; at detail 0, show a warning-triangle cue and accessible stale-progress description, without on-screen Timer text. The browser MVP pauses after a detected hidden-page/page-hide event and does not automatically resume. Valid Settings changes start a fresh countdown. | REQ-003, REQ-013; RISK-002, RISK-005 |
+| Idle state | 00:00 remains non-counting and non-animating with an empty base shape; the idle cue and accessible description do not represent a completed countdown. At detail 0, no on-screen Timer text is shown. | REQ-002, REQ-013; RISK-001, RISK-005 |
 | Settings access | Settings is available without a caregiver-protection mechanism in v1. This is the product owner's explicit risk disposition, not a verified control; a patient may change the saved duration or theme. | REQ-005; RISK-004 |
 | Settings lifecycle | Opening Settings while running pauses the countdown. Saving valid settings starts a new countdown from the full saved duration. | REQ-002; RISK-001 |
 | Manual timer controls | No separate manual pause, resume, or reset controls are provided in v1. After Settings pauses a running timer, saving valid Settings starts a new countdown from the full saved duration. | REQ-002; RISK-001 |
 | Volume and audio | No in-app volume control, music integration, or completion sound is included in v1. Music is deferred to v2 and its behavior requires separate review. | REQ-004, REQ-008, REQ-010; RISK-003 |
 | Interrupted state | Display the interrupted warning when continuity is uncertain; no recovery behavior is provided or promised in v1. | REQ-003; RISK-002 |
 
-At zero, REQ-010 returns immediately to the configured duration without a
-completed screen or completed-state message. Music is not part of v1; if
-introduced in v2, it will stop at zero. This candidate behavior remains subject
-to review and approval.
+At nonzero completion, REQ-010 returns immediately to the configured duration
+without a completed screen or completed-state message. A configured 00:00
+duration is idle, does not count down or animate, and is not a completed
+countdown. Music is not part of v1; if introduced in v2, it will stop at zero.
+This candidate behavior remains subject to review and approval.
+
+### M5 Timer scope and detail mapping
+
+Issue #66 completes the Timer screen for the browser MVP only. The visualization
+uses the full available feature area and preserves one continuous remaining-
+time fraction across Clock, Battery, Fan, and Ring. Clock's remaining arc starts
+at 12 when full; as time elapses, its leading edge moves clockwise to the
+right. Its detail divisions are concentric bands, not dial marks. Battery uses
+vertical dividers, Fan uses radial fan-blade dividers, and Ring uses dividers
+across its stroke. At detail N from 2 through 12, N-1 equal boundaries form N
+segments; detail 1 is one continuous, undivided segment. Detail 0 has no extra
+boundaries.
+
+At detail 0, all on-screen Timer text is absent, including remaining time,
+theme/state labels, and the interrupted warning. Non-text state cues remain
+visible and screen-reader descriptions identify the state; interruption
+explicitly communicates that progress may be out of date. These cues and the
+changed warning presentation remain subject to human design, accessibility,
+usability, and risk review. The feature adds no countdown animation; elapsed
+time continues to come from the monotonic timer engine. The selected background
+color fills the Timer content surface and depleted visualization; the
+foreground color represents remaining time, and the text color is used for
+labels and state cues. A bounded headless Chrome render check observed the idle
+screen at 320 × 640 and 1440 × 1000, plus a running Clock at 320 × 640. This is
+not full responsive acceptance; reduced-motion, screen-reader, shape/state
+coverage, and human review remain verification work.
 
 ### Settings screen
 
@@ -227,10 +266,10 @@ The separate [interactive demo](demo/README.md) is the visual reference.
 
 | Visualization | Visual treatment | Remaining-time mapping | Requirement / risk links |
 |---|---|---|---|
-| Clock | A remaining-time disk sector shrinks radially; no clock face, hand, numerals, or time-of-day markings. Clock is the initial selection matching the demo, not a user-preference claim. | The filled sector represents the fraction remaining; full is 100%, empty is zero. | REQ-003, REQ-006; RISK-001, RISK-005 |
-| Battery | A rectangular fill drains linearly and retains its terminal shape; no battery percentage or charge claim. Remaining duration is shown as a separate duration label when enabled. | Filled extent represents the same fraction remaining as Clock. | REQ-003, REQ-006; RISK-001, RISK-005 |
-| Fan | A fixed-radius 180-degree sector empties toward its fixed edge; separators do not fold or move with progress. | Filled sector represents the same fraction remaining as Clock. | REQ-003, REQ-006; RISK-001, RISK-005 |
-| Ring | A circular stroke depletes around a fixed track; remaining duration may be centered in the ring. | Stroke extent represents the same fraction remaining as Clock. | REQ-003, REQ-006; RISK-001, RISK-005 |
+| Clock | A remaining-time disk sector whose leading edge starts at 12 and moves clockwise to the right as time elapses; detail divisions are concentric bands, not dial marks. No clock face, hands, numerals, or time-of-day markings. | The filled sector represents the fraction remaining; full is 100%, empty is zero. | REQ-003, REQ-006, REQ-013; RISK-001, RISK-005 |
+| Battery | A rectangular fill drains linearly inside a terminal battery shape; N-1 vertical boundaries divide N equal segments. No battery percentage or charge claim. | Filled extent represents the same fraction remaining as Clock. | REQ-003, REQ-006, REQ-013; RISK-001, RISK-005 |
+| Fan | A fixed-radius 180-degree sector empties toward its fixed edge; N-1 radial fan-blade boundaries divide N equal segments and do not fold or move with progress. | Filled sector represents the same fraction remaining as Clock. | REQ-003, REQ-006, REQ-013; RISK-001, RISK-005 |
+| Ring | A circular stroke depletes around a fixed track; N-1 boundaries across its stroke divide N equal segments. Remaining duration may be shown separately at detail 1-12. | Stroke extent represents the same fraction remaining as Clock. | REQ-003, REQ-006, REQ-013; RISK-001, RISK-005 |
 
 These are the v1 theme choices approved by the product owner, not a claim that
 any shape is preferred or usable by every intended user. Their shared mapping
@@ -258,6 +297,7 @@ establish competent risk review, design approval, or verification:
 | D-02: volume controls and limits | No in-app volume controls in v1. Reassess audio/volume requirements if a later version adds music. |
 | D-03: music and audio behavior | Music is deferred to v2. No music start behavior or completion sound is included in v1; future audio behavior remains undecided. |
 | D-04: timer start and Settings lifecycle | Saving valid settings starts a new countdown from the full saved duration; opening Settings while running pauses it. |
+| D-10: text-free detail 0 | Issue #66 requires all on-screen Timer text to be hidden at detail 0, including the interrupted warning; use distinct visual state cues and accessible stale-progress descriptions. The revised warning design has not received human review or usability validation. |
 | D-05: interruption recovery | No recovery behavior is provided or promised in v1. Retain the interrupted-state warning and never imply timing continuity when uncertain. |
 | D-06: manual pause, resume, and reset controls | No separate controls are provided in v1. Settings-open is the selected pause behavior; saving valid Settings is the only selected start/restart action and starts from the full saved duration. |
 | D-09: adaptive Settings and duration input | Use Settings as a supporting side pane when the window supports multiple panes, with a reachable compact destination. Mobile uses available system keyboard input and falls back to the shared keypad; desktop, browser, and future TV flows use the keypad without keyboard-based duration entry. TV support is not established. |
@@ -294,3 +334,5 @@ PR.
 | 1.7 | Record the product owner's approval of the four demo visualizations (Clock, Battery, Fan, Ring) for the v1 theme set; distinguish that decision from user preference and validation, and add TV-target interaction/layout limitations. |
 | 1.8 | Record the supporting-pane Settings flow and target-specific keyboard/keypad policy; preserve usability, accessibility, layout, and platform verification limitations. |
 | 1.9 | Record the About implementation candidate, owner-supplied logo resource, explicit unavailable-content gaps, intended-use boundary, and outstanding product/design/accessibility verification. |
+| 2.0 | Define issue #66's adaptive Timer scope, level-0 visual/accessibility cues, exact detail segment mapping and clockwise Clock depletion; retain human design/usability/risk review and browser verification gaps. |
+| 2.1 | Record Timer surface-color behavior and the bounded headless browser render observation; keep full visual, accessibility, reduced-motion, and human reviews pending. |

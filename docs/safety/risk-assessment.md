@@ -1,5 +1,7 @@
 # Risk assessment
 
+Settings appearance review: [PR #76](https://github.com/Entreco/elchrono/pull/76).
+
 | Field | Value |
 |---|---|
 | Document ID | M1-DOC-004 |

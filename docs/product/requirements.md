@@ -1,5 +1,7 @@
 # Product requirements
 
+Settings appearance review: [PR #76](https://github.com/Entreco/elchrono/pull/76).
+
 Desktop keyboard changes: [PR #73](https://github.com/Entreco/elchrono/pull/73).
 
 | Field | Value |

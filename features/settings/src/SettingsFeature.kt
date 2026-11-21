@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
@@ -24,11 +25,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import com.skydoves.cloudy.LiquidGlassDefaults
+import com.skydoves.cloudy.liquidGlass
 import nl.entreco.elchrono.core.counter.DurationDigitEntry
 import nl.entreco.elchrono.core.design.NumericKeypad
 import nl.entreco.elchrono.core.design.DesignChoice
@@ -83,8 +89,32 @@ fun SettingsPanel(
     modifier: Modifier = Modifier,
 ) {
     MaterialTheme(colorScheme = appColorScheme(Color(initialSettings.backgroundColorArgb))) {
+        var lensCenter by remember { mutableStateOf(Offset.Zero) }
+        var lensSize by remember { mutableStateOf(Size.Zero) }
+        val glassShape = RoundedCornerShape(LocalDimens.current.spaceXL)
+
         Surface(
-            modifier = modifier.fillMaxSize(),
+            modifier = modifier
+                .fillMaxSize()
+                .onSizeChanged { size ->
+                    lensSize = Size(size.width.toFloat(), size.height.toFloat())
+                    lensCenter = Offset(size.width / 2f, size.height / 2f)
+                }
+                .liquidGlass(
+                    lensCenter = lensCenter,
+                    lensSize = if (lensSize == Size.Zero) LiquidGlassDefaults.LENS_SIZE else lensSize,
+                    cornerRadius = 24f,
+                    refraction = 0.16f,
+                    curve = 0.18f,
+                    dispersion = 0.01f,
+                    saturation = 1.05f,
+                    contrast = 1.02f,
+                    tint = MaterialTheme.colorScheme.surface.copy(alpha = 0.12f),
+                    edge = 0.18f,
+                    light = LiquidGlassDefaults.Light,
+                    glow = LiquidGlassDefaults.Glow,
+                ),
+            shape = glassShape,
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),
             contentColor = MaterialTheme.colorScheme.onSurface,
         ) {

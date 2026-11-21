@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M1-DOC-004 |
-| Revision | 1.0 |
+| Revision | 1.1 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Software-safety and product-risk review: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
@@ -66,6 +66,14 @@ semantics, detail representations, and storage-read/save failures. These
 scenarios remain covered through RISK-004 and RISK-005; no post-control risk
 rating or acceptability disposition is claimed until implementation and
 human review evidence are available.
+
+The latest issue #66 refinement additionally requires review of global
+background and translucent-control readability (RISK-005), stale or misleading
+duration previews and legacy thickness migration (RISK-001/RISK-004), and
+detail-dependent movement, Battery recognition, and thin/solid Ring
+interpretation (RISK-005). The bottom-right play/pause cue is not an action;
+review whether its appearance misleadingly suggests a manual control.
+No risk score, control-effectiveness claim, or acceptance changes here.
 
 ## Initial assessment method and criteria
 
@@ -292,3 +300,4 @@ they are not waived by this initial assessment.
 | 0.8 | Align RISK-002 and D-05 with the lifecycle stop response: pause and mark interrupted without automatic resume, distinguish it from unavailable process/restart recovery, and retain platform verification and risk-review gaps. |
 | 0.9 | Add issue #66's text-free detail-0 warning-cue change to RISK-002/RISK-005 and RC-002-2/RC-005-1; retain provisional ratings and require human review before crediting effectiveness. |
 | 1.0 | Include incorrect Clock duration-label values and unreadable/clipped theme geometry in existing timing and accessibility risk scenarios; retain provisional ratings and pending human review. |
+| 1.1 | Extend refinement review to translucent controls, global background, preview isolation, migration, cue interpretation, Battery recognition, and Ring thickness; leave all scores and acceptance unchanged. |

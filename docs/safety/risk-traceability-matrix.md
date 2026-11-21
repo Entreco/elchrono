@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M1-DOC-009 |
-| Revision | 1.5 |
+| Revision | 1.6 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Software-safety review: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
@@ -17,7 +17,7 @@ Lifecycle status is derived from the branch and PR context; see
 ## Purpose and use
 
 This matrix links the scenarios and proposed controls in
-[M1-DOC-004 revision 1.0](risk-assessment.md#risk-analysis) to intended-use
+[M1-DOC-004 revision 1.1](risk-assessment.md#risk-analysis) to intended-use
 sources, assessment assumptions, and planned verification. Each risk and
 follow-up is owned by the product owner, @Entreco. The M2
 [requirements traceability matrix](requirements-traceability-matrix.md) is the
@@ -38,6 +38,14 @@ acceptability. Review findings and human acceptance remain in the PR under
 [document controls](../governance/document-control.md).
 
 ## Matrix
+
+Issue #66 refinement coverage supplements the rows below: RISK-001 maps
+duration-preview/engine-isolation tests to TP-REQ-014; RISK-004 maps legacy
+settings and thickness validation to TP-REQ-012/014; RISK-005 maps global
+background/readability, stable detail geometry, Battery silhouette, Ring
+thickness, and cue interpretation to TP-REQ-003/013/015. Pure JVM tests and
+bounded browser observations do not establish comprehension, control
+effectiveness, or risk acceptance; human review remains pending.
 
 Each risk ID links to the assessment table; the
 [control tables](risk-assessment.md#risk-controls) identify the proposed
@@ -73,3 +81,4 @@ establishes control effectiveness or residual-risk acceptability.
 | 1.3 | Link the About copy and owner-controlled content gaps to RISK-006 review scope; do not claim the risk control or human review is verified. |
 | 1.4 | Align the linked M1-DOC-004 revision and trace issue #66's detail-0 warning redesign, all-shape detail coverage, and explicit pending human/browser evidence. |
 | 1.5 | Align with M1-DOC-004 revision 1.0 and add Clock marker accuracy and theme-layout clipping to planned risk verification; no control effectiveness or residual-risk acceptance is claimed. |
+| 1.6 | Trace refinement preview, storage, geometry, and appearance checks to existing risks and protocol cases; retain human-review and effectiveness gaps. |

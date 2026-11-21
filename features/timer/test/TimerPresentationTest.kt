@@ -11,6 +11,47 @@ import nl.entreco.elchrono.core.design.TimerTheme
 
 class TimerPresentationTest {
     @Test
+    fun `ring thickness keeps a fixed outer radius and shared track progress centerline`() {
+        listOf(24f, 100f, 400f).forEach { radius ->
+            (1..100).forEach { thickness ->
+                val geometry = ringGeometry(radius, thickness)
+                assertEquals(radius, geometry.outerRadius)
+                assertEquals(radius, geometry.centerlineRadius + geometry.strokeWidth / 2f, 0.001f)
+                assertEquals(geometry.innerRadius, geometry.centerlineRadius - geometry.strokeWidth / 2f, 0.001f)
+                assertTrue(geometry.innerRadius >= 0f)
+                if (thickness == 100) assertEquals(0f, geometry.innerRadius)
+            }
+        }
+        assertFailsWith<IllegalArgumentException> { ringGeometry(10f, 0) }
+        assertFailsWith<IllegalArgumentException> { ringGeometry(10f, 101) }
+    }
+
+    @Test
+    fun `clock label envelope covers every detail without depending on visible labels`() {
+        (0..1440).forEach { duration ->
+            val values = clockLabelEnvelope(duration).map { it.value }.toSet()
+            (0..12).forEach { detail ->
+                assertTrue(clockDurationLabels(duration, detail).all { it.value in values })
+            }
+        }
+    }
+
+    @Test
+    fun `battery stays shallow centered and includes its terminal within bounds`() {
+        listOf(272f to 400f, 600f to 180f, 1000f to 700f).forEach { (width, height) ->
+            val geometry = batteryGeometry(width, height)
+            assertTrue(geometry.bodyWidth / geometry.bodyHeight >= 3.6f - 0.001f)
+            assertTrue(geometry.bodyHeight <= 126f)
+            assertTrue(geometry.left >= 0f && geometry.top >= 0f)
+            assertTrue(geometry.left + geometry.bodyWidth + geometry.terminalWidth <= width)
+            assertTrue(geometry.top + geometry.bodyHeight <= height)
+            assertEquals(width / 2f, geometry.left + (geometry.bodyWidth + geometry.terminalWidth) / 2f)
+            assertEquals(height / 2f, geometry.top + geometry.bodyHeight / 2f)
+        }
+        assertEquals(batteryGeometry(1000f, 400f).bodyHeight, batteryGeometry(1000f, 1000f).bodyHeight)
+    }
+
+    @Test
     fun `clock has no segment boundaries while other shapes expose equal divisions`() {
         (0..12).forEach { detail ->
             TimerTheme.entries.forEach { theme ->

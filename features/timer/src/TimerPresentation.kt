@@ -25,6 +25,42 @@ internal data class FanGeometry(
     val centerY: Float,
 )
 
+internal data class BatteryGeometry(
+    val bodyWidth: Float,
+    val bodyHeight: Float,
+    val terminalWidth: Float,
+    val left: Float,
+    val top: Float,
+)
+
+internal data class RingGeometry(
+    val outerRadius: Float,
+    val innerRadius: Float,
+    val centerlineRadius: Float,
+    val strokeWidth: Float,
+)
+
+internal fun ringGeometry(outerRadius: Float, thicknessPercent: Int): RingGeometry {
+    require(outerRadius >= 0f && thicknessPercent in 1..100)
+    val stroke = (outerRadius * thicknessPercent / 100f).coerceAtLeast(1f).coerceAtMost(outerRadius)
+    val innerRadius = outerRadius - stroke
+    return RingGeometry(outerRadius, innerRadius, (outerRadius + innerRadius) / 2f, stroke)
+}
+
+internal fun batteryGeometry(width: Float, height: Float, preferredHeight: Float = 126f): BatteryGeometry {
+    require(width >= 0f && height >= 0f && preferredHeight > 0f)
+    val availableWidth = width * 0.9f
+    val bodyHeight = minOf(preferredHeight, height * 0.76f, availableWidth / (3.6f + 13f / 126f))
+    val terminalWidth = bodyHeight * 13f / 126f
+    return BatteryGeometry(
+        bodyWidth = availableWidth - terminalWidth,
+        bodyHeight = bodyHeight,
+        terminalWidth = terminalWidth,
+        left = (width - availableWidth) / 2f,
+        top = (height - bodyHeight) / 2f,
+    )
+}
+
 internal enum class TimerVisualState {
     RUNNING,
     PAUSED,
@@ -103,6 +139,10 @@ internal fun clockDurationLabels(totalMinutes: Int, detail: Int): List<ClockDura
         )
     }
 }
+
+internal fun clockLabelEnvelope(totalMinutes: Int): List<ClockDurationLabel> =
+    (1..12).flatMap { clockDurationLabels(totalMinutes.coerceAtLeast(1), it) }
+        .distinctBy { it.value }
 
 internal fun clockLayoutGeometry(
     width: Float,

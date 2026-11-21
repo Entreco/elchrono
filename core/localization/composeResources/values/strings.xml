@@ -41,6 +41,10 @@
     <string name="battery">Battery</string>
     <string name="fan">Fan</string>
     <string name="ring">Ring</string>
+    <string name="ring_thickness">Ring thickness</string>
+    <string name="ring_thickness_value">%1$d%</string>
+    <string name="ring_thin">Thin</string>
+    <string name="ring_solid">Solid fill</string>
     <string name="selected_theme_format">Selected: %1$s</string>
     <string name="save_and_start">Save and start</string>
     <string name="clear">Clear</string>

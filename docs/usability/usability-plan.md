@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-005 |
-| Revision | 0.9 |
+| Revision | 1.0 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Product usability, accessibility, and safeguarding/privacy review: @Entreco, designated by the product owner on 2026-11-19; exact-revision acceptance pending |
@@ -18,11 +18,11 @@ table. See [document controls](../governance/document-control.md#lifecycle-and-a
 
 This plan describes a proposed, safeguarded usability review of El Chrono's
 screen and timer-visualization prototypes. It is grounded in the proposed
-[requirements register, M2-DOC-001 revision 1.1](../product/requirements.md),
-the [test protocol, M2-DOC-002 revision 1.4](../testing/test-protocol.md), the
-[requirements traceability matrix, M2-DOC-003 revision 3.6](../safety/requirements-traceability-matrix.md),
-the [screen-flow and theme-prototype record, M2-DOC-004 revision 2.2](../design/accessible-screen-flows-and-theme-prototypes.md),
-and [risk assessment, M1-DOC-004 revision 1.0](../safety/risk-assessment.md).
+[requirements register, M2-DOC-001 revision 1.2](../product/requirements.md),
+the [test protocol, M2-DOC-002 revision 1.5](../testing/test-protocol.md), the
+[requirements traceability matrix, M2-DOC-003 revision 3.7](../safety/requirements-traceability-matrix.md),
+the [screen-flow and theme-prototype record, M2-DOC-004 revision 2.3](../design/accessible-screen-flows-and-theme-prototypes.md),
+and [risk assessment, M1-DOC-004 revision 1.1](../safety/risk-assessment.md).
 The product owner approved the four demo visualizations for the v1 theme
 selector; this plan does not claim their usability or representative-user
 preference.
@@ -69,9 +69,16 @@ future sessions.
 
 ## Prototype and review scope
 
-Review the exact M2-DOC-004 revision 2.2 candidate content. Before any session,
+Review the exact M2-DOC-004 revision 2.3 candidate content. Before any session,
 verify that the materials shown match that revision and record any changed
 artifact and revision in the findings record.
+
+The future review scope includes readability of translucent Settings against
+each global background, whether the bottom-right cue is mistaken for a button,
+understanding immediate duration previews versus a paused countdown, Battery
+recognition, absence of detail-induced motion, and thin/solid Ring
+interpretation. Ask neutral prompts; do not assume these treatments are
+preferred. No new participant session is authorized by this change.
 
 The candidate evidence includes:
 
@@ -232,3 +239,4 @@ iteration, not validation of caregiver workflows or waiver of M2 gates.
 | 0.7 | Align source references with current product/design/risk candidates and record the owner's reviewer designation and four-theme scope without claiming usability validation. |
 | 0.8 | Align review scope with issue #66's text-free detail-0 cues, stale-progress warning, idle 00:00, and source revisions; add neutral future review tasks without claiming they were performed. |
 | 0.9 | Align review sources with the demo-matching Clock labels and centered Fan geometry; add a neutral future review task while keeping all usability and accessibility reviews pending. |
+| 1.0 | Extend future review scope to global appearance, cue interpretation, preview, stable details, Battery, and thin/solid Ring; authorize no new session. |

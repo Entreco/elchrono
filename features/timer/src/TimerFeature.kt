@@ -9,9 +9,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,11 +24,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.geometry.RoundRect
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.clipPath
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.semantics.ProgressBarRangeInfo
 import androidx.compose.ui.semantics.contentDescription
@@ -76,6 +83,7 @@ fun TimerFeature(
     textColorArgb: Long,
     font: TimerFont,
     detail: Int,
+    ringThicknessPercent: Int,
     interrupted: Boolean,
     modifier: Modifier = Modifier,
 ) {
@@ -122,57 +130,19 @@ fun TimerFeature(
         }
     }
 
-    Column(
+    BoxWithConstraints(
         modifier = modifier.fillMaxSize().background(Color(backgroundColorArgb)),
-        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        if (showsTimerText(detail)) {
-            Text(
-                stateText,
-                style = MaterialTheme.typography.titleLarge.copy(
-                    color = Color(textColorArgb),
-                    fontFamily = font.toFontFamily(),
-                ),
-            )
-        }
-        if (interrupted && showsTimerText(detail)) {
-            Spacer(Modifier.height(LocalDimens.current.spaceM))
-            Text(
-                stringResource(Strings.string.interruption_warning),
-                textAlign = TextAlign.Center,
-                color = Color(textColorArgb),
-            )
-        }
-        if (!idle && remaining != null) {
-            val totalMinutes = roundedUpMinutes(remaining)
-            Spacer(Modifier.height(LocalDimens.current.spaceM))
-            if (showsTimerText(detail)) {
-                Text(
-                    text = stringResource(
-                        Strings.string.remaining_time,
-                        totalMinutes / 60,
-                        totalMinutes % 60,
-                    ),
-                    style = MaterialTheme.typography.headlineSmall.copy(
-                        color = Color(textColorArgb),
-                        fontFamily = font.toFontFamily(),
-                    ),
-                )
-            }
-        } else if (configuredDuration == null && showsTimerText(detail)) {
-            Spacer(Modifier.height(LocalDimens.current.spaceM))
-            Text(
-                stringResource(Strings.string.choose_duration_message),
-                textAlign = TextAlign.Center,
-                color = Color(textColorArgb),
-            )
-        }
-
+        val overlayInset = minOf(maxHeight * 0.22f, 112.dp * LocalDensity.current.fontScale)
         TimerVisualization(
             theme = theme,
             fractionRemaining = fraction,
             detail = detail,
+            ringThicknessPercent = ringThicknessPercent,
             clockLabels = clockLabels,
+            clockLabelEnvelope = remember(configuredDuration?.totalMinutes) {
+                clockLabelEnvelope(configuredDuration?.totalMinutes ?: 0)
+            },
             font = font,
             visualState = visualState,
             backgroundColor = Color(backgroundColorArgb),
@@ -180,35 +150,98 @@ fun TimerFeature(
             stateIndicatorColor = Color(textColorArgb),
             stateDescription = stateDescription,
             progressDescription = progressDescription,
-            modifier = Modifier.fillMaxWidth().weight(1f),
+            modifier = Modifier.fillMaxSize().padding(vertical = overlayInset),
         )
 
-        if (theme == TimerTheme.CLOCK &&
-            detail > 0 &&
-            configuredDuration?.totalMinutes?.let { it > 0 } == true
+        Column(
+            modifier = Modifier.align(Alignment.TopCenter).fillMaxWidth()
+                .heightIn(max = overlayInset).verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            val unit = when (clockDurationUnit(configuredDuration.totalMinutes)) {
-                ClockDurationUnit.SECONDS -> Strings.string.timer_clock_seconds
-                ClockDurationUnit.MINUTES -> Strings.string.timer_clock_minutes
+            if (showsTimerText(detail)) {
+                Text(
+                    stateText,
+                    style = MaterialTheme.typography.titleLarge.copy(
+                        color = Color(textColorArgb),
+                        fontFamily = font.toFontFamily(),
+                    ),
+                )
             }
-            Text(
-                stringResource(unit),
-                style = MaterialTheme.typography.bodyMedium.copy(
+            if (interrupted && showsTimerText(detail)) {
+                Spacer(Modifier.height(LocalDimens.current.spaceM))
+                Text(
+                    stringResource(Strings.string.interruption_warning),
+                    textAlign = TextAlign.Center,
                     color = Color(textColorArgb),
-                    fontFamily = font.toFontFamily(),
-                ),
-            )
+                )
+            }
+            if (!idle && remaining != null) {
+                val totalMinutes = roundedUpMinutes(remaining)
+                Spacer(Modifier.height(LocalDimens.current.spaceM))
+                if (showsTimerText(detail)) {
+                    Text(
+                        text = stringResource(
+                            Strings.string.remaining_time,
+                            totalMinutes / 60,
+                            totalMinutes % 60,
+                        ),
+                        style = MaterialTheme.typography.headlineSmall.copy(
+                            color = Color(textColorArgb),
+                            fontFamily = font.toFontFamily(),
+                        ),
+                    )
+                }
+            } else if (configuredDuration == null && showsTimerText(detail)) {
+                Spacer(Modifier.height(LocalDimens.current.spaceM))
+                Text(
+                    stringResource(Strings.string.choose_duration_message),
+                    textAlign = TextAlign.Center,
+                    color = Color(textColorArgb),
+                )
+            }
+        }
+        Column(
+            modifier = Modifier.align(Alignment.BottomCenter).fillMaxWidth()
+                .padding(horizontal = 48.dp)
+                .heightIn(max = overlayInset).verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            if (theme == TimerTheme.CLOCK &&
+                detail > 0 &&
+                configuredDuration?.totalMinutes?.let { it > 0 } == true
+            ) {
+                val unit = when (clockDurationUnit(configuredDuration.totalMinutes)) {
+                    ClockDurationUnit.SECONDS -> Strings.string.timer_clock_seconds
+                    ClockDurationUnit.MINUTES -> Strings.string.timer_clock_minutes
+                }
+                Text(
+                    stringResource(unit),
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        color = Color(textColorArgb),
+                        fontFamily = font.toFontFamily(),
+                    ),
+                )
+            }
+
+            if (showsTimerText(detail)) {
+                Spacer(Modifier.height(LocalDimens.current.spaceL))
+                Text(
+                    stringResource(theme.label),
+                    style = MaterialTheme.typography.titleMedium.copy(
+                        color = Color(textColorArgb),
+                        fontFamily = font.toFontFamily(),
+                    ),
+                )
+            }
         }
 
-        if (showsTimerText(detail)) {
-            Spacer(Modifier.height(LocalDimens.current.spaceL))
-            Text(
-                stringResource(theme.label),
-                style = MaterialTheme.typography.titleMedium.copy(
-                    color = Color(textColorArgb),
-                    fontFamily = font.toFontFamily(),
-                ),
-            )
+        if (showsTextFreeStateCue(detail)) {
+            Canvas(
+                Modifier.align(Alignment.BottomEnd).padding(LocalDimens.current.spaceS).size(40.dp)
+                    .semantics { contentDescription = stateDescription },
+            ) {
+                drawStateIndicator(visualState, Color(textColorArgb))
+            }
         }
     }
 }
@@ -218,7 +251,9 @@ private fun TimerVisualization(
     theme: TimerTheme,
     fractionRemaining: Float,
     detail: Int,
+    ringThicknessPercent: Int,
     clockLabels: List<ClockDurationLabel>,
+    clockLabelEnvelope: List<ClockDurationLabel>,
     font: TimerFont,
     visualState: TimerVisualState,
     backgroundColor: Color,
@@ -230,19 +265,8 @@ private fun TimerVisualization(
 ) {
     val idle = visualState == TimerVisualState.IDLE
     val showClockLabels = theme == TimerTheme.CLOCK && clockLabels.isNotEmpty()
-    val clockLabelStyle = MaterialTheme.typography.titleLarge.copy(
-        color = stateIndicatorColor,
-        fontFamily = font.toFontFamily(),
-        fontWeight = FontWeight.Bold,
-        fontSize = 28.sp,
-    )
     val density = LocalDensity.current
     val textMeasurer = rememberTextMeasurer()
-    val largestClockLabelSize = remember(clockLabels, clockLabelStyle, textMeasurer) {
-        clockLabels
-            .map { textMeasurer.measure(it.value, style = clockLabelStyle).size }
-            .maxByOrNull { it.width }
-    }
 
     BoxWithConstraints(
         modifier = modifier.semantics {
@@ -257,6 +281,18 @@ private fun TimerVisualization(
         },
         contentAlignment = Alignment.Center,
     ) {
+        val baseFontSize = minOf(28f, maxHeight.value * 0.12f)
+        val clockLabelStyle = MaterialTheme.typography.titleLarge.copy(
+            color = stateIndicatorColor,
+            fontFamily = font.toFontFamily(),
+            fontWeight = FontWeight.Bold,
+            fontSize = baseFontSize.sp,
+        )
+        val largestClockLabelSize = remember(clockLabelEnvelope, clockLabelStyle, textMeasurer) {
+            clockLabelEnvelope
+                .map { textMeasurer.measure(it.value, style = clockLabelStyle).size }
+                .maxByOrNull { it.width }
+        }
         val labelWidth = largestClockLabelSize?.width?.let { with(density) { it.toDp().value } } ?: 0f
         val labelHeight = largestClockLabelSize?.height?.let { with(density) { it.toDp().value } } ?: 0f
         val clockLayout = clockLayoutGeometry(
@@ -264,13 +300,15 @@ private fun TimerVisualization(
             height = maxHeight.value,
             labelWidth = labelWidth,
             labelHeight = labelHeight,
+            diskLabelGap = minOf(20f, maxHeight.value * 0.04f),
         )
         val clockLabelFontSize = if (clockLabels.size > 2 && clockLayout.labelOrbitRadius > 0f) {
             val chord = 2f * clockLayout.labelOrbitRadius *
                 sin(kotlin.math.PI.toFloat() / clockLabels.size)
-            (28f * minOf(1f, chord * 0.8f / labelWidth.coerceAtLeast(1f))).coerceAtLeast(14f)
+            (baseFontSize * minOf(1f, chord * 0.8f / labelWidth.coerceAtLeast(1f)))
+                .coerceAtLeast(minOf(14f, baseFontSize))
         } else {
-            28f
+            baseFontSize
         }
         val clockDiskRadiusPx = with(density) { clockLayout.diskRadius.dp.toPx() }
         val clockLabelOrbitRadiusPx = with(density) { clockLayout.labelOrbitRadius.dp.toPx() }
@@ -284,11 +322,7 @@ private fun TimerVisualization(
 
             when (theme) {
                 TimerTheme.CLOCK -> {
-                    val radius = if (showClockLabels) {
-                        clockDiskRadiusPx
-                    } else {
-                        size.minDimension * 0.46f
-                    }
+                    val radius = clockDiskRadiusPx
                     val diameter = radius * 2f
                     val topLeft = Offset(center.x - radius, center.y - radius)
                     val shapeSize = Size(diameter, diameter)
@@ -306,14 +340,14 @@ private fun TimerVisualization(
                 }
 
                 TimerTheme.BATTERY -> {
-                    val availableWidth = size.width * 0.9f
-                    val availableHeight = size.height * 0.76f
-                    val bodyHeight = minOf(availableHeight, availableWidth / 1.55f)
-                    val capWidth = bodyHeight * 0.12f
-                    val bodyWidth = minOf(availableWidth - capWidth, bodyHeight * 1.55f)
-                    val bodyTop = center.y - bodyHeight / 2f
-                    val bodyLeft = center.x - (bodyWidth + capWidth) / 2f
-                    val corner = androidx.compose.ui.geometry.CornerRadius(bodyHeight * 0.12f)
+                    val geometry = batteryGeometry(size.width, size.height, 126.dp.toPx())
+                    val bodyHeight = geometry.bodyHeight
+                    val bodyWidth = geometry.bodyWidth
+                    val bodyTop = geometry.top
+                    val bodyLeft = geometry.left
+                    val stroke = minOf(2.dp.toPx(), bodyHeight * 0.04f)
+                    val inset = bodyHeight * 10f / 126f
+                    val corner = CornerRadius(bodyHeight * 17f / 126f)
                     drawRoundRect(
                         color = track,
                         topLeft = Offset(bodyLeft, bodyTop),
@@ -321,28 +355,32 @@ private fun TimerVisualization(
                         cornerRadius = corner,
                     )
                     drawRoundRect(
-                        color = track,
-                        topLeft = Offset(bodyLeft + bodyWidth, center.y - bodyHeight * 0.15f),
-                        size = Size(capWidth, bodyHeight * 0.3f),
-                        cornerRadius = androidx.compose.ui.geometry.CornerRadius(capWidth * 0.3f),
+                        color = remaining,
+                        topLeft = Offset(bodyLeft + bodyWidth, center.y - bodyHeight / 6f),
+                        size = Size(geometry.terminalWidth, bodyHeight / 3f),
+                        cornerRadius = CornerRadius(bodyHeight * 5f / 126f),
                     )
-                    if (fractionRemaining > 0f) {
-                        drawRoundRect(
-                            color = remaining,
-                            topLeft = Offset(bodyLeft, bodyTop),
-                            size = Size(bodyWidth * fractionRemaining, bodyHeight),
-                            cornerRadius = corner,
-                        )
+                    val inner = Rect(
+                        bodyLeft + inset,
+                        bodyTop + inset,
+                        bodyLeft + bodyWidth - inset,
+                        bodyTop + bodyHeight - inset,
+                    )
+                    val clip = Path().apply { addRoundRect(RoundRect(inner, CornerRadius(bodyHeight * 7f / 126f))) }
+                    clipPath(clip) {
+                        drawRect(remaining, inner.topLeft, Size(inner.width * fractionRemaining, inner.height))
+                        boundaries.forEach { fraction ->
+                            val x = inner.left + inner.width * fraction
+                            drawLine(track, Offset(x, inner.top), Offset(x, inner.bottom), 2.dp.toPx())
+                        }
                     }
-                    boundaries.forEach { fraction ->
-                        val x = bodyLeft + bodyWidth * fraction
-                        drawLine(
-                            track,
-                            Offset(x, bodyTop),
-                            Offset(x, bodyTop + bodyHeight),
-                            2.dp.toPx(),
-                        )
-                    }
+                    drawRoundRect(
+                        color = remaining,
+                        topLeft = Offset(bodyLeft + stroke / 2f, bodyTop + stroke / 2f),
+                        size = Size(bodyWidth - stroke, bodyHeight - stroke),
+                        cornerRadius = corner,
+                        style = Stroke(stroke),
+                    )
                 }
 
                 TimerTheme.FAN -> {
@@ -374,32 +412,32 @@ private fun TimerVisualization(
                 }
 
                 TimerTheme.RING -> {
-                    val diameter = size.minDimension * 0.92f
-                    val radius = diameter / 2f
-                    val stroke = diameter * 0.12f
-                    val ringRadius = radius - stroke / 2f
-                    val topLeft = Offset(center.x - radius, center.y - radius)
-                    val shapeSize = Size(diameter, diameter)
+                    val geometry = ringGeometry(size.minDimension * 0.46f, ringThicknessPercent)
+                    val solid = ringThicknessPercent == 100
+                    val arcRadius = if (solid) geometry.outerRadius else geometry.centerlineRadius
+                    val topLeft = Offset(center.x - arcRadius, center.y - arcRadius)
+                    val shapeSize = Size(arcRadius * 2f, arcRadius * 2f)
                     val arc = remainingArc(fractionRemaining)
-                    drawCircle(
-                        color = track,
-                        radius = ringRadius,
-                        center = center,
-                        style = Stroke(width = stroke),
-                    )
+                    if (solid) {
+                        drawCircle(track, geometry.outerRadius, center)
+                    } else {
+                        drawCircle(track, geometry.centerlineRadius, center, style = Stroke(geometry.strokeWidth))
+                    }
                     drawArc(
                         color = remaining,
                         startAngle = arc.startAngleDegrees,
                         sweepAngle = arc.sweepAngleDegrees,
-                        useCenter = false,
+                        useCenter = solid,
                         topLeft = topLeft,
                         size = shapeSize,
-                        style = Stroke(width = stroke, cap = StrokeCap.Butt),
+                        style = if (solid) androidx.compose.ui.graphics.drawscope.Fill else {
+                            Stroke(width = geometry.strokeWidth, cap = StrokeCap.Butt)
+                        },
                     )
                     boundaries.forEach { fraction ->
                         val angle = (-90f + 360f * fraction) * radians
-                        val inner = ringRadius - stroke / 2f
-                        val outer = ringRadius + stroke / 2f
+                        val inner = geometry.innerRadius
+                        val outer = geometry.outerRadius
                         drawLine(
                             track,
                             Offset(
@@ -434,16 +472,6 @@ private fun TimerVisualization(
             }
         }
 
-        if (showsTextFreeStateCue(detail)) {
-            Canvas(
-                Modifier
-                    .align(Alignment.TopCenter)
-                    .padding(LocalDimens.current.spaceS)
-                    .size(40.dp),
-            ) {
-                drawStateIndicator(visualState, stateIndicatorColor)
-            }
-        }
     }
 }
 

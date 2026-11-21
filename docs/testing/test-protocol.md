@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-002 |
-| Revision | 1.4 |
+| Revision | 1.5 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Test and product requirements review: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
@@ -17,7 +17,7 @@ table. See [document controls](../governance/document-control.md#lifecycle-and-a
 ## Purpose and limits
 
 This protocol contains planned test procedures and acceptance criteria for
-[M2-DOC-001, revision 1.1, Product requirements](../product/requirements.md).
+[M2-DOC-001, revision 1.2, Product requirements](../product/requirements.md).
 The exact source revisions and requirement-to-source, risk, design, usability,
 and test relationships are identified in the
 [requirements traceability matrix](../safety/requirements-traceability-matrix.md).
@@ -49,6 +49,36 @@ hours. No accessibility conformance baseline is selected by this protocol.
 | TP-REQ-015 | [REQ-015](../product/requirements.md#requirement-identification) | Resize Settings across compact and expanded layouts and inspect labels, focus, semantics, and clipping. | Settings remains reachable, uses a side pane where supported, and required controls remain visible and labeled at each browser configuration checked. |
 
 ## Execution record
+
+### Issue #66 refinement acceptance extension
+
+Apply these additional criteria to TP-REQ-003/012/013/014/015:
+
+- With identical viewport, duration, font, and state, switching details
+  0 -> 1 -> 12 -> 0 must leave every shape's center and outer bounds unchanged.
+  Overlay text, labels, and cues must remain reachable without obstructing
+  required content; check short landscape windows and enlarged fonts.
+- Select every background preset and navigate Timer/Settings/About at compact
+  and expanded sizes and across the pane breakpoint. App-owned edges, app bar,
+  and gutters must match the selected background; Settings must be visibly
+  translucent with readable controls and focus. No horizontal overflow.
+- The detail-0 state cue must remain inside the Timer pane at bottom-right,
+  with no click action and preserved state/stale-progress semantics.
+- Edit durations 0, 1, 9, 10, 60, 120, and 1440 minutes while Settings is open.
+  Clock labels, seconds/minutes units, full fill, and remaining text must update
+  before closing. The paused engine must not advance/reset; invalid drafts
+  must retain the last valid preview and show an error.
+- Battery must retain an outline and terminal at full, partial, and idle fill.
+  At fixed width, increasing window height must not exceed the 126-logical-pixel
+  preferred body height. Its inset fill/separators must stay inside the body.
+- Ring thickness must cover integer values 1-100% of outer radius, default 24%.
+  At 1, 24, 50, and 100 test 0%, 25%, 50%, and 100% remaining. Outer bounds
+  must stay fixed; the solid endpoint must have no hole or overlapping arc.
+  Switching away/back and reopen must retain thickness; seven-field legacy
+  storage must retain all prior selections and acquire the default. Invalid
+  thickness or storage failures must surface an error, not a successful save.
+
+Record bounded observations separately from a full protocol pass.
 
 Issue #65 focused verification:
 - `./kotlin test -p jvm -m common -m counter -m design -m settings -m localization -m persistence` passed in the feature worktree.
@@ -131,6 +161,61 @@ motion, offline operation, and human design/accessibility/usability/risk reviews
 remain pending. Temporary screenshots are session-local and are not linked as
 controlled review evidence.
 
+### Issue #66 appearance-refinement execution
+
+The implementation worktree on `feat/66-responsive-timer-screen` was checked
+with these commands:
+
+- `./kotlin test -p jvm -m common -m counter -m design -m settings -m localization -m timer -m persistence`
+  passed: 67 JVM tests, including preview isolation, all-detail Clock label
+  envelopes, Battery/Ring geometry, all thickness values, and legacy migration.
+- `./kotlin test -p jvm -m design -m settings -m common` passed again after
+  the final surface/error-readability edits: 26 JVM tests.
+- `./kotlin build -m browser` passed after the final UI changes.
+- `./kotlin build -m android` passed after the final UI changes; compilation
+  only, not device acceptance, TV support, or browser verification.
+- `./kotlin check -m common -m timer -m persistence -m settings -m design -m localization -m counter`
+  failed in the Wasm persistence test runner: Skiko WebAssembly instantiation
+  reported a code section extending beyond the supplied module. This is the
+  previously recorded runner limitation, not a passing check. The available
+  check is `tests`; it includes platforms beyond the passing scoped JVM run.
+- `git diff --check` passed.
+
+Chrome 158.0.8127.37, headless ANGLE/SwiftShader, device scale factor 1, and
+DevTools viewport emulation were used against the built browser app:
+
+- Clock/Battery/Fan/Ring were rendered running at detail 0, 1, and 12 at
+  320x640, 640x320, 1440x1000, 839x700, and 840x700. Foreground-pixel bounds
+  stayed identical except for Fan's topmost foreground row at detail 12 in
+  the two breakpoint-size views (one pixel, where a divider crosses the top).
+  The underlying shape geometry is independent of detail.
+  Viewport/body widths matched, and sampled app corners used the configured
+  background. Visible shapes stayed inside the viewport.
+- On the expanded Clock preview, the actual detail slider was changed live
+  through 0-12 and back to 0. Foreground bounds remained exactly identical.
+- All six background presets were checked on compact and expanded Settings
+  and About. App corners matched each selected color and there was no horizontal
+  overflow. Settings and About panels used translucent tints; controls and error
+  surfaces retain their own design treatments for readability.
+- Actual keypad edits changed the two-hour Clock preview to five minutes before
+  closing Settings. Its accessibility tree included `0 hr 5 min`, `seconds`,
+  and the detail-2 intermediate value `150`.
+- Actual Ring selection and slider input produced a `100%` readout and saved
+  value; switching to Clock hid the thickness control, switching back retained
+  it, and page reload restored it. About navigation was exercised.
+- Thin, default, middle, and solid Ring previews were captured. A session-only
+  `performance.now` offset exercised partial progress without waiting a minute;
+  foreground-pixel ratios near half fill were 0.50, 0.486, 0.485, and 0.486 for
+  thickness 1, 24, 50, and 100. This bounded browser check is separate from the
+  injected-clock domain tests and does not establish interruption reliability.
+
+Screenshots, scripts, and numeric results remain session-local, not controlled
+approval evidence. This is not a full TP-REQ-003/012/013/014/015 pass. Complete
+shape/state/detail/progress combinations, enlarged-font and screen-reader
+behavior, reduced motion, offline operation, interruption paths, and human
+design/accessibility/usability/risk acceptance remain pending. No device launch
+or platform support is inferred from the Android build.
+
 ### Issue #67 About candidate
 
 The About candidate was checked in the `feat/67-about-screen` worktree:
@@ -173,3 +258,4 @@ design, usability, accessibility, and product review remain pending.
 | 1.2 | Align Timer criteria with issue #66's text-free detail-0 states, stale-progress semantics, exact segment counts, clockwise Clock mapping, and idle 00:00 behavior; retain browser and human-review gates. |
 | 1.3 | Record the bounded Chrome render check at compact and expanded viewports; retain incomplete accessibility, visual-matrix, and human-review gates. |
 | 1.4 | Replace Clock segment criteria with demo-matching duration labels, add compact/expanded Fan centering checks, and retain browser, accessibility, usability, and human-review gates. |
+| 1.5 | Add measurable global-background, preview, stable-layout, Battery, and Ring-thickness criteria and scoped refinement evidence without claiming full protocol acceptance. |

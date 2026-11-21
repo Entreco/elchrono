@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-004 |
-| Revision | 2.2 |
+| Revision | 2.3 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Product design, accessibility, and usability: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
@@ -98,9 +98,9 @@ certification.
   theme selector: Clock, Battery, Fan, and Ring. This is a product/design
   decision, not a claim that users prefer one shape or that all intended users
   can use each shape successfully.
-- Demo-only styling controls (font, colors, detail count, visibility, and ring
-  thickness) are exploratory and are not v1 application settings unless
-  separately required and reviewed.
+- Application font, colors, detail, and Ring thickness are now specified by
+  REQ-012. Demo-only independent visibility controls remain exploratory.
+  A control's inclusion does not establish usability or accessibility.
 - Android TV and Apple TV are primary project targets. This visual design
   source does not establish remote/D-pad focus behavior, viewing-distance
   typography, TV layout limits, or platform support; those require target-
@@ -209,6 +209,16 @@ accessibility, and no-clipping behavior remain unverified.
 The v1 flow has no caregiver-only access gate: Settings can be opened without
 protection. The user configures duration and visualization; valid changes
 preview immediately and are saved automatically, without a Save action.
+The full app-owned area uses the selected background, including app bars,
+pane gutters, and About. Settings uses an 8% contrasting tint over that
+background, without a required blur. Controls use light/dark design colors
+chosen for the background; patient visualization text still uses its selected
+text color without enforcing contrast restrictions.
+While Settings is open, a separate presentation snapshot uses the full selected
+duration and a paused/idle presentation. Clock labels, units, remaining text,
+and fill update together without altering the underlying paused engine.
+Invalid drafts keep the last valid preview with an input error. Previewing
+does not clear an underlying interruption; closing Settings starts anew.
 Closing Settings starts a fresh countdown from the full configured duration.
 At 00:00, the Timer remains non-counting and non-animating. The duration entry starts
 at 02:00, matching the demo; this is an initial field value, not saved
@@ -269,6 +279,24 @@ owned content as not provided; it does not fabricate a logo, build value,
 support contact, privacy policy, or licence list.
 
 ## Timer visualizations
+
+Issue #66's latest candidate reserves equal top/bottom decoration space
+independently of detail. Text is overlaid in those bounded regions, scrollable
+when short windows or larger fonts require it. Base geometry does not depend
+on decoration visibility. Clock reserves one duration/font-aware envelope for
+all label counts, including when labels are hidden. The existing detail-0
+status cue is non-interactive and sits at the bottom-right of the Timer pane.
+
+Battery matches the demo's shallow horizontal body, foreground outline,
+inset clipped fill, and external foreground terminal. Preferred body height
+is capped at 126 logical pixels; narrow/short layouts shrink it to fit while
+wider layouts may stretch horizontally. The complete silhouette is centered.
+Ring thickness is a normalized 1-100% of outer radius, default 24% to preserve
+the prior nominal appearance, not the demo's pixel default. Its outer radius
+stays fixed, track/progress share a centerline, and 100% uses a filled sector
+rather than an overlapping thick stroke. Thickness survives shape changes
+and storage reopen; legacy settings get the default without losing selections.
+These designs require final human review; no new preference evidence is claimed.
 
 The approved demo presents the four v1 choices: Clock, Battery, Fan, and Ring.
 The separate [interactive demo](demo/README.md) is the visual reference.
@@ -346,3 +374,4 @@ PR.
 | 2.0 | Define issue #66's adaptive Timer scope, level-0 visual/accessibility cues, exact detail segment mapping and clockwise Clock depletion; retain human design/usability/risk review and browser verification gaps. |
 | 2.1 | Record Timer surface-color behavior and the bounded headless browser render observation; keep full visual, accessibility, reduced-motion, and human reviews pending. |
 | 2.2 | Align application Clock detail with the demo's outer duration labels and units instead of concentric bands; specify centered, unclipped Fan geometry and retain human review and verification gaps. |
+| 2.3 | Specify global background, translucent Settings, immediate duration preview, bottom-right status cue, shallow Battery, stable detail overlays, and normalized Ring thickness; retain review gaps. |

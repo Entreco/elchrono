@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-003 |
-| Revision | 3.6 |
+| Revision | 3.7 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Requirements and software-safety review: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
@@ -19,8 +19,8 @@ table. See [document controls](../governance/document-control.md#lifecycle-and-a
 This matrix is the authoritative cross-reference between the intended-use
 source, product requirements, risks, design/usability evidence, and test
 protocol. Requirement statements live in
-[M2-DOC-001, revision 1.1](../product/requirements.md); acceptance criteria and
-procedures live in [M2-DOC-002, revision 1.4](../testing/test-protocol.md).
+[M2-DOC-001, revision 1.2](../product/requirements.md); acceptance criteria and
+procedures live in [M2-DOC-002, revision 1.5](../testing/test-protocol.md).
 Do not duplicate those statements or criteria here.
 
 The mappings below are initial and proposed. Design links are included when
@@ -30,13 +30,13 @@ actual evidence is recorded.
 | Source record | Revision | Relationship |
 |---|---|---|
 | [M1-DOC-002, intended use](../product/intended-use.md) | 1.0 candidate | Product purpose, roles, use, and limitations |
-| [M2-DOC-001, product requirements](../product/requirements.md) | 1.0 candidate | Active requirements incorporating the v1 product decisions, including issue #66's text-free detail-0 states and idle 00:00 |
-| [M1-DOC-004, risk assessment](risk-assessment.md) | 1.0 candidate | RISK-001 through RISK-006 traced below; D-01 disposition is not evidence of a control or risk reduction |
-| [M1-DOC-009, risk traceability matrix](risk-traceability-matrix.md) | 1.5 candidate | Risk-to-source and planned verification; review pending |
-| [M2-DOC-002, product test protocol](../testing/test-protocol.md) | 1.4 candidate | Test procedures and acceptance criteria traced below; issue #66 Clock-label and Fan-geometry coverage; bounded browser-render observation; audio tests deferred to v2 |
-| [M2-DOC-004, accessible screen flows and theme prototypes](../design/accessible-screen-flows-and-theme-prototypes.md) | 2.2 candidate | Timer/Settings/About, issue #66 state cues, Clock duration labels, centered Fan, owner-supplied logo, bounded browser-render observation, and explicit evidence gaps; exact-head review pending |
-| [M2-DOC-005, usability review plan](../usability/usability-plan.md) | 0.9 candidate | Proposed participant approach and tasks; created after the two sessions and did not govern them |
-| [M2-DOC-006, usability findings and evidence status](../usability/usability-findings.md) | 0.9 candidate | Two retrospective sessions, retained screenshots, and the unreviewed issue #66 state-cue and visualization redesign gap |
+| [M2-DOC-001, product requirements](../product/requirements.md) | 1.2 candidate | V1 requirements including issue #66 global appearance, immediate duration preview, stable geometry, and Ring thickness |
+| [M1-DOC-004, risk assessment](risk-assessment.md) | 1.1 candidate | RISK-001 through RISK-006 traced below; no control effectiveness or risk reduction claimed |
+| [M1-DOC-009, risk traceability matrix](risk-traceability-matrix.md) | 1.6 candidate | Refinement risks and planned verification; review pending |
+| [M2-DOC-002, product test protocol](../testing/test-protocol.md) | 1.5 candidate | Refinement criteria and bounded observations; full protocol acceptance pending |
+| [M2-DOC-004, accessible screen flows and theme prototypes](../design/accessible-screen-flows-and-theme-prototypes.md) | 2.3 candidate | Updated global appearance, preview, Battery, stable overlays, cue placement, and Ring thickness; exact-head review pending |
+| [M2-DOC-005, usability review plan](../usability/usability-plan.md) | 1.0 candidate | Future refinement review scope; no participant session authorized |
+| [M2-DOC-006, usability findings and evidence status](../usability/usability-findings.md) | 1.0 candidate | Retrospective sessions and extended G06 redesign gap |
 | [M3-DOC-007, platform architecture decision and support matrix](../architecture/platform-architecture-and-support-matrix.md) | 0.3 candidate | Retains the configured Kotlin Multiplatform/Compose architecture; records TV priorities, Wear/watch exclusion, evidence limits, and no support commitment |
 
 ## Traceability
@@ -59,6 +59,17 @@ actual evidence is recorded.
 | REQ-015 | [Users and roles](../product/intended-use.md#users-population-and-roles) | RISK-005 | Adaptive supporting-pane Settings; no-clipping and assistive-tech evidence pending | TP-REQ-015 | Browser build passes; responsive and runtime checks remain pending |
 
 ## Reverse coverage
+
+Issue #66 refinement evidence supplements REQ-012/013/014/015 above.
+`AppColorSchemeTest` checks global-background identity and core text contrast;
+`TimerPresentationTest` checks the all-detail Clock label envelope, bounded
+shallow Battery geometry, and Ring centerline/inner/outer radius invariants.
+`AppViewModelTest` checks immediate duration projection without changing the
+paused/interrupted engine. `SettingsPersistenceTest` checks all thickness
+values, legacy selections, and explicit malformed-data errors. These are
+implementation-level checks, not human visual/accessibility/usability/risk
+acceptance. See the refinement execution record in M2-DOC-002 for the exact
+commands, browser evidence, and limits.
 
 The requirement rows above are the authoritative mapping. This reverse view
 checks that every source risk and planned protocol case links back to a
@@ -201,3 +212,4 @@ test procedures or acceptance criteria in this matrix.
 | 3.4 | Align the M1/M2 source revisions with issue #66; trace text-free detail-0 states, all-shape segmentation, clockwise Clock mapping, and pending browser/human review evidence. |
 | 3.5 | Record bounded browser render observations for REQ-003/013 while retaining the unresolved accessibility, complete visual-matrix, and human-review gaps. |
 | 3.6 | Align requirements, protocol, risks, and usability sources with the demo-matching Clock labels and centered Fan geometry; keep rendered behavior and human review explicitly pending. |
+| 3.7 | Align refinement source revisions and trace preview, color, Battery/Ring geometry, and thickness migration tests; distinguish bounded browser observations from human acceptance. |

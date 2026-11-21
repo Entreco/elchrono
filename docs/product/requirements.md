@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-001 |
-| Revision | 1.1 |
+| Revision | 1.2 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Product requirements and accessibility: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
@@ -57,10 +57,18 @@ exact-revision review and acceptance are recorded in the current review PR.
 | REQ-009 | Product screens and user-facing claims shall describe ordinary waiting-time support only; they shall not present El Chrono as a clock, deadline guarantee, medical function, or safety-critical timer. |
 | REQ-010 | When the countdown reaches zero, the timer shall reset immediately to the configured duration and shall not display a completed timer state. If optional music is introduced in v2, playback shall stop at zero. |
 | REQ-011 | Android TV and Apple TV are primary v1 product targets. Their user-facing flows shall be operable through the target platform's remote/controller focus model, with a visible focus indicator, predictable navigation, readable content at ordinary viewing distance, and no interaction that relies on colour alone. Platform support is not claimed until the target is configured and the approved platform verification is passed. |
-| REQ-012 | Settings shall allow caregivers to configure background, foreground, and text colors, font, and an integer detail level from 0 through 12 without contrast restrictions or warnings. Shape changes and temporary control hiding shall preserve all selected values. |
+| REQ-012 | Settings shall allow caregivers to configure background, foreground, and text colors, font, and an integer detail level from 0 through 12 without contrast restrictions or warnings. The selected background shall cover the full app-owned area across Main, Settings, About, app bars, and navigation gutters. Ring shall additionally offer thickness from thin to solid fill, with its control shown only for Ring. Shape changes and temporary control hiding shall preserve all selected values. |
 | REQ-013 | At detail 0, extra segment boundaries, Clock duration labels, and all on-screen timer text, including state labels and interruption warnings, shall be hidden while the base visualization and distinct non-text state cues remain visible. Accessible descriptions shall identify running, paused, and interrupted states and explain that interrupted progress may be stale. At detail 1 through 12, Clock shall show that number of evenly spaced duration labels around its continuous disk, with no segment boundaries; other shapes shall show that number of equal visual segments, including one continuous segment at level 1. Clock labels shall show whole seconds for configured durations below ten minutes and compact minutes otherwise, with a unit label. Remaining-time text is shown at detail 1 through 12. No treatment shall add clock-face markings or time-of-day information. |
-| REQ-014 | Settings changes shall preview immediately in the Timer while Settings is open and shall persist after app close and reopen. Stored invalid or stale data shall fall back safely to defaults. Storage failures shall be surfaced rather than presented as successful saves. Persistence shall not imply recovery of a previously running countdown. |
-| REQ-015 | Settings shall remain reachable on compact layouts and use a supporting pane beside the Timer where space permits. Controls shall have labels and applicable browser, keyboard, touch, and assistive-technology semantics without clipping. |
+| REQ-014 | Valid Settings changes, including duration and Ring thickness, shall preview immediately in the Timer while Settings is open and shall persist after app close and reopen. Duration preview shall show the full selected duration without advancing or mutating the paused countdown; invalid drafts shall retain the last valid preview and display the input error. Stored invalid or stale data shall fall back safely to defaults with a surfaced error; legacy settings shall retain their selections when thickness is introduced. Storage failures shall be surfaced rather than presented as successful saves. Persistence shall not imply recovery of a previously running countdown. |
+| REQ-015 | Settings shall remain reachable on compact layouts and use a supporting pane beside the Timer where space permits. Its panel shall be mostly translucent over the selected global background, with readable controls. Controls shall have labels and applicable browser, keyboard, touch, and assistive-technology semantics without clipping. |
+
+Changing detail shall add or remove decorations without changing any base
+shape's center or bounds at otherwise identical inputs (REQ-003/REQ-013).
+Battery shall retain its shallow horizontal silhouette, visible outline,
+inset fill, and external terminal; Ring shall retain its outer radius across
+thickness changes (REQ-003/REQ-006/REQ-012). The existing detail-0 state cue
+shall occupy the Timer pane's bottom-right corner and remain non-interactive;
+this does not introduce manual timer controls or change D-06.
 
 ## Product decisions and scope
 
@@ -85,6 +93,7 @@ change to intended use.
 | D-08 | V1 visualization set | The v1 theme choices are Clock, Battery, Fan, and Ring, as shown in the approved demo. Clock is the initial selection, matching the demo; this default is not evidence of user preference. The visual mapping and use of each theme still require application verification and appropriate usability/accessibility review. |
 | D-09 | Adaptive Settings and duration input methods | Show Settings in a supporting side pane when the available window supports multiple panes and as a reachable single-pane destination on compact windows. Mobile may use an available system keyboard, with the on-screen keypad as fallback; desktop, browser, and TV use the on-screen keypad and do not expose keyboard-based duration entry. This does not establish support for unconfigured TV targets. |
 | D-10 | Text-free Timer at detail 0 | Issue #66 carries the owner-requested behavior that detail 0 hides every on-screen timer text, including interruption warnings, while retaining distinct non-text state cues and accessible state/stale-progress descriptions. The revised interrupted-warning design and its risk/usability implications require human review; no equivalent accessibility or effectiveness is presumed. |
+| D-11 | Issue #66 appearance refinements | The owner requested global edge-to-edge background, translucent Settings, bottom-right icon, immediate duration preview, demo Battery geometry, stable detail overlays, and Ring thickness. The implementation plan uses translucency without required blur, preserves the non-interactive cue, and proposes normalized thickness with the existing nominal default. Plan approval permits implementation; final visual/accessibility/usability/risk and exact-head acceptance remain pending. |
 
 Requirement REQ-007 was retired before approval at the product owner's
 direction; it must not be reused. No WCAG conformance baseline is selected by
@@ -128,3 +137,4 @@ does not establish that they were resolved.
 | 0.9 | Add zero-duration, automatic-save, complete personalization, detail 0-12, persistence, and compact/adaptive Settings requirements for issue #65. |
 | 1.0 | Clarify idle zero-duration and Timer-state requirements; record issue #66's text-free detail-0 state cues and stale-progress semantics, with review and verification pending. |
 | 1.1 | Align Clock detail levels with the demo's outer duration labels rather than segments; require a continuous Clock fill and specify duration units while retaining equal segment divisions for Battery, Fan, and Ring. |
+| 1.2 | Extend issue #66 appearance scope to global background, translucent Settings, immediate duration preview, stable detail geometry, shallow Battery, and Ring thickness; preserve manual-control and review boundaries. |

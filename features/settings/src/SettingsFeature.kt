@@ -38,6 +38,13 @@ import nl.entreco.elchrono.core.design.DesignColorSwatch
 import nl.entreco.elchrono.core.design.LocalDimens
 import nl.entreco.elchrono.core.design.TimerTheme
 import nl.entreco.elchrono.core.design.TimerFont
+import nl.entreco.elchrono.core.design.appColorScheme
+import nl.entreco.elchrono.core.design.LabeledSlider
+import kotlin.math.roundToInt
+import nl.entreco.elchrono.core.localization.resources.ring_thickness
+import nl.entreco.elchrono.core.localization.resources.ring_thickness_value
+import nl.entreco.elchrono.core.localization.resources.ring_thin
+import nl.entreco.elchrono.core.localization.resources.ring_solid
 import nl.entreco.elchrono.core.persistence.TimerSettings
 import nl.entreco.elchrono.core.localization.resources.Res as Strings
 import nl.entreco.elchrono.core.localization.resources.about
@@ -75,28 +82,35 @@ fun SettingsPanel(
     persistenceFailure: String? = null,
     modifier: Modifier = Modifier,
 ) {
-    Surface(
-        modifier = modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.surfaceVariant,
-        tonalElevation = 2.dp,
-    ) {
-        
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .padding(LocalDimens.current.spaceXL),
+    MaterialTheme(colorScheme = appColorScheme(Color(initialSettings.backgroundColorArgb))) {
+        Surface(
+            modifier = modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),
+            contentColor = MaterialTheme.colorScheme.onSurface,
         ) {
-            SettingsScreen(
-                initialSettings = initialSettings,
-                onChange = onChange,
-                onShowAbout = onShowAbout,
-                keyboardInputEnabled = keyboardInputEnabled,
-                keyboardAvailable = keyboardAvailable,
-            )
-            persistenceFailure?.let {
-                Spacer(Modifier.height(LocalDimens.current.spaceM))
-                Text(it, color = MaterialTheme.colorScheme.error)
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+                    .padding(LocalDimens.current.spaceXL),
+            ) {
+                SettingsScreen(
+                    initialSettings = initialSettings,
+                    onChange = onChange,
+                    onShowAbout = onShowAbout,
+                    keyboardInputEnabled = keyboardInputEnabled,
+                    keyboardAvailable = keyboardAvailable,
+                )
+                persistenceFailure?.let {
+                    Spacer(Modifier.height(LocalDimens.current.spaceM))
+                    Surface(
+                        color = MaterialTheme.colorScheme.errorContainer,
+                        contentColor = MaterialTheme.colorScheme.onErrorContainer,
+                        shape = MaterialTheme.shapes.small,
+                    ) {
+                        Text(it, Modifier.padding(LocalDimens.current.spaceM))
+                    }
+                }
             }
         }
     }
@@ -126,18 +140,20 @@ fun SettingsScreen(
     var textColor by remember(initialSettings) { mutableStateOf(initialSettings.textColorArgb) }
     var font by remember(initialSettings) { mutableStateOf(initialSettings.font) }
     var detail by remember(initialSettings) { mutableStateOf(initialSettings.detail) }
+    var ringThickness by remember(initialSettings) { mutableStateOf(initialSettings.ringThicknessPercent) }
 
     fun publish(updatedEntry: DurationDigitEntry = entry) {
         updatedEntry.duration?.let {
             onChange(
-                TimerSettings(
-                    it,
-                    selectedTheme,
-                    backgroundColor,
-                    foregroundColor,
-                    textColor,
-                    font,
-                    detail,
+                initialSettings.copy(
+                    duration = it,
+                    theme = selectedTheme,
+                    backgroundColorArgb = backgroundColor,
+                    foregroundColorArgb = foregroundColor,
+                    textColorArgb = textColor,
+                    font = font,
+                    detail = detail,
+                    ringThicknessPercent = ringThickness,
                 ),
             )
         }
@@ -193,15 +209,21 @@ fun SettingsScreen(
                 deleteLabel = stringResource(Strings.string.delete),
                 onDigit = { val updated = entry.append(it); entry = updated; publish(updated) },
                 onDelete = { val updated = entry.deleteLast(); entry = updated; publish(updated) },
-                onClear = { val updated = entry.clear(); entry = updated },
+                onClear = { val updated = entry.clear(); entry = updated; publish(updated) },
             )
         }
         if (entry.duration == null) {
             Spacer(Modifier.height(LocalDimens.current.spaceM))
-            Text(
-                text = stringResource(Strings.string.invalid_duration_including_zero),
-                color = MaterialTheme.colorScheme.error,
-            )
+            Surface(
+                color = MaterialTheme.colorScheme.errorContainer,
+                contentColor = MaterialTheme.colorScheme.onErrorContainer,
+                shape = MaterialTheme.shapes.small,
+            ) {
+                Text(
+                    text = stringResource(Strings.string.invalid_duration_including_zero),
+                    modifier = Modifier.padding(LocalDimens.current.spaceM),
+                )
+            }
         }
         Spacer(Modifier.height(LocalDimens.current.spaceXXL))
         Text(stringResource(Strings.string.theme), style = MaterialTheme.typography.titleLarge)
@@ -216,6 +238,19 @@ fun SettingsScreen(
                 publish()
             }
         )
+        if (selectedTheme == TimerTheme.RING) {
+            Spacer(Modifier.height(LocalDimens.current.spaceXL))
+            LabeledSlider(
+                label = stringResource(Strings.string.ring_thickness),
+                value = ringThickness.toFloat(),
+                valueLabel = stringResource(Strings.string.ring_thickness_value, ringThickness),
+                onValueChange = { ringThickness = it.roundToInt(); publish() },
+                minimumLabel = stringResource(Strings.string.ring_thin),
+                maximumLabel = stringResource(Strings.string.ring_solid),
+                valueRange = 1f..100f,
+                steps = 98,
+            )
+        }
         Spacer(Modifier.height(LocalDimens.current.spaceXL))
         Text(stringResource(Strings.string.colors), style = MaterialTheme.typography.titleLarge)
         Spacer(Modifier.height(LocalDimens.current.spaceM))

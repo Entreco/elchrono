@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-006 |
-| Revision | 0.9 |
+| Revision | 1.0 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Product usability, accessibility, and safeguarding/privacy review: @Entreco, designated by the product owner on 2026-11-19; exact-revision acceptance pending |
@@ -15,6 +15,13 @@ Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](../governance/document-control.md#lifecycle-and-approval).
 
 ## Purpose and evidence boundary
+
+The existing issue #66 gap G06 also covers the new global background,
+translucent Settings, bottom-right non-interactive cue, immediate duration
+preview, shallow Battery, stable detail overlays, and Ring thickness
+(M2-DOC-004 revision 2.3). No additional participant/caregiver session or
+human accessibility/risk review has been supplied for these changes. Automated
+checks and rendered screenshots are not participant findings or acceptance.
 
 This record reports two usability-review sessions and distinguishes
 participant feedback, facilitator recollection, retained screenshots, and
@@ -166,3 +173,4 @@ themselves establish completed validation.
 | 0.7 | Update current requirements and risk references and record the owner's reviewer designation; preserve the retrospective, caregiver, preference, and assistive-technology evidence gaps. |
 | 0.8 | Record that the retrospective sessions did not evaluate issue #66's text-free detail-0 and interruption cues; keep comprehension, assistive-technology, and risk review explicitly pending. |
 | 0.9 | Extend the issue #66 review gap to the corrected Clock labels and Fan geometry; preserve the retrospective-evidence boundary and pending human review. |
+| 1.0 | Extend G06 to the latest appearance/preview/geometry/thickness refinements; retain the absence of new participant or human-review evidence. |

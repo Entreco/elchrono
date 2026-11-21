@@ -1,7 +1,9 @@
 package nl.entreco.elchrono.core.design
 
 import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 
 object ElChronoColors {
     val Background = Color(0xFF151517)
@@ -51,3 +53,16 @@ val ElChronoColorScheme = darkColorScheme(
     inversePrimary = Color(0xFF68449B),
     scrim = Color.Black,
 )
+
+fun appColorScheme(background: Color) =
+    (if (background.luminance() > 0.179f) lightColorScheme(
+        primary = Color(0xFF5B5BD6),
+        secondary = Color(0xFF57466F),
+        tertiary = Color(0xFF765400),
+    ) else ElChronoColorScheme).copy(
+        background = background,
+        surface = background,
+        onBackground = if (background.luminance() > 0.179f) Color.Black else Color.White,
+        onSurface = if (background.luminance() > 0.179f) Color.Black else Color.White,
+        onSurfaceVariant = if (background.luminance() > 0.179f) Color.Black else Color.White,
+    )

@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M1-DOC-004 |
-| Revision | 1.1 |
+| Revision | 1.2 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Software-safety and product-risk review: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
@@ -74,6 +74,15 @@ detail-dependent movement, Battery recognition, and thin/solid Ring
 interpretation (RISK-005). The bottom-right play/pause cue is not an action;
 review whether its appearance misleadingly suggests a manual control.
 No risk score, control-effectiveness claim, or acceptance changes here.
+
+The Settings foreground accent adds review scope for keypad, duration-field,
+and Details slider visibility and operation when foreground and background
+colors match or have low contrast. Black/white keypad labels do not establish
+that button boundaries, focus, selection, or slider positions are
+distinguishable. REQ-012 permits these combinations without restrictions or
+warnings. Review the resulting Settings interaction and configuration risks
+under RISK-004 and RISK-005; no risk disposition or control effectiveness is
+claimed.
 
 ## Initial assessment method and criteria
 
@@ -301,3 +310,4 @@ they are not waived by this initial assessment.
 | 0.9 | Add issue #66's text-free detail-0 warning-cue change to RISK-002/RISK-005 and RC-002-2/RC-005-1; retain provisional ratings and require human review before crediting effectiveness. |
 | 1.0 | Include incorrect Clock duration-label values and unreadable/clipped theme geometry in existing timing and accessibility risk scenarios; retain provisional ratings and pending human review. |
 | 1.1 | Extend refinement review to translucent controls, global background, preview isolation, migration, cue interpretation, Battery recognition, and Ring thickness; leave all scores and acceptance unchanged. |
+| 1.2 | Add Settings foreground-accent visibility and interaction to the existing risk-review scope; retain unrestricted color choices and pending risk disposition. |

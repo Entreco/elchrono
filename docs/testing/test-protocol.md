@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-002 |
-| Revision | 1.5 |
+| Revision | 1.6 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Test and product requirements review: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
@@ -43,12 +43,36 @@ hours. No accessibility conformance baseline is selected by this protocol.
 | TP-REQ-009 | [REQ-009](../product/requirements.md#requirement-identification) | Review application screens, About content, and external product claims against intended-use exclusions. | No content presents the app as a clock, guarantees a deadline, makes medical claims, or presents it for safety-critical timing. Conflicts in intended purpose, functionality, claims, or markets are escalated before affected work continues. |
 | TP-REQ-010 | [REQ-010](../product/requirements.md#requirement-identification) | With a controllable time source and no v1 audio, advance the countdown to zero. | The timer immediately resets to the configured duration, displays no completed state, handles completion once, and does not become negative. Stopping optional music is deferred to v2 and is not a v1 test result. |
 | TP-REQ-011 | [REQ-011](../product/requirements.md#requirement-identification) | On each configured target, operate Main, Settings, and About using its supported remote/controller focus model; verify visible focus, predictable navigation, readability at ordinary viewing distance, and non-colour-only cues. Attempt target packaging and lifecycle checks. | Android TV and Apple TV controls are operable without touch, focus is visible and predictable, and content remains readable and complete at the agreed viewing distance. Record target configuration and verification before claiming support; an unconfigured target or unavailable device makes the test blocked, not passed. |
-| TP-REQ-012 | [REQ-012](../product/requirements.md#requirement-identification) | Enumerate detail levels 0-12 and select colors/fonts across shape changes and temporary hidden controls. | Every detail level and color/font choice is reachable, shape changes do not erase selections, and no contrast restriction or warning is introduced. |
+| TP-REQ-012 | [REQ-012](../product/requirements.md#requirement-identification) | Enumerate detail levels 0-12 and select colors/fonts across shape changes and temporary hidden controls. For each foreground preset, inspect Settings keypad buttons, focused Hours/Minutes fields, and Details slider, including a change while the duration draft is invalid. Inspect matching and low-contrast foreground/background combinations and keyboard focus. | Every detail level and color/font choice is reachable, shape changes do not erase selections, and no contrast restriction or warning is introduced. The specified Settings accents use the current foreground, including for an invalid draft; keypad text has at least 4.5:1 contrast against its button and independent keyboard focus remains available. Record visibility limitations for low-contrast combinations and obtain human accessibility and risk review; do not treat unrestricted colors as proof of contrast. |
 | TP-REQ-013 | [REQ-013](../product/requirements.md#requirement-identification) | For every shape, enumerate detail 0-12 and verify shape-specific marker count/geometry, text visibility, and accessible state semantics. Include detail 1 explicitly and inspect the zero-duration state. | Detail 0 has no extra boundaries, Clock duration labels, or on-screen Timer text; it retains the base visualization and state cue and exposes accessible descriptions including stale progress. At Clock detail N from 1-12, N evenly spaced duration labels surround a continuous disk with no internal boundaries; for 60 minutes at detail 2, labels are 0 at the top and 30 at the bottom. Short durations use whole seconds; longer durations use compact minutes and one unit label. Battery, Fan, and Ring use N-1 equal boundaries to form N segments; detail 1 is one continuous segment. The Fan semicircle is centered and not clipped at representative compact and expanded sizes. Remaining-time text is shown at levels 1-12. 00:00 is idle/non-counting/non-animating and has no progress/completion semantics. |
 | TP-REQ-014 | [REQ-014](../product/requirements.md#requirement-identification) | Exercise preview, auto-save, app reopen, invalid/stale storage, storage read failure, save failure, and zero duration. | Valid changes preview and persist without Save; reopen restores settings but not a running countdown; invalid/stale values use defaults; storage failures are visibly reported. |
 | TP-REQ-015 | [REQ-015](../product/requirements.md#requirement-identification) | Resize Settings across compact and expanded layouts and inspect labels, focus, semantics, and clipping. | Settings remains reachable, uses a side pane where supported, and required controls remain visible and labeled at each browser configuration checked. |
 
 ## Execution record
+
+### Settings foreground accents
+
+The focused command `./kotlin test -p jvm -m settings -m design` passed in the
+`fix/66-settings-foreground` worktree. `SettingsAccentColorsTest` verifies the
+selected color and at least 4.5:1 keypad-label contrast for the six presets,
+and checks black/white contrast choices. `./kotlin build -m browser` passed.
+`./kotlin check -m settings -m design` was stopped after more than six minutes
+of multiplatform compilation and native-linker warnings; it did not complete.
+
+In Chrome 158.0.8127.37 headless with ANGLE/SwiftShader at 320 x 640, selecting
+orange in Settings changed the keypad buttons, the focused Hours and Minutes
+border/label, and the Details thumb/active track to orange. Keypad text was
+black. The Clear and Delete labels wrapped at this width; their usability
+requires review. This is a bounded visual observation, not a protocol pass.
+At 1440 x 1000, the Settings/foreground interaction sequence encountered
+Compose lookahead/layout exceptions and a blank render. The same sequence
+also produced exceptions on the unmodified `1cbc9cc` baseline. Expanded
+interaction remains unverified; this comparison does not establish a root
+cause. The current digit-entry implementation rejects invalid appended values
+and accepts zero, so an invalid draft was not produced through the checked
+input path. The unit tests and observations do not verify every color, live
+invalid-draft updates, keyboard navigation, browser persistence, or human
+accessibility/usability/risk review. Full TP-REQ-012 acceptance remains pending.
 
 ### Issue #66 refinement acceptance extension
 
@@ -259,3 +283,4 @@ design, usability, accessibility, and product review remain pending.
 | 1.3 | Record the bounded Chrome render check at compact and expanded viewports; retain incomplete accessibility, visual-matrix, and human-review gates. |
 | 1.4 | Replace Clock segment criteria with demo-matching duration labels, add compact/expanded Fan centering checks, and retain browser, accessibility, usability, and human-review gates. |
 | 1.5 | Add measurable global-background, preview, stable-layout, Battery, and Ring-thickness criteria and scoped refinement evidence without claiming full protocol acceptance. |
+| 1.6 | Add Settings foreground-accent and keypad-label contrast checks; record focused JVM color tests and remaining rendered and human-review gaps. |

@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-003 |
-| Revision | 3.7 |
+| Revision | 3.8 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Requirements and software-safety review: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
@@ -20,7 +20,7 @@ This matrix is the authoritative cross-reference between the intended-use
 source, product requirements, risks, design/usability evidence, and test
 protocol. Requirement statements live in
 [M2-DOC-001, revision 1.2](../product/requirements.md); acceptance criteria and
-procedures live in [M2-DOC-002, revision 1.5](../testing/test-protocol.md).
+procedures live in [M2-DOC-002, revision 1.6](../testing/test-protocol.md).
 Do not duplicate those statements or criteria here.
 
 The mappings below are initial and proposed. Design links are included when
@@ -31,10 +31,10 @@ actual evidence is recorded.
 |---|---|---|
 | [M1-DOC-002, intended use](../product/intended-use.md) | 1.0 candidate | Product purpose, roles, use, and limitations |
 | [M2-DOC-001, product requirements](../product/requirements.md) | 1.2 candidate | V1 requirements including issue #66 global appearance, immediate duration preview, stable geometry, and Ring thickness |
-| [M1-DOC-004, risk assessment](risk-assessment.md) | 1.1 candidate | RISK-001 through RISK-006 traced below; no control effectiveness or risk reduction claimed |
+| [M1-DOC-004, risk assessment](risk-assessment.md) | 1.2 candidate | RISK-001 through RISK-006 traced below; no control effectiveness or risk reduction claimed |
 | [M1-DOC-009, risk traceability matrix](risk-traceability-matrix.md) | 1.6 candidate | Refinement risks and planned verification; review pending |
-| [M2-DOC-002, product test protocol](../testing/test-protocol.md) | 1.5 candidate | Refinement criteria and bounded observations; full protocol acceptance pending |
-| [M2-DOC-004, accessible screen flows and theme prototypes](../design/accessible-screen-flows-and-theme-prototypes.md) | 2.3 candidate | Updated global appearance, preview, Battery, stable overlays, cue placement, and Ring thickness; exact-head review pending |
+| [M2-DOC-002, product test protocol](../testing/test-protocol.md) | 1.6 candidate | Refinement and Settings foreground criteria; full protocol acceptance pending |
+| [M2-DOC-004, accessible screen flows and theme prototypes](../design/accessible-screen-flows-and-theme-prototypes.md) | 2.4 candidate | Updated Settings accents, global appearance, preview, Battery, stable overlays, cue placement, and Ring thickness; exact-head review pending |
 | [M2-DOC-005, usability review plan](../usability/usability-plan.md) | 1.0 candidate | Future refinement review scope; no participant session authorized |
 | [M2-DOC-006, usability findings and evidence status](../usability/usability-findings.md) | 1.0 candidate | Retrospective sessions and extended G06 redesign gap |
 | [M3-DOC-007, platform architecture decision and support matrix](../architecture/platform-architecture-and-support-matrix.md) | 0.3 candidate | Retains the configured Kotlin Multiplatform/Compose architecture; records TV priorities, Wear/watch exclusion, evidence limits, and no support commitment |
@@ -53,7 +53,7 @@ actual evidence is recorded.
 | [REQ-009](../product/requirements.md#requirement-identification) | [Exclusions and claims boundary](../product/intended-use.md#exclusions-and-claims-boundary) | RISK-006 | [About screen content](../design/accessible-screen-flows-and-theme-prototypes.md#about-screen); session gap G04 | [TP-REQ-009](../testing/test-protocol.md#test-cases) | Pending |
 | [REQ-010](../product/requirements.md#requirement-identification) | [Ordinary waiting use and limitations](../product/intended-use.md#foreseeable-use-and-limitations) | RISK-001, RISK-005; RISK-003 only if audio is added in v2 | Immediate reset without a completed state; no v1 audio | [TP-REQ-010](../testing/test-protocol.md#test-cases) | Timer-domain reset, non-negative remaining time, and once-per-cycle completion passed; app/UI integration unverified; music-stop criterion deferred to v2 |
 | [REQ-011](../product/requirements.md#requirement-identification) | [Roles and ordinary use](../product/intended-use.md#users-population-and-roles); TV viewing/input boundaries | RISK-005, RISK-006 | [TV priority and v1 boundary](../design/accessible-screen-flows-and-theme-prototypes.md#design-principles); TV interaction and platform support remain unverified | [TP-REQ-011](../testing/test-protocol.md#test-cases) | Pending; Android TV has a candidate launcher; Apple TV is unconfigured. No TV support claim is made |
-| REQ-012 | [Users and roles](../product/intended-use.md#users-population-and-roles) | RISK-004, RISK-005 | Complete Settings personalization controls; human product/accessibility review pending | TP-REQ-012 | Implementation and JVM regressions pending final review |
+| REQ-012 | [Users and roles](../product/intended-use.md#users-population-and-roles) | RISK-004, RISK-005 | Settings personalization and foreground accents; unrestricted-color visibility and human product/accessibility/risk review pending | TP-REQ-012 | JVM accent/label contrast tests and one compact orange-accent browser observation; expanded browser exceptions also occur on the baseline. Invalid-draft updates, keyboard navigation and full protocol acceptance remain unverified |
 | REQ-013 | [Visual remaining-time use and limitations](../product/intended-use.md#supported-role-of-visual-time-and-optional-audio) | RISK-001, RISK-002, RISK-005 | [Issue #66 shape/detail and state presentation](../design/accessible-screen-flows-and-theme-prototypes.md#m5-timer-scope-and-detail-mapping); user preference and browser layout remain unverified | [TP-REQ-013](../testing/test-protocol.md#test-cases) | Focused JVM tests cover details 0-12, Clock label counts/values/positions, the absence of Clock boundaries, equal boundaries for other shapes, detail-0 text/cue policy, and Fan/Clock layout bounds; rendered browser behavior and human accessibility/usability/risk review remain pending. See [bounded browser visual check](../testing/test-protocol.md#issue-66-bounded-browser-visual-check) |
 | REQ-014 | [Users and roles](../product/intended-use.md#users-population-and-roles) | RISK-001, RISK-004 | Automatic-save and persistence design; browser storage and failure behavior require runtime verification | TP-REQ-014 | Persistence JVM tests pass; browser read/write behavior remains unverified |
 | REQ-015 | [Users and roles](../product/intended-use.md#users-population-and-roles) | RISK-005 | Adaptive supporting-pane Settings; no-clipping and assistive-tech evidence pending | TP-REQ-015 | Browser build passes; responsive and runtime checks remain pending |
@@ -213,3 +213,4 @@ test procedures or acceptance criteria in this matrix.
 | 3.5 | Record bounded browser render observations for REQ-003/013 while retaining the unresolved accessibility, complete visual-matrix, and human-review gaps. |
 | 3.6 | Align requirements, protocol, risks, and usability sources with the demo-matching Clock labels and centered Fan geometry; keep rendered behavior and human review explicitly pending. |
 | 3.7 | Align refinement source revisions and trace preview, color, Battery/Ring geometry, and thickness migration tests; distinguish bounded browser observations from human acceptance. |
+| 3.8 | Trace Settings foreground accents, focused JVM color tests, unrestricted-color visibility risks, and outstanding rendered and human verification. |

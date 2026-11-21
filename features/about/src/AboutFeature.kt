@@ -10,7 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
+import nl.entreco.elchrono.core.design.LocalDimens
 import nl.entreco.elchrono.core.localization.resources.Res as Strings
 import nl.entreco.elchrono.core.localization.resources.brand_wordmark
 import nl.entreco.elchrono.core.localization.resources.company_logo_gap
@@ -30,7 +30,7 @@ fun AboutFeature(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier.fillMaxWidth(),
         horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+        verticalArrangement = Arrangement.spacedBy(LocalDimens.current.spaceL),
     ) {
         Text(stringResource(Strings.string.brand_wordmark), style = MaterialTheme.typography.headlineLarge)
         AboutItem(Strings.string.company_logo_gap)
@@ -38,7 +38,7 @@ fun AboutFeature(modifier: Modifier = Modifier) {
         AboutItem(Strings.string.support_information_gap)
         AboutItem(Strings.string.privacy_policy_gap)
         AboutItem(Strings.string.licence_information_gap)
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(LocalDimens.current.spaceM))
         Text(stringResource(Strings.string.intended_use_heading), style = MaterialTheme.typography.titleLarge)
         Text(stringResource(Strings.string.intended_use_summary), textAlign = TextAlign.Center)
         Text(stringResource(Strings.string.limitations_heading), style = MaterialTheme.typography.titleLarge)

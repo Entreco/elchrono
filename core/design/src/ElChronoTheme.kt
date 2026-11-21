@@ -5,5 +5,10 @@ import androidx.compose.runtime.Composable
 
 @Composable
 fun ElChronoTheme(content: @Composable () -> Unit) {
-    MaterialTheme(content = content)
+    MaterialTheme(
+        colorScheme = ElChronoColorScheme,
+        typography = ElChronoTypography,
+        shapes = ElChronoShapes,
+        content = content,
+    )
 }

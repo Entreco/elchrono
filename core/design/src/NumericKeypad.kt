@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -22,16 +23,20 @@ fun NumericKeypad(
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(4.dp),
+        verticalArrangement = Arrangement.spacedBy(LocalDimens.current.spaceXS),
     ) {
         KEYPAD_ROWS.forEach { row ->
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                horizontalArrangement = Arrangement.spacedBy(LocalDimens.current.spaceXS),
             ) {
                 row.forEach { key ->
                     Button(
-                        modifier = Modifier.weight(1f).heightIn(min = 48.dp),
+                        modifier = Modifier
+                            .weight(1f)
+                            .heightIn(min = 48.dp)
+                            .elChronoFocusOutline(MaterialTheme.shapes.small),
+                        shape = MaterialTheme.shapes.small,
                         onClick = {
                             when (key) {
                                 is Key.Digit -> onDigit(key.value)

@@ -46,14 +46,23 @@ Wasm/JS. These compilation targets do not establish TV/watch support.
 
 ## Ownership
 
-- Design owns `ElChronoTheme`, the shared `TimerTheme` selection type, and
-  reusable design assets. The initial theme delegates to MaterialTheme.
+- Design owns `ElChronoTheme`, shared `TimerTheme`, spacing tokens in
+  `LocalDimens`, and reusable fade and directional slide transitions in
+  `ElChronoMotion`. The shell chooses transitions for its navigation scenes;
+  design does not depend on navigation or app state.
+  `LocalDimens` supplies a relative spacing scale from `spaceXXS` to
+  `spaceXXXL`, with `spaceM` as the default. The baseline values are 2, 4,
+  6, 8, 12, 16, 20, and 24 dp, respectively; names describe relative sizes,
+  not fixed dimensions. A composition subtree can override the `Dimens` value
+  without changing the enclosing theme. No form-factor-specific values are
+  selected by default; future profiles require layout and accessibility review.
 - Localization owns default-locale string resources. Generated accessors are
   public and use a distinct namespace from design resources.
 - Common owns the adaptive app scaffold, feature routing, the `AppViewModel`
   that coordinates `TimerEngine`, settings and lifecycle state, and lifecycle
-  event integration; it does not contain timer-domain logic or feature-screen
-  UI.
+  event integration. `AppUiState.isTicking` derives whether updates are needed
+  from running and interruption state; the lifecycle still gates the UI update
+  loop. Common does not contain timer-domain logic or feature-screen UI.
 - Counter owns `TimerDuration`, `DurationDigitEntry`, `MonotonicClock`, and
   `TimerEngine`, with deterministic tests in the same module.
 - Design owns the shared `NumericKeypad`; its labels are supplied by callers

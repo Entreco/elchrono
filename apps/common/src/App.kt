@@ -1,10 +1,5 @@
 package nl.entreco.elchrono
 
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -38,7 +33,8 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.scene.SceneStrategy
 import androidx.navigation3.ui.NavDisplay
 import kotlinx.coroutines.delay
-import nl.entreco.elchrono.core.counter.TimerStatus
+import nl.entreco.elchrono.core.design.LocalDimens
+import nl.entreco.elchrono.core.design.ElChronoMotion
 import nl.entreco.elchrono.core.design.ElChronoTheme
 import nl.entreco.elchrono.core.localization.resources.Res as Strings
 import nl.entreco.elchrono.core.localization.resources.app_title
@@ -64,7 +60,6 @@ private fun AppContent(
     viewModel: AppViewModel = viewModel { AppViewModel() },
 ) {
 
-    
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val keyboardAvailable = allowKeyboardInput && isKeyboardAvailable()
@@ -87,26 +82,18 @@ private fun AppContent(
         emptyList()
     }
 
-    val openTransition = if (useTwoPanes) {
-        fadeIn() togetherWith fadeOut()
-    } else {
-        slideInHorizontally { -it } togetherWith slideOutHorizontally { it }
-    }
-    val backTransition = if (useTwoPanes) {
-        fadeIn() togetherWith fadeOut()
-    } else {
-        slideInHorizontally { it } togetherWith slideOutHorizontally { -it }
-    }
+    val openTransition = if (useTwoPanes) ElChronoMotion.fade else ElChronoMotion.forward
+    val backTransition = if (useTwoPanes) ElChronoMotion.fade else ElChronoMotion.backward
     // Material's list slot is on the left; Timer takes the remaining detail space.
     val settingsPane = ListDetailSceneStrategy.listPane() +
         ListDetailSceneStrategy.preferredPaneSize(width = 440.dp) +
         ListDetailSceneStrategy.paneAnimation(
-            enterTransition = slideInHorizontally { -it },
-            exitTransition = slideOutHorizontally { -it },
+            enterTransition = ElChronoMotion.enterFromLeft,
+            exitTransition = ElChronoMotion.exitToLeft,
         )
 
     LifecycleEventEffect(Lifecycle.Event.ON_STOP) { viewModel.onAppStopped() }
-    val ticking = state.timer.snapshot.status == TimerStatus.RUNNING && !state.interrupted
+    val ticking = state.isTicking
     LaunchedEffect(lifecycle, ticking) {
         if (ticking) lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
             while (true) {
@@ -128,7 +115,8 @@ private fun AppContent(
         NavDisplay(
             backStack = state.backStack,
             onBack = viewModel::onBackPressed,
-            modifier = Modifier.fillMaxSize().padding(contentPadding).padding(horizontal = 24.dp, vertical = 16.dp),
+            modifier = Modifier.fillMaxSize().padding(contentPadding)
+                .padding(horizontal = LocalDimens.current.spaceXXXL, vertical = LocalDimens.current.spaceXL),
             sceneStrategies = sceneStrategies,
             transitionSpec = { openTransition },
             popTransitionSpec = { backTransition },
@@ -137,8 +125,8 @@ private fun AppContent(
                 entry(
                     AppScreen.TIMER,
                     metadata = ListDetailSceneStrategy.detailPane() + ListDetailSceneStrategy.paneAnimation(
-                        enterTransition = slideInHorizontally { it },
-                        exitTransition = slideOutHorizontally { it },
+                        enterTransition = ElChronoMotion.enterFromRight,
+                        exitTransition = ElChronoMotion.exitToRight,
                     ),
                 ) {
                     TimerFeature(
@@ -158,7 +146,7 @@ private fun AppContent(
                     )
                 }
                 entry(AppScreen.ABOUT, metadata = settingsPane) {
-                    AboutFeature(Modifier.verticalScroll(rememberScrollState()).padding(16.dp))
+                    AboutFeature(Modifier.verticalScroll(rememberScrollState()).padding(LocalDimens.current.spaceXL))
                 }
             },
         )

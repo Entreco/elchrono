@@ -12,3 +12,4 @@ modules:
   - features/music
   - features/settings
   - features/timer
+  - tools/design-catalog

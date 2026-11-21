@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import nl.entreco.elchrono.core.counter.DurationDigitEntry
 import nl.entreco.elchrono.core.design.NumericKeypad
+import nl.entreco.elchrono.core.design.LocalDimens
 import nl.entreco.elchrono.core.design.TimerTheme
 import nl.entreco.elchrono.core.localization.resources.Res as Strings
 import nl.entreco.elchrono.core.localization.resources.about
@@ -64,11 +65,12 @@ fun SettingsPanel(
         color = MaterialTheme.colorScheme.surfaceVariant,
         tonalElevation = 2.dp,
     ) {
+        
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .padding(16.dp),
+                .padding(LocalDimens.current.spaceXL),
         ) {
             SettingsScreen(
                 initialSettings = initialSettings,
@@ -105,10 +107,10 @@ fun SettingsScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(stringResource(Strings.string.duration), style = MaterialTheme.typography.titleLarge)
-        Spacer(Modifier.height(12.dp))
+        Spacer(Modifier.height(LocalDimens.current.spaceL))
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(LocalDimens.current.spaceL),
         ) {
             OutlinedTextField(
                 value = entry.hours.toString().padStart(2, '0'),
@@ -139,12 +141,12 @@ fun SettingsScreen(
                 singleLine = true,
             )
         }
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(LocalDimens.current.spaceM))
         Text(
             stringResource(Strings.string.duration_entry_help),
             textAlign = TextAlign.Center,
         )
-        Spacer(Modifier.height(12.dp))
+        Spacer(Modifier.height(LocalDimens.current.spaceL))
         if (inputMode.showNumericKeypad) {
             NumericKeypad(
                 clearLabel = stringResource(Strings.string.clear),
@@ -155,15 +157,15 @@ fun SettingsScreen(
             )
         }
         if (entry.duration == null) {
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(LocalDimens.current.spaceM))
             Text(
                 text = stringResource(Strings.string.invalid_duration),
                 color = MaterialTheme.colorScheme.error,
             )
         }
-        Spacer(Modifier.height(20.dp))
+        Spacer(Modifier.height(LocalDimens.current.spaceXXL))
         Text(stringResource(Strings.string.theme), style = MaterialTheme.typography.titleLarge)
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(LocalDimens.current.spaceM))
         TimerTheme.entries.forEach { theme ->
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -181,7 +183,7 @@ fun SettingsScreen(
                 }
             }
         }
-        Spacer(Modifier.height(12.dp))
+        Spacer(Modifier.height(LocalDimens.current.spaceL))
         Button(
             onClick = {
                 entry.duration?.let { onSave(TimerSettings(it, selectedTheme)) }

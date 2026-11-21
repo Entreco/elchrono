@@ -15,6 +15,49 @@ import nl.entreco.elchrono.features.settings.TimerSettings
 
 class AppViewModelTest {
     @Test
+    fun `ticking requires running and not interrupted`() {
+        val viewModel = AppViewModel(TimerEngine(TestMonotonicClock()))
+        val initial = viewModel.uiState.value
+        assertFalse(initial.isTicking)
+
+        viewModel.saveSettings(settings(5))
+        val running = viewModel.uiState.value
+        assertTrue(running.isTicking)
+        assertFalse(running.copy(interrupted = true).isTicking)
+
+        viewModel.openSettings()
+        val paused = viewModel.uiState.value
+        assertFalse(paused.isTicking)
+        assertFalse(paused.copy(interrupted = true).isTicking)
+        assertFalse(initial.copy(interrupted = true).isTicking)
+
+        viewModel.saveSettings(settings(5))
+        viewModel.onAppStopped()
+        assertFalse(viewModel.uiState.value.isTicking)
+        viewModel.saveSettings(settings(5))
+        assertTrue(viewModel.uiState.value.isTicking)
+    }
+
+    @Test
+    fun `tick updates running timer and ignores a paused timer`() {
+        val clock = TestMonotonicClock()
+        val viewModel = AppViewModel(TimerEngine(clock))
+        viewModel.tick()
+        assertFalse(viewModel.uiState.value.isTicking)
+
+        viewModel.saveSettings(settings(5))
+        clock.advance(1.minutes)
+        viewModel.tick()
+        assertEquals(4.minutes, viewModel.uiState.value.timer.snapshot.remaining)
+
+        viewModel.openSettings()
+        val paused = viewModel.uiState.value
+        clock.advance(1.minutes)
+        viewModel.tick()
+        assertEquals(paused, viewModel.uiState.value)
+    }
+
+    @Test
     fun `about navigation returns to settings and then timer`() {
         val viewModel = AppViewModel(TimerEngine(TestMonotonicClock()))
 

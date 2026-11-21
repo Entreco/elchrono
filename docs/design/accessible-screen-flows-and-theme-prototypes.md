@@ -9,7 +9,7 @@
 | Required reviewers | Product design, accessibility, and usability: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#23](https://github.com/Entreco/elchrono/issues/23) |
-| Review PR | Prior baselines: [PR #28](https://github.com/Entreco/elchrono/pull/28) (revision 0.2), [PR #29](https://github.com/Entreco/elchrono/pull/29) (revision 1.3), and [PR #32](https://github.com/Entreco/elchrono/pull/32); revision 1.6: [PR #41](https://github.com/Entreco/elchrono/pull/41); #47 update: [PR #59](https://github.com/Entreco/elchrono/pull/59); #67: [PR #68](https://github.com/Entreco/elchrono/pull/68); #66 review: [draft PR #70](https://github.com/Entreco/elchrono/pull/70); status-indicator follow-up: [draft PR #74](https://github.com/Entreco/elchrono/pull/74); final exact-head acceptance pending |
+| Review PR | Prior baselines: [PR #28](https://github.com/Entreco/elchrono/pull/28) (revision 0.2), [PR #29](https://github.com/Entreco/elchrono/pull/29) (revision 1.3), and [PR #32](https://github.com/Entreco/elchrono/pull/32); revision 1.6: [PR #41](https://github.com/Entreco/elchrono/pull/41); #47 update: [PR #59](https://github.com/Entreco/elchrono/pull/59); #67: [PR #68](https://github.com/Entreco/elchrono/pull/68); #66 review: [draft PR #70](https://github.com/Entreco/elchrono/pull/70); Settings foreground: [PR #72](https://github.com/Entreco/elchrono/pull/72); final exact-head acceptance pending |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](../governance/document-control.md#lifecycle-and-approval).
@@ -211,9 +211,17 @@ protection. The user configures duration and visualization; valid changes
 preview immediately and are saved automatically, without a Save action.
 The full app-owned area uses the selected background, including app bars,
 pane gutters, and About. Settings uses an 8% contrasting tint over that
-background, without a required blur. Controls use light/dark design colors
-chosen for the background; patient visualization text still uses its selected
-text color without enforcing contrast restrictions.
+background, without a required blur. Most controls use light/dark design colors
+chosen for the background. The selected foreground also colors the keypad
+buttons, focused duration-field border, label, cursor and selection, and the
+Details slider thumb and active track. Keypad labels use contrasting black or
+white; keyboard focus outlines remain independent. A foreground change updates
+these accents in the local Settings draft, including when duration input is
+invalid. Other controls retain their existing colors. Patient visualization
+text still uses its selected text color without enforcing contrast restrictions.
+Since foreground and background choices are unrestricted, some combinations
+can make controls or their accents difficult to distinguish; product,
+accessibility, usability and risk review remains pending.
 While Settings is open, a separate presentation snapshot uses the full selected
 duration and a paused/idle presentation. Clock labels, units, remaining text,
 and fill update together without altering the underlying paused engine.
@@ -375,4 +383,4 @@ PR.
 | 2.1 | Record Timer surface-color behavior and the bounded headless browser render observation; keep full visual, accessibility, reduced-motion, and human reviews pending. |
 | 2.2 | Align application Clock detail with the demo's outer duration labels and units instead of concentric bands; specify centered, unclipped Fan geometry and retain human review and verification gaps. |
 | 2.3 | Specify global background, translucent Settings, immediate duration preview, bottom-right status cue, shallow Battery, stable detail overlays, and normalized Ring thickness; retain review gaps. |
-| 2.4 | Move non-interactive running/paused icons to detail 1-12, remove their text at all levels, and record the unresolved detail-0 distinction gap. |
+| 2.4 | Describe Settings foreground accents and their contrast limitations; retain product, accessibility, usability, and risk review gaps. |

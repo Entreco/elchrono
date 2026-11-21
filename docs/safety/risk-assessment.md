@@ -9,7 +9,7 @@
 | Required reviewers | Software-safety and product-risk review: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#4](https://github.com/Entreco/elchrono/issues/4) |
-| Review PR | Prior baselines: [PR #14](https://github.com/Entreco/elchrono/pull/14), [PR #16](https://github.com/Entreco/elchrono/pull/16), [PR #32](https://github.com/Entreco/elchrono/pull/32); issue #47 review: [PR #59](https://github.com/Entreco/elchrono/pull/59); issue #66 review: [draft PR #70](https://github.com/Entreco/elchrono/pull/70); status-indicator follow-up: [draft PR #74](https://github.com/Entreco/elchrono/pull/74); final exact-head acceptance pending |
+| Review PR | Prior baselines: [PR #14](https://github.com/Entreco/elchrono/pull/14), [PR #16](https://github.com/Entreco/elchrono/pull/16), [PR #32](https://github.com/Entreco/elchrono/pull/32); issue #47 review: [PR #59](https://github.com/Entreco/elchrono/pull/59); issue #66 review: [draft PR #70](https://github.com/Entreco/elchrono/pull/70); Settings foreground: [PR #72](https://github.com/Entreco/elchrono/pull/72); final exact-head acceptance pending |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [Lifecycle and approval](../governance/document-control.md#lifecycle-and-approval).
@@ -77,6 +77,15 @@ No risk score, control-effectiveness claim, or acceptance changes here.
 At detail 0 the current candidate intentionally omits running/paused cues;
 there is no visible status distinction between them. This is an unresolved
 REQ-003 and RISK-005 gap, not an accepted risk or a demonstrated control.
+
+The Settings foreground accent adds review scope for keypad, duration-field,
+and Details slider visibility and operation when foreground and background
+colors match or have low contrast. Black/white keypad labels do not establish
+that button boundaries, focus, selection, or slider positions are
+distinguishable. REQ-012 permits these combinations without restrictions or
+warnings. Review the resulting Settings interaction and configuration risks
+under RISK-004 and RISK-005; no risk disposition or control effectiveness is
+claimed.
 
 ## Initial assessment method and criteria
 
@@ -304,4 +313,4 @@ they are not waived by this initial assessment.
 | 0.9 | Add issue #66's text-free detail-0 warning-cue change to RISK-002/RISK-005 and RC-002-2/RC-005-1; retain provisional ratings and require human review before crediting effectiveness. |
 | 1.0 | Include incorrect Clock duration-label values and unreadable/clipped theme geometry in existing timing and accessibility risk scenarios; retain provisional ratings and pending human review. |
 | 1.1 | Extend refinement review to translucent controls, global background, preview isolation, migration, cue interpretation, Battery recognition, and Ring thickness; leave all scores and acceptance unchanged. |
-| 1.2 | Identify the absent detail-0 running/paused visual distinction as an unresolved REQ-003 and RISK-005 control gap. |
+| 1.2 | Add Settings foreground-accent visibility and interaction to the existing risk-review scope; retain unrestricted color choices and pending risk disposition. |

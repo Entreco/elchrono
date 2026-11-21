@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,6 +22,7 @@ fun NumericKeypad(
     onClear: () -> Unit,
     onDelete: () -> Unit,
     modifier: Modifier = Modifier,
+    colors: ButtonColors = ButtonDefaults.buttonColors(),
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -37,6 +40,7 @@ fun NumericKeypad(
                             .heightIn(min = 48.dp)
                             .elChronoFocusOutline(MaterialTheme.shapes.small),
                         shape = MaterialTheme.shapes.small,
+                        colors = colors,
                         onClick = {
                             when (key) {
                                 is Key.Digit -> onDigit(key.value)

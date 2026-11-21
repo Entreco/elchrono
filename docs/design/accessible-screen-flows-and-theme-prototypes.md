@@ -3,13 +3,13 @@
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-004 |
-| Revision | 1.8 |
+| Revision | 1.9 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Product design, accessibility, and usability: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#23](https://github.com/Entreco/elchrono/issues/23) |
-| Review PR | Prior baselines: [PR #28](https://github.com/Entreco/elchrono/pull/28) (revision 0.2), [PR #29](https://github.com/Entreco/elchrono/pull/29) (revision 1.3), and [PR #32](https://github.com/Entreco/elchrono/pull/32); revision 1.6: [PR #41](https://github.com/Entreco/elchrono/pull/41); #47 update: [PR #59](https://github.com/Entreco/elchrono/pull/59), final exact-head acceptance pending |
+| Review PR | Prior baselines: [PR #28](https://github.com/Entreco/elchrono/pull/28) (revision 0.2), [PR #29](https://github.com/Entreco/elchrono/pull/29) (revision 1.3), and [PR #32](https://github.com/Entreco/elchrono/pull/32); revision 1.6: [PR #41](https://github.com/Entreco/elchrono/pull/41); #47 update: [PR #59](https://github.com/Entreco/elchrono/pull/59); #67 candidate: [draft PR #68](https://github.com/Entreco/elchrono/pull/68), final exact-head acceptance pending |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](../governance/document-control.md#lifecycle-and-approval).
@@ -187,11 +187,28 @@ platform, and usability review.
 
 ### About screen
 
-The About portion of the prototype reserves space for the company logo,
-version/build details, support information, privacy policy, relevant licences,
-intended use, and limitations, as required by REQ-004. Unknown content is
-explicitly marked for its owner to supply; no logo asset, contact details,
-policy, licence list, or build value is fabricated here.
+The About presentation includes the owner-supplied Entreco logo as a Compose
+resource, displayed with fit scaling and accessible branding text. It groups
+the app identity and required information into readable sections and uses the
+existing Settings → About → Settings navigation in the shared shell. It is
+shown in the shell's supporting pane when available and as a reachable
+single-pane destination on compact windows; actual rendered layouts and
+screen-reader behavior remain unverified.
+
+The version/build value, support information, privacy policy, and relevant
+licences have no authoritative source in the repository or supplied inputs.
+The UI identifies each as unavailable instead of inventing details or
+presenting dead links. These explicit gaps are not substitutes for the content
+required by REQ-004, and they block a complete About screen. The product owner
+must provide the actual version/build source and approved support, privacy, and
+licence information before this requirement can pass.
+
+The intended-use and limitations text is sourced from the project product
+boundary and is limited to ordinary waiting-time support. It does not claim
+medical use, clock or time-of-day display, deadline assurance, or
+safety-critical timing. Human design, usability, and accessibility review
+remain pending; the implementation does not establish user preference or
+verification.
 
 Requirements: REQ-004 (About content) and REQ-009 (non-medical claims boundary).
 
@@ -276,3 +293,4 @@ PR.
 | 1.6 | Record the v1 decision to omit separate manual pause, resume, and reset controls; the existing prototype designs remain the review scope. |
 | 1.7 | Record the product owner's approval of the four demo visualizations (Clock, Battery, Fan, Ring) for the v1 theme set; distinguish that decision from user preference and validation, and add TV-target interaction/layout limitations. |
 | 1.8 | Record the supporting-pane Settings flow and target-specific keyboard/keypad policy; preserve usability, accessibility, layout, and platform verification limitations. |
+| 1.9 | Record the About implementation candidate, owner-supplied logo resource, explicit unavailable-content gaps, intended-use boundary, and outstanding product/design/accessibility verification. |

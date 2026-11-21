@@ -5,7 +5,7 @@ Settings appearance review: [PR #76](https://github.com/Entreco/elchrono/pull/76
 | Field | Value |
 |---|---|
 | Document ID | M1-DOC-004 |
-| Revision | 1.3 |
+| Revision | 1.5 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Software-safety and product-risk review: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
@@ -80,6 +80,13 @@ At detail 0 the current candidate intentionally omits running/paused cues;
 there is no visible status distinction between them. This is an unresolved
 REQ-003 and RISK-005 gap, not an accepted risk or a demonstrated control.
 
+The Settings overlay obscures and blurs the immediate Timer presentation
+instead of providing a sharp side-by-side preview. Review whether caregivers
+can understand and verify their selections after closing Settings, and whether
+the overlay, unblurred fallback, and unrestricted colors impair readability
+or focus (RISK-001, RISK-004 and RISK-005). No revised risk acceptance or
+control effectiveness is implied by the owner's design choice.
+
 The Settings foreground accent adds review scope for keypad, duration-field,
 and Details slider visibility and operation when foreground and background
 colors match or have low contrast. Black/white keypad labels do not establish
@@ -89,11 +96,15 @@ warnings. Review the resulting Settings interaction and configuration risks
 under RISK-004 and RISK-005; no risk disposition or control effectiveness is
 claimed.
 
-The always-on glass layer and selected Settings font and text color add review
+The sliding glass layers and selected Settings font and text color add review
 scope for control legibility, focus, clipping, shader and tint fallback, and
 the dot-free Detail track. Unrestricted combinations may make text or selected
 controls indistinguishable. Verify interaction and accessible slider semantics
 across supported renderers; no risk reduction or human acceptance is implied.
+Review the stationary full-window layout, panel motion, stacked About layer,
+back gestures, and app-bar overlap for lost focus, hidden controls or clipped
+content. Cloudy's Android fallback and possible shader failures also require
+target-specific review; no effect availability is assumed.
 
 ## Initial assessment method and criteria
 
@@ -323,3 +334,5 @@ they are not waived by this initial assessment.
 | 1.1 | Extend refinement review to translucent controls, global background, preview isolation, migration, cue interpretation, Battery recognition, and Ring thickness; leave all scores and acceptance unchanged. |
 | 1.2 | Add Settings foreground-accent visibility and interaction to the existing risk-review scope; retain unrestricted color choices and pending risk disposition. |
 | 1.3 | Extend Settings risk review to glass, live text/font and the dot-free zero track; retain pending visibility and platform review. |
+| 1.4 | Add review of the obscured Timer preview, native blur fallback, and overlay readability; retain pending risk disposition. |
+| 1.5 | Add review scope for stationary Timer, sliding glass layers, navigation and renderer fallbacks; retain pending risk disposition. |

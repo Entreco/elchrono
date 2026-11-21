@@ -7,7 +7,6 @@ dependencies:
   - //core/design
   - //core/localization
   - //core/persistence
-  - $libs.compose.cloudy
   - $compose.runtime
   - $compose.foundation
   - $compose.material3

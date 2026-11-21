@@ -7,7 +7,7 @@ Desktop keyboard changes: [PR #73](https://github.com/Entreco/elchrono/pull/73).
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-004 |
-| Revision | 2.5 |
+| Revision | 2.7 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Product design, accessibility, and usability: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
@@ -200,26 +200,31 @@ Requirements: REQ-001 (duration entry), REQ-002 (no separate manual timer
 controls, save-to-start, and Settings-open pause), REQ-004 (screen content), REQ-005 (v1 access decision),
 and REQ-006 (theme selection). Optional music is deferred to v2.
 
-When the window can support multiple panes, Settings appears in a supporting
-side pane while the Timer remains the main pane. On compact windows, Settings
-is the single visible destination and remains reachable through the shell
-controls. Mobile targets accept sequential digits from the system keyboard
+Settings slides in from and out to the left over a stationary, full-window
+Timer, including behind the app bar. Settings is full-width below 600 dp and
+at most 440 dp wide otherwise. About slides over Settings in the same direction
+and uses the same widths. The background Timer is blurred
+where Compose supports native blur and otherwise remains unblurred; it is not
+a sharp or unobstructed preview. Mobile targets accept sequential digits from the system keyboard
 when available and show the reusable numeric keypad as a fallback. Desktop
 uses physical-keyboard entry without the app keypad. Browser and TV use the
 keypad without keyboard-based duration entry; TV support is not established.
 These flows preserve `205` as `02:05`; layout, input, focus,
 accessibility, and no-clipping behavior remain unverified.
 
+The Navigation 3 host receives system Back. The Settings layer starts its exit
+when Back completes rather than tracking predictive-back gesture progress;
+gesture cancellation and device behavior remain unverified.
+
 The v1 flow has no caregiver-only access gate: Settings can be opened without
 protection. The user configures duration and visualization; valid changes
-preview immediately and are saved automatically, without a Save action.
+update the background Timer presentation and are saved automatically, without a Save action.
 The full app-owned area uses the selected background, including app bars,
-pane gutters, and About. Settings uses a subtle, static Liquid Glass treatment
-over the selected background for every Timer shape and detail level. The
-background layer uses a translucent blend of an 8% contrasting tint and a
-restrained glass highlight. The shader is isolated to that layer, not applied
-to text and controls; where
-the platform shader is unavailable the tint remains as a fallback. The selected
+pane gutters, and About. Settings and About use Cloudy liquid-glass layers
+separate from their sharp text and controls; the Timer's native blur is
+separate. On Android below API 31 the native Timer blur is not applied;
+Cloudy documents a tint-and-edge fallback instead of refraction through API 32.
+Renderer behavior, fallback and legibility remain subject to verification. The selected
 foreground colors control accents, selected choices, keypad buttons, focused
 duration-field border, label, cursor and selection, and slider thumb and active
 track. Keypad labels use contrasting black or white; keyboard focus outlines
@@ -267,9 +272,8 @@ The About presentation includes the owner-supplied Entreco logo as a Compose
 resource, displayed with fit scaling and accessible branding text. It groups
 the app identity and required information into readable sections and uses the
 existing Settings → About → Settings navigation in the shared shell. It is
-shown in the shell's supporting pane when available and as a reachable
-single-pane destination on compact windows; actual rendered layouts and
-screen-reader behavior remain unverified.
+shown as a left-sliding overlay over Settings on compact and expanded windows;
+actual platform layouts and screen-reader behavior remain unverified.
 
 The version/build value, support information, privacy policy, and relevant
 licences have no authoritative source in the repository or supplied inputs.
@@ -355,7 +359,7 @@ establish competent risk review, design approval, or verification:
 | D-10: text-free detail 0 | Hide all on-screen Timer text and running/paused cues at detail 0; retain interrupted/idle cues and accessible state/stale-progress descriptions. The missing visual distinction and revised warning have not received human review or usability validation. |
 | D-05: interruption recovery | No recovery behavior is provided or promised in v1. Retain the interrupted-state warning and never imply timing continuity when uncertain. |
 | D-06: manual pause, resume, and reset controls | No separate controls are provided in v1. Settings-open is the selected pause behavior; saving valid Settings is the only selected start/restart action and starts from the full saved duration. |
-| D-09: adaptive Settings and duration input | Use Settings as a supporting side pane when the window supports multiple panes, with a reachable compact destination. Mobile uses available system keyboard input and falls back to the shared keypad; desktop uses keyboard entry without the app keypad; browser and TV use the keypad without keyboard-based duration entry. TV support is not established. |
+| D-09: Settings layout and duration input | Overlay Settings on the Timer at compact and expanded widths. Mobile uses available system keyboard input and falls back to the shared keypad; desktop uses keyboard entry without the app keypad; browser and TV use the keypad without keyboard-based duration entry. TV support is not established. |
 | Visualization appearance | Font and color are proposed as conditional per-visualization settings; option lists, defaults, and persistence remain undecided and require accessibility/usability review. |
 
 The product owner approved the four demo visualizations for the v1 design.
@@ -395,3 +399,5 @@ PR.
 | 2.3 | Specify global background, translucent Settings, immediate duration preview, bottom-right status cue, shallow Battery, stable detail overlays, and normalized Ring thickness; retain review gaps. |
 | 2.4 | Describe desktop keyboard entry without the app keypad; retain physical-device, accessibility, and layout review gaps. |
 | 2.5 | Define live Settings appearance, the detail-zero dot-free slider track, and a subtle glass background with fallback; retain human and platform verification gaps. |
+| 2.6 | Replace the Settings side pane and glass treatment with an overlay and native-blurred Timer backdrop; retain unblurred fallback and review gaps. |
+| 2.7 | Describe the stationary full-window Timer and sliding glass Settings and About layers; retain platform and human review gaps. |

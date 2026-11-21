@@ -7,7 +7,7 @@ Desktop keyboard changes: [PR #73](https://github.com/Entreco/elchrono/pull/73).
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-002 |
-| Revision | 1.7 |
+| Revision | 1.9 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Test and product requirements review: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
@@ -21,7 +21,7 @@ table. See [document controls](../governance/document-control.md#lifecycle-and-a
 ## Purpose and limits
 
 This protocol contains planned test procedures and acceptance criteria for
-[M2-DOC-001, revision 1.4, Product requirements](../product/requirements.md).
+[M2-DOC-001, revision 1.5, Product requirements](../product/requirements.md).
 The exact source revisions and requirement-to-source, risk, design, usability,
 and test relationships are identified in the
 [requirements traceability matrix](../safety/requirements-traceability-matrix.md).
@@ -40,7 +40,7 @@ hours. No accessibility conformance baseline is selected by this protocol.
 | TP-REQ-001 | [REQ-001](../product/requirements.md#requirement-identification) | Enter representative digit sequences through the mobile system-keyboard route, desktop physical keyboard in each field, and on-screen keypad route. Test desktop focus, keyboard navigation, deletion, selection/replacement, non-digit input, and keypad absence at compact and expanded sizes. Confirm browser and TV use the keypad without keyboard-based entry. Test duration boundaries, invalid values, and all whole-minute durations with a controllable input/test harness. | All input routes preserve the sequential mapping: `2`, `20`, `205`, and `2400` display as `00:02`, `00:20`, `02:05`, and `24:00`. Every duration from `00:01` through `24:00` is representable. Minute values above `59` and values above `24:00` cannot be configured as valid durations. On mobile, keypad visibility follows keyboard availability; desktop fields accept physical keyboard input without the app keypad; browser and TV use the keypad and do not expose keyboard-based duration entry. The existing conflict over whether `00:00` is valid remains unresolved; do not mark this test fully passed until the owner reconciles REQ-001, REQ-002, and the 1-minute minimum in project instructions. |
 | TP-REQ-002 | [REQ-002](../product/requirements.md#requirement-identification) | Inspect Main and Settings for manual timer controls. Save valid settings and advance the injected time source. While running, open Settings and record remaining time; keep Settings open while advancing time, then save valid settings. | No separate manual pause, resume, or reset controls are available in v1. Saving starts the countdown from the full saved duration. Opening Settings pauses it (remaining time does not change while Settings is open). Saving again starts a new countdown from the full saved duration, not the previously remaining time. |
 | TP-REQ-003 | [REQ-003](../product/requirements.md#requirement-identification) | For Clock, Battery, Fan, and Ring, review running, paused, interrupted, and idle states at detail 0 and 1-12. Use a controllable time source for progress boundaries. In the browser, trigger hidden/return transitions and Settings navigation; inspect representative compact and expanded layouts and screen-reader output. | All four themes use the same continuous remaining-time fraction and remain fully visible without clipping. Clock's leading edge moves clockwise from 12 toward the right as time elapses; detail N shows N evenly spaced duration labels and no internal boundaries (for example, a 60-minute duration at detail 2 shows 0 at the top and 30 at the bottom). Durations below ten minutes use whole-second labels; longer durations use compact minute values and a unit label. Fan's complete semicircle is centered and visible at compact and expanded sizes. No clock face/time-of-day markings are added; states are distinct without relying on color. At detail 0, no Timer text is visible; interrupted and idle cues and accessible descriptions identify state and stale progress. Running and paused have no visible state indicator at detail 0: the candidate cannot currently establish the required visual distinction and this criterion remains unresolved. At detail 1-12, play/pause icons identify running/paused without text; interruption warning and remaining time remain visible. Hidden-page interruption does not resume automatically; valid Settings changes start a fresh countdown. Process-termination/restart recovery is not claimed. Human design, accessibility, usability, and risk review remain required. |
-| TP-REQ-004 | [REQ-004](../product/requirements.md#requirement-identification) | Inspect Main, Settings, and About against their required v1 content. At expanded widths confirm Settings and About use the supporting pane beside Timer; at compact widths confirm each is a reachable single-pane destination. Resize across the breakpoint while About is open. Verify the official logo's scaling and accessible name, actual version/build metadata, approved support/privacy/licence information and link destinations, intended-use/limitations copy, navigation back to Settings and Timer, keyboard operation, and screen-reader labels. | Main includes the selected timer visualization. Settings uses the supporting pane when space permits and remains available on compact windows; duration and theme controls are present, with no v1 music or volume controls. About contains all REQ-004 content from authoritative sources; the logo preserves its aspect ratio and is accessible, links work, navigation is correct, and content is readable and not clipped or obscured. A missing source or required item is explicitly recorded as a gap and makes this test blocked, not passed. |
+| TP-REQ-004 | [REQ-004](../product/requirements.md#requirement-identification) | Inspect Main, Settings, and About against their required v1 content. At compact and expanded widths confirm Settings overlays Timer; resize across the breakpoint while About is open. Verify the official logo's scaling and accessible name, actual version/build metadata, approved support/privacy/licence information and link destinations, intended-use/limitations copy, navigation back to Settings and Timer, keyboard operation, and screen-reader labels. | Main includes the selected timer visualization. Settings overlays Timer on compact and expanded windows; duration and theme controls are present, with no v1 music or volume controls. About contains all REQ-004 content from authoritative sources; the logo preserves its aspect ratio and is accessible, links work, navigation is correct, and content is readable and not clipped or obscured. A missing source or required item is explicitly recorded as a gap and makes this test blocked, not passed. |
 | TP-REQ-005 | [REQ-005](../product/requirements.md#requirement-identification) | Open Settings without a gate as a patient and change/save duration or theme. | Settings is not protected by a caregiver gate in v1 and permits the access specified by the product decision. The test verifies this behavior; it does not establish that the resulting risk is acceptable or controlled. |
 | TP-REQ-006 | [REQ-006](../product/requirements.md#requirement-identification) | Select Clock, Battery, Fan, and Ring in Settings and inspect each timer presentation. | Exactly the four owner-approved v1 themes are available, each can be selected and becomes the selected timer theme, and each preserves the shared remaining-time mapping. Do not assert user preference without usability evidence. |
 | TP-REQ-008 | [REQ-008](../product/requirements.md#requirement-identification) | For v1, run the timer with network unavailable. Defer audio-failure and playback checks until a v2 music integration is approved and implemented. | Timer operation and remaining-time presentation do not depend on network connectivity. No v1 music integration or playback-failure behavior is claimed. The v2 audio criteria require review before that scope begins. |
@@ -49,10 +49,51 @@ hours. No accessibility conformance baseline is selected by this protocol.
 | TP-REQ-011 | [REQ-011](../product/requirements.md#requirement-identification) | On each configured target, operate Main, Settings, and About using its supported remote/controller focus model; verify visible focus, predictable navigation, readability at ordinary viewing distance, and non-colour-only cues. Attempt target packaging and lifecycle checks. | Android TV and Apple TV controls are operable without touch, focus is visible and predictable, and content remains readable and complete at the agreed viewing distance. Record target configuration and verification before claiming support; an unconfigured target or unavailable device makes the test blocked, not passed. |
 | TP-REQ-012 | [REQ-012](../product/requirements.md#requirement-identification) | Enumerate detail levels 0-12 in both directions and select colors/fonts across shape changes and temporary hidden controls. Inspect Settings text, input font, accents and Detail track at zero and nonzero; exercise pointer, keyboard and assistive-technology value changes. For each foreground preset inspect keypad buttons and focused fields, including a change while a duration draft is invalid. Inspect matching and low-contrast foreground/background combinations. | Every detail level and color/font choice is reachable, shape changes do not erase selections, and no contrast restriction or warning is introduced. Applicable Settings colors and font update immediately. At zero the Detail track has no ticks or end dot but retains the thumb, label, value and discrete range; above zero its marks return. Keypad text has at least 4.5:1 contrast against its button and independent keyboard focus remains available. Record visibility limitations for low-contrast combinations and obtain human accessibility and risk review; do not treat unrestricted colors as proof of contrast. |
 | TP-REQ-013 | [REQ-013](../product/requirements.md#requirement-identification) | For every shape, enumerate detail 0-12 and verify shape-specific marker count/geometry, text visibility, and accessible state semantics. Include detail 1 explicitly and inspect the zero-duration state. | Detail 0 has no extra boundaries, Clock duration labels, or on-screen Timer text; it retains the base visualization and state cue and exposes accessible descriptions including stale progress. At Clock detail N from 1-12, N evenly spaced duration labels surround a continuous disk with no internal boundaries; for 60 minutes at detail 2, labels are 0 at the top and 30 at the bottom. Short durations use whole seconds; longer durations use compact minutes and one unit label. Battery, Fan, and Ring use N-1 equal boundaries to form N segments; detail 1 is one continuous segment. The Fan semicircle is centered and not clipped at representative compact and expanded sizes. Remaining-time text is shown at levels 1-12. 00:00 is idle/non-counting/non-animating and has no progress/completion semantics. |
-| TP-REQ-014 | [REQ-014](../product/requirements.md#requirement-identification) | Exercise preview, auto-save, app reopen, invalid/stale storage, storage read failure, save failure, and zero duration. | Valid changes preview and persist without Save; reopen restores settings but not a running countdown; invalid/stale values use defaults; storage failures are visibly reported. |
-| TP-REQ-015 | [REQ-015](../product/requirements.md#requirement-identification) | Resize Settings across compact and expanded layouts and inspect labels, focus, semantics, and clipping. Check every shape and detail zero for a subtle glass surface, readable controls, and a translucent fallback on platforms without the shader. | Settings remains reachable, uses a side pane where supported, and required controls remain visible and labeled at each browser configuration checked. The glass remains independent of shape and detail and does not distort controls; fallback behavior is recorded for each renderer. |
+| TP-REQ-014 | [REQ-014](../product/requirements.md#requirement-identification) | Exercise background presentation updates, auto-save, app reopen, invalid/stale storage, storage read failure, save failure, and zero duration. | Valid changes update the underlying presentation and persist without Save; reopen restores settings but not a running countdown; invalid/stale values use defaults; storage failures are visibly reported. The Timer need not be readable through the overlay. |
+| TP-REQ-015 | [REQ-015](../product/requirements.md#requirement-identification) | Measure Timer and panel bounds before, during and after both directions, including interruption, reversal and resizing. Inspect Settings and About at compact and expanded widths, and exercise back, predictive-back cancellation, labels, focus, semantics, scrolling, reduced motion and clipping. Check glass and native blur on supported renderers and fallbacks, including Android below API 31 and API 32. | One full-window Timer remains stationary. Both panels enter from and exit to the left; About overlays Settings. Compact panels fill the width and expanded panels do not exceed 440 dp. Controls remain sharp, labeled and reachable; hidden layers do not leak semantics or focus. Record renderer-specific blur, glass and fallbacks rather than inferring them from compilation. |
 
 ## Execution record
+
+### Stationary Timer and sliding glass candidate
+
+On the current working tree, `./kotlin test -p jvm -m common` passed after
+the overlay change. The JVM UI tests cover Timer bounds and semantic-node
+identity, Settings and About slide direction, compact width, resizing while
+About is open, a rapid Settings reopen, navigation, hidden semantics, and a
+bounded keyboard-focus check. Earlier in this change,
+`./kotlin test -p jvm -m common -m settings -m timer`,
+`./kotlin build -m desktop -m ios -m android -m browser`, and
+`./kotlin check -m common -m settings -m timer -m localization` passed.
+`./kotlin build -m common` also completed after the latest shell changes,
+with Kotlin/Native cache warnings; compilation does not establish runtime
+behavior.
+
+Headless Chrome 158 with ANGLE/SwiftShader rendered the candidate at
+1200 x 800 and 500 x 900 pixels. The compact Settings panel filled the
+window, scrolled to About, and returned from About with its scroll position
+retained. The About backdrop was blurred separately to avoid readable Settings
+controls showing through it. These observations precede the final
+semantics-only adjustment and are not a protocol pass. Physical input,
+screen readers, reduced motion, predictive-back gestures, Android fallback,
+iOS/desktop runtime rendering, contrast across selections, and human
+product/accessibility/usability/risk review remain pending.
+
+### Earlier native-blur overlay candidate
+
+Before the stationary Timer redesign, on the `feat/66-responsive-timer-screen` working tree,
+`./kotlin test -p jvm -m common -m settings` passed the Settings interaction
+and compact/expanded overlay semantics tests. A subsequent
+`./kotlin test -p jvm -m common` passed with navigation from Settings to About
+and back. `./kotlin build -m browser -m android` passed; builds alone do not
+establish runtime behavior.
+
+Headless Chrome 158 using ANGLE/SwiftShader rendered the browser candidate at
+500 x 1000 and 1440 x 1000 pixels. In those two configurations, the timer
+appeared blurred behind sharp Settings controls, scrolling exposed the Detail
+control and About link, and About navigation returned to Settings. This is
+bounded observational evidence, not a full protocol pass. Android fallback,
+other renderers, settings combinations, assistive technologies, physical
+input, and human product/accessibility/usability/risk review remain pending.
 
 ### Desktop keyboard candidate
 
@@ -87,9 +128,10 @@ Apply these additional criteria to TP-REQ-003/012/013/014/015:
 - Each visible state cue must remain inside the Timer pane at bottom-right,
   with no click action and preserved state/stale-progress semantics.
 - Edit durations 0, 1, 9, 10, 60, 120, and 1440 minutes while Settings is open.
-  Clock labels, seconds/minutes units, full fill, and remaining text must update
-  before closing. The paused engine must not advance/reset; invalid drafts
-  must retain the last valid preview and show an error.
+  The underlying presentation snapshot must update before closing, without a
+  sharp or unobstructed visual preview. The paused engine must not
+  advance/reset; invalid drafts must retain the last valid presentation and
+  show an error.
 - Battery must retain an outline and terminal at full, partial, and idle fill.
   At fixed width, increasing window height must not exceed the 126-logical-pixel
   preferred body height. Its inset fill/separators must stay inside the body.
@@ -305,3 +347,5 @@ input, screen readers, no-clipping across sizes and human review remain open.
 | 1.5 | Add measurable global-background, preview, stable-layout, Battery, and Ring-thickness criteria and scoped refinement evidence without claiming full protocol acceptance. |
 | 1.6 | Add desktop keyboard entry criteria and identify the existing zero-duration requirement conflict; retain physical-device and accessibility verification gaps. |
 | 1.7 | Add Settings live appearance, detail slider, and glass/fallback verification criteria; retain browser, platform, and human review gaps. |
+| 1.8 | Specify overlay, blurred backdrop, unblurred fallback and unobstructed-preview removal checks; retain product and human review gaps. |
+| 1.9 | Specify stationary Timer, sliding panel, glass, motion, back, focus, and fallback checks; retain human and platform verification gaps. |

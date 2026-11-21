@@ -42,6 +42,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.sp
 import kotlin.math.cos
 import kotlin.math.roundToInt
@@ -80,6 +81,7 @@ fun TimerFeature(
     ringThicknessPercent: Int,
     interrupted: Boolean,
     modifier: Modifier = Modifier,
+    topContentInset: Dp = 0.dp,
 ) {
     val remaining = snapshot.remaining
     val configuredDuration = snapshot.configuredDuration
@@ -121,7 +123,7 @@ fun TimerFeature(
     BoxWithConstraints(
         modifier = modifier.fillMaxSize().background(Color(backgroundColorArgb)),
     ) {
-        val overlayInset = minOf(maxHeight * 0.22f, 112.dp * LocalDensity.current.fontScale)
+        val overlayInset = minOf(maxHeight * 0.35f, 112.dp * LocalDensity.current.fontScale + topContentInset)
         TimerVisualization(
             theme = theme,
             fractionRemaining = fraction,
@@ -143,7 +145,8 @@ fun TimerFeature(
 
         Column(
             modifier = Modifier.align(Alignment.TopCenter).fillMaxWidth()
-                .heightIn(max = overlayInset).verticalScroll(rememberScrollState()),
+                .heightIn(max = overlayInset).padding(top = topContentInset)
+                .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             if (showsTimerStateText(detail, visualState)) {

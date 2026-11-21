@@ -24,6 +24,7 @@
     <string name="open_settings">Open Settings</string>
     <string name="hide_settings">Hide Settings</string>
     <string name="back">Back</string>
+    <string name="glass_effect_unavailable">The glass effect is unavailable. The timer is still available.</string>
     <string name="duration">Duration</string>
     <string name="hours">Hours</string>
     <string name="minutes">Minutes</string>

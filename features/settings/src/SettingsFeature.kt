@@ -1,8 +1,6 @@
 package nl.entreco.elchrono.features.settings
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,7 +12,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -31,22 +28,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.compositeOver
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import com.skydoves.cloudy.LiquidGlassDefaults
-import com.skydoves.cloudy.LiquidGlassGlow
-import com.skydoves.cloudy.liquidGlass
 import nl.entreco.elchrono.core.counter.DurationDigitEntry
 import nl.entreco.elchrono.core.design.NumericKeypad
 import nl.entreco.elchrono.core.design.DesignChoice
@@ -102,66 +91,33 @@ fun SettingsPanel(
     persistenceFailure: String? = null,
     modifier: Modifier = Modifier,
 ) {
-    val backgroundColor = Color(initialSettings.backgroundColorArgb)
-    val surfaceTint = appColorScheme(backgroundColor).onSurface.copy(alpha = 0.08f)
-    var lensSize by remember { mutableStateOf(Size.Zero) }
-    val glassRadius = LocalDimens.current.spaceXL
-    val glassRadiusPx = with(LocalDensity.current) { glassRadius.toPx() }
-
     SettingsAppearanceTheme(initialSettings) {
         Surface(
             modifier = modifier.fillMaxSize(),
             color = Color.Transparent,
             contentColor = MaterialTheme.colorScheme.onSurface,
         ) {
-            Box {
-                Box(
-                    Modifier
-                        .matchParentSize()
-                        .onSizeChanged { size -> lensSize = Size(size.width.toFloat(), size.height.toFloat()) }
-                        .graphicsLayer { alpha = 0.65f }
-                        .liquidGlass(
-                            lensCenter = Offset(lensSize.width / 2f, lensSize.height / 2f),
-                            lensSize = if (lensSize.width <= 0f || lensSize.height <= 0f) {
-                                LiquidGlassDefaults.LENS_SIZE
-                            } else {
-                                lensSize
-                            },
-                            cornerRadius = glassRadiusPx,
-                            refraction = 0.16f,
-                            curve = 0.18f,
-                            dispersion = 0.01f,
-                            saturation = 1.05f,
-                            contrast = 1.02f,
-                            tint = backgroundColor.copy(alpha = 0.12f),
-                            edge = 0.18f,
-                            light = LiquidGlassDefaults.Light,
-                            glow = LiquidGlassGlow(intensity = 0.2f),
-                        )
-                        .background(surfaceTint.compositeOver(backgroundColor), RoundedCornerShape(glassRadius)),
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+                    .padding(LocalDimens.current.spaceXL),
+            ) {
+                SettingsScreen(
+                    initialSettings = initialSettings,
+                    onChange = onChange,
+                    onShowAbout = onShowAbout,
+                    keyboardInputEnabled = keyboardInputEnabled,
+                    keyboardAvailable = keyboardAvailable,
                 )
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .verticalScroll(rememberScrollState())
-                        .padding(LocalDimens.current.spaceXL),
-                ) {
-                    SettingsScreen(
-                        initialSettings = initialSettings,
-                        onChange = onChange,
-                        onShowAbout = onShowAbout,
-                        keyboardInputEnabled = keyboardInputEnabled,
-                        keyboardAvailable = keyboardAvailable,
-                    )
-                    persistenceFailure?.let {
-                        Spacer(Modifier.height(LocalDimens.current.spaceM))
-                        Surface(
-                            color = MaterialTheme.colorScheme.errorContainer,
-                            contentColor = MaterialTheme.colorScheme.onErrorContainer,
-                            shape = MaterialTheme.shapes.small,
-                        ) {
-                            Text(it, Modifier.padding(LocalDimens.current.spaceM))
-                        }
+                persistenceFailure?.let {
+                    Spacer(Modifier.height(LocalDimens.current.spaceM))
+                    Surface(
+                        color = MaterialTheme.colorScheme.errorContainer,
+                        contentColor = MaterialTheme.colorScheme.onErrorContainer,
+                        shape = MaterialTheme.shapes.small,
+                    ) {
+                        Text(it, Modifier.padding(LocalDimens.current.spaceM))
                     }
                 }
             }

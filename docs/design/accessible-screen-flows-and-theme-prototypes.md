@@ -3,13 +3,13 @@
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-004 |
-| Revision | 2.3 |
+| Revision | 2.4 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Product design, accessibility, and usability: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#23](https://github.com/Entreco/elchrono/issues/23) |
-| Review PR | Prior baselines: [PR #28](https://github.com/Entreco/elchrono/pull/28) (revision 0.2), [PR #29](https://github.com/Entreco/elchrono/pull/29) (revision 1.3), and [PR #32](https://github.com/Entreco/elchrono/pull/32); revision 1.6: [PR #41](https://github.com/Entreco/elchrono/pull/41); #47 update: [PR #59](https://github.com/Entreco/elchrono/pull/59); #67: [PR #68](https://github.com/Entreco/elchrono/pull/68); #66 review: [draft PR #70](https://github.com/Entreco/elchrono/pull/70); final exact-head acceptance pending |
+| Review PR | Prior baselines: [PR #28](https://github.com/Entreco/elchrono/pull/28) (revision 0.2), [PR #29](https://github.com/Entreco/elchrono/pull/29) (revision 1.3), and [PR #32](https://github.com/Entreco/elchrono/pull/32); revision 1.6: [PR #41](https://github.com/Entreco/elchrono/pull/41); #47 update: [PR #59](https://github.com/Entreco/elchrono/pull/59); #67: [PR #68](https://github.com/Entreco/elchrono/pull/68); #66 review: [draft PR #70](https://github.com/Entreco/elchrono/pull/70); status-indicator follow-up: [draft PR #74](https://github.com/Entreco/elchrono/pull/74); final exact-head acceptance pending |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](../governance/document-control.md#lifecycle-and-approval).
@@ -78,14 +78,14 @@ certification.
   empty form represents zero. Static examples use the same illustrative 60%
   remaining.
 - Progress has a non-colour cue: filled extent and remaining track are
-  distinguishable by shape and position. State labels and an interruption
-  warning appear at detail 1-12; detail 0 uses distinct visual cues and
-  accessible state descriptions instead of any on-screen timer text.
-- At detail 0, running, paused, interrupted, and idle states use a play
-  triangle, pause bars, an outlined warning triangle, and an empty circle,
-  respectively. The interrupted accessible description says that progress
-  may be out of date. This is the issue #66 implementation candidate, not an
-  approved usability design; review of the revised warning remains pending.
+  distinguishable by shape and position. Detail 1-12 uses non-interactive
+  play/pause state icons and an interruption warning, never running/paused text.
+  Detail 0 hides all Timer text and running/paused icons; interrupted and idle
+  retain an outlined warning triangle and an empty circle respectively.
+- Accessible descriptions identify all states; the interrupted description
+  says progress may be out of date. Running and paused are not visibly
+  distinguishable by state at detail 0. REQ-003 and risk/usability review
+  remain unresolved for that level; no equivalent access is assumed.
 - For non-idle timers, accessible semantics expose a progress indicator named
   "Remaining waiting time" with a value from 0% to 100% remaining. The
   zero-duration idle state is described as not counting and not completed,
@@ -110,7 +110,7 @@ certification.
 
 ### Main screen and states
 
-![Three illustrative Main screen states: running, paused, and interrupted. The same progress shape appears in each, with text labels distinguishing state.](main-states.svg)
+![Historical illustrative Main screen states with text labels; the running and paused labels do not represent the current candidate.](main-states.svg)
 
 The running and paused examples retain the same illustrative progress shape.
 The interrupted example retains the shape but explicitly warns at detail 1-12
@@ -132,8 +132,8 @@ and saving valid Settings is the selected start/restart action.
 | Main element | Proposed presentation and semantics | Requirement / risk links |
 |---|---|---|
 | Remaining progress | A theme's progress shape; accessible role: progress indicator; label: "Remaining waiting time"; value: percent of the configured duration remaining, 0-100. At idle 00:00, expose an idle/not-completed description without a countdown progress value. | REQ-002, REQ-003; RISK-001, RISK-005 |
-| Running state | Text label "Running" at detail 1-12; a play-triangle cue and accessible running description at detail 0. | REQ-003, REQ-013; RISK-001, RISK-005 |
-| Paused state | Text label "Paused" at detail 1-12; pause bars and an accessible paused description at detail 0. Opening Settings while running pauses the countdown. | REQ-002, REQ-003, REQ-013; RISK-001, RISK-005 |
+| Running state | A non-interactive play triangle at bottom-right at detail 1-12; no icon at detail 0 and no visible running label at any level. Accessible running description remains. | REQ-003, REQ-013; RISK-001, RISK-005 |
+| Paused state | Non-interactive pause bars at bottom-right at detail 1-12; no icon at detail 0 and no visible paused label at any level. Accessible paused description remains. Opening Settings while running pauses the countdown. | REQ-002, REQ-003, REQ-013; RISK-001, RISK-005 |
 | Interrupted state | At detail 1-12, show "Timer interrupted" and "Progress may be out of date"; at detail 0, show a warning-triangle cue and accessible stale-progress description, without on-screen Timer text. The browser MVP pauses after a detected hidden-page/page-hide event and does not automatically resume. Valid Settings changes start a fresh countdown. | REQ-003, REQ-013; RISK-002, RISK-005 |
 | Idle state | 00:00 remains non-counting and non-animating with an empty base shape; the idle cue and accessible description do not represent a completed countdown. At detail 0, no on-screen Timer text is shown. | REQ-002, REQ-013; RISK-001, RISK-005 |
 | Settings access | Settings is available without a caregiver-protection mechanism in v1. This is the product owner's explicit risk disposition, not a verified control; a patient may change the saved duration or theme. | REQ-005; RISK-004 |
@@ -167,8 +167,8 @@ The application Fan is a centered, fully visible upper semicircle; its remaining
 sector and stationary radial dividers follow the demo's sweep and clipping.
 
 At detail 0, all on-screen Timer text is absent, including remaining time,
-theme/state labels, and the interrupted warning. Non-text state cues remain
-visible and screen-reader descriptions identify the state; interruption
+theme/state labels, and the interrupted warning. Interrupted and idle cues remain
+visible, but running and paused have no visible state cue. Screen-reader descriptions identify the state; interruption
 explicitly communicates that progress may be out of date. These cues and the
 changed warning presentation remain subject to human design, accessibility,
 usability, and risk review. The feature adds no countdown animation; elapsed
@@ -284,8 +284,8 @@ Issue #66's latest candidate reserves equal top/bottom decoration space
 independently of detail. Text is overlaid in those bounded regions, scrollable
 when short windows or larger fonts require it. Base geometry does not depend
 on decoration visibility. Clock reserves one duration/font-aware envelope for
-all label counts, including when labels are hidden. The existing detail-0
-status cue is non-interactive and sits at the bottom-right of the Timer pane.
+all label counts, including when labels are hidden. Visible state cues are
+non-interactive and sit at the bottom-right of the Timer pane.
 
 Battery matches the demo's shallow horizontal body, foreground outline,
 inset clipped fill, and external foreground terminal. Preferred body height
@@ -334,7 +334,7 @@ establish competent risk review, design approval, or verification:
 | D-02: volume controls and limits | No in-app volume controls in v1. Reassess audio/volume requirements if a later version adds music. |
 | D-03: music and audio behavior | Music is deferred to v2. No music start behavior or completion sound is included in v1; future audio behavior remains undecided. |
 | D-04: timer start and Settings lifecycle | Saving valid settings starts a new countdown from the full saved duration; opening Settings while running pauses it. |
-| D-10: text-free detail 0 | Issue #66 requires all on-screen Timer text to be hidden at detail 0, including the interrupted warning; use distinct visual state cues and accessible stale-progress descriptions. The revised warning design has not received human review or usability validation. |
+| D-10: text-free detail 0 | Hide all on-screen Timer text and running/paused cues at detail 0; retain interrupted/idle cues and accessible state/stale-progress descriptions. The missing visual distinction and revised warning have not received human review or usability validation. |
 | D-05: interruption recovery | No recovery behavior is provided or promised in v1. Retain the interrupted-state warning and never imply timing continuity when uncertain. |
 | D-06: manual pause, resume, and reset controls | No separate controls are provided in v1. Settings-open is the selected pause behavior; saving valid Settings is the only selected start/restart action and starts from the full saved duration. |
 | D-09: adaptive Settings and duration input | Use Settings as a supporting side pane when the window supports multiple panes, with a reachable compact destination. Mobile uses available system keyboard input and falls back to the shared keypad; desktop, browser, and future TV flows use the keypad without keyboard-based duration entry. TV support is not established. |
@@ -375,3 +375,4 @@ PR.
 | 2.1 | Record Timer surface-color behavior and the bounded headless browser render observation; keep full visual, accessibility, reduced-motion, and human reviews pending. |
 | 2.2 | Align application Clock detail with the demo's outer duration labels and units instead of concentric bands; specify centered, unclipped Fan geometry and retain human review and verification gaps. |
 | 2.3 | Specify global background, translucent Settings, immediate duration preview, bottom-right status cue, shallow Battery, stable detail overlays, and normalized Ring thickness; retain review gaps. |
+| 2.4 | Move non-interactive running/paused icons to detail 1-12, remove their text at all levels, and record the unresolved detail-0 distinction gap. |

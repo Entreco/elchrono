@@ -5,7 +5,7 @@ Desktop keyboard changes: [PR #73](https://github.com/Entreco/elchrono/pull/73).
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-002 |
-| Revision | 1.6 |
+| Revision | 1.7 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Test and product requirements review: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
@@ -19,7 +19,7 @@ table. See [document controls](../governance/document-control.md#lifecycle-and-a
 ## Purpose and limits
 
 This protocol contains planned test procedures and acceptance criteria for
-[M2-DOC-001, revision 1.3, Product requirements](../product/requirements.md).
+[M2-DOC-001, revision 1.4, Product requirements](../product/requirements.md).
 The exact source revisions and requirement-to-source, risk, design, usability,
 and test relationships are identified in the
 [requirements traceability matrix](../safety/requirements-traceability-matrix.md).
@@ -45,10 +45,10 @@ hours. No accessibility conformance baseline is selected by this protocol.
 | TP-REQ-009 | [REQ-009](../product/requirements.md#requirement-identification) | Review application screens, About content, and external product claims against intended-use exclusions. | No content presents the app as a clock, guarantees a deadline, makes medical claims, or presents it for safety-critical timing. Conflicts in intended purpose, functionality, claims, or markets are escalated before affected work continues. |
 | TP-REQ-010 | [REQ-010](../product/requirements.md#requirement-identification) | With a controllable time source and no v1 audio, advance the countdown to zero. | The timer immediately resets to the configured duration, displays no completed state, handles completion once, and does not become negative. Stopping optional music is deferred to v2 and is not a v1 test result. |
 | TP-REQ-011 | [REQ-011](../product/requirements.md#requirement-identification) | On each configured target, operate Main, Settings, and About using its supported remote/controller focus model; verify visible focus, predictable navigation, readability at ordinary viewing distance, and non-colour-only cues. Attempt target packaging and lifecycle checks. | Android TV and Apple TV controls are operable without touch, focus is visible and predictable, and content remains readable and complete at the agreed viewing distance. Record target configuration and verification before claiming support; an unconfigured target or unavailable device makes the test blocked, not passed. |
-| TP-REQ-012 | [REQ-012](../product/requirements.md#requirement-identification) | Enumerate detail levels 0-12 and select colors/fonts across shape changes and temporary hidden controls. For each foreground preset, inspect Settings keypad buttons, focused Hours/Minutes fields, and Details slider, including a change while the duration draft is invalid. Inspect matching and low-contrast foreground/background combinations and keyboard focus. | Every detail level and color/font choice is reachable, shape changes do not erase selections, and no contrast restriction or warning is introduced. The specified Settings accents use the current foreground, including for an invalid draft; keypad text has at least 4.5:1 contrast against its button and independent keyboard focus remains available. Record visibility limitations for low-contrast combinations and obtain human accessibility and risk review; do not treat unrestricted colors as proof of contrast. |
+| TP-REQ-012 | [REQ-012](../product/requirements.md#requirement-identification) | Enumerate detail levels 0-12 in both directions and select colors/fonts across shape changes and temporary hidden controls. Inspect Settings text, input font, accents and Detail track at zero and nonzero; exercise pointer, keyboard and assistive-technology value changes. For each foreground preset inspect keypad buttons and focused fields, including a change while a duration draft is invalid. Inspect matching and low-contrast foreground/background combinations. | Every detail level and color/font choice is reachable, shape changes do not erase selections, and no contrast restriction or warning is introduced. Applicable Settings colors and font update immediately. At zero the Detail track has no ticks or end dot but retains the thumb, label, value and discrete range; above zero its marks return. Keypad text has at least 4.5:1 contrast against its button and independent keyboard focus remains available. Record visibility limitations for low-contrast combinations and obtain human accessibility and risk review; do not treat unrestricted colors as proof of contrast. |
 | TP-REQ-013 | [REQ-013](../product/requirements.md#requirement-identification) | For every shape, enumerate detail 0-12 and verify shape-specific marker count/geometry, text visibility, and accessible state semantics. Include detail 1 explicitly and inspect the zero-duration state. | Detail 0 has no extra boundaries, Clock duration labels, or on-screen Timer text; it retains the base visualization and state cue and exposes accessible descriptions including stale progress. At Clock detail N from 1-12, N evenly spaced duration labels surround a continuous disk with no internal boundaries; for 60 minutes at detail 2, labels are 0 at the top and 30 at the bottom. Short durations use whole seconds; longer durations use compact minutes and one unit label. Battery, Fan, and Ring use N-1 equal boundaries to form N segments; detail 1 is one continuous segment. The Fan semicircle is centered and not clipped at representative compact and expanded sizes. Remaining-time text is shown at levels 1-12. 00:00 is idle/non-counting/non-animating and has no progress/completion semantics. |
 | TP-REQ-014 | [REQ-014](../product/requirements.md#requirement-identification) | Exercise preview, auto-save, app reopen, invalid/stale storage, storage read failure, save failure, and zero duration. | Valid changes preview and persist without Save; reopen restores settings but not a running countdown; invalid/stale values use defaults; storage failures are visibly reported. |
-| TP-REQ-015 | [REQ-015](../product/requirements.md#requirement-identification) | Resize Settings across compact and expanded layouts and inspect labels, focus, semantics, and clipping. | Settings remains reachable, uses a side pane where supported, and required controls remain visible and labeled at each browser configuration checked. |
+| TP-REQ-015 | [REQ-015](../product/requirements.md#requirement-identification) | Resize Settings across compact and expanded layouts and inspect labels, focus, semantics, and clipping. Check every shape and detail zero for a subtle glass surface, readable controls, and a translucent fallback on platforms without the shader. | Settings remains reachable, uses a side pane where supported, and required controls remain visible and labeled at each browser configuration checked. The glass remains independent of shape and detail and does not distort controls; fallback behavior is recorded for each renderer. |
 
 ## Execution record
 
@@ -260,6 +260,28 @@ Settings/About requirements. Issue #66 remains open; its Timer behavior and
 product verification are not established by this About candidate. Human
 design, usability, accessibility, and product review remain pending.
 
+### Issue #66 Settings appearance candidate
+
+In the `feat/66-settings-live-appearance` worktree, the focused JVM tests for
+`settings`, `design`, `common`, `counter`, `localization`, `timer`, and
+`persistence` passed, including 0-12 slider semantics, rendered track pixels
+at zero and one, live color/font selection, and Timer/persistence regressions.
+The browser Wasm, Android and iOS builds passed; no mobile runtime behavior is
+inferred from compilation. The multi-platform `./kotlin check -m common -m
+counter -m design -m settings -m localization` did not pass: the design Wasm
+test runner failed while instantiating Skiko, consistent with the previously
+recorded runner limitation.
+
+Headless Chrome 158 with ANGLE/SwiftShader at 500 x 1000 showed the subtle
+Settings background and, after scrolling, an undotted Detail track at zero.
+An orange foreground, blue text and Monospace selection updated the compact
+Settings view and were recorded in browser storage. At 1440 x 1000 the
+supporting pane and Timer were observed, but resizing across layouts also
+produced a Compose lookahead `NullPointerException`; related expanded browser
+exceptions were already noted in the baseline. This is not a full protocol
+pass: all shapes, colors, fallback renderers, invalid-draft updates, physical
+input, screen readers, no-clipping across sizes and human review remain open.
+
 ## Revision history
 
 | Revision | Change |
@@ -280,3 +302,4 @@ design, usability, accessibility, and product review remain pending.
 | 1.4 | Replace Clock segment criteria with demo-matching duration labels, add compact/expanded Fan centering checks, and retain browser, accessibility, usability, and human-review gates. |
 | 1.5 | Add measurable global-background, preview, stable-layout, Battery, and Ring-thickness criteria and scoped refinement evidence without claiming full protocol acceptance. |
 | 1.6 | Add desktop keyboard entry criteria and identify the existing zero-duration requirement conflict; retain physical-device and accessibility verification gaps. |
+| 1.7 | Add Settings live appearance, detail slider, and glass/fallback verification criteria; retain browser, platform, and human review gaps. |

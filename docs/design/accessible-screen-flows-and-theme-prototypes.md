@@ -5,7 +5,7 @@ Desktop keyboard changes: [PR #73](https://github.com/Entreco/elchrono/pull/73).
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-004 |
-| Revision | 2.4 |
+| Revision | 2.5 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Product design, accessibility, and usability: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
@@ -212,15 +212,21 @@ The v1 flow has no caregiver-only access gate: Settings can be opened without
 protection. The user configures duration and visualization; valid changes
 preview immediately and are saved automatically, without a Save action.
 The full app-owned area uses the selected background, including app bars,
-pane gutters, and About. Settings uses an 8% contrasting tint over that
-background, without a required blur. Most controls use light/dark design colors
-chosen for the background. The selected foreground also colors the keypad
-buttons, focused duration-field border, label, cursor and selection, and the
-Details slider thumb and active track. Keypad labels use contrasting black or
-white; keyboard focus outlines remain independent. A foreground change updates
-these accents in the local Settings draft, including when duration input is
-invalid. Other controls retain their existing colors. Patient visualization
-text still uses its selected text color without enforcing contrast restrictions.
+pane gutters, and About. Settings uses a subtle, static Liquid Glass treatment
+over the selected background for every Timer shape and detail level. The
+background layer uses a translucent blend of an 8% contrasting tint and a
+restrained glass highlight. The shader is isolated to that layer, not applied
+to text and controls; where
+the platform shader is unavailable the tint remains as a fallback. The selected
+foreground colors control accents, selected choices, keypad buttons, focused
+duration-field border, label, cursor and selection, and slider thumb and active
+track. Keypad labels use contrasting black or white; keyboard focus outlines
+remain independent. Settings text and input typography use the selected text
+color and font; semantic error colors and keypad contrast are retained. Shape,
+detail and Ring thickness update the Timer preview, not the Settings layout.
+The Detail slider suppresses its track ticks and end dot at zero but retains
+its thumb, label, value, and 0-12 discrete interaction. Changes update
+immediately, including appearance changes while a duration draft is invalid.
 Since foreground and background choices are unrestricted, some combinations
 can make controls or their accents difficult to distinguish; product,
 accessibility, usability and risk review remains pending.
@@ -386,3 +392,4 @@ PR.
 | 2.2 | Align application Clock detail with the demo's outer duration labels and units instead of concentric bands; specify centered, unclipped Fan geometry and retain human review and verification gaps. |
 | 2.3 | Specify global background, translucent Settings, immediate duration preview, bottom-right status cue, shallow Battery, stable detail overlays, and normalized Ring thickness; retain review gaps. |
 | 2.4 | Describe desktop keyboard entry without the app keypad; retain physical-device, accessibility, and layout review gaps. |
+| 2.5 | Define live Settings appearance, the detail-zero dot-free slider track, and a subtle glass background with fallback; retain human and platform verification gaps. |

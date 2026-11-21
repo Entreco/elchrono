@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-001 |
-| Revision | 1.0 |
+| Revision | 1.1 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Product requirements and accessibility: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
@@ -58,7 +58,7 @@ exact-revision review and acceptance are recorded in the current review PR.
 | REQ-010 | When the countdown reaches zero, the timer shall reset immediately to the configured duration and shall not display a completed timer state. If optional music is introduced in v2, playback shall stop at zero. |
 | REQ-011 | Android TV and Apple TV are primary v1 product targets. Their user-facing flows shall be operable through the target platform's remote/controller focus model, with a visible focus indicator, predictable navigation, readable content at ordinary viewing distance, and no interaction that relies on colour alone. Platform support is not claimed until the target is configured and the approved platform verification is passed. |
 | REQ-012 | Settings shall allow caregivers to configure background, foreground, and text colors, font, and an integer detail level from 0 through 12 without contrast restrictions or warnings. Shape changes and temporary control hiding shall preserve all selected values. |
-| REQ-013 | At detail 0, extra segments and all on-screen timer text, including state labels and interruption warnings, shall be hidden while the base visualization and distinct non-text state cues remain visible. Accessible descriptions shall identify running, paused, and interrupted states and explain that interrupted progress may be stale. At detail 1 through 12, each shape shall show the selected number of equal visual segments, including one continuous segment at level 1, and remaining-time text. Segment treatments shall not add clock-face markings. |
+| REQ-013 | At detail 0, extra segment boundaries, Clock duration labels, and all on-screen timer text, including state labels and interruption warnings, shall be hidden while the base visualization and distinct non-text state cues remain visible. Accessible descriptions shall identify running, paused, and interrupted states and explain that interrupted progress may be stale. At detail 1 through 12, Clock shall show that number of evenly spaced duration labels around its continuous disk, with no segment boundaries; other shapes shall show that number of equal visual segments, including one continuous segment at level 1. Clock labels shall show whole seconds for configured durations below ten minutes and compact minutes otherwise, with a unit label. Remaining-time text is shown at detail 1 through 12. No treatment shall add clock-face markings or time-of-day information. |
 | REQ-014 | Settings changes shall preview immediately in the Timer while Settings is open and shall persist after app close and reopen. Stored invalid or stale data shall fall back safely to defaults. Storage failures shall be surfaced rather than presented as successful saves. Persistence shall not imply recovery of a previously running countdown. |
 | REQ-015 | Settings shall remain reachable on compact layouts and use a supporting pane beside the Timer where space permits. Controls shall have labels and applicable browser, keyboard, touch, and assistive-technology semantics without clipping. |
 
@@ -127,3 +127,4 @@ does not establish that they were resolved.
 | 0.8 | Add the owner-directed supporting-pane Settings layout and target-specific duration-input methods; retain sequential digit semantics and keep layout, keyboard, accessibility, and TV verification pending. |
 | 0.9 | Add zero-duration, automatic-save, complete personalization, detail 0-12, persistence, and compact/adaptive Settings requirements for issue #65. |
 | 1.0 | Clarify idle zero-duration and Timer-state requirements; record issue #66's text-free detail-0 state cues and stale-progress semantics, with review and verification pending. |
+| 1.1 | Align Clock detail levels with the demo's outer duration labels rather than segments; require a continuous Clock fill and specify duration units while retaining equal segment divisions for Battery, Fan, and Ring. |

@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-004 |
-| Revision | 2.1 |
+| Revision | 2.2 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Product design, accessibility, and usability: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
@@ -154,11 +154,17 @@ Issue #66 completes the Timer screen for the browser MVP only. The visualization
 uses the full available feature area and preserves one continuous remaining-
 time fraction across Clock, Battery, Fan, and Ring. Clock's remaining arc starts
 at 12 when full; as time elapses, its leading edge moves clockwise to the
-right. Its detail divisions are concentric bands, not dial marks. Battery uses
-vertical dividers, Fan uses radial fan-blade dividers, and Ring uses dividers
-across its stroke. At detail N from 2 through 12, N-1 equal boundaries form N
-segments; detail 1 is one continuous, undivided segment. Detail 0 has no extra
-boundaries.
+right. Clock detail N shows N duration labels evenly around the disk and never
+adds segment boundaries; for a one-hour configured duration and detail 2, the
+labels are 0 at the top and 30 at the bottom. Durations below ten minutes use
+whole-second labels; longer durations use compact minute values rounded to one
+decimal with trailing zeros omitted. One localized unit label appears below
+Clock only while details are shown. Battery uses vertical dividers, Fan uses
+radial fan-blade dividers, and Ring uses dividers across its stroke. At detail N
+from 2 through 12, N-1 equal boundaries form N segments; detail 1 is one
+continuous, undivided segment. Detail 0 has no extra boundaries or Clock labels.
+The application Fan is a centered, fully visible upper semicircle; its remaining
+sector and stationary radial dividers follow the demo's sweep and clipping.
 
 At detail 0, all on-screen Timer text is absent, including remaining time,
 theme/state labels, and the interrupted warning. Non-text state cues remain
@@ -170,9 +176,12 @@ time continues to come from the monotonic timer engine. The selected background
 color fills the Timer content surface and depleted visualization; the
 foreground color represents remaining time, and the text color is used for
 labels and state cues. A bounded headless Chrome render check observed the idle
-screen at 320 × 640 and 1440 × 1000, plus a running Clock at 320 × 640. This is
-not full responsive acceptance; reduced-motion, screen-reader, shape/state
-coverage, and human review remain verification work.
+screen at 320 × 640 and 1440 × 1000, plus running Clock and Fan presentations at
+both viewports with a two-hour duration and detail 6. The Clock showed six
+duration labels around a continuous disk with no internal boundaries; the Fan
+semicircle and visible dividers fit within its available visualization area.
+This is not full responsive acceptance; other details, states, reduced-motion,
+screen-reader, and human review remain verification work.
 
 ### Settings screen
 
@@ -266,9 +275,9 @@ The separate [interactive demo](demo/README.md) is the visual reference.
 
 | Visualization | Visual treatment | Remaining-time mapping | Requirement / risk links |
 |---|---|---|---|
-| Clock | A remaining-time disk sector whose leading edge starts at 12 and moves clockwise to the right as time elapses; detail divisions are concentric bands, not dial marks. No clock face, hands, numerals, or time-of-day markings. | The filled sector represents the fraction remaining; full is 100%, empty is zero. | REQ-003, REQ-006, REQ-013; RISK-001, RISK-005 |
+| Clock | A remaining-time disk sector whose leading edge starts at 12 and moves clockwise to the right as time elapses. Detail N adds N evenly spaced duration labels outside the disk and no segment boundaries; for a one-hour duration at detail 2, labels are 0 at the top and 30 at the bottom. Durations below ten minutes use whole seconds; longer durations use compact minutes and a unit label. No clock face, hands, or time-of-day markings. | The filled sector represents the fraction remaining; full is 100%, empty is zero. | REQ-003, REQ-006, REQ-013; RISK-001, RISK-005 |
 | Battery | A rectangular fill drains linearly inside a terminal battery shape; N-1 vertical boundaries divide N equal segments. No battery percentage or charge claim. | Filled extent represents the same fraction remaining as Clock. | REQ-003, REQ-006, REQ-013; RISK-001, RISK-005 |
-| Fan | A fixed-radius 180-degree sector empties toward its fixed edge; N-1 radial fan-blade boundaries divide N equal segments and do not fold or move with progress. | Filled sector represents the same fraction remaining as Clock. | REQ-003, REQ-006, REQ-013; RISK-001, RISK-005 |
+| Fan | A centered, fully visible, fixed-radius upper semicircle; the filled 180-degree sector empties toward its fixed edge. N-1 stationary radial fan-blade boundaries divide N equal segments and are visible only within the remaining sector. | Filled sector represents the same fraction remaining as Clock. | REQ-003, REQ-006, REQ-013; RISK-001, RISK-005 |
 | Ring | A circular stroke depletes around a fixed track; N-1 boundaries across its stroke divide N equal segments. Remaining duration may be shown separately at detail 1-12. | Stroke extent represents the same fraction remaining as Clock. | REQ-003, REQ-006, REQ-013; RISK-001, RISK-005 |
 
 These are the v1 theme choices approved by the product owner, not a claim that
@@ -336,3 +345,4 @@ PR.
 | 1.9 | Record the About implementation candidate, owner-supplied logo resource, explicit unavailable-content gaps, intended-use boundary, and outstanding product/design/accessibility verification. |
 | 2.0 | Define issue #66's adaptive Timer scope, level-0 visual/accessibility cues, exact detail segment mapping and clockwise Clock depletion; retain human design/usability/risk review and browser verification gaps. |
 | 2.1 | Record Timer surface-color behavior and the bounded headless browser render observation; keep full visual, accessibility, reduced-motion, and human reviews pending. |
+| 2.2 | Align application Clock detail with the demo's outer duration labels and units instead of concentric bands; specify centered, unclipped Fan geometry and retain human review and verification gaps. |

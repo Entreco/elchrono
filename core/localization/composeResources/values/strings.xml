@@ -13,6 +13,8 @@
     <string name="interruption_warning">This page was hidden. Progress may be out of date. Save a duration in Settings to start again.</string>
     <string name="remaining_time">%1$d hr %2$d min</string>
     <string name="remaining_time_accessibility">Remaining waiting time</string>
+    <string name="timer_clock_minutes">minutes</string>
+    <string name="timer_clock_seconds">seconds</string>
     <string name="timer_running_accessibility">Timer is running. Remaining waiting time.</string>
     <string name="timer_paused_accessibility">Timer is paused. Remaining waiting time.</string>
     <string name="timer_interrupted_accessibility">Timer is interrupted. Progress may be out of date.</string>

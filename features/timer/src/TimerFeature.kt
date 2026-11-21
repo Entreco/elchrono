@@ -3,18 +3,22 @@ package nl.entreco.elchrono.features.timer
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
@@ -22,13 +26,20 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.semantics.ProgressBarRangeInfo
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.progressBarRangeInfo
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import kotlin.math.cos
+import kotlin.math.roundToInt
+import kotlin.math.sin
 import kotlin.time.Duration
 import nl.entreco.elchrono.core.counter.TimerSnapshot
 import nl.entreco.elchrono.core.design.LocalDimens
@@ -52,6 +63,8 @@ import nl.entreco.elchrono.core.localization.resources.timer_paused_accessibilit
 import nl.entreco.elchrono.core.localization.resources.timer_running
 import nl.entreco.elchrono.core.localization.resources.timer_running_accessibility
 import nl.entreco.elchrono.core.localization.resources.timer_zero_duration_accessibility
+import nl.entreco.elchrono.core.localization.resources.timer_clock_minutes
+import nl.entreco.elchrono.core.localization.resources.timer_clock_seconds
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -101,6 +114,13 @@ fun TimerFeature(
         )
     }
     val progressDescription = stringResource(Strings.string.remaining_time_accessibility)
+    val clockLabels = remember(theme, detail, configuredDuration?.totalMinutes) {
+        if (theme == TimerTheme.CLOCK) {
+            clockDurationLabels(configuredDuration?.totalMinutes ?: 0, detail)
+        } else {
+            emptyList()
+        }
+    }
 
     Column(
         modifier = modifier.fillMaxSize().background(Color(backgroundColorArgb)),
@@ -152,6 +172,8 @@ fun TimerFeature(
             theme = theme,
             fractionRemaining = fraction,
             detail = detail,
+            clockLabels = clockLabels,
+            font = font,
             visualState = visualState,
             backgroundColor = Color(backgroundColorArgb),
             foregroundColor = Color(foregroundColorArgb),
@@ -160,6 +182,23 @@ fun TimerFeature(
             progressDescription = progressDescription,
             modifier = Modifier.fillMaxWidth().weight(1f),
         )
+
+        if (theme == TimerTheme.CLOCK &&
+            detail > 0 &&
+            configuredDuration?.totalMinutes?.let { it > 0 } == true
+        ) {
+            val unit = when (clockDurationUnit(configuredDuration.totalMinutes)) {
+                ClockDurationUnit.SECONDS -> Strings.string.timer_clock_seconds
+                ClockDurationUnit.MINUTES -> Strings.string.timer_clock_minutes
+            }
+            Text(
+                stringResource(unit),
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    color = Color(textColorArgb),
+                    fontFamily = font.toFontFamily(),
+                ),
+            )
+        }
 
         if (showsTimerText(detail)) {
             Spacer(Modifier.height(LocalDimens.current.spaceL))
@@ -179,6 +218,8 @@ private fun TimerVisualization(
     theme: TimerTheme,
     fractionRemaining: Float,
     detail: Int,
+    clockLabels: List<ClockDurationLabel>,
+    font: TimerFont,
     visualState: TimerVisualState,
     backgroundColor: Color,
     foregroundColor: Color,
@@ -188,7 +229,22 @@ private fun TimerVisualization(
     modifier: Modifier = Modifier,
 ) {
     val idle = visualState == TimerVisualState.IDLE
-    Box(
+    val showClockLabels = theme == TimerTheme.CLOCK && clockLabels.isNotEmpty()
+    val clockLabelStyle = MaterialTheme.typography.titleLarge.copy(
+        color = stateIndicatorColor,
+        fontFamily = font.toFontFamily(),
+        fontWeight = FontWeight.Bold,
+        fontSize = 28.sp,
+    )
+    val density = LocalDensity.current
+    val textMeasurer = rememberTextMeasurer()
+    val largestClockLabelSize = remember(clockLabels, clockLabelStyle, textMeasurer) {
+        clockLabels
+            .map { textMeasurer.measure(it.value, style = clockLabelStyle).size }
+            .maxByOrNull { it.width }
+    }
+
+    BoxWithConstraints(
         modifier = modifier.semantics {
             contentDescription = if (showsTextFreeStateCue(detail) || idle) {
                 stateDescription
@@ -201,17 +257,39 @@ private fun TimerVisualization(
         },
         contentAlignment = Alignment.Center,
     ) {
+        val labelWidth = largestClockLabelSize?.width?.let { with(density) { it.toDp().value } } ?: 0f
+        val labelHeight = largestClockLabelSize?.height?.let { with(density) { it.toDp().value } } ?: 0f
+        val clockLayout = clockLayoutGeometry(
+            width = maxWidth.value,
+            height = maxHeight.value,
+            labelWidth = labelWidth,
+            labelHeight = labelHeight,
+        )
+        val clockLabelFontSize = if (clockLabels.size > 2 && clockLayout.labelOrbitRadius > 0f) {
+            val chord = 2f * clockLayout.labelOrbitRadius *
+                sin(kotlin.math.PI.toFloat() / clockLabels.size)
+            (28f * minOf(1f, chord * 0.8f / labelWidth.coerceAtLeast(1f))).coerceAtLeast(14f)
+        } else {
+            28f
+        }
+        val clockDiskRadiusPx = with(density) { clockLayout.diskRadius.dp.toPx() }
+        val clockLabelOrbitRadiusPx = with(density) { clockLayout.labelOrbitRadius.dp.toPx() }
+
         Canvas(Modifier.fillMaxSize()) {
             val track = backgroundColor
             val remaining = foregroundColor
-            val boundaries = segmentBoundaryFractions(detail)
+            val boundaries = visualizationBoundaryFractions(theme, detail)
             val center = Offset(size.width / 2f, size.height / 2f)
             val radians = kotlin.math.PI.toFloat() / 180f
 
             when (theme) {
                 TimerTheme.CLOCK -> {
-                    val diameter = size.minDimension * 0.92f
-                    val radius = diameter / 2f
+                    val radius = if (showClockLabels) {
+                        clockDiskRadiusPx
+                    } else {
+                        size.minDimension * 0.46f
+                    }
+                    val diameter = radius * 2f
                     val topLeft = Offset(center.x - radius, center.y - radius)
                     val shapeSize = Size(diameter, diameter)
                     val arc = remainingArc(fractionRemaining)
@@ -224,14 +302,7 @@ private fun TimerVisualization(
                         topLeft = topLeft,
                         size = shapeSize,
                     )
-                    boundaries.forEach { fraction ->
-                        drawCircle(
-                            color = track,
-                            radius = radius * fraction,
-                            center = center,
-                            style = Stroke(width = 2.dp.toPx()),
-                        )
-                    }
+                    drawCircle(track, radius * 0.09f, center)
                 }
 
                 TimerTheme.BATTERY -> {
@@ -275,18 +346,11 @@ private fun TimerVisualization(
                 }
 
                 TimerTheme.FAN -> {
-                    val radius = minOf(size.width * 0.46f, size.height * 0.72f)
-                    val fanCenter = Offset(center.x, center.y - radius * 0.35f)
+                    val geometry = fanGeometry(size.width, size.height)
+                    val radius = geometry.radius
+                    val fanCenter = Offset(center.x, geometry.centerY)
                     val topLeft = Offset(fanCenter.x - radius, fanCenter.y - radius)
                     val shapeSize = Size(radius * 2f, radius * 2f)
-                    drawArc(
-                        color = track,
-                        startAngle = 180f,
-                        sweepAngle = 180f,
-                        useCenter = true,
-                        topLeft = topLeft,
-                        size = shapeSize,
-                    )
                     drawArc(
                         color = remaining,
                         startAngle = 180f,
@@ -295,7 +359,7 @@ private fun TimerVisualization(
                         topLeft = topLeft,
                         size = shapeSize,
                     )
-                    boundaries.forEach { fraction ->
+                    boundaries.filter { it <= fractionRemaining }.forEach { fraction ->
                         val angle = (180f + 180f * fraction) * radians
                         drawLine(
                             track,
@@ -350,6 +414,23 @@ private fun TimerVisualization(
                         )
                     }
                 }
+            }
+        }
+
+        if (showClockLabels) {
+            clockLabels.forEach { label ->
+                val angle = label.angleDegrees * (kotlin.math.PI.toFloat() / 180f)
+                Text(
+                    text = label.value,
+                    modifier = Modifier.offset {
+                        IntOffset(
+                            x = (cos(angle) * clockLabelOrbitRadiusPx).roundToInt(),
+                            y = (sin(angle) * clockLabelOrbitRadiusPx).roundToInt(),
+                        )
+                    },
+                    style = clockLabelStyle.copy(fontSize = clockLabelFontSize.sp),
+                    maxLines = 1,
+                )
             }
         }
 

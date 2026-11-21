@@ -82,10 +82,18 @@ fun SettingsPanel(
     persistenceFailure: String? = null,
     modifier: Modifier = Modifier,
 ) {
-    MaterialTheme(colorScheme = appColorScheme(Color(initialSettings.backgroundColorArgb))) {
+    val backgroundColor = Color(initialSettings.backgroundColorArgb)
+    val surfaceTint = appColorScheme(backgroundColor).onSurface.copy(alpha = 0.08f)
+
+    MaterialTheme(
+        colorScheme = appColorScheme(
+            background = backgroundColor,
+            textColor = Color(initialSettings.textColorArgb),
+        ),
+    ) {
         Surface(
             modifier = modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),
+            color = surfaceTint,
             contentColor = MaterialTheme.colorScheme.onSurface,
         ) {
             Column(

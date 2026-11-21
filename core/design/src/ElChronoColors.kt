@@ -54,7 +54,7 @@ val ElChronoColorScheme = darkColorScheme(
     scrim = Color.Black,
 )
 
-fun appColorScheme(background: Color) =
+fun appColorScheme(background: Color, textColor: Color? = null) =
     (if (background.luminance() > 0.179f) lightColorScheme(
         primary = Color(0xFF5B5BD6),
         secondary = Color(0xFF57466F),
@@ -62,7 +62,7 @@ fun appColorScheme(background: Color) =
     ) else ElChronoColorScheme).copy(
         background = background,
         surface = background,
-        onBackground = if (background.luminance() > 0.179f) Color.Black else Color.White,
-        onSurface = if (background.luminance() > 0.179f) Color.Black else Color.White,
-        onSurfaceVariant = if (background.luminance() > 0.179f) Color.Black else Color.White,
+        onBackground = textColor ?: if (background.luminance() > 0.179f) Color.Black else Color.White,
+        onSurface = textColor ?: if (background.luminance() > 0.179f) Color.Black else Color.White,
+        onSurfaceVariant = textColor ?: if (background.luminance() > 0.179f) Color.Black else Color.White,
     )

@@ -1,5 +1,9 @@
 package nl.entreco.elchrono
 
 import androidx.compose.ui.window.ComposeUIViewController
+import nl.entreco.elchrono.di.initApp
 
-fun ViewController() = ComposeUIViewController { App(allowKeyboardInput = true) }
+fun ViewController() = run {
+    initApp()
+    ComposeUIViewController { App(allowKeyboardInput = true) }
+}

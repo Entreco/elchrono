@@ -6,6 +6,7 @@ dependencies:
   - //core/counter
   - //core/design
   - //core/localization
+  - //core/persistence
   - $compose.runtime
   - $compose.foundation
   - $compose.material3

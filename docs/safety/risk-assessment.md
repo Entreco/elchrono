@@ -59,6 +59,12 @@ All scenarios within the issue's required scope are addressed below; none is
 treated as non-applicable. Provider-specific connectivity and playback failures
 are included under RISK-003, with details dependent on a later approved
 integration and platform scope.
+Customization and automatic persistence add review scope for unintended
+configuration changes, invalid/stale stored values, loss of accessibility
+semantics, detail representations, and storage-read/save failures. These
+scenarios remain covered through RISK-004 and RISK-005; no post-control risk
+rating or acceptability disposition is claimed until implementation and
+human review evidence are available.
 
 ## Initial assessment method and criteria
 

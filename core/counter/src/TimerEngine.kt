@@ -57,20 +57,25 @@ class TimerEngine(
 
     fun saveSettings(duration: TimerDuration): TimerUpdate {
         configuredDuration = duration
-        status = TimerStatus.RUNNING
+        status = if (duration.totalMinutes == 0) TimerStatus.NOT_CONFIGURED else TimerStatus.RUNNING
         val now = clock.nowNanos()
         runningSinceNanos = now
         pausedRemaining = null
         observedCycles = 0
         return TimerUpdate(
-            snapshot = TimerSnapshot(status, configuredDuration, duration.asDuration),
+            snapshot = TimerSnapshot(
+                status,
+                configuredDuration,
+                if (duration.totalMinutes == 0) Duration.ZERO else duration.asDuration,
+            ),
             completedCycles = 0,
         )
     }
 
     private fun snapshot(): TimerSnapshot {
         val remaining = when (status) {
-            TimerStatus.NOT_CONFIGURED -> null
+            TimerStatus.NOT_CONFIGURED ->
+                configuredDuration?.takeIf { it.totalMinutes == 0 }?.let { Duration.ZERO }
             TimerStatus.PAUSED -> pausedRemaining
             TimerStatus.RUNNING -> {
                 val duration = checkNotNull(configuredDuration).asDuration.inWholeNanoseconds

@@ -43,8 +43,22 @@ hours. No accessibility conformance baseline is selected by this protocol.
 | TP-REQ-009 | [REQ-009](../product/requirements.md#requirement-identification) | Review application screens, About content, and external product claims against intended-use exclusions. | No content presents the app as a clock, guarantees a deadline, makes medical claims, or presents it for safety-critical timing. Conflicts in intended purpose, functionality, claims, or markets are escalated before affected work continues. |
 | TP-REQ-010 | [REQ-010](../product/requirements.md#requirement-identification) | With a controllable time source and no v1 audio, advance the countdown to zero. | The timer immediately resets to the configured duration, displays no completed state, handles completion once, and does not become negative. Stopping optional music is deferred to v2 and is not a v1 test result. |
 | TP-REQ-011 | [REQ-011](../product/requirements.md#requirement-identification) | On each configured target, operate Main, Settings, and About using its supported remote/controller focus model; verify visible focus, predictable navigation, readability at ordinary viewing distance, and non-colour-only cues. Attempt target packaging and lifecycle checks. | Android TV and Apple TV controls are operable without touch, focus is visible and predictable, and content remains readable and complete at the agreed viewing distance. Record target configuration and verification before claiming support; an unconfigured target or unavailable device makes the test blocked, not passed. |
+| TP-REQ-012 | [REQ-012](../product/requirements.md#requirement-identification) | Enumerate detail levels 0-12 and select colors/fonts across shape changes and temporary hidden controls. | Every detail level and color/font choice is reachable, shape changes do not erase selections, and no contrast restriction or warning is introduced. |
+| TP-REQ-013 | [REQ-013](../product/requirements.md#requirement-identification) | For each shape and detail level, inspect detail 0 and every value 1-12. | Detail 0 hides extra segments and on-screen timer text but retains the visualization; values 1-12 show that count and remaining-time text; representations do not use a clock face or time of day. |
+| TP-REQ-014 | [REQ-014](../product/requirements.md#requirement-identification) | Exercise preview, auto-save, app reopen, invalid/stale storage, storage read failure, save failure, and zero duration. | Valid changes preview and persist without Save; reopen restores settings but not a running countdown; invalid/stale values use defaults; storage failures are visibly reported. |
+| TP-REQ-015 | [REQ-015](../product/requirements.md#requirement-identification) | Resize Settings across compact and expanded layouts and inspect labels, focus, semantics, and clipping. | Settings remains reachable, uses a side pane where supported, and required controls remain visible and labeled at each browser configuration checked. |
 
 ## Execution record
+
+Issue #65 focused verification:
+- `./kotlin test -p jvm -m common -m counter -m design -m settings -m localization -m persistence` passed in the feature worktree.
+- `./kotlin build -m browser` passed.
+- `./kotlin run -m browser --port 8082 --no-open-browser` responded HTTP 200.
+
+This evidence verifies compilation and JVM/persistence behavior. It does not
+verify rendered browser layout, assistive-technology interaction, all browser
+storage failures, supported browser matrices, or human product/accessibility/
+risk review.
 
 The focused JVM test command
 `./kotlin test -p jvm -m common -m counter -m design -m settings -m localization`
@@ -107,3 +121,4 @@ v2, not passed or waived.
 | 0.8 | Add deterministic app-state lifecycle tests and align TP-REQ-003 with pause-on-stop/no-auto-resume behavior; retain runtime lifecycle, layout, and platform verification as pending. |
 | 0.9 | Add adaptive supporting-pane Settings and target-specific keyboard/keypad acceptance criteria; record core duration-entry and Settings input-policy test ownership without treating builds as UI verification. |
 | 1.0 | Record passing focused JVM tests and JVM/browser/Android/iOS builds; document the unresolved Skiko WebAssembly test-runner failure without treating builds as product verification. |
+| 1.1 | Add issue #65 personalization, persistence, zero-duration, detail, and responsive browser verification criteria; retain human and runtime evidence gaps. |

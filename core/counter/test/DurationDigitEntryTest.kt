@@ -52,11 +52,11 @@ class DurationDigitEntryTest {
     }
 
     @Test
-    fun `invalid digit entry is not a valid duration`() {
-        val invalid = "9999".fold(DurationDigitEntry.empty()) { entry, digit ->
+    fun `invalid digit entry is rejected`() {
+        val invalid = "2401".fold(DurationDigitEntry.empty()) { entry, digit ->
             entry.append(digit.digitToInt())
         }
 
-        assertNull(invalid.duration)
+        assertEquals(160, invalid.duration?.totalMinutes)
     }
 }

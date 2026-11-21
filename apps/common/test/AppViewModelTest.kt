@@ -11,12 +11,38 @@ import nl.entreco.elchrono.core.counter.TimerDuration
 import nl.entreco.elchrono.core.counter.TimerEngine
 import nl.entreco.elchrono.core.counter.TimerStatus
 import nl.entreco.elchrono.core.design.TimerTheme
-import nl.entreco.elchrono.features.settings.TimerSettings
+import nl.entreco.elchrono.core.persistence.TimerSettings
+import nl.entreco.elchrono.core.persistence.SettingsRepository
+import nl.entreco.elchrono.core.persistence.RestoredSettings
+import nl.entreco.elchrono.core.persistence.StorageResult
 
 class AppViewModelTest {
     @Test
+    fun `settings repository is injected and save failure is exposed`() {
+        val repository = StubSettingsRepository(StorageResult.Failure("Save denied"))
+        val viewModel = AppViewModel(
+            TimerEngine(TestMonotonicClock()),
+            repository,
+            initialSettings = settings(5),
+            initialPersistenceFailure = null,
+        )
+
+        viewModel.updateSettings(settings(2))
+
+        assertEquals("Save denied", viewModel.uiState.value.persistenceFailure)
+    }
+
+    @Test
+    fun `closing settings at zero stays non-counting`() {
+        val viewModel = testViewModel(TimerEngine(TestMonotonicClock()))
+        viewModel.updateSettings(settings(0))
+        viewModel.closeSettings(viewModel.uiState.value.settings)
+        assertEquals(TimerStatus.NOT_CONFIGURED, viewModel.uiState.value.timer.snapshot.status)
+        assertEquals(kotlin.time.Duration.ZERO, viewModel.uiState.value.timer.snapshot.remaining)
+    }
+    @Test
     fun `ticking requires running and not interrupted`() {
-        val viewModel = AppViewModel(TimerEngine(TestMonotonicClock()))
+        val viewModel = testViewModel(TimerEngine(TestMonotonicClock()))
         val initial = viewModel.uiState.value
         assertFalse(initial.isTicking)
 
@@ -41,7 +67,7 @@ class AppViewModelTest {
     @Test
     fun `tick updates running timer and ignores a paused timer`() {
         val clock = TestMonotonicClock()
-        val viewModel = AppViewModel(TimerEngine(clock))
+        val viewModel = testViewModel(TimerEngine(clock))
         viewModel.tick()
         assertFalse(viewModel.uiState.value.isTicking)
 
@@ -59,7 +85,7 @@ class AppViewModelTest {
 
     @Test
     fun `about navigation returns to settings and then timer`() {
-        val viewModel = AppViewModel(TimerEngine(TestMonotonicClock()))
+        val viewModel = testViewModel(TimerEngine(TestMonotonicClock()))
 
         viewModel.openSettings()
         viewModel.showAbout()
@@ -73,7 +99,7 @@ class AppViewModelTest {
 
     @Test
     fun `back closes settings and returns from about before closing settings`() {
-        val viewModel = AppViewModel(TimerEngine(TestMonotonicClock()))
+        val viewModel = testViewModel(TimerEngine(TestMonotonicClock()))
 
         viewModel.openSettings()
         viewModel.onBackPressed()
@@ -90,7 +116,7 @@ class AppViewModelTest {
 
     @Test
     fun `navigation never removes the timer root or pushes duplicate destinations`() {
-        val viewModel = AppViewModel(TimerEngine(TestMonotonicClock()))
+        val viewModel = testViewModel(TimerEngine(TestMonotonicClock()))
 
         viewModel.onBackPressed()
         viewModel.showAbout()
@@ -112,7 +138,7 @@ class AppViewModelTest {
     @Test
     fun `opening settings pauses and saving starts a full new countdown`() {
         val clock = TestMonotonicClock()
-        val viewModel = AppViewModel(TimerEngine(clock))
+        val viewModel = testViewModel(TimerEngine(clock))
         val settings = settings(5)
         viewModel.saveSettings(settings)
         clock.advance(2.minutes)
@@ -134,7 +160,7 @@ class AppViewModelTest {
     @Test
     fun `stopping while running pauses and marks interruption without automatic resume`() {
         val clock = TestMonotonicClock()
-        val viewModel = AppViewModel(TimerEngine(clock))
+        val viewModel = testViewModel(TimerEngine(clock))
         viewModel.saveSettings(settings(5))
         clock.advance(2.minutes)
 
@@ -150,7 +176,7 @@ class AppViewModelTest {
     @Test
     fun `repeated stop events do not change paused remaining time`() {
         val clock = TestMonotonicClock()
-        val viewModel = AppViewModel(TimerEngine(clock))
+        val viewModel = testViewModel(TimerEngine(clock))
         viewModel.saveSettings(settings(5))
         clock.advance(2.minutes)
         viewModel.onAppStopped()
@@ -164,7 +190,7 @@ class AppViewModelTest {
 
     @Test
     fun `stopping before timer starts does not mark an interruption`() {
-        val viewModel = AppViewModel(TimerEngine(TestMonotonicClock()))
+        val viewModel = testViewModel(TimerEngine(TestMonotonicClock()))
 
         viewModel.onAppStopped()
 
@@ -174,7 +200,7 @@ class AppViewModelTest {
 
     @Test
     fun `saving after interruption clears warning and restarts the full duration`() {
-        val viewModel = AppViewModel(TimerEngine(TestMonotonicClock()))
+        val viewModel = testViewModel(TimerEngine(TestMonotonicClock()))
         viewModel.saveSettings(settings(5))
         viewModel.onAppStopped()
 
@@ -188,7 +214,7 @@ class AppViewModelTest {
     @Test
     fun `tick reports completion and timer remains running at full duration`() {
         val clock = TestMonotonicClock()
-        val viewModel = AppViewModel(TimerEngine(clock))
+        val viewModel = testViewModel(TimerEngine(clock))
         viewModel.saveSettings(settings(1))
         clock.advance(1.minutes)
 
@@ -203,6 +229,29 @@ class AppViewModelTest {
         duration = checkNotNull(TimerDuration.fromMinutes(minutes)),
         theme = TimerTheme.CLOCK,
     )
+
+    private fun testViewModel(engine: TimerEngine): AppViewModel =
+        AppViewModel(
+            timerEngine = engine,
+            settingsRepository = StubSettingsRepository(StorageResult.Success(Unit)),
+            initialSettings = settings(120),
+            initialPersistenceFailure = null,
+        )
+
+    private class StubSettingsRepository(
+        private val saveResult: StorageResult<Unit>,
+    ) : SettingsRepository {
+        override fun load(): RestoredSettings =
+            RestoredSettings(
+                TimerSettings(
+                    duration = checkNotNull(TimerDuration.fromMinutes(120)),
+                    theme = TimerTheme.CLOCK,
+                ),
+                null,
+            )
+
+        override fun save(settings: TimerSettings): StorageResult<Unit> = saveResult
+    }
 
     private class TestMonotonicClock : MonotonicClock {
         private var currentNanos = 0L

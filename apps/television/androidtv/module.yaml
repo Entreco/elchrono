@@ -3,6 +3,7 @@ product: android/app
 dependencies:
   - //apps/common
   - $libs.androidx.activity.compose
+  - $libs.koin.android
 
 settings:
   compose: enabled

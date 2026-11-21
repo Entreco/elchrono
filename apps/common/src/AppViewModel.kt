@@ -8,7 +8,9 @@ import nl.entreco.elchrono.core.counter.TimerEngine
 import nl.entreco.elchrono.core.counter.TimerStatus
 import nl.entreco.elchrono.core.counter.TimerUpdate
 import nl.entreco.elchrono.core.design.TimerTheme
-import nl.entreco.elchrono.features.settings.TimerSettings
+import nl.entreco.elchrono.core.persistence.SettingsRepository
+import nl.entreco.elchrono.core.persistence.StorageResult
+import nl.entreco.elchrono.core.persistence.TimerSettings
 
 enum class AppScreen {
     TIMER,
@@ -23,6 +25,7 @@ data class AppUiState(
     val settings: TimerSettings,
     val backStack: List<AppScreen> = TimerBackStack,
     val interrupted: Boolean = false,
+    val persistenceFailure: String? = null,
 ) {
     
     val screen: AppScreen get() = backStack.last()
@@ -30,14 +33,17 @@ data class AppUiState(
 }
 
 class AppViewModel(
-    private val timerEngine: TimerEngine = TimerEngine(),
-    initialSettings: TimerSettings = defaultTimerSettings(),
+    private val timerEngine: TimerEngine,
+    private val settingsRepository: SettingsRepository,
+    initialSettings: TimerSettings,
+    initialPersistenceFailure: String?,
 ) : ViewModel() {
     val uiState: StateFlow<AppUiState>
         field = MutableStateFlow(
             AppUiState(
                 timer = timerEngine.current(),
                 settings = initialSettings,
+                persistenceFailure = initialPersistenceFailure,
             ),
         )
 
@@ -62,13 +68,33 @@ class AppViewModel(
     fun onBackPressed() {
         val state = uiState.value
         if (state.backStack.size > 1) {
-            uiState.value = state.copy(backStack = state.backStack.dropLast(1))
+            val removed = state.backStack.dropLast(1)
+            if (state.screen == AppScreen.SETTINGS) {
+                closeSettings(state.settings)
+            } else {
+                uiState.value = state.copy(backStack = removed)
+            }
         }
     }
 
     fun saveSettings(settings: TimerSettings) {
+        updateSettings(settings)
+        closeSettings(settings)
+    }
+
+    fun updateSettings(settings: TimerSettings) {
+        val saved = settingsRepository.save(settings)
         uiState.value = uiState.value.copy(
-            timer = timerEngine.saveSettings(settings.duration),
+            settings = settings,
+            persistenceFailure = (saved as? StorageResult.Failure)?.message,
+        )
+    }
+
+    fun closeSettings(settings: TimerSettings = uiState.value.settings) {
+        val state = uiState.value
+        val timer = timerEngine.saveSettings(settings.duration)
+        uiState.value = state.copy(
+            timer = timer,
             settings = settings,
             backStack = TimerBackStack,
             interrupted = false,
@@ -92,7 +118,7 @@ class AppViewModel(
     }
 }
 
-private fun defaultTimerSettings() = TimerSettings(
+internal fun defaultTimerSettings() = TimerSettings(
     duration = checkNotNull(TimerDuration.fromMinutes(DEFAULT_DURATION_MINUTES)),
     theme = TimerTheme.CLOCK,
 )

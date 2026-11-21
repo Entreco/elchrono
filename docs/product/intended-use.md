@@ -3,7 +3,8 @@
 | Field | Value |
 |---|---|
 | Document ID | M1-DOC-002 |
-| Revision | 1.0 |
+| Revision | 1.1 |
+| Current change review | [PR #78](https://github.com/Entreco/elchrono/pull/78); human acceptance and required specialist review pending |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Intended-use/product-boundary and software-safety scopes: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
@@ -91,12 +92,18 @@ not establish what action should follow. The caregiver remains responsible for
 choosing and explaining the duration and for determining what happens when the
 wait ends.
 
-The v1 requirements specify that opening Settings pauses a running countdown,
-valid Save starts a fresh countdown at the full configured duration, and
-completion resets immediately without a completed state. Settings has no
-caregiver-protection gate. No separate manual pause, resume, or reset controls,
-interruption recovery, music, or in-app volume controls are included in v1.
-These requirements are not evidence of implementation or verification.
+The current requirements specify that opening Settings pauses a running timer;
+closing resumes only its retained running intent, with remaining time or a new
+full duration after a valid duration change. Manual pause and finished states
+remain stopped; a duration change after finish prepares a paused timer. At zero
+the timer stops in a distinct finished state; it does not restart automatically.
+Pause, Resume and Restart are explicit actions. Interruption requires explicit
+Restart, not Settings alone; lifecycle stop while Settings holds running intent
+revokes automatic resume. No countdown recovery across process termination or
+device restart is promised. Settings has no caregiver-protection gate. These
+revised behaviors require product, accessibility, usability and risk review
+and verification; prior evidence does not establish them.
+
 Interruption detection must not imply timing continuity when it is uncertain.
 
 ## Exclusions and claims boundary
@@ -182,3 +189,4 @@ link applicable identifiers and source sections from the traceability matrix.
 | 0.8 | Update the proposed waiting duration range to 1 minute through 24 hours in 1-minute increments, consistent with the M2 product requirements candidate |
 | 0.9 | Align the proposed requirement identifier prefix with REQ-NNN and direct trace links to the M2 requirements traceability matrix |
 | 1.0 | Clarify v1 intended use and exclusions: no music, completion sound, or in-app volume controls; align Settings/completion/interruption scope with the M2 v1 decisions and preserve offline-verification limitations. |
+| 1.1 | Align intended-use behavior with one-shot completion, Settings intent and explicit interruption restart; retain review gaps. |

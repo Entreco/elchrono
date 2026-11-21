@@ -5,7 +5,8 @@ Desktop keyboard changes: [PR #73](https://github.com/Entreco/elchrono/pull/73).
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-007 |
-| Revision | 1.4 |
+| Revision | 1.5 |
+| Current change review | [PR #78](https://github.com/Entreco/elchrono/pull/78); human acceptance and required specialist review pending |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | M1/M2/M3 product, requirements, design/usability, accessibility, test/traceability, software-safety, and platform-architecture scopes: @Entreco, designated by the product owner on 2026-11-19; review of this final PR head remains pending |
@@ -94,7 +95,7 @@ mean the item is approved, verified, or accepted for milestone completion.
 | Usability plan and findings, or documented participant-review limitation | M2-DOC-005/006 revision 0.7 preserve two 2026-11-16 retrospective intended-user sessions and their limitations. There was no caregiver session, no assistive-technology evaluation, and no representative theme preference evidence. The owner accepts these limitations for the current design-baseline decision. | **Accepted as documented limitations for this M2 design baseline; the sessions remain retrospective and do not establish caregiver workflow usability, representative preference, or validation. Do not claim those outcomes.** |
 | Design review and approval | M2-DOC-004 revision 1.8 specifies Main/Settings/About, the four demo visualizations approved by the product owner, adaptive supporting-pane Settings, and target-specific duration input. Android TV and Apple TV are primary targets; TV-specific interaction and support remain unverified. | **Product/design scope approved by the owner; application verification and TV-specific review remain required. Final exact-head acceptance is pending.** |
 | Initial requirements-to-risk-to-test traceability | M2-DOC-003 revision 3.1 maps ten active requirements to six risks and ten planned test cases, includes reverse coverage, and links findings, limitations, and decisions. It records passing focused JVM tests/builds and the unresolved Wasm test-runner failure without claiming product verification, control effectiveness, residual-risk acceptance, or platform support. | **Traceability baseline is owner-approved for issue #47; rendered UI/product-level execution and risk-control results remain unverified.** |
-| Required completion and Settings behavior | REQ-002 specifies Settings-open pause and valid-save start from the full saved duration, with no separate manual pause/resume/reset controls. REQ-010 specifies immediate reset with no completed state; music is deferred to v2 and stops at zero only if later introduced. Counter-domain tests cover pause/save and completion behavior; UI integration remains unverified. | **Product decisions recorded; focused domain tests pass, while product/UI verification remains pending.** |
+| Required completion and Settings behavior | Historical issue #47 baseline used Settings save-to-start and automatic reset; its focused domain tests cover that earlier contract only. The [current requirements](../product/requirements.md) specify one-shot completion, retained Settings intent and explicit actions. | Revised behavior, product/UI verification and competent review remain pending. |
 | Usability and interface findings | M2-DOC-006-F01 records Clock remaining-time clipping, corroborated by the Session B screenshot. The owner-reported prototype correction was checked at 500 × 1000 px and 1440 × 1200 px. The browser MVP and adaptive Settings/input implementation now exist; their rendered layouts and interactions have not yet been product-tested. | **Specific prototype finding closed only for checked layouts; browser UI no-clipping, pane resizing, and keyboard/keypad behavior remain unverified.** |
 | v1 caregiver-protection risk disposition | The product owner explicitly accepts unprotected Settings for v1. M1-DOC-004 revision 0.7 records the bounded decision; no control, risk reduction, or post-control score is claimed. | **Owner-approved product disposition; exact-head review remains pending. Do not treat this as evidence of a protective control.** |
 
@@ -105,11 +106,13 @@ accepts these limitations for the current design-baseline decision only. This
 does not validate the product or waive product verification, future usability
 work, or risk-control verification.
 
-## Product decisions and v1 justification
+## Historical product decisions and v1 justification
 
-The product owner supplied the dispositions below. They define
-the current v1 scope and are recorded in M2-DOC-001 revision 0.8 and
-M2-DOC-004 revision 1.8.
+The dispositions below record the historical issue #47 baseline in M2-DOC-001
+revision 0.8 and M2-DOC-004 revision 1.8. D-04 through D-06 and completion
+behavior are superseded by the [current requirements](../product/requirements.md).
+Historical tests do not verify the revised one-shot, Settings-intent or action
+behavior; review and verification remain pending.
 
 | Decision | Current evidence and disposition |
 |---|---|
@@ -184,3 +187,4 @@ branch-derived lifecycle as evidence that the final PR head has been accepted.
 | 1.2 | Update the evidence baseline for D-09 and the adaptive supporting-pane/keypad implementation; keep rendered behavior, accessibility, TV support, and exact-head acceptance pending. |
 | 1.3 | Record the test-protocol/traceability revisions, passing JVM tests and target builds, and unresolved Skiko Wasm test-runner failure; retain product-verification and human-acceptance gaps. |
 | 1.4 | Distinguish the issue #47 input baseline from the subsequent desktop keyboard candidate; retain physical-input and review gaps. |
+| 1.5 | Mark historical timer decisions and results as superseded by current requirements; retain review and verification gaps. |

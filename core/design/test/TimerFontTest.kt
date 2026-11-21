@@ -7,16 +7,11 @@ import kotlin.test.assertEquals
 
 class TimerFontTest {
     @Test
-    fun `settings typography uses the same font mapping as the timer`() {
+    fun `typography applies the supplied family without changing sizes`() {
         val typography = Typography()
-        val expected = mapOf(
-            TimerFont.DEFAULT to FontFamily.Default,
-            TimerFont.ROUNDED to FontFamily.SansSerif,
-            TimerFont.MONOSPACE to FontFamily.Monospace,
-        )
-        expected.forEach { (font, family) ->
-            assertEquals(family, font.toFontFamily())
-            val updated = typography.withFontFamily(font.toFontFamily())
+        listOf(FontFamily.Default, FontFamily.SansSerif, FontFamily.Monospace, FontFamily.Serif)
+            .forEach { family ->
+            val updated = typography.withFontFamily(family)
             listOf(
                 updated.displayLarge, updated.displayMedium, updated.displaySmall,
                 updated.headlineLarge, updated.headlineMedium, updated.headlineSmall,

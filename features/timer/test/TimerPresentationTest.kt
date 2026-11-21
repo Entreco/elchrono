@@ -41,7 +41,6 @@ class TimerPresentationTest {
         listOf(272f to 400f, 600f to 180f, 1000f to 700f).forEach { (width, height) ->
             val geometry = batteryGeometry(width, height)
             assertTrue(geometry.bodyWidth / geometry.bodyHeight >= 3.6f - 0.001f)
-            assertTrue(geometry.bodyHeight <= 126f)
             assertTrue(geometry.left >= 0f && geometry.top >= 0f)
             assertTrue(geometry.left + geometry.bodyWidth + geometry.terminalWidth <= width)
             assertTrue(geometry.top + geometry.bodyHeight <= height)
@@ -171,7 +170,7 @@ class TimerPresentationTest {
                     "$state at detail $detail",
                 )
                 assertEquals(
-                    if (detail == 0) !isRunningOrPaused else isRunningOrPaused,
+                    state == TimerVisualState.IDLE || state == TimerVisualState.INTERRUPTED,
                     showsTimerStateIndicator(detail, state),
                     "$state at detail $detail",
                 )
@@ -207,6 +206,10 @@ class TimerPresentationTest {
     @Test
     fun `timer states map to distinct presentation states`() {
         assertEquals(
+            TimerVisualState.FINISHED,
+            timerVisualState(snapshot(TimerStatus.FINISHED), interrupted = false),
+        )
+        assertEquals(
             TimerVisualState.RUNNING,
             timerVisualState(snapshot(TimerStatus.RUNNING), interrupted = false),
         )
@@ -221,6 +224,10 @@ class TimerPresentationTest {
         assertEquals(
             TimerVisualState.IDLE,
             timerVisualState(snapshot(TimerStatus.NOT_CONFIGURED), interrupted = false),
+        )
+        assertEquals(
+            TimerVisualState.IDLE,
+            timerVisualState(snapshot(TimerStatus.NOT_CONFIGURED), interrupted = true),
         )
     }
 

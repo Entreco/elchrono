@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -32,7 +33,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.blur
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -40,11 +41,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
@@ -62,12 +65,17 @@ import com.skydoves.cloudy.liquidGlass
 import com.skydoves.cloudy.rememberSky
 import com.skydoves.cloudy.sky
 import kotlinx.coroutines.delay
+import nl.entreco.elchrono.core.counter.TimerStatus
 import nl.entreco.elchrono.core.design.ElChronoMotion
 import nl.entreco.elchrono.core.design.ElChronoTheme
 import nl.entreco.elchrono.core.design.LocalDimens
 import nl.entreco.elchrono.core.design.appColorScheme
 import nl.entreco.elchrono.core.design.toFontFamily
 import nl.entreco.elchrono.core.design.withFontFamily
+import nl.entreco.elchrono.core.design.resources.material_arrow_back
+import nl.entreco.elchrono.core.design.resources.material_close
+import nl.entreco.elchrono.core.design.resources.material_settings
+import nl.entreco.elchrono.core.design.resources.Res as DesignResources
 import nl.entreco.elchrono.core.localization.resources.Res as Strings
 import nl.entreco.elchrono.core.localization.resources.app_title
 import nl.entreco.elchrono.core.localization.resources.back
@@ -78,6 +86,7 @@ import nl.entreco.elchrono.features.about.AboutFeature
 import nl.entreco.elchrono.features.settings.SettingsPanel
 import nl.entreco.elchrono.features.timer.TimerFeature
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -125,7 +134,7 @@ internal fun AppContent(
     MaterialTheme(
         colorScheme = appColorScheme(
             background = Color(state.settings.backgroundColorArgb),
-            textColor = if (state.screen == AppScreen.SETTINGS) Color(state.settings.textColorArgb) else null,
+            textColor = Color(state.settings.textColorArgb),
         ),
         typography = if (state.screen == AppScreen.SETTINGS) {
             MaterialTheme.typography.withFontFamily(state.settings.font.toFontFamily())
@@ -138,7 +147,7 @@ internal fun AppContent(
             containerColor = Color.Transparent,
             contentColor = MaterialTheme.colorScheme.onSurface,
             topBar = {
-                AppBar(state.screen) {
+                AppBar(state.screen, Color(state.settings.textColorArgb)) {
                     if (state.screen == AppScreen.TIMER) viewModel.openSettings()
                     else viewModel.onBackPressed()
                 }
@@ -146,25 +155,40 @@ internal fun AppContent(
         ) { contentPadding ->
             BoxWithConstraints(Modifier.fillMaxSize()) {
                 val panelWidth = if (maxWidth < 600.dp) maxWidth else 440.dp
-                val timerSemantics = if (overlayVisible) Modifier.clearAndSetSemantics {} else Modifier
-                Box(Modifier.fillMaxSize().sky(aboutSky)) {
+                val timerSemantics =
+                    if (overlayVisible) Modifier.clearAndSetSemantics {} else Modifier
+                Box(
+                    Modifier
+                        .fillMaxSize()
+                ) {
                     TimerContent(
                         state,
                         contentPadding.calculateTopPadding(),
-                        Modifier.fillMaxSize().testTag("timer-layer").then(timerSemantics)
-                            .sky(sky).blur(if (overlayVisible) 20.dp else 0.dp),
+                        onTimerAction = viewModel::onTimerAction,
+                        controlsEnabled = !overlayVisible,
+                        bottomInset = contentPadding.calculateBottomPadding(),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .testTag("timer-layer")
+                            .then(timerSemantics),
                     )
                     AnimatedVisibility(
                         visibleState = settingsVisibility,
-                        modifier = Modifier.align(Alignment.TopStart).widthIn(max = panelWidth).fillMaxWidth(),
+                        modifier = Modifier
+                            .align(Alignment.TopStart)
+                            .widthIn(max = panelWidth)
+                            .fillMaxSize(),
                         enter = ElChronoMotion.enterFromLeft,
                         exit = ElChronoMotion.exitToLeft,
                     ) {
-                        val semantics = if (state.screen != AppScreen.SETTINGS) Modifier.clearAndSetSemantics {} else Modifier
+                        val semantics =
+                            if (state.screen != AppScreen.SETTINGS) Modifier.clearAndSetSemantics {} else Modifier
                         GlassPanel(
                             sky,
                             Color(state.settings.backgroundColorArgb),
-                            Modifier.fillMaxSize().testTag("settings-layer")
+                            Modifier
+                                .fillMaxSize()
+                                .testTag("settings-layer")
                                 .focusProperties { canFocus = state.screen == AppScreen.SETTINGS }
                                 .then(semantics),
                         ) {
@@ -183,7 +207,10 @@ internal fun AppContent(
                 NavDisplay(
                     backStack = state.backStack,
                     onBack = viewModel::onBackPressed,
-                    modifier = Modifier.align(Alignment.TopStart).widthIn(max = panelWidth).fillMaxWidth(),
+                    modifier = Modifier
+                        .align(Alignment.TopStart)
+                        .widthIn(max = panelWidth)
+                        .fillMaxWidth(),
                     transitionSpec = { ElChronoMotion.enterFromLeft togetherWith ExitTransition.None },
                     popTransitionSpec = { EnterTransition.None togetherWith ElChronoMotion.exitToLeft },
                     predictivePopTransitionSpec = { EnterTransition.None togetherWith ElChronoMotion.exitToLeft },
@@ -194,7 +221,9 @@ internal fun AppContent(
                             GlassPanel(
                                 aboutSky,
                                 Color(state.settings.backgroundColorArgb),
-                                Modifier.fillMaxSize().testTag("about-layer")
+                                Modifier
+                                    .fillMaxSize()
+                                    .testTag("about-layer")
                                     .focusProperties { canFocus = state.screen == AppScreen.ABOUT }
                                     .then(
                                         if (state.screen != AppScreen.ABOUT) Modifier.clearAndSetSemantics {}
@@ -216,25 +245,11 @@ internal fun AppContent(
 @Composable
 private fun AboutContent(contentPadding: PaddingValues) {
     AboutFeature(
-        Modifier.fillMaxSize().padding(contentPadding)
-            .verticalScroll(rememberScrollState()).padding(LocalDimens.current.spaceXL),
-    )
-}
-
-@Composable
-private fun TimerContent(state: AppUiState, topInset: Dp, modifier: Modifier = Modifier) {
-    TimerFeature(
-        snapshot = state.presentationSnapshot,
-        theme = state.settings.theme,
-        backgroundColorArgb = state.settings.backgroundColorArgb,
-        foregroundColorArgb = state.settings.foregroundColorArgb,
-        textColorArgb = state.settings.textColorArgb,
-        font = state.settings.font,
-        detail = state.settings.detail,
-        ringThicknessPercent = state.settings.ringThicknessPercent,
-        interrupted = state.interrupted && !state.isPreviewing,
-        topContentInset = topInset,
-        modifier = modifier,
+        Modifier
+            .fillMaxSize()
+            .padding(contentPadding)
+            .verticalScroll(rememberScrollState())
+            .padding(LocalDimens.current.spaceXL),
     )
 }
 
@@ -247,33 +262,16 @@ private fun GlassPanel(
     tintAlpha: Float = 0.72f,
     content: @Composable () -> Unit,
 ) {
-    var size by remember { mutableStateOf(Size.Zero) }
     var blurError by remember { mutableStateOf(false) }
-    val radius = LocalDimens.current.spaceXL
-    val radiusPx = with(LocalDensity.current) { radius.toPx() }
-    val shape = RoundedCornerShape(radius)
     Box(modifier) {
-        Box(
-            Modifier.matchParentSize()
-                .onSizeChanged { size = Size(it.width.toFloat(), it.height.toFloat()) }
-                .liquidGlass(
-                    lensCenter = Offset(size.width / 2f, size.height / 2f),
-                    lensSize = if (size == Size.Zero) LiquidGlassDefaults.LENS_SIZE else size,
-                    cornerRadius = radiusPx,
-                    refraction = 0.16f,
-                    curve = 0.18f,
-                    dispersion = 0f,
-                    tint = background.copy(alpha = 0.16f),
-                    glow = LiquidGlassGlow(intensity = 0.2f),
-                )
-                .cloudy(sky = sky, radius = backdropRadius, shape = shape, onStateChanged = {
-                    when (it) {
-                        is CloudyState.Error -> blurError = true
-                        is CloudyState.Success -> blurError = false
-                        else -> Unit
-                    }
-                })
-                .background(background.copy(alpha = if (blurError) 0.95f else tintAlpha), shape),
+        GlassBackdrop(
+            sky = sky,
+            background = background,
+            blurError = blurError,
+            onBlurErrorChanged = { blurError = it },
+            modifier = Modifier.matchParentSize(),
+            backdropRadius = backdropRadius,
+            tintAlpha = tintAlpha,
         )
         Column(Modifier.fillMaxSize()) {
             Box(Modifier.weight(1f)) { content() }
@@ -281,7 +279,9 @@ private fun GlassPanel(
                 Surface(color = MaterialTheme.colorScheme.errorContainer) {
                     Text(
                         stringResource(Strings.string.glass_effect_unavailable),
-                        Modifier.fillMaxWidth().padding(LocalDimens.current.spaceM),
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(LocalDimens.current.spaceM),
                         color = MaterialTheme.colorScheme.onErrorContainer,
                     )
                 }
@@ -291,24 +291,137 @@ private fun GlassPanel(
 }
 
 @Composable
-private fun AppBar(screen: AppScreen, onNavigate: () -> Unit) {
+private fun GlassBackdrop(
+    sky: Sky,
+    background: Color,
+    blurError: Boolean,
+    onBlurErrorChanged: (Boolean) -> Unit,
+    modifier: Modifier = Modifier,
+    backdropRadius: Int = 0,
+    tintAlpha: Float = 0.72f,
+) {
+    var size by remember { mutableStateOf(Size.Zero) }
+    val radius = LocalDimens.current.spaceXL
+    val radiusPx = with(LocalDensity.current) { radius.toPx() }
+    val shape = RoundedCornerShape(radius)
+    Box(
+        modifier
+            .onSizeChanged { size = Size(it.width.toFloat(), it.height.toFloat()) }
+            .liquidGlass(
+                lensCenter = Offset(size.width / 2f, size.height / 2f),
+                lensSize = if (size == Size.Zero) LiquidGlassDefaults.LENS_SIZE else size,
+                cornerRadius = radiusPx,
+                refraction = 0.16f,
+                curve = 0.18f,
+                dispersion = 0f,
+                tint = background.copy(alpha = 0.16f),
+                glow = LiquidGlassGlow(intensity = 0.2f),
+            )
+            .cloudy(sky = sky, radius = backdropRadius, shape = shape, onStateChanged = {
+                when (it) {
+                    is CloudyState.Error -> onBlurErrorChanged(true)
+                    is CloudyState.Success -> onBlurErrorChanged(false)
+                    else -> Unit
+                }
+            })
+            .background(background.copy(alpha = if (blurError) 0.95f else tintAlpha), shape),
+    )
+}
+
+@Composable
+private fun TimerContent(
+    state: AppUiState,
+    topInset: Dp,
+    onTimerAction: () -> Unit,
+    modifier: Modifier = Modifier,
+    controlsEnabled: Boolean = true,
+    bottomInset: Dp = 0.dp,
+) {
+    val sky = rememberSky()
+    var blurError by remember { mutableStateOf(false) }
+    val snapshot = state.presentationSnapshot
+    val showRemaining = state.settings.detail > 0 && snapshot.remaining != null &&
+        (snapshot.status != TimerStatus.NOT_CONFIGURED || (state.interrupted && !state.isPreviewing))
+    LaunchedEffect(snapshot, state.settings, showRemaining) {
+        if (showRemaining) sky.invalidate()
+    }
+    LaunchedEffect(showRemaining) {
+        if (!showRemaining) blurError = false
+    }
+    Box(modifier) {
+        TimerFeature(
+            snapshot = snapshot,
+            theme = state.settings.theme,
+            backgroundColorArgb = state.settings.backgroundColorArgb,
+            foregroundColorArgb = state.settings.foregroundColorArgb,
+            textColorArgb = state.settings.textColorArgb,
+            font = state.settings.font,
+            detail = state.settings.detail,
+            ringThicknessPercent = state.settings.ringThicknessPercent,
+            interrupted = state.interrupted && !state.isPreviewing,
+            onTimerAction = onTimerAction,
+            controlsEnabled = controlsEnabled,
+            topContentInset = topInset,
+            visualizationModifier = if (showRemaining) Modifier.sky(sky) else Modifier,
+            remainingTimeDecoration = { content ->
+                Box {
+                    GlassBackdrop(
+                        sky = sky,
+                        background = Color(state.settings.backgroundColorArgb),
+                        blurError = blurError,
+                        onBlurErrorChanged = { blurError = it },
+                        modifier = Modifier.matchParentSize(),
+                    )
+                    content()
+                }
+            },
+            modifier = Modifier.fillMaxSize().padding(bottom = bottomInset),
+        )
+        if (blurError && showRemaining) {
+            Surface(
+                modifier = Modifier.align(Alignment.BottomStart).padding(
+                    start = LocalDimens.current.spaceM,
+                    end = 56.dp,
+                    bottom = LocalDimens.current.spaceM,
+                ),
+                color = MaterialTheme.colorScheme.errorContainer,
+            ) {
+                Text(
+                    stringResource(Strings.string.glass_effect_unavailable),
+                    Modifier.padding(LocalDimens.current.spaceM),
+                    color = MaterialTheme.colorScheme.onErrorContainer,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+internal fun AppBar(screen: AppScreen, textColor: Color, onNavigate: () -> Unit) {
     val (icon, label) = when (screen) {
-        AppScreen.TIMER -> "\u2699" to Strings.string.open_settings
-        AppScreen.SETTINGS -> "\u00D7" to Strings.string.hide_settings
-        AppScreen.ABOUT -> "\u2190" to Strings.string.back
+        AppScreen.TIMER -> DesignResources.drawable.material_settings to Strings.string.open_settings
+        AppScreen.SETTINGS -> DesignResources.drawable.material_close to Strings.string.hide_settings
+        AppScreen.ABOUT -> DesignResources.drawable.material_arrow_back to Strings.string.back
     }
     val description = stringResource(label)
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = Color.Transparent,
             scrolledContainerColor = Color.Transparent,
-            titleContentColor = MaterialTheme.colorScheme.onSurface,
-            navigationIconContentColor = MaterialTheme.colorScheme.onSurface,
+            titleContentColor = textColor,
+            navigationIconContentColor = textColor,
         ),
         title = { Text(stringResource(Strings.string.app_title)) },
         navigationIcon = {
             IconButton(onClick = onNavigate) {
-                Text(icon, Modifier.clearAndSetSemantics { contentDescription = description })
+                Icon(
+                    painter = painterResource(icon),
+                    contentDescription = description,
+                    tint = textColor,
+                    modifier = if (screen == AppScreen.ABOUT &&
+                        LocalLayoutDirection.current == LayoutDirection.Rtl
+                    ) Modifier.scale(scaleX = -1f, scaleY = 1f) else Modifier,
+                )
             }
         },
     )

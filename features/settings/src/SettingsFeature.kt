@@ -65,6 +65,26 @@ import nl.entreco.elchrono.core.localization.resources.background
 import nl.entreco.elchrono.core.localization.resources.colors
 import nl.entreco.elchrono.core.localization.resources.detail
 import nl.entreco.elchrono.core.localization.resources.font
+import nl.entreco.elchrono.core.localization.resources.font_default
+import nl.entreco.elchrono.core.localization.resources.font_rounded
+import nl.entreco.elchrono.core.localization.resources.font_monospace
+import nl.entreco.elchrono.core.localization.resources.font_serif
+import nl.entreco.elchrono.core.localization.resources.color_paper
+import nl.entreco.elchrono.core.localization.resources.color_ink
+import nl.entreco.elchrono.core.localization.resources.color_blue
+import nl.entreco.elchrono.core.localization.resources.color_orange
+import nl.entreco.elchrono.core.localization.resources.color_green
+import nl.entreco.elchrono.core.localization.resources.color_red
+import nl.entreco.elchrono.core.localization.resources.color_white
+import nl.entreco.elchrono.core.localization.resources.color_black
+import nl.entreco.elchrono.core.localization.resources.color_gray
+import nl.entreco.elchrono.core.localization.resources.color_yellow
+import nl.entreco.elchrono.core.localization.resources.color_lime
+import nl.entreco.elchrono.core.localization.resources.color_teal
+import nl.entreco.elchrono.core.localization.resources.color_cyan
+import nl.entreco.elchrono.core.localization.resources.color_navy
+import nl.entreco.elchrono.core.localization.resources.color_purple
+import nl.entreco.elchrono.core.localization.resources.color_pink
 import nl.entreco.elchrono.core.localization.resources.foreground
 import nl.entreco.elchrono.core.localization.resources.text
 import nl.entreco.elchrono.core.localization.resources.duration
@@ -293,19 +313,15 @@ fun SettingsScreen(
                 maximumLabel = stringResource(Strings.string.ring_solid),
                 valueRange = 1f..100f,
                 steps = 98,
+                showTicks = false,
             )
         }
         Spacer(Modifier.height(LocalDimens.current.spaceXL))
         Text(stringResource(Strings.string.colors), style = MaterialTheme.typography.titleLarge)
         Spacer(Modifier.height(LocalDimens.current.spaceM))
-        val swatches = listOf(
-            DesignColorSwatch("paper", "Paper", Color(0xFFF7F7F2)),
-            DesignColorSwatch("ink", "Ink", Color(0xFF17171C)),
-            DesignColorSwatch("blue", "Blue", Color(0xFF5B5BD6)),
-            DesignColorSwatch("orange", "Orange", Color(0xFFE58A3A)),
-            DesignColorSwatch("green", "Green", Color(0xFF3D7A57)),
-            DesignColorSwatch("red", "Red", Color(0xFFC54A4A)),
-        )
+        val swatches = settingsColorPresets.map {
+            DesignColorSwatch(it.id, stringResource(it.label), Color(it.argb))
+        }
         Text(stringResource(Strings.string.background), style = MaterialTheme.typography.titleSmall)
         ColorSwatchPicker(swatches, swatches.firstOrNull { it.color.toArgb().toLong() and 0xffffffffL == backgroundColor }?.id ?: "", onSelected = { id ->
             val selected = swatches.first { it.id == id }
@@ -330,7 +346,7 @@ fun SettingsScreen(
         Text(stringResource(Strings.string.font), style = MaterialTheme.typography.titleLarge)
         ChoicePicker(
             choices = TimerFont.entries.map { fontChoice ->
-                DesignChoice(fontChoice, fontChoice.name.lowercase().replaceFirstChar(Char::uppercase))
+                DesignChoice(fontChoice, stringResource(fontChoice.label))
             },
             selected = font,
             onSelected = {
@@ -385,3 +401,32 @@ private val TimerTheme.label: StringResource
         TimerTheme.FAN -> Strings.string.fan
         TimerTheme.RING -> Strings.string.ring
     }
+
+private val TimerFont.label: StringResource
+    get() = when (this) {
+        TimerFont.DEFAULT -> Strings.string.font_default
+        TimerFont.ROUNDED -> Strings.string.font_rounded
+        TimerFont.MONOSPACE -> Strings.string.font_monospace
+        TimerFont.SERIF -> Strings.string.font_serif
+    }
+
+internal data class SettingsColorPreset(val id: String, val label: StringResource, val argb: Long)
+
+internal val settingsColorPresets = listOf(
+    SettingsColorPreset("paper", Strings.string.color_paper, 0xFFF7F7F2),
+    SettingsColorPreset("ink", Strings.string.color_ink, 0xFF17171C),
+    SettingsColorPreset("blue", Strings.string.color_blue, 0xFF5B5BD6),
+    SettingsColorPreset("orange", Strings.string.color_orange, 0xFFE58A3A),
+    SettingsColorPreset("green", Strings.string.color_green, 0xFF3D7A57),
+    SettingsColorPreset("red", Strings.string.color_red, 0xFFC54A4A),
+    SettingsColorPreset("white", Strings.string.color_white, 0xFFFFFFFF),
+    SettingsColorPreset("black", Strings.string.color_black, 0xFF000000),
+    SettingsColorPreset("gray", Strings.string.color_gray, 0xFF808080),
+    SettingsColorPreset("yellow", Strings.string.color_yellow, 0xFFF2C94C),
+    SettingsColorPreset("lime", Strings.string.color_lime, 0xFF8CBF3F),
+    SettingsColorPreset("teal", Strings.string.color_teal, 0xFF168A86),
+    SettingsColorPreset("cyan", Strings.string.color_cyan, 0xFF45B8D1),
+    SettingsColorPreset("navy", Strings.string.color_navy, 0xFF273C75),
+    SettingsColorPreset("purple", Strings.string.color_purple, 0xFF9055B5),
+    SettingsColorPreset("pink", Strings.string.color_pink, 0xFFD66C98),
+)

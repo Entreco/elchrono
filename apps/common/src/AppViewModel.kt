@@ -30,7 +30,7 @@ data class AppUiState(
 ) {
     
     val screen: AppScreen get() = backStack.last()
-    val isTicking: Boolean get() = timer.snapshot.status == TimerStatus.RUNNING && !interrupted
+    val isTicking: Boolean get() = timer.snapshot.status == TimerStatus.RUNNING && !interrupted && !isPreviewing
     val isPreviewing: Boolean get() = AppScreen.SETTINGS in backStack
     val presentationSnapshot: TimerSnapshot
         get() = if (isPreviewing) {
@@ -50,10 +50,18 @@ class AppViewModel(
     initialSettings: TimerSettings,
     initialPersistenceFailure: String?,
 ) : ViewModel() {
+    private var resumeAfterSettings = false
+
     val uiState: StateFlow<AppUiState>
         field = MutableStateFlow(
             AppUiState(
-                timer = timerEngine.current(),
+                timer = timerEngine.current().let { timer ->
+                    if (timer.snapshot.configuredDuration == null) {
+                        timerEngine.reset(initialSettings.duration)
+                    } else {
+                        timer
+                    }
+                },
                 settings = initialSettings,
                 persistenceFailure = initialPersistenceFailure,
             ),
@@ -62,11 +70,9 @@ class AppViewModel(
     fun openSettings() {
         val state = uiState.value
         if (state.screen != AppScreen.TIMER) return
-        val timer = if (state.timer.snapshot.status == TimerStatus.RUNNING) {
-            timerEngine.openSettings()
-        } else {
-            state.timer
-        }
+        val timer = timerEngine.pause()
+        resumeAfterSettings = state.timer.snapshot.status == TimerStatus.RUNNING &&
+            timer.snapshot.status == TimerStatus.PAUSED && !state.interrupted
         uiState.value = state.copy(backStack = state.backStack + AppScreen.SETTINGS, timer = timer)
     }
 
@@ -95,32 +101,58 @@ class AppViewModel(
     }
 
     fun updateSettings(settings: TimerSettings) {
+        val state = uiState.value
+        val timer = if (settings.duration != state.settings.duration) {
+            timerEngine.reset(settings.duration)
+        } else {
+            state.timer
+        }
         val saved = settingsRepository.save(settings)
-        uiState.value = uiState.value.copy(
+        uiState.value = state.copy(
+            timer = timer,
             settings = settings,
             persistenceFailure = (saved as? StorageResult.Failure)?.message,
         )
     }
 
     fun closeSettings(settings: TimerSettings = uiState.value.settings) {
+        if (settings != uiState.value.settings) updateSettings(settings)
         val state = uiState.value
-        val timer = timerEngine.saveSettings(settings.duration)
+        val timer = if (resumeAfterSettings && !state.interrupted) {
+            timerEngine.resume()
+        } else {
+            timerEngine.current()
+        }
+        resumeAfterSettings = false
         uiState.value = state.copy(
             timer = timer,
             settings = settings,
             backStack = TimerBackStack,
-            interrupted = false,
         )
     }
 
     fun onAppStopped() {
         val state = uiState.value
-        if (state.timer.snapshot.status != TimerStatus.RUNNING) return
+        if (state.timer.snapshot.status != TimerStatus.RUNNING && !resumeAfterSettings) return
+        resumeAfterSettings = false
+        val timer = timerEngine.pause()
 
         uiState.value = state.copy(
-            timer = timerEngine.openSettings(),
-            interrupted = true,
+            timer = timer,
+            interrupted = timer.snapshot.status == TimerStatus.PAUSED,
         )
+    }
+
+    fun onTimerAction() {
+        val state = uiState.value
+        if (state.screen != AppScreen.TIMER || state.settings.duration.totalMinutes == 0) return
+        val timer = when {
+            state.interrupted -> timerEngine.restart()
+            state.timer.snapshot.status == TimerStatus.FINISHED -> timerEngine.restart()
+            state.timer.snapshot.status == TimerStatus.RUNNING -> timerEngine.pause()
+            else -> timerEngine.resume()
+        }
+        uiState.value = state.copy(timer = timer, interrupted = false)
     }
 
     fun tick() {

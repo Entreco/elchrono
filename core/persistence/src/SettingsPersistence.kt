@@ -22,9 +22,9 @@ interface SettingsRepository {
 data class TimerSettings(
     val duration: TimerDuration,
     val theme: TimerTheme,
-    val backgroundColorArgb: Long = 0xFFF7F7F2u.toLong(),
+    val backgroundColorArgb: Long = 0xFF151517u.toLong(),
     val foregroundColorArgb: Long = 0xFF5B5BD6u.toLong(),
-    val textColorArgb: Long = 0xFF17171Cu.toLong(),
+    val textColorArgb: Long = 0xFFF1F1F1u.toLong(),
     val font: TimerFont = TimerFont.DEFAULT,
     val detail: Int = 6,
     val ringThicknessPercent: Int = 24,

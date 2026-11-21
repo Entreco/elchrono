@@ -47,10 +47,10 @@ internal fun ringGeometry(outerRadius: Float, thicknessPercent: Int): RingGeomet
     return RingGeometry(outerRadius, innerRadius, (outerRadius + innerRadius) / 2f, stroke)
 }
 
-internal fun batteryGeometry(width: Float, height: Float, preferredHeight: Float = 126f): BatteryGeometry {
-    require(width >= 0f && height >= 0f && preferredHeight > 0f)
+internal fun batteryGeometry(width: Float, height: Float): BatteryGeometry {
+    require(width >= 0f && height >= 0f)
     val availableWidth = width * 0.9f
-    val bodyHeight = minOf(preferredHeight, height * 0.76f, availableWidth / (3.6f + 13f / 126f))
+    val bodyHeight = minOf(height * 0.76f, availableWidth / (3.6f + 13f / 126f))
     val terminalWidth = bodyHeight * 13f / 126f
     return BatteryGeometry(
         bodyWidth = availableWidth - terminalWidth,
@@ -66,6 +66,7 @@ internal enum class TimerVisualState {
     PAUSED,
     INTERRUPTED,
     IDLE,
+    FINISHED,
 }
 
 internal data class RemainingArc(
@@ -77,9 +78,11 @@ internal fun timerVisualState(
     snapshot: TimerSnapshot,
     interrupted: Boolean,
 ): TimerVisualState = when {
+    snapshot.status == TimerStatus.NOT_CONFIGURED -> TimerVisualState.IDLE
     interrupted -> TimerVisualState.INTERRUPTED
     snapshot.status == TimerStatus.RUNNING -> TimerVisualState.RUNNING
     snapshot.status == TimerStatus.PAUSED -> TimerVisualState.PAUSED
+    snapshot.status == TimerStatus.FINISHED -> TimerVisualState.FINISHED
     else -> TimerVisualState.IDLE
 }
 
@@ -94,14 +97,12 @@ internal fun remainingArc(fractionRemaining: Float): RemainingArc {
 internal fun showsTimerText(detail: Int): Boolean = detail > 0
 
 internal fun showsTimerStateText(detail: Int, state: TimerVisualState): Boolean =
-    showsTimerText(detail) && (state == TimerVisualState.INTERRUPTED || state == TimerVisualState.IDLE)
+    detail > 0 && state != TimerVisualState.RUNNING && state != TimerVisualState.PAUSED
 
-internal fun showsTimerStateIndicator(detail: Int, state: TimerVisualState): Boolean =
-    if (detail == 0) {
-        state == TimerVisualState.INTERRUPTED || state == TimerVisualState.IDLE
-    } else {
-        state == TimerVisualState.RUNNING || state == TimerVisualState.PAUSED
-    }
+internal fun showsTimerStateIndicator(detail: Int, state: TimerVisualState): Boolean {
+    require(detail in 0..12)
+    return state == TimerVisualState.IDLE || state == TimerVisualState.INTERRUPTED
+}
 
 internal fun segmentBoundaryFractions(detail: Int): List<Float> {
     require(detail in 0..12)

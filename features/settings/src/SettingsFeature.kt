@@ -1,6 +1,8 @@
 package nl.entreco.elchrono.features.settings
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -32,12 +34,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.compositeOver
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import com.skydoves.cloudy.LiquidGlassDefaults
+import com.skydoves.cloudy.LiquidGlassGlow
 import com.skydoves.cloudy.liquidGlass
 import nl.entreco.elchrono.core.counter.DurationDigitEntry
 import nl.entreco.elchrono.core.design.NumericKeypad
@@ -50,6 +58,8 @@ import nl.entreco.elchrono.core.design.TimerTheme
 import nl.entreco.elchrono.core.design.TimerFont
 import nl.entreco.elchrono.core.design.appColorScheme
 import nl.entreco.elchrono.core.design.LabeledSlider
+import nl.entreco.elchrono.core.design.toFontFamily
+import nl.entreco.elchrono.core.design.withFontFamily
 import kotlin.math.roundToInt
 import nl.entreco.elchrono.core.localization.resources.ring_thickness
 import nl.entreco.elchrono.core.localization.resources.ring_thickness_value
@@ -94,44 +104,87 @@ fun SettingsPanel(
 ) {
     val backgroundColor = Color(initialSettings.backgroundColorArgb)
     val surfaceTint = appColorScheme(backgroundColor).onSurface.copy(alpha = 0.08f)
+    var lensSize by remember { mutableStateOf(Size.Zero) }
+    val glassRadius = LocalDimens.current.spaceXL
+    val glassRadiusPx = with(LocalDensity.current) { glassRadius.toPx() }
 
-    MaterialTheme(
-        colorScheme = appColorScheme(
-            background = backgroundColor,
-            textColor = Color(initialSettings.textColorArgb),
-        ),
-    ) {
+    SettingsAppearanceTheme(initialSettings) {
         Surface(
             modifier = modifier.fillMaxSize(),
-            color = surfaceTint,
+            color = Color.Transparent,
             contentColor = MaterialTheme.colorScheme.onSurface,
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .verticalScroll(rememberScrollState())
-                    .padding(LocalDimens.current.spaceXL),
-            ) {
-                SettingsScreen(
-                    initialSettings = initialSettings,
-                    onChange = onChange,
-                    onShowAbout = onShowAbout,
-                    keyboardInputEnabled = keyboardInputEnabled,
-                    keyboardAvailable = keyboardAvailable,
+            Box {
+                Box(
+                    Modifier
+                        .matchParentSize()
+                        .onSizeChanged { size -> lensSize = Size(size.width.toFloat(), size.height.toFloat()) }
+                        .graphicsLayer { alpha = 0.65f }
+                        .liquidGlass(
+                            lensCenter = Offset(lensSize.width / 2f, lensSize.height / 2f),
+                            lensSize = if (lensSize.width <= 0f || lensSize.height <= 0f) {
+                                LiquidGlassDefaults.LENS_SIZE
+                            } else {
+                                lensSize
+                            },
+                            cornerRadius = glassRadiusPx,
+                            refraction = 0.16f,
+                            curve = 0.18f,
+                            dispersion = 0.01f,
+                            saturation = 1.05f,
+                            contrast = 1.02f,
+                            tint = backgroundColor.copy(alpha = 0.12f),
+                            edge = 0.18f,
+                            light = LiquidGlassDefaults.Light,
+                            glow = LiquidGlassGlow(intensity = 0.2f),
+                        )
+                        .background(surfaceTint.compositeOver(backgroundColor), RoundedCornerShape(glassRadius)),
                 )
-                persistenceFailure?.let {
-                    Spacer(Modifier.height(LocalDimens.current.spaceM))
-                    Surface(
-                        color = MaterialTheme.colorScheme.errorContainer,
-                        contentColor = MaterialTheme.colorScheme.onErrorContainer,
-                        shape = MaterialTheme.shapes.small,
-                    ) {
-                        Text(it, Modifier.padding(LocalDimens.current.spaceM))
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState())
+                        .padding(LocalDimens.current.spaceXL),
+                ) {
+                    SettingsScreen(
+                        initialSettings = initialSettings,
+                        onChange = onChange,
+                        onShowAbout = onShowAbout,
+                        keyboardInputEnabled = keyboardInputEnabled,
+                        keyboardAvailable = keyboardAvailable,
+                    )
+                    persistenceFailure?.let {
+                        Spacer(Modifier.height(LocalDimens.current.spaceM))
+                        Surface(
+                            color = MaterialTheme.colorScheme.errorContainer,
+                            contentColor = MaterialTheme.colorScheme.onErrorContainer,
+                            shape = MaterialTheme.shapes.small,
+                        ) {
+                            Text(it, Modifier.padding(LocalDimens.current.spaceM))
+                        }
                     }
                 }
             }
         }
     }
+}
+@Composable
+internal fun SettingsAppearanceTheme(settings: TimerSettings, content: @Composable () -> Unit) {
+    val backgroundColor = Color(settings.backgroundColorArgb)
+    val accent = settingsAccentColors(Color(settings.foregroundColorArgb))
+    MaterialTheme(
+        colorScheme = appColorScheme(
+            background = backgroundColor,
+            textColor = Color(settings.textColorArgb),
+        ).copy(
+            primary = accent.foreground,
+            onPrimary = accent.onForeground,
+            secondaryContainer = accent.foreground.copy(alpha = 0.2f).compositeOver(backgroundColor),
+            onSecondaryContainer = Color(settings.textColorArgb),
+        ),
+        typography = MaterialTheme.typography.withFontFamily(settings.font.toFontFamily()),
+        content = content,
+    )
 }
 
 @Composable
@@ -147,7 +200,7 @@ fun SettingsScreen(
         keyboardInputEnabled = keyboardInputEnabled,
         keyboardAvailable = keyboardAvailable,
     )
-    var entry by remember(initialSettings) {
+    var entry by remember(initialSettings.duration) {
         mutableStateOf(DurationDigitEntry.fromDuration(initialSettings.duration))
     }
     var selectedTheme by remember(initialSettings) {
@@ -170,8 +223,9 @@ fun SettingsScreen(
         ),
     )
 
-    fun publish(updatedEntry: DurationDigitEntry = entry) {
-        updatedEntry.duration?.let {
+    fun publish(updatedEntry: DurationDigitEntry = entry, allowInvalidDuration: Boolean = false) {
+        val duration = updatedEntry.duration ?: if (allowInvalidDuration) initialSettings.duration else null
+        duration?.let {
             onChange(
                 initialSettings.copy(
                     duration = it,
@@ -202,7 +256,7 @@ fun SettingsScreen(
                     entry = entry.applyTextEdit(
                         previousText = entry.hours.toString().padStart(2, '0'),
                         editedText = edited,
-                    ).also(::publish)
+                    ).also { publish(it) }
                 },
                 modifier = Modifier.weight(1f),
                 readOnly = inputMode.fieldsReadOnly,
@@ -217,7 +271,7 @@ fun SettingsScreen(
                     entry = entry.applyTextEdit(
                         previousText = entry.minutes.toString().padStart(2, '0'),
                         editedText = edited,
-                    ).also(::publish)
+                    ).also { publish(it) }
                 },
                 modifier = Modifier.weight(1f),
                 readOnly = inputMode.fieldsReadOnly,
@@ -269,7 +323,7 @@ fun SettingsScreen(
             selected = selectedTheme,
             onSelected = { theme ->
                 selectedTheme = theme
-                publish()
+                publish(allowInvalidDuration = true)
             }
         )
         if (selectedTheme == TimerTheme.RING) {
@@ -278,7 +332,7 @@ fun SettingsScreen(
                 label = stringResource(Strings.string.ring_thickness),
                 value = ringThickness.toFloat(),
                 valueLabel = stringResource(Strings.string.ring_thickness_value, ringThickness),
-                onValueChange = { ringThickness = it.roundToInt(); publish() },
+                onValueChange = { ringThickness = it.roundToInt(); publish(allowInvalidDuration = true) },
                 minimumLabel = stringResource(Strings.string.ring_thin),
                 maximumLabel = stringResource(Strings.string.ring_solid),
                 valueRange = 1f..100f,
@@ -300,21 +354,21 @@ fun SettingsScreen(
         ColorSwatchPicker(swatches, swatches.firstOrNull { it.color.toArgb().toLong() and 0xffffffffL == backgroundColor }?.id ?: "", onSelected = { id ->
             val selected = swatches.first { it.id == id }
             backgroundColor = selected.color.toArgb().toLong() and 0xffffffffL
-            publish()
+            publish(allowInvalidDuration = true)
         })
         Spacer(Modifier.height(LocalDimens.current.spaceM))
         Text(stringResource(Strings.string.foreground), style = MaterialTheme.typography.titleSmall)
         ColorSwatchPicker(swatches, swatches.firstOrNull { it.color.toArgb().toLong() and 0xffffffffL == foregroundColor }?.id ?: "", onSelected = { id ->
             val selected = swatches.first { it.id == id }
             foregroundColor = selected.color.toArgb().toLong() and 0xffffffffL
-            publish()
+            publish(allowInvalidDuration = true)
         })
         Spacer(Modifier.height(LocalDimens.current.spaceM))
         Text(stringResource(Strings.string.text), style = MaterialTheme.typography.titleSmall)
         ColorSwatchPicker(swatches, swatches.firstOrNull { it.color.toArgb().toLong() and 0xffffffffL == textColor }?.id ?: "", onSelected = { id ->
             val selected = swatches.first { it.id == id }
             textColor = selected.color.toArgb().toLong() and 0xffffffffL
-            publish()
+            publish(allowInvalidDuration = true)
         })
         Spacer(Modifier.height(LocalDimens.current.spaceXL))
         Text(stringResource(Strings.string.font), style = MaterialTheme.typography.titleLarge)
@@ -325,30 +379,46 @@ fun SettingsScreen(
             selected = font,
             onSelected = {
                 font = it
-                publish()
+                publish(allowInvalidDuration = true)
             },
         )
         Spacer(Modifier.height(LocalDimens.current.spaceXL))
-        Text(stringResource(Strings.string.detail), style = MaterialTheme.typography.titleLarge)
+        val detailLabel = stringResource(Strings.string.detail)
+        Text(detailLabel, style = MaterialTheme.typography.titleLarge)
+        val detailColors = SliderDefaults.colors(
+            thumbColor = accent.foreground,
+            activeTrackColor = accent.foreground,
+            activeTickColor = accent.onForeground,
+        )
         Slider(
             value = detail.toFloat(),
             onValueChange = {
-                detail = it.toInt()
-                publish()
+                detail = it.roundToInt()
+                publish(allowInvalidDuration = true)
             },
+            modifier = Modifier.semantics { contentDescription = detailLabel },
             valueRange = 0f..12f,
             steps = 11,
-            colors = SliderDefaults.colors(
-                thumbColor = accent.foreground,
-                activeTrackColor = accent.foreground,
-                activeTickColor = accent.onForeground,
-            ),
+            colors = detailColors,
+            track = { state ->
+                if (detail == 0) {
+                    SliderDefaults.Track(
+                        sliderState = state,
+                        colors = detailColors,
+                        drawStopIndicator = null,
+                        drawTick = { _, _ -> },
+                    )
+                } else {
+                    SliderDefaults.Track(sliderState = state, colors = detailColors)
+                }
+            },
         )
         Text("$detail")
         Spacer(Modifier.height(LocalDimens.current.spaceL))
         TextButton(onClick = onShowAbout) {
             Text(stringResource(Strings.string.about))
         }
+
     }
 }
 

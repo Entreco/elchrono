@@ -41,6 +41,8 @@ import nl.entreco.elchrono.core.design.LocalDimens
 import nl.entreco.elchrono.core.design.ElChronoMotion
 import nl.entreco.elchrono.core.design.ElChronoTheme
 import nl.entreco.elchrono.core.design.appColorScheme
+import nl.entreco.elchrono.core.design.toFontFamily
+import nl.entreco.elchrono.core.design.withFontFamily
 import nl.entreco.elchrono.core.localization.resources.Res as Strings
 import nl.entreco.elchrono.core.localization.resources.app_title
 import nl.entreco.elchrono.core.localization.resources.back
@@ -118,6 +120,11 @@ private fun AppContent(
                 null
             },
         ),
+        typography = if (state.screen == AppScreen.SETTINGS) {
+            MaterialTheme.typography.withFontFamily(state.settings.font.toFontFamily())
+        } else {
+            MaterialTheme.typography
+        },
     ) {
         Scaffold(
             modifier = Modifier.fillMaxSize().background(Color(state.settings.backgroundColorArgb)),

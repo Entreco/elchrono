@@ -1,9 +1,11 @@
 # Risk assessment
 
+Settings appearance review: [PR #76](https://github.com/Entreco/elchrono/pull/76).
+
 | Field | Value |
 |---|---|
 | Document ID | M1-DOC-004 |
-| Revision | 1.2 |
+| Revision | 1.3 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Software-safety and product-risk review: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
@@ -86,6 +88,12 @@ distinguishable. REQ-012 permits these combinations without restrictions or
 warnings. Review the resulting Settings interaction and configuration risks
 under RISK-004 and RISK-005; no risk disposition or control effectiveness is
 claimed.
+
+The always-on glass layer and selected Settings font and text color add review
+scope for control legibility, focus, clipping, shader and tint fallback, and
+the dot-free Detail track. Unrestricted combinations may make text or selected
+controls indistinguishable. Verify interaction and accessible slider semantics
+across supported renderers; no risk reduction or human acceptance is implied.
 
 ## Initial assessment method and criteria
 
@@ -314,3 +322,4 @@ they are not waived by this initial assessment.
 | 1.0 | Include incorrect Clock duration-label values and unreadable/clipped theme geometry in existing timing and accessibility risk scenarios; retain provisional ratings and pending human review. |
 | 1.1 | Extend refinement review to translucent controls, global background, preview isolation, migration, cue interpretation, Battery recognition, and Ring thickness; leave all scores and acceptance unchanged. |
 | 1.2 | Add Settings foreground-accent visibility and interaction to the existing risk-review scope; retain unrestricted color choices and pending risk disposition. |
+| 1.3 | Extend Settings risk review to glass, live text/font and the dot-free zero track; retain pending visibility and platform review. |

@@ -38,7 +38,6 @@ import androidx.compose.ui.semantics.ProgressBarRangeInfo
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.progressBarRangeInfo
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
@@ -51,6 +50,7 @@ import kotlin.time.Duration
 import nl.entreco.elchrono.core.counter.TimerSnapshot
 import nl.entreco.elchrono.core.design.LocalDimens
 import nl.entreco.elchrono.core.design.TimerFont
+import nl.entreco.elchrono.core.design.toFontFamily
 import nl.entreco.elchrono.core.design.TimerTheme
 import nl.entreco.elchrono.core.localization.resources.Res as Strings
 import nl.entreco.elchrono.core.localization.resources.choose_duration_message
@@ -522,10 +522,4 @@ private fun roundedUpMinutes(duration: Duration): Int {
     val minuteNanos = 60_000_000_000L
     val nanos = duration.inWholeNanoseconds.coerceAtLeast(0)
     return ((nanos + minuteNanos - 1) / minuteNanos).toInt()
-}
-
-private fun TimerFont.toFontFamily(): FontFamily = when (this) {
-    TimerFont.DEFAULT -> FontFamily.Default
-    TimerFont.ROUNDED -> FontFamily.SansSerif
-    TimerFont.MONOSPACE -> FontFamily.Monospace
 }

@@ -9,7 +9,7 @@
 | Required reviewers | Software-safety and product-risk review: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#4](https://github.com/Entreco/elchrono/issues/4) |
-| Review PR | Prior baselines: [PR #14](https://github.com/Entreco/elchrono/pull/14), [PR #16](https://github.com/Entreco/elchrono/pull/16), [PR #32](https://github.com/Entreco/elchrono/pull/32); issue #47 review: [PR #59](https://github.com/Entreco/elchrono/pull/59); issue #66 review: [draft PR #70](https://github.com/Entreco/elchrono/pull/70); final exact-head acceptance pending |
+| Review PR | Prior baselines: [PR #14](https://github.com/Entreco/elchrono/pull/14), [PR #16](https://github.com/Entreco/elchrono/pull/16), [PR #32](https://github.com/Entreco/elchrono/pull/32); issue #47 review: [PR #59](https://github.com/Entreco/elchrono/pull/59); issue #66 review: [draft PR #70](https://github.com/Entreco/elchrono/pull/70); Settings foreground: [PR #72](https://github.com/Entreco/elchrono/pull/72); final exact-head acceptance pending |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [Lifecycle and approval](../governance/document-control.md#lifecycle-and-approval).

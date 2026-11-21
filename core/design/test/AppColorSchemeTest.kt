@@ -19,4 +19,19 @@ class AppColorSchemeTest {
             assertTrue((luminances[1] + 0.05f) / (luminances[0] + 0.05f) >= 4.5f)
         }
     }
+
+    @Test
+    fun `explicit text color is used for surface content without changing semantic colors`() {
+        val background = Color(0xFFF7F7F2)
+        val textColor = Color(0xFF17171C)
+        val defaultScheme = appColorScheme(background)
+        val scheme = appColorScheme(background, textColor)
+
+        assertEquals(textColor, scheme.onBackground)
+        assertEquals(textColor, scheme.onSurface)
+        assertEquals(textColor, scheme.onSurfaceVariant)
+        assertEquals(defaultScheme.primary, scheme.primary)
+        assertEquals(defaultScheme.error, scheme.error)
+        assertEquals(defaultScheme.onErrorContainer, scheme.onErrorContainer)
+    }
 }

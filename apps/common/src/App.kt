@@ -109,7 +109,16 @@ private fun AppContent(
         }
     }
 
-    MaterialTheme(colorScheme = appColorScheme(Color(state.settings.backgroundColorArgb))) {
+    MaterialTheme(
+        colorScheme = appColorScheme(
+            background = Color(state.settings.backgroundColorArgb),
+            textColor = if (state.screen == AppScreen.SETTINGS) {
+                Color(state.settings.textColorArgb)
+            } else {
+                null
+            },
+        ),
+    ) {
         Scaffold(
             modifier = Modifier.fillMaxSize().background(Color(state.settings.backgroundColorArgb)),
             containerColor = Color.Transparent,

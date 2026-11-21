@@ -1,5 +1,7 @@
 # Dependency and third-party component inventory
 
+Desktop keyboard changes: [PR #73](https://github.com/Entreco/elchrono/pull/73).
+
 | Field | Value |
 |---|---|
 | Document ID | M3-DOC-005 |

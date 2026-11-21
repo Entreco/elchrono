@@ -1,5 +1,7 @@
 # Module layout
 
+Desktop keyboard changes: [PR #73](https://github.com/Entreco/elchrono/pull/73).
+
 Lifecycle status follows the [branch/PR rule](../governance/document-control.md#lifecycle-and-approval)
 for all documents under `docs/`; no status is stored in this record.
 

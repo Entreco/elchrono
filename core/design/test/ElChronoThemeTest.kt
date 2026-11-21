@@ -44,6 +44,32 @@ class ElChronoThemeTest {
         assertEquals(RoundedCornerShape(16.dp), ElChronoShapes.large)
     }
 
+    @Test
+    fun spacingTokensPreserveCurrentDimensions() {
+        val dimens = Dimens()
+        assertEquals(
+            listOf(2.dp, 4.dp, 6.dp, 8.dp, 12.dp, 16.dp, 20.dp, 24.dp),
+            listOf(
+                dimens.spaceXXS,
+                dimens.spaceXS,
+                dimens.spaceS,
+                dimens.spaceM,
+                dimens.spaceL,
+                dimens.spaceXL,
+                dimens.spaceXXL,
+                dimens.spaceXXXL,
+            ),
+        )
+    }
+
+    @Test
+    fun navigationTransitionsReuseDirectionalPaneTransitions() {
+        assertEquals(ElChronoMotion.enterFromLeft, ElChronoMotion.forward.targetContentEnter)
+        assertEquals(ElChronoMotion.exitToRight, ElChronoMotion.forward.initialContentExit)
+        assertEquals(ElChronoMotion.enterFromRight, ElChronoMotion.backward.targetContentEnter)
+        assertEquals(ElChronoMotion.exitToLeft, ElChronoMotion.backward.initialContentExit)
+    }
+
     private fun contrast(first: Color, second: Color): Double {
         val firstLuminance = first.luminance().toDouble()
         val secondLuminance = second.luminance().toDouble()

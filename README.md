@@ -58,7 +58,7 @@ From the repository root:
 ./kotlin show modules
 ./kotlin build
 ./kotlin check
-./kotlin test -p jvm -m common -m counter -m settings -m localization
+./kotlin test -p jvm -m common -m counter -m design -m settings -m localization
 
 ./kotlin run -m desktop
 ./kotlin run -m browser
@@ -157,15 +157,15 @@ The CI workflow needs no repository secrets and requests only `contents: read`.
 `.github/workflows/ci.yml` runs for pull requests and pushes to `main` on
 `ubuntu-24.04` with Java 17. It discovers all declared modules, builds the JVM
 targets and browser Wasm target in separate invocations, and runs common,
-counter, settings, and localization JVM tests and checks. The exact CI
+counter, design, settings, and localization JVM tests and checks. The exact CI
 commands are:
 
 ```sh
 ./kotlin show modules
 ./kotlin build -p jvm
 ./kotlin build -m browser
-./kotlin test -p jvm -m common -m counter -m settings -m localization
-./kotlin check -m common -m counter -m settings -m localization
+./kotlin test -p jvm -m common -m counter -m design -m settings -m localization
+./kotlin check -m common -m counter -m design -m settings -m localization
 ```
 
 CI restores Kotlin Toolchain bootstrap and dependency downloads before module

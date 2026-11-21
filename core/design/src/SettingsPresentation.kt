@@ -39,10 +39,10 @@ fun DesignScreenHeader(
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(LocalDimens.current.spaceM),
             ) {
                 BackButton(backLabel, onBack)
-                Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                Column(verticalArrangement = Arrangement.spacedBy(LocalDimens.current.spaceXXS)) {
                     Text(brandLabel, style = MaterialTheme.typography.labelSmall)
                     Text(title, style = MaterialTheme.typography.titleLarge)
                     supportingText?.let { Text(it, style = MaterialTheme.typography.bodySmall) }
@@ -52,10 +52,10 @@ fun DesignScreenHeader(
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                horizontalArrangement = Arrangement.spacedBy(LocalDimens.current.spaceL),
             ) {
                 BackButton(backLabel, onBack)
-                Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                Column(verticalArrangement = Arrangement.spacedBy(LocalDimens.current.spaceXXS)) {
                     Text(brandLabel, style = MaterialTheme.typography.labelSmall)
                     Text(title, style = MaterialTheme.typography.titleLarge)
                 }
@@ -101,8 +101,8 @@ fun DesignPreviewCard(
         shape = MaterialTheme.shapes.large,
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth().padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier.fillMaxWidth().padding(LocalDimens.current.spaceXL),
+            verticalArrangement = Arrangement.spacedBy(LocalDimens.current.spaceL),
         ) {
             Text(title, style = MaterialTheme.typography.labelSmall)
             Box(Modifier.fillMaxWidth()) {
@@ -129,7 +129,7 @@ fun DesignStatusMessage(
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(LocalDimens.current.spaceM),
     ) {
         leadingContent?.invoke()
         Text(message, style = MaterialTheme.typography.bodySmall)
@@ -148,12 +148,12 @@ fun NavigationHintBar(
 ) {
     FlowRow(
         modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-        verticalArrangement = Arrangement.spacedBy(4.dp),
+        horizontalArrangement = Arrangement.spacedBy(LocalDimens.current.spaceXL),
+        verticalArrangement = Arrangement.spacedBy(LocalDimens.current.spaceXS),
     ) {
         hints.forEach { hint ->
             Row(
-                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                horizontalArrangement = Arrangement.spacedBy(LocalDimens.current.spaceXS),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(hint.keyLabel, style = MaterialTheme.typography.labelMedium)

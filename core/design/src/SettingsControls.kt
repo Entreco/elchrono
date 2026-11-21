@@ -46,7 +46,7 @@ fun SettingsControlRow(
 ) {
     BoxWithConstraints(modifier.fillMaxWidth()) {
         if (maxWidth < stackBelow) {
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Column(verticalArrangement = Arrangement.spacedBy(LocalDimens.current.spaceM)) {
                 Text(label, style = MaterialTheme.typography.titleSmall)
                 Box(Modifier.fillMaxWidth()) {
                     content()
@@ -56,7 +56,7 @@ fun SettingsControlRow(
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(LocalDimens.current.spaceXL),
             ) {
                 Text(
                     label,
@@ -81,7 +81,7 @@ fun DurationValueField(
 ) {
     Column(modifier) {
         Text(label, style = MaterialTheme.typography.labelMedium)
-        Spacer(Modifier.size(4.dp))
+        Spacer(Modifier.size(LocalDimens.current.spaceXS))
         Surface(
             modifier = Modifier.fillMaxWidth().elChronoFocusOutline(MaterialTheme.shapes.small),
             shape = MaterialTheme.shapes.small,
@@ -92,7 +92,7 @@ fun DurationValueField(
             ),
         ) {
             Row(
-                modifier = Modifier.heightIn(min = 48.dp).padding(horizontal = 12.dp),
+                modifier = Modifier.heightIn(min = 48.dp).padding(horizontal = LocalDimens.current.spaceL),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 BasicTextField(
@@ -108,7 +108,7 @@ fun DurationValueField(
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     ),
                 )
-                Spacer(Modifier.width(8.dp))
+                Spacer(Modifier.width(LocalDimens.current.spaceM))
                 Text(unitLabel, style = MaterialTheme.typography.labelMedium)
             }
         }
@@ -131,14 +131,14 @@ fun DurationInput(
     BoxWithConstraints(modifier.fillMaxWidth()) {
         val fieldModifier = Modifier.fillMaxWidth()
         if (maxWidth < stackBelow) {
-            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            Column(verticalArrangement = Arrangement.spacedBy(LocalDimens.current.spaceL)) {
                 DurationValueField(hours, onHoursChange, hoursLabel, hoursUnitLabel, fieldModifier)
                 DurationValueField(minutes, onMinutesChange, minutesLabel, minutesUnitLabel, fieldModifier)
             }
         } else {
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                horizontalArrangement = Arrangement.spacedBy(LocalDimens.current.spaceL),
             ) {
                 DurationValueField(
                     hours,
@@ -173,8 +173,8 @@ fun <T> ChoicePicker(
 ) {
     FlowRow(
         modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalArrangement = Arrangement.spacedBy(4.dp),
+        horizontalArrangement = Arrangement.spacedBy(LocalDimens.current.spaceM),
+        verticalArrangement = Arrangement.spacedBy(LocalDimens.current.spaceXS),
     ) {
         choices.forEach { choice ->
             FilterChip(
@@ -204,8 +204,8 @@ fun ColorSwatchPicker(
 ) {
     FlowRow(
         modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(4.dp),
-        verticalArrangement = Arrangement.spacedBy(4.dp),
+        horizontalArrangement = Arrangement.spacedBy(LocalDimens.current.spaceXS),
+        verticalArrangement = Arrangement.spacedBy(LocalDimens.current.spaceXS),
     ) {
         swatches.forEach { swatch ->
             val selected = swatch.id == selectedId

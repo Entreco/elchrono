@@ -23,6 +23,7 @@ import kotlin.time.Duration
 import nl.entreco.elchrono.core.counter.TimerSnapshot
 import nl.entreco.elchrono.core.counter.TimerStatus
 import nl.entreco.elchrono.core.design.TimerTheme
+import nl.entreco.elchrono.core.design.LocalDimens
 import nl.entreco.elchrono.core.localization.resources.Res as Strings
 import nl.entreco.elchrono.core.localization.resources.battery
 import nl.entreco.elchrono.core.localization.resources.choose_duration_message
@@ -70,11 +71,11 @@ fun TimerFeature(
     ) {
         Text(stateText, style = MaterialTheme.typography.titleLarge)
         if (interrupted) {
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(LocalDimens.current.spaceM))
             Text(stringResource(Strings.string.interruption_warning), textAlign = TextAlign.Center)
         }
         if (remaining != null && totalMinutes != null) {
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(LocalDimens.current.spaceM))
             Text(
                 text = stringResource(
                     Strings.string.remaining_time,
@@ -95,13 +96,13 @@ fun TimerFeature(
                     },
             )
         } else {
-            Spacer(Modifier.height(24.dp))
+            Spacer(Modifier.height(LocalDimens.current.spaceXXXL))
             Text(
                 stringResource(Strings.string.choose_duration_message),
                 textAlign = TextAlign.Center,
             )
         }
-        Spacer(Modifier.height(12.dp))
+        Spacer(Modifier.height(LocalDimens.current.spaceL))
         Text(stringResource(theme.label), style = MaterialTheme.typography.titleMedium)
     }
 }
@@ -114,7 +115,7 @@ private fun TimerVisualization(
 ) {
     val track = MaterialTheme.colorScheme.surfaceVariant
     val remaining = MaterialTheme.colorScheme.primary
-    Canvas(modifier = modifier.padding(24.dp)) {
+    Canvas(modifier = modifier.padding(LocalDimens.current.spaceXXXL)) {
         val diameter = size.minDimension * 0.72f
         val left = (size.width - diameter) / 2f
         val top = (size.height - diameter) / 2f

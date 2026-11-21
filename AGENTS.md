@@ -217,8 +217,8 @@ assuming globally installed Kotlin or Gradle:
 
 ```sh
 ./kotlin build -m common
-./kotlin test -p jvm -m common -m counter -m settings -m localization
-./kotlin check -m common -m counter -m settings -m localization
+./kotlin test -p jvm -m common -m counter -m design -m settings -m localization
+./kotlin check -m common -m counter -m design -m settings -m localization
 ./kotlin build -m android
 ./kotlin run -m android --device-id <adb-serial>
 ./kotlin run -m desktop
@@ -238,14 +238,14 @@ requires it; check links, command accuracy, and the diff.
 Pull requests and pushes to `main` run `.github/workflows/ci.yml` on
 `ubuntu-24.04` with Java 17. It discovers modules, builds JVM and browser Wasm
 targets in separate invocations, and runs JVM tests for common, counter,
-settings, and localization modules and checks:
+design, settings, and localization modules and checks:
 
 ```sh
 ./kotlin show modules
 ./kotlin build -p jvm
 ./kotlin build -m browser
-./kotlin test -p jvm -m common -m counter -m settings -m localization
-./kotlin check -m common -m counter -m settings -m localization
+./kotlin test -p jvm -m common -m counter -m design -m settings -m localization
+./kotlin check -m common -m counter -m design -m settings -m localization
 ```
 
 This workflow does not provision an Android SDK or validate Android builds,

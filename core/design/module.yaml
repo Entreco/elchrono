@@ -3,6 +3,7 @@ product:
   platforms: [ jvm, android, iosArm64, iosSimulatorArm64, wasmJs ]
 
 dependencies:
+  - $compose.animation
   - $compose.foundation
   - $compose.runtime
   - $compose.material3

@@ -67,7 +67,7 @@ jobs:
           key: ${{ steps.kotlin-cache.outputs.cache-primary-key }}
 
       - name: Run JVM tests
-        run: ./kotlin test -p jvm -m common -m counter -m settings -m localization
+        run: ./kotlin test -p jvm -m common -m counter -m design -m settings -m localization
 
       - name: Run checks
-        run: ./kotlin check -m common -m counter -m settings -m localization
+        run: ./kotlin check -m common -m counter -m design -m settings -m localization

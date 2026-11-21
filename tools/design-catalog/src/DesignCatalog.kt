@@ -34,6 +34,7 @@ import nl.entreco.elchrono.core.design.DesignStatusMessage
 import nl.entreco.elchrono.core.design.DurationInput
 import nl.entreco.elchrono.core.design.DurationValueField
 import nl.entreco.elchrono.core.design.ElChronoTheme
+import nl.entreco.elchrono.core.design.LocalDimens
 import nl.entreco.elchrono.core.design.ElChronoColors
 import nl.entreco.elchrono.core.design.LabeledSlider
 import nl.entreco.elchrono.core.design.NavigationHint
@@ -57,8 +58,8 @@ fun DesignCatalog() {
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
-                    .padding(24.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
+                    .padding(LocalDimens.current.spaceXXXL),
+                verticalArrangement = Arrangement.spacedBy(LocalDimens.current.spaceXL),
             ) {
                 Text("Design catalog (development)", style = MaterialTheme.typography.headlineMedium)
                 Text(
@@ -95,7 +96,7 @@ private fun Example(
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(LocalDimens.current.spaceM),
     ) {
         Text(name, style = MaterialTheme.typography.titleMedium)
         Surface(
@@ -104,8 +105,8 @@ private fun Example(
             shape = MaterialTheme.shapes.medium,
         ) {
             Column(
-                modifier = Modifier.padding(12.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.padding(LocalDimens.current.spaceL),
+                verticalArrangement = Arrangement.spacedBy(LocalDimens.current.spaceM),
             ) {
                 content()
             }
@@ -119,8 +120,8 @@ private fun ThemeExample(width: Dp) {
         Text("All catalog examples use ElChronoTheme.", style = MaterialTheme.typography.titleMedium)
         Text("Body text and supporting labels", style = MaterialTheme.typography.bodyMedium)
         FlowRow(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(LocalDimens.current.spaceM),
+            verticalArrangement = Arrangement.spacedBy(LocalDimens.current.spaceM),
         ) {
             ThemeSwatch("Background", ElChronoColors.Background)
             ThemeSwatch("Surface", ElChronoColors.Surface)
@@ -133,20 +134,20 @@ private fun ThemeExample(width: Dp) {
             shape = MaterialTheme.shapes.small,
             color = MaterialTheme.colorScheme.primaryContainer,
         ) {
-            Text("Small shape", Modifier.padding(12.dp))
+            Text("Small shape", Modifier.padding(LocalDimens.current.spaceL))
         }
         Surface(
             shape = MaterialTheme.shapes.large,
             color = MaterialTheme.colorScheme.primaryContainer,
         ) {
-            Text("Large shape", Modifier.padding(12.dp))
+            Text("Large shape", Modifier.padding(LocalDimens.current.spaceL))
         }
     }
 }
 
 @Composable
 private fun ThemeSwatch(name: String, color: Color) {
-    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+    Column(verticalArrangement = Arrangement.spacedBy(LocalDimens.current.spaceXS)) {
         Surface(
             modifier = Modifier.size(48.dp),
             color = color,

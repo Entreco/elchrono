@@ -23,12 +23,12 @@ fun NumericKeypad(
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(4.dp),
+        verticalArrangement = Arrangement.spacedBy(LocalDimens.current.spaceXS),
     ) {
         KEYPAD_ROWS.forEach { row ->
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                horizontalArrangement = Arrangement.spacedBy(LocalDimens.current.spaceXS),
             ) {
                 row.forEach { key ->
                     Button(

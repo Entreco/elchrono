@@ -10,6 +10,29 @@ import nl.entreco.elchrono.core.design.TimerTheme
 
 class SettingsPersistenceTest {
     @Test
+    fun `every font round trips without changing other settings`() {
+        val storage = StubSettingsStorage()
+        val repository = DefaultSettingsRepository(storage, settings(6))
+        TimerFont.entries.forEach { font ->
+            val configured = settings(6).copy(font = font)
+            assertTrue(repository.save(configured) is StorageResult.Success)
+            assertEquals(configured, repository.load().settings)
+            assertEquals(null, repository.load().storageFailure)
+        }
+    }
+
+    @Test
+    fun `settings default to a dark background and light text`() {
+        val settings = TimerSettings(
+            duration = checkNotNull(TimerDuration.fromMinutes(120)),
+            theme = TimerTheme.CLOCK,
+        )
+
+        assertEquals(0xFF151517u.toLong(), settings.backgroundColorArgb)
+        assertEquals(0xFFF1F1F1u.toLong(), settings.textColorArgb)
+    }
+
+    @Test
     fun `ring thickness round trips at every supported value`() {
         val storage = StubSettingsStorage()
         val repository = DefaultSettingsRepository(storage, settings(6))

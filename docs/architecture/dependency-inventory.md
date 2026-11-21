@@ -7,7 +7,7 @@ Desktop keyboard changes: [PR #73](https://github.com/Entreco/elchrono/pull/73).
 | Field | Value |
 |---|---|
 | Document ID | M3-DOC-005 |
-| Revision | 0.7 |
+| Revision | 1.0 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Architecture/dependency, licensing, and security reviewers as applicable; appointments and competence confirmation pending |
@@ -74,7 +74,7 @@ compilation; `jvmTest` means declared only for the JVM tests.
 | `$compose.foundation`, `org.jetbrains.compose.foundation:foundation` | `common`, `design` (`main`) | 1.12.1; Compose Toolchain | Apache-2.0; [published POM](https://repo.maven.apache.org/maven2/org/jetbrains/compose/foundation/foundation/1.12.1/foundation-1.12.1.pom) and [release history](https://github.com/JetBrains/compose-multiplatform/releases) | Shared layout/input foundation. `core/design` uses it for the reusable numeric keypad. Cross-platform UI impact is material; validate interaction and accessibility after changes. No platform support or release approval follows from its presence. |
 | `$compose.material3`, `org.jetbrains.compose.material3:material3` | `common`, `design` (`main`) | 1.12.0-alpha03; Compose Toolchain | Apache-2.0; [published POM](https://repo.maven.apache.org/maven2/org/jetbrains/compose/material3/material3/1.12.0-alpha03/material3-1.12.0-alpha03.pom) | Direct dependency is explicitly an alpha release. Review API/stability and the intended stable-version policy before relying on it in a shipped UI; no change is made here. |
 | `$libs.compose.navigation3.ui`, `org.jetbrains.androidx.navigation3:navigation3-ui` | `common` (`main`) | 1.2.0; pinned in `libs.versions.toml` | Apache-2.0; [published POM](https://repo.maven.apache.org/maven2/org/jetbrains/androidx/navigation3/navigation3-ui/1.2.0/navigation3-ui-1.2.0.pom) | Shared navigation host and predictive-back integration. Verify Back from About and Settings, cancellation, and completed gestures without transition replay on Android. |
-| `$libs.compose.cloudy`, `com.github.skydoves:cloudy` | `common` (`main`) | 1.0.0-alpha01; pinned in `libs.versions.toml`, [upstream release](https://github.com/skydoves/Cloudy/tree/1.0.0-alpha01) | Apache-2.0; [published POM](https://repo.maven.apache.org/maven2/com/github/skydoves/cloudy/1.0.0-alpha01/cloudy-1.0.0-alpha01.pom) | Prerelease used for Settings and About backdrop/glass layers, separate from controls. Upstream documents RuntimeShader on Android 33+, tint/edge fallback through Android 32, and Skia on iOS, desktop and Wasm; actual rendering, performance and readability require target testing. Backdrop errors are surfaced with a tinted fallback; the lens API does not expose shader failures. No sensor-driven light is enabled. Licence, security, and release suitability reviews remain pending. |
+| `$libs.compose.cloudy`, `com.github.skydoves:cloudy` | `common` (`main`) | 1.0.0-alpha01; pinned in `libs.versions.toml`, [upstream release](https://github.com/skydoves/Cloudy/tree/1.0.0-alpha01) | Apache-2.0; [published POM](https://repo.maven.apache.org/maven2/com/github/skydoves/cloudy/1.0.0-alpha01/cloudy-1.0.0-alpha01.pom) | Prerelease used for Settings, About and the remaining-time backdrop/glass layers, separate from sharp text and controls. The remaining-time layer captures the visualization and invalidates on snapshot or settings changes. Upstream documents RuntimeShader on Android 33+, tint/edge fallback through Android 32, and Skia on iOS, desktop and Wasm; actual rendering, performance and readability require target testing. Backdrop errors are surfaced with a tinted fallback; the lens API does not expose shader failures. No sensor-driven light is enabled. Licence, security, and release suitability reviews remain pending. |
 | `$compose.ui`, `org.jetbrains.compose.ui:ui` | `browser`, `common`, `design`, `ios`, `music`, `settings`, `timer` (`main`) | 1.12.1; Compose Toolchain | Apache-2.0; [published POM](https://repo.maven.apache.org/maven2/org/jetbrains/compose/ui/ui/1.12.1/ui-1.12.1.pom) and [release history](https://github.com/JetBrains/compose-multiplatform/releases) | Rendering/input dependency across configured app targets. Android uses the experimental `mediaQuery` keyboard capability API, which requires enabling `ComposeUiFlags.isMediaQueryIntegrationEnabled`; iOS/Wasm and desktop use explicit input policies, as the pinned desktop sources do not provide the required media scope. Validate rendering, semantics, keyboard/touch, and platform-specific behavior on updates. TV/watch support is not established by the configured modules. |
 | `$compose.components.resources`, `org.jetbrains.compose.components:components-resources` | `common`, `design`, `localization` (`main`); also added to Compose-enabled source sets | 1.12.1; Compose Toolchain | Apache-2.0; [published POM](https://repo.maven.apache.org/maven2/org/jetbrains/compose/components/components-resources/1.12.1/components-resources-1.12.1.pom) and [release history](https://github.com/JetBrains/compose-multiplatform/releases) | Design and localization resource loading is shared app infrastructure. Check resource generation/rendering on configured platforms after updates; externalized resource service behavior is not used or assessed here. |
 | `$compose.preview`, `org.jetbrains.compose.ui:ui-tooling-preview` | `common`, `desktop`, `android` (`main`) | 1.12.1; Compose Toolchain | Apache-2.0; [published POM](https://repo.maven.apache.org/maven2/org/jetbrains/compose/ui/ui-tooling-preview/1.12.1/ui-tooling-preview-1.12.1.pom) and [release history](https://github.com/JetBrains/compose-multiplatform/releases) | Preview-oriented API is declared in production source sets. Confirm whether this is intentionally needed in production artifacts and whether its declaration should be narrowed; do not change scope without build evidence. |
@@ -95,6 +95,32 @@ transitive third-party components with their own licences; this direct
 inventory does not establish a complete distributed-artifact licence
 manifest. Generate and review a platform-specific transitive licence manifest
 before distribution.
+
+## Bundled icon assets
+
+The four `material_*.xml` vector resources in `core/design/composeResources/drawable`
+adapt Google's Material Icons Settings, Close, Arrow Back, and Check 24px SVGs
+at [source revision 10ecc14790612ca8fd164e3f4ffe9c16fc50d5b7](https://github.com/google/material-design-icons/tree/10ecc14790612ca8fd164e3f4ffe9c16fc50d5b7/src).
+The upstream [license](https://github.com/google/material-design-icons/blob/10ecc14790612ca8fd164e3f4ffe9c16fc50d5b7/LICENSE)
+is Apache-2.0; the repository's root `LICENSE` contains that license. The SVG
+paths were converted to Compose vector XML for shared platform resources. This
+adds no runtime dependency. Asset licensing and distribution notices remain
+subject to the release licence review.
+
+## Bundled font asset
+
+The Rounded option uses the unmodified Nunito variable font from the
+[Google Fonts repository at revision `604936664fd62c14271209b51f98e7f495dd1a3e`](https://github.com/google/fonts/tree/604936664fd62c14271209b51f98e7f495dd1a3e/ofl/nunito).
+Its upstream metadata credits Vernon Adams, Cyreal, and Jacques Le Bailly and
+states copyright 2014 The Nunito Project Authors. The font is licensed under
+the SIL Open Font License 1.1; the complete upstream copyright and licence
+notice is bundled at `core/design/composeResources/files/nunito_ofl.txt`.
+The bundled font's SHA-256 is
+`bb55a5ca5c2042335b3991af27c4d0705d0ef41cac6164ac737fd8f2a1e85207`.
+Its declared subsets include Latin, Cyrillic and Vietnamese; font fallback and
+rendering across supported platforms and languages need verification. Confirm
+that each distribution includes the required notice and complete the release
+licence review; this entry is not a completed legal assessment.
 
 ## Toolchain-managed runtime and test dependencies
 
@@ -189,3 +215,6 @@ and reassess before relying on this inventory.
 | 0.5 | Document the isolated Settings glass layer and shader-failure fallback; retain platform verification limitations. |
 | 0.6 | Remove Cloudy from the direct dependency inventory after replacing it with Compose's native blur; retain platform and accessibility verification gaps. |
 | 0.7 | Restore the prerelease Cloudy dependency for Settings and About glass; retain native Timer blur and platform and dependency review gaps. |
+| 0.8 | Record provenance and licence for the bundled Material icon vector resources; retain distribution review gaps. |
+| 0.9 | Extend the existing Cloudy assessment to the remaining-time glass backdrop and preserve renderer and dependency review gaps. |
+| 1.0 | Record the bundled Nunito font, provenance and licence notice; retain platform and distribution review gaps. |

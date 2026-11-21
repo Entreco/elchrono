@@ -7,7 +7,7 @@ Desktop keyboard changes: [PR #73](https://github.com/Entreco/elchrono/pull/73).
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-004 |
-| Revision | 2.7 |
+| Revision | 3.2 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Product design, accessibility, and usability: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
@@ -81,15 +81,13 @@ certification.
   complete form represents 100% of the configured duration remaining; its
   empty form represents zero. Static examples use the same illustrative 60%
   remaining.
-- Progress has a non-colour cue: filled extent and remaining track are
-  distinguishable by shape and position. Detail 1-12 uses non-interactive
-  play/pause state icons and an interruption warning, never running/paused text.
-  Detail 0 hides all Timer text and running/paused icons; interrupted and idle
-  retain an outlined warning triangle and an empty circle respectively.
-- Accessible descriptions identify all states; the interrupted description
-  says progress may be out of date. Running and paused are not visibly
-  distinguishable by state at detail 0. REQ-003 and risk/usability review
-  remain unresolved for that level; no equivalent access is assumed.
+- Progress uses non-colour cues. The bottom-right action is Pause while
+  running, Resume while paused, and Restart when finished or interrupted;
+  detail 0 uses icon-only actions with accessible names and no Timer text.
+  Interrupted and idle retain their warning-triangle and empty-circle cues.
+- Accessible descriptions identify states and stale interrupted progress.
+  Distinguishability, action comprehension and warning effectiveness at all
+  details remain subject to accessibility, usability and risk review.
 - For non-idle timers, accessible semantics expose a progress indicator named
   "Remaining waiting time" with a value from 0% to 100% remaining. The
   zero-duration idle state is described as not counting and not completed,
@@ -121,35 +119,35 @@ The interrupted example retains the shape but explicitly warns at detail 1-12
 that progress may be out of date; at detail 0, an outlined warning cue and an
 accessible stale-progress description replace all on-screen Timer text. It
 must not imply timing continuity when that is unknown.
-In the browser MVP, a hidden-page or page-hide event is recorded and the timer
-is paused on the next timer update after the page returns. The interrupted
-warning remains until valid Settings are saved; Save starts a fresh countdown
-from the full configured duration. No automatic recovery is provided.
-No in-app volume control is included in v1. Opening Settings while running
-pauses the countdown; saving valid settings starts a new countdown at the full
-saved duration. Settings has no caregiver-protection mechanism in v1. No
-interruption-recovery action is provided; an interrupted presentation must
-not imply timing continuity. No separate manual pause, resume, or reset
-controls are provided in v1; opening Settings is the selected pause behavior,
-and saving valid Settings is the selected start/restart action.
+The proposed one-shot behavior pauses a running timer on Settings entry.
+Close or Back resumes only retained running intent; returning from About to
+Settings does not resume. Valid duration changes reset the engine paused to
+full immediately; appearance-only changes and invalid drafts do not. Settings
+alone never clears interruption. Zero duration presents idle without an
+action or stale-progress warning while retaining interruption internally;
+positive reconfiguration restores the warning and requires explicit Restart.
+Restart clears interruption and starts a full countdown; lifecycle stop while Settings holds running intent
+revokes automatic resume. Platform delivery and these transitions remain
+unverified. Settings remains unprotected.
 
 | Main element | Proposed presentation and semantics | Requirement / risk links |
 |---|---|---|
 | Remaining progress | A theme's progress shape; accessible role: progress indicator; label: "Remaining waiting time"; value: percent of the configured duration remaining, 0-100. At idle 00:00, expose an idle/not-completed description without a countdown progress value. | REQ-002, REQ-003; RISK-001, RISK-005 |
-| Running state | A non-interactive play triangle at bottom-right at detail 1-12; no icon at detail 0 and no visible running label at any level. Accessible running description remains. | REQ-003, REQ-013; RISK-001, RISK-005 |
-| Paused state | Non-interactive pause bars at bottom-right at detail 1-12; no icon at detail 0 and no visible paused label at any level. Accessible paused description remains. Opening Settings while running pauses the countdown. | REQ-002, REQ-003, REQ-013; RISK-001, RISK-005 |
-| Interrupted state | At detail 1-12, show "Timer interrupted" and "Progress may be out of date"; at detail 0, show a warning-triangle cue and accessible stale-progress description, without on-screen Timer text. The browser MVP pauses after a detected hidden-page/page-hide event and does not automatically resume. Valid Settings changes start a fresh countdown. | REQ-003, REQ-013; RISK-002, RISK-005 |
-| Idle state | 00:00 remains non-counting and non-animating with an empty base shape; the idle cue and accessible description do not represent a completed countdown. At detail 0, no on-screen Timer text is shown. | REQ-002, REQ-013; RISK-001, RISK-005 |
+| Remaining time | At nonzero detail when a countdown value is available, center the selected-font and text-color value in a rounded, content-sized liquid-glass surface over the visualization, using 28 sp before system font scaling. Detail 0 and the idle prompt have no such surface. Use a tinted fallback and visible error if backdrop capture reports failure. Review legibility, overlap with markers and progress, and device-specific rendering; unrestricted color choices may still be unreadable. | REQ-003, REQ-012, REQ-013; RISK-001, RISK-005 |
+| Running state | Bottom-right Pause action with pause icon, accessible name and running description; no visible Timer text at detail 0. | REQ-003, REQ-013; RISK-001, RISK-005 |
+| Paused state | Bottom-right Resume action with play icon and accessible name; retain remaining time. Opening Settings pauses running. | REQ-002, REQ-003, REQ-013; RISK-001, RISK-005 |
+| Interrupted state | Show a stale-progress warning at detail 1-12, or warning cue and accessible description at detail 0. Restart explicitly clears it and starts full duration; Settings alone cannot clear it. | REQ-003, REQ-013; RISK-002, RISK-005 |
+| Finished state | A positive countdown stops at zero, distinct from idle, with a bottom-right Restart action; Restart starts the configured full duration. | REQ-003, REQ-010, REQ-013; RISK-001, RISK-005 |
+| Idle state | 00:00 remains non-counting and non-animating with an empty base shape and no enabled action, including when interruption is retained internally. The interruption warning is hidden at zero and returns upon positive reconfiguration, requiring explicit Restart. The idle cue and accessible description do not represent completion. At detail 0, no on-screen Timer text is shown. | REQ-002, REQ-013; RISK-001, RISK-005 |
 | Settings access | Settings is available without a caregiver-protection mechanism in v1. This is the product owner's explicit risk disposition, not a verified control; a patient may change the saved duration or theme. | REQ-005; RISK-004 |
-| Settings lifecycle | Opening Settings while running pauses the countdown. Saving valid settings starts a new countdown from the full saved duration. | REQ-002; RISK-001 |
-| Manual timer controls | No separate manual pause, resume, or reset controls are provided in v1. After Settings pauses a running timer, saving valid Settings starts a new countdown from the full saved duration. | REQ-002; RISK-001 |
+| Settings lifecycle | Pause on open; close/Back resumes only retained running intent, from remaining time or the new full duration after an actual valid duration change. About return does not resume. | REQ-002; RISK-001, RISK-002 |
+| Manual timer controls | Pause, Resume, and Restart as applicable at every detail, with localized accessible names; detail 0 is icon-only, Restart is visibly labeled at details 1-12. No enabled action at zero configuration. Controls must not accept input or focus beneath Settings/About or exit overlays. | REQ-002, REQ-010, REQ-013; RISK-001, RISK-005 |
 | Volume and audio | No in-app volume control, music integration, or completion sound is included in v1. Music is deferred to v2 and its behavior requires separate review. | REQ-004, REQ-008, REQ-010; RISK-003 |
-| Interrupted state | Display the interrupted warning when continuity is uncertain; no recovery behavior is provided or promised in v1. | REQ-003; RISK-002 |
 
-At nonzero completion, REQ-010 returns immediately to the configured duration
-without a completed screen or completed-state message. A configured 00:00
-duration is idle, does not count down or animate, and is not a completed
-countdown. Music is not part of v1; if introduced in v2, it will stop at zero.
+At completion, REQ-010 stops at zero in a distinct finished state and offers
+Restart; it never loops. A configured 00:00 is idle, non-counting and not a
+completed countdown. A duration change after finish prepares a paused full
+timer requiring Resume.
 This candidate behavior remains subject to review and approval.
 
 ### M5 Timer scope and detail mapping
@@ -170,12 +168,11 @@ continuous, undivided segment. Detail 0 has no extra boundaries or Clock labels.
 The application Fan is a centered, fully visible upper semicircle; its remaining
 sector and stationary radial dividers follow the demo's sweep and clipping.
 
-At detail 0, all on-screen Timer text is absent, including remaining time,
-theme/state labels, and the interrupted warning. Interrupted and idle cues remain
-visible, but running and paused have no visible state cue. Screen-reader descriptions identify the state; interruption
-explicitly communicates that progress may be out of date. These cues and the
-changed warning presentation remain subject to human design, accessibility,
-usability, and risk review. The feature adds no countdown animation; elapsed
+At detail 0, all on-screen Timer text is absent, including remaining time and
+interruption warnings. Action icons distinguish running and paused actions;
+interrupted and idle cues remain. Screen-reader descriptions identify states
+and stale progress. Comprehension remains subject to human review. The feature
+adds no countdown animation; elapsed
 time continues to come from the monotonic timer engine. The selected background
 color fills the Timer content surface and depleted visualization; the
 foreground color represents remaining time, and the text color is used for
@@ -189,15 +186,14 @@ screen-reader, and human review remain verification work.
 
 ### Settings screen
 
-![Settings prototype with Hours and Minutes fields, visualization choices, conditional appearance settings, and a save action that starts the timer.](settings-about.svg)
+![Historical Settings prototype with a Save action; current Settings saves automatically and does not use Save to start.](settings-about.svg)
 
 The duration entry example follows the candidate sequential-digit rule:
 `205` displays as `02:05`. The configured duration is a whole-minute value
 from 00:00 through 24:00. The examples describe field content, not a
 verification result.
 
-Requirements: REQ-001 (duration entry), REQ-002 (no separate manual timer
-controls, save-to-start, and Settings-open pause), REQ-004 (screen content), REQ-005 (v1 access decision),
+Requirements: REQ-001 (duration entry), REQ-002 (Settings pause, retained intent, and manual controls), REQ-004 (screen content), REQ-005 (v1 access decision),
 and REQ-006 (theme selection). Optional music is deferred to v2.
 
 Settings slides in from and out to the left over a stationary, full-window
@@ -229,7 +225,20 @@ foreground colors control accents, selected choices, keypad buttons, focused
 duration-field border, label, cursor and selection, and slider thumb and active
 track. Keypad labels use contrasting black or white; keyboard focus outlines
 remain independent. Settings text and input typography use the selected text
-color and font; semantic error colors and keypad contrast are retained. Shape,
+color and font; semantic error colors and keypad contrast are retained. The
+Settings, close, and About-back app-bar icons use the selected text color.
+Selected color swatches use a check icon in that color on a contrasting
+black/white backing so selection remains visible when the swatch and text colors
+match. The swatch remains visible around the indicator. Low-contrast text and
+background choices can still obscure navigation icons; no restriction is added.
+Each of the three color pickers offers the same 16 named presets, with up to
+eight 48 dp targets per row; narrower panels wrap to additional rows. The
+Rounded font uses the bundled Nunito typeface, distinct from Default; Serif is
+also available alongside Monospace. Saved font and color choices remain
+independent. Ring thickness retains all integer values from 1 to 100 percent
+without displaying the dense discrete ticks. Compact layout, font rendering,
+glyph coverage, and the expanded palette need platform and human review.
+Shape,
 detail and Ring thickness update the Timer preview, not the Settings layout.
 The Detail slider suppresses its track ticks and end dot at zero but retains
 its thumb, label, value, and 0-12 discrete interaction. Changes update
@@ -237,19 +246,17 @@ immediately, including appearance changes while a duration draft is invalid.
 Since foreground and background choices are unrestricted, some combinations
 can make controls or their accents difficult to distinguish; product,
 accessibility, usability and risk review remains pending.
-While Settings is open, a separate presentation snapshot uses the full selected
-duration and a paused/idle presentation. Clock labels, units, remaining text,
-and fill update together without altering the underlying paused engine.
-Invalid drafts keep the last valid preview with an input error. Previewing
-does not clear an underlying interruption; closing Settings starts anew.
-Closing Settings starts a fresh countdown from the full configured duration.
-At 00:00, the Timer remains non-counting and non-animating. The duration entry starts
-at 02:00, matching the demo; this is an initial field value, not saved
-preference. Clock is initially selected, also matching the demo. Opening Settings while
-the countdown is running pauses it. No separate manual pause, resume, or reset
-control is provided; valid Save is the only selected action that starts or
-restarts the timer. A caregiver or patient can access Settings in v1; saving
-valid settings is the timer-start action under REQ-002.
+While Settings is open, a separate full-duration presentation snapshot does
+not advance the engine. A changed valid duration immediately resets the engine
+paused to its new full duration; appearance-only, unchanged and invalid drafts
+do not reset it. Invalid drafts keep the last valid preview and show an error.
+Closing via close or Back resumes only retained running intent, using remaining
+time or the newly configured full duration. Manual pause remains paused; an
+unchanged finished timer remains finished at zero; a duration change after
+finish prepares a paused timer requiring Resume. Initial positive configuration
+requires Resume. A zero configuration remains idle with no enabled action.
+Preview and Settings alone never clear interruption; Restart is required.
+Settings remains accessible without a caregiver gate.
 
 The appearance controls are conditional on the selected visualization. Offer
 a font choice only when it displays text, and a color choice only when it uses
@@ -355,10 +362,10 @@ establish competent risk review, design approval, or verification:
 | D-01: caregiver protection mechanism | Product owner accepts unprotected Settings for v1; the design shows no access gate. RISK-004 acceptability remains subject to competent review; no control effectiveness is claimed. |
 | D-02: volume controls and limits | No in-app volume controls in v1. Reassess audio/volume requirements if a later version adds music. |
 | D-03: music and audio behavior | Music is deferred to v2. No music start behavior or completion sound is included in v1; future audio behavior remains undecided. |
-| D-04: timer start and Settings lifecycle | Saving valid settings starts a new countdown from the full saved duration; opening Settings while running pauses it. |
-| D-10: text-free detail 0 | Hide all on-screen Timer text and running/paused cues at detail 0; retain interrupted/idle cues and accessible state/stale-progress descriptions. The missing visual distinction and revised warning have not received human review or usability validation. |
-| D-05: interruption recovery | No recovery behavior is provided or promised in v1. Retain the interrupted-state warning and never imply timing continuity when uncertain. |
-| D-06: manual pause, resume, and reset controls | No separate controls are provided in v1. Settings-open is the selected pause behavior; saving valid Settings is the only selected start/restart action and starts from the full saved duration. |
+| D-04: timer start and Settings lifecycle | Settings pauses running; close resumes retained running intent, and actual valid duration changes reset paused immediately. Other changes do not reset. |
+| D-10: text-free detail 0 | Hide Timer text; retain accessible icon actions and interrupted/idle cues. Human review of distinguishability and warning remains pending. |
+| D-05: interruption recovery | No automatic or persisted recovery; explicit Restart clears the warning and starts full duration. Settings alone cannot clear it. |
+| D-06: manual pause, resume, and restart controls | Main offers Pause, Resume or Restart as applicable at all detail levels. |
 | D-09: Settings layout and duration input | Overlay Settings on the Timer at compact and expanded widths. Mobile uses available system keyboard input and falls back to the shared keypad; desktop uses keyboard entry without the app keypad; browser and TV use the keypad without keyboard-based duration entry. TV support is not established. |
 | Visualization appearance | Font and color are proposed as conditional per-visualization settings; option lists, defaults, and persistence remain undecided and require accessibility/usability review. |
 
@@ -401,3 +408,8 @@ PR.
 | 2.5 | Define live Settings appearance, the detail-zero dot-free slider track, and a subtle glass background with fallback; retain human and platform verification gaps. |
 | 2.6 | Replace the Settings side pane and glass treatment with an overlay and native-blurred Timer backdrop; retain unblurred fallback and review gaps. |
 | 2.7 | Describe the stationary full-window Timer and sliding glass Settings and About layers; retain platform and human review gaps. |
+| 2.8 | Describe text-colored Material navigation and swatch selection icons and the swatch indicator backing; retain low-contrast, platform, and human review gaps. |
+| 2.9 | Describe the centered enlarged remaining-time glass surface and its fallback; retain readability, rendering, overlap, and human review gaps. |
+| 3.0 | Describe the expanded responsive palette, distinct fonts and tick-free Ring slider; retain accessibility and platform review gaps. |
+| 3.1 | Specify one-shot states, explicit controls and Settings intent; retain historical prototype behavior and pending review. |
+| 3.2 | Clarify zero idle priority and retained interruption with warning restored on positive reconfiguration; retain accessibility and risk review. |

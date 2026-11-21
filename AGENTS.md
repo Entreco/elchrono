@@ -44,9 +44,11 @@ the product into a medical device.
 Minimum screens:
 
 1. **Main:** themed countdown, accessible volume control, and distinguishable
-   running, paused, and interrupted states; no clock presentation. On
-   completion, reset immediately to the configured duration and stop music;
-   do not display a completed state.
+   running, paused, finished, idle, and interrupted states; no clock presentation.
+   Completion stops at zero without automatic restart. Provide Pause, Resume,
+   and Restart actions as applicable at every detail level. Settings pauses
+   running and only resumes retained running intent; changed valid durations
+   reset the engine paused. Interruption requires explicit Restart.
 2. **Settings:** duration, theme, optional music, and caregiver timer controls.
 3. **About:** company logo, version/build details, support information, privacy
    policy, relevant licences, intended use, and limitations.

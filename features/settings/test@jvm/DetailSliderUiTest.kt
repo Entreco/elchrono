@@ -31,6 +31,34 @@ import nl.entreco.elchrono.core.persistence.TimerSettings
 @OptIn(ExperimentalTestApi::class)
 class DetailSliderUiTest {
     @Test
+    fun `ring thickness retains all values without visible track dots`() = runDesktopComposeUiTest {
+        var settings by mutableStateOf(
+            TimerSettings(checkNotNull(TimerDuration.fromMinutes(10)), TimerTheme.RING),
+        )
+        setContent {
+            Column(Modifier.width(400.dp).verticalScroll(rememberScrollState())) {
+                SettingsScreen(
+                    initialSettings = settings,
+                    onChange = { settings = it },
+                    onShowAbout = {},
+                    keyboardInputEnabled = true,
+                    keyboardAvailable = true,
+                )
+            }
+        }
+        val slider = onNodeWithContentDescription("Ring thickness").performScrollTo()
+        (1..100).forEach { value ->
+            slider.performSemanticsAction(SemanticsActions.SetProgress) { it(value.toFloat()) }
+            runOnIdle { assertEquals(value, settings.ringThicknessPercent) }
+        }
+        slider.performSemanticsAction(SemanticsActions.SetProgress) { it(1f) }
+        val pixels = slider.captureToImage().toPixelMap()
+        val y = pixels.height / 2
+        val colors = (pixels.width / 2 until pixels.width * 9 / 10).map { pixels[it, y] }.toSet()
+        assertEquals(1, colors.size, "The inactive Ring track must not contain tick dots")
+    }
+
+    @Test
     fun `all detail levels remain selectable and announced across zero`() = runDesktopComposeUiTest {
         var settings by mutableStateOf(
             TimerSettings(checkNotNull(TimerDuration.fromMinutes(10)), TimerTheme.CLOCK),

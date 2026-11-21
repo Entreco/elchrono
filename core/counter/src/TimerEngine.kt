@@ -7,6 +7,7 @@ enum class TimerStatus {
     NOT_CONFIGURED,
     RUNNING,
     PAUSED,
+    FINISHED,
 }
 
 data class TimerSnapshot(
@@ -27,26 +28,21 @@ class TimerEngine(
     private var configuredDuration: TimerDuration? = null
     private var runningSinceNanos = 0L
     private var pausedRemaining: Duration? = null
-    private var observedCycles = 0L
 
     fun current(): TimerUpdate {
         if (status != TimerStatus.RUNNING) return TimerUpdate(snapshot(), 0)
 
-        val duration = checkNotNull(configuredDuration).asDuration.inWholeNanoseconds
         val elapsed = (clock.nowNanos() - runningSinceNanos).coerceAtLeast(0)
-        val elapsedCycles = elapsed / duration
-        val completedCycles = (elapsedCycles - observedCycles).coerceAtLeast(0)
-        observedCycles = elapsedCycles
-
-        val elapsedInCycle = elapsed % duration
-        val remainingNanos = if (elapsedInCycle == 0L) duration else duration - elapsedInCycle
-        return TimerUpdate(
-            snapshot = TimerSnapshot(status, configuredDuration, remainingNanos.nanoseconds),
-            completedCycles = completedCycles,
-        )
+        val remaining = checkNotNull(pausedRemaining) - elapsed.nanoseconds
+        if (remaining <= Duration.ZERO) {
+            status = TimerStatus.FINISHED
+            pausedRemaining = Duration.ZERO
+            return TimerUpdate(snapshot(), 1)
+        }
+        return TimerUpdate(TimerSnapshot(status, configuredDuration, remaining), 0)
     }
 
-    fun openSettings(): TimerUpdate {
+    fun pause(): TimerUpdate {
         val update = current()
         if (status == TimerStatus.RUNNING) {
             pausedRemaining = update.snapshot.remaining
@@ -55,33 +51,35 @@ class TimerEngine(
         return update.copy(snapshot = snapshot())
     }
 
-    fun saveSettings(duration: TimerDuration): TimerUpdate {
+    fun reset(duration: TimerDuration): TimerUpdate {
         configuredDuration = duration
-        status = if (duration.totalMinutes == 0) TimerStatus.NOT_CONFIGURED else TimerStatus.RUNNING
-        val now = clock.nowNanos()
-        runningSinceNanos = now
-        pausedRemaining = null
-        observedCycles = 0
-        return TimerUpdate(
-            snapshot = TimerSnapshot(
-                status,
-                configuredDuration,
-                if (duration.totalMinutes == 0) Duration.ZERO else duration.asDuration,
-            ),
-            completedCycles = 0,
-        )
+        status = if (duration.totalMinutes == 0) TimerStatus.NOT_CONFIGURED else TimerStatus.PAUSED
+        pausedRemaining = duration.asDuration
+        return TimerUpdate(snapshot(), 0)
+    }
+
+    fun resume(): TimerUpdate {
+        if (status == TimerStatus.PAUSED) {
+            runningSinceNanos = clock.nowNanos()
+            status = TimerStatus.RUNNING
+        }
+        return current()
+    }
+
+    fun restart(): TimerUpdate {
+        val duration = configuredDuration ?: return current()
+        reset(duration)
+        return resume()
     }
 
     private fun snapshot(): TimerSnapshot {
         val remaining = when (status) {
             TimerStatus.NOT_CONFIGURED ->
                 configuredDuration?.takeIf { it.totalMinutes == 0 }?.let { Duration.ZERO }
-            TimerStatus.PAUSED -> pausedRemaining
+            TimerStatus.PAUSED, TimerStatus.FINISHED -> pausedRemaining
             TimerStatus.RUNNING -> {
-                val duration = checkNotNull(configuredDuration).asDuration.inWholeNanoseconds
                 val elapsed = (clock.nowNanos() - runningSinceNanos).coerceAtLeast(0)
-                val elapsedInCycle = elapsed % duration
-                (if (elapsedInCycle == 0L) duration else duration - elapsedInCycle).nanoseconds
+                (checkNotNull(pausedRemaining) - elapsed.nanoseconds).coerceAtLeast(Duration.ZERO)
             }
         }
         return TimerSnapshot(status, configuredDuration, remaining)

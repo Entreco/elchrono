@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M1-DOC-009 |
-| Revision | 1.7 |
+| Revision | 1.10 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Software-safety review: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
@@ -17,7 +17,7 @@ Lifecycle status is derived from the branch and PR context; see
 ## Purpose and use
 
 This matrix links the scenarios and proposed controls in
-[M1-DOC-004 revision 1.2](risk-assessment.md#risk-analysis) to intended-use
+[M1-DOC-004 revision 1.11](risk-assessment.md#risk-analysis) to intended-use
 sources, assessment assumptions, and planned verification. Each risk and
 follow-up is owned by the product owner, @Entreco. The M2
 [requirements traceability matrix](requirements-traceability-matrix.md) is the
@@ -25,7 +25,7 @@ authoritative location for requirement-to-risk-to-test links. This M1 matrix
 does not establish that controls are implemented, verified, or effective, or
 that residual risks are acceptable.
 
-The source is [M1-DOC-002 revision 1.0](../product/intended-use.md); its
+The source is [M1-DOC-002 revision 1.1](../product/intended-use.md); its
 exact-revision approval evidence remains unresolved. Focused JVM tests cover
 counter and settings-domain behavior, but do not establish control effectiveness
 or product verification. Update each row with relevant test/review, result,
@@ -39,8 +39,9 @@ acceptability. Review findings and human acceptance remain in the PR under
 
 ## Matrix
 
-Issue #66 refinement coverage supplements the rows below: RISK-001 maps
-duration-preview/engine-isolation tests to TP-REQ-014; RISK-004 maps legacy
+Historical issue #66 refinement coverage is superseded where duration changes
+now reset the engine. RISK-001 maps revised preview/reset tests to TP-REQ-014;
+RISK-004 maps legacy
 settings and thickness validation to TP-REQ-012/014; RISK-005 maps global
 background/readability, stable detail geometry, Battery silhouette, Ring
 thickness, and cue interpretation to TP-REQ-003/013/015. Pure JVM tests and
@@ -55,11 +56,11 @@ establishes control effectiveness or residual-risk acceptability.
 
 | Risk and proposed controls | Intended-use trace | Assessment basis and assumptions | Planned verification | Test/review evidence and result |
 |---|---|---|---|---|
-| [RISK-001](risk-assessment.md#risk-analysis) | [Visual time and audio](../product/intended-use.md#supported-role-of-visual-time-and-optional-audio); [limitations](../product/intended-use.md#foreseeable-use-and-limitations) | The browser candidate implements a timer and Settings UI, but is not in field use; operational and representative-user evidence is unavailable. Product UI, layout, accessibility, and interruption behavior remain unverified. | Verify all 1,440 durations, invalid configuration and digit entry, Settings-open pause/save-to-start, completion boundary, Clock label values, and consistent visual semantics with deterministic inputs; separately verify UI, supported layouts, accessibility, and interruption paths. | JVM tests cover duration values, invalid boundaries, injected-time countdown/pause/save/reset, core sequential duration entry, and the Settings keyboard/keypad policy. New Timer presentation tests cover Clock label count/value/position rules and compact/expanded geometry; headless Chrome observed running Clock and Fan at 320×640 and 1440×1000. These results do not establish UI/control effectiveness, complete visual acceptance, or risk acceptance. |
-| [RISK-002](risk-assessment.md#risk-analysis) | [Visual time and audio](../product/intended-use.md#supported-role-of-visual-time-and-optional-audio); [limitations](../product/intended-use.md#foreseeable-use-and-limitations) | Product decision: no recovery behavior is provided or promised in v1. The browser MVP records a hidden-page/page-hide event and pauses when detected. Issue #66 replaces the on-screen interrupted warning at detail 0 with a visual cue and accessible stale-progress description; the change is not human-reviewed or product-verified. | Verify browser hidden/return transitions at detail 0 and 1-12, text and visual cues, accessible stale-progress description, no automatic resume, and fresh-start behavior after valid Settings changes. Reassess before adding recovery or expanding supported behavior. | Focused state-mapping JVM tests pass; rendered browser behavior, assistive-technology output, usability, risk review, and control effectiveness remain pending. |
+| [RISK-001](risk-assessment.md#risk-analysis) | [Waiting and limitations](../product/intended-use.md#foreseeable-use-and-limitations) | Duration changes, remaining time and one-shot completion can be misunderstood or incorrect. | TP-REQ-002/010/014: deterministic all-duration boundaries, Settings intent, actual changes and appearance-only edits; UI and usability review. | Operator-reported passing JVM tests exercise all positive durations and one-shot completion, Settings intent and duration resets. [Execution record](../testing/test-protocol.md#one-shot-timer-and-manual-controls-candidate); product and risk review pending. |
+| [RISK-002](risk-assessment.md#risk-analysis) | [Limitations](../product/intended-use.md#foreseeable-use-and-limitations) | Lifecycle delivery and icon-only stale-progress warning may be misunderstood. At zero, idle presentation hides the warning despite retained interruption. | TP-REQ-002/003/013: stop while running and while Settings holds intent, no automatic recovery, Settings cannot clear warning, explicit Restart. | Reported JVM tests cover stop with held intent and explicit Restart. Zero idle priority and warning restoration after positive reconfiguration need human risk/accessibility review; actual platform delivery remains pending. |
 | [RISK-003](risk-assessment.md#risk-analysis) | [Visual time and audio](../product/intended-use.md#supported-role-of-visual-time-and-optional-audio) | Music and in-app volume controls are excluded from v1 and deferred for future consideration. [M3-DOC-003](../architecture/audio-provider-feasibility-findings.md) records provider policy, platform, data-flow, and testability constraints; no future provider or playback behavior is approved. | No v1 audio behavior to verify. Before v2 audio, review provider/data flows, playback limits/failure, volume, start and completion sound behavior, then verify timer independence and audio behavior. | Deferred; no audio implementation or verification is claimed. |
-| [RISK-004](risk-assessment.md#risk-analysis) | [Users and roles](../product/intended-use.md#users-population-and-roles); [visual time and audio](../product/intended-use.md#supported-role-of-visual-time-and-optional-audio) | Product owner accepts unprotected Settings for v1; patients can change duration/theme. No gate or access-control effect is claimed. An unintended change may cause confusion or alter a wait; competent review of RISK-004 acceptability remains pending. | Verify the implemented behavior matches the approved open-access decision and clearly reports saved configuration; complete competent risk/UX review of the unprotected Settings exposure. | Pending; no control verification, risk acceptance review, or result. |
-| [RISK-005](risk-assessment.md#risk-analysis) | [Visual time and audio](../product/intended-use.md#supported-role-of-visual-time-and-optional-audio); [limitations](../product/intended-use.md#foreseeable-use-and-limitations) | Product requirements call for predictable layouts, contrast, large controls, accessible labels, and no colour-only time semantics. The candidate has no visible running/paused indicator at detail 0, leaving REQ-003 and RC-005-1 unresolved; accessible descriptions do not establish equivalent access. No representative usability findings exist. Android TV is configured as a candidate; Apple TV is unconfigured. Neither is verified for support. | Inspect state/progress semantics, non-color cues, Clock labels, every shape/detail level, responsive layout and clipping, and reduced motion. Obtain the required human accessibility/usability/risk review. Before claiming TV support, separately verify remote/focus and viewing-distance readability on configured targets. | Earlier focused JVM mapping and geometry tests and bounded Chrome renders do not verify the new status policy. Screen-reader behavior, the complete detail/state matrix, human findings, control effectiveness, and risk acceptance remain pending. |
+| [RISK-004](risk-assessment.md#risk-analysis) | [Users and roles](../product/intended-use.md#users-population-and-roles) | Settings and new timer actions are accessible without a caregiver gate; unintended changes and resets may alter a wait. | TP-REQ-002/005/014 and caregiver usability/risk review of open access, duration edits and manual actions. | Reported JVM tests exercise manual actions and duration changes, not their consequences for users. No protection, control effectiveness or risk acceptance claimed. |
+| [RISK-005](risk-assessment.md#risk-analysis) | [Waiting and limitations](../product/intended-use.md#foreseeable-use-and-limitations) | Icon-only actions at detail 0, finished/idle distinction and stale warning need evaluation; unrestricted colors may impair visibility. | TP-REQ-003/013/015: all details/states, focus, accessible names, overlay isolation, clipping and supported inputs; human usability and risk review. | Reported JVM tests exercise actions across details, Tab/Enter, overlay isolation and one compact large-font layout. Zero idle priority, screen readers, complete device matrix, human review and effectiveness remain pending. |
 | [RISK-006](risk-assessment.md#risk-analysis) | [Limitations](../product/intended-use.md#foreseeable-use-and-limitations); [exclusions and claims](../product/intended-use.md#exclusions-and-claims-boundary) | Safety-critical timing and authoritative deadline reliance are excluded. Serious harm is plausible if misused, not a supported use; its likelihood is unmeasured and requires reviewer confirmation. Actual use and public claims have not been observed. | Review requirements, user-facing content, and product claims against intended-use exclusions before release; assess changes against the [qualification record](../regulatory/qualification-and-classification.md) and this risk. Include About's intended-use/limitations copy and all owner-provided content, and the TV target/claims boundary when scope changes. | About copy is aligned to the candidate ordinary-waiting boundary and required content gaps are disclosed; no control or claim review is verified, and required owner sources plus human review remain pending. |
 
 ## Revision history
@@ -83,3 +84,6 @@ establishes control effectiveness or residual-risk acceptability.
 | 1.5 | Align with M1-DOC-004 revision 1.0 and add Clock marker accuracy and theme-layout clipping to planned risk verification; no control effectiveness or residual-risk acceptance is claimed. |
 | 1.6 | Trace refinement preview, storage, geometry, and appearance checks to existing risks and protocol cases; retain human-review and effectiveness gaps. |
 | 1.7 | Trace the missing detail-0 running/paused visual distinction to REQ-003, RC-005-1, and pending risk review. |
+| 1.8 | Trace revised timer and Settings controls to planned verification and preserve historical evidence limitations. |
+| 1.9 | Link operator-reported bounded JVM evidence and the zero-duration interruption-warning mismatch; retain platform and human-review gaps. |
+| 1.10 | Trace approved zero idle priority and retained interruption; keep human and platform review pending. |

@@ -9,12 +9,11 @@ import kotlin.test.assertTrue
 class SettingsAccentColorsTest {
     @Test
     fun `selected foreground is preserved and keypad labels remain legible`() {
-        val presets = listOf(
-            0xFFF7F7F2, 0xFF17171C, 0xFF5B5BD6,
-            0xFFE58A3A, 0xFF3D7A57, 0xFFC54A4A,
-        )
-        presets.forEach {
-            val foreground = Color(it)
+        assertEquals(16, settingsColorPresets.size)
+        assertEquals(16, settingsColorPresets.map { it.id }.distinct().size)
+        assertEquals(16, settingsColorPresets.map { it.argb }.distinct().size)
+        settingsColorPresets.forEach {
+            val foreground = Color(it.argb)
             val colors = settingsAccentColors(foreground)
             assertEquals(foreground, colors.foreground)
             val luminances = listOf(foreground.luminance(), colors.onForeground.luminance()).sorted()

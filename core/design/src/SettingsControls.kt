@@ -20,9 +20,11 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.FilterChip
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
+import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,6 +38,9 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import nl.entreco.elchrono.core.design.resources.Res
+import nl.entreco.elchrono.core.design.resources.material_check
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun SettingsControlRow(
@@ -204,7 +209,8 @@ fun ColorSwatchPicker(
 ) {
     FlowRow(
         modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(LocalDimens.current.spaceXS),
+        maxItemsInEachRow = 8,
+        horizontalArrangement = Arrangement.Start,
         verticalArrangement = Arrangement.spacedBy(LocalDimens.current.spaceXS),
     ) {
         swatches.forEach { swatch ->
@@ -233,10 +239,18 @@ fun ColorSwatchPicker(
                     contentAlignment = Alignment.Center,
                 ) {
                     if (selected) {
-                        Text(
-                            text = "✓",
-                            color = if (swatch.color.luminance() > 0.179f) Color.Black else Color.White,
-                            style = MaterialTheme.typography.labelSmall,
+                        val iconColor = MaterialTheme.colorScheme.onSurface
+                        Icon(
+                            painter = painterResource(Res.drawable.material_check),
+                            contentDescription = null,
+                            tint = iconColor,
+                            modifier = Modifier
+                                .size(20.dp)
+                                .background(
+                                    if (iconColor.luminance() > 0.179f) Color.Black else Color.White,
+                                    CircleShape,
+                                )
+                                .padding(2.dp),
                         )
                     }
                 }
@@ -256,6 +270,7 @@ fun LabeledSlider(
     modifier: Modifier = Modifier,
     valueRange: ClosedFloatingPointRange<Float> = 0f..1f,
     steps: Int = 0,
+    showTicks: Boolean = true,
 ) {
     Column(modifier.fillMaxWidth()) {
         Row(
@@ -275,6 +290,17 @@ fun LabeledSlider(
                 .semantics { contentDescription = label },
             valueRange = valueRange,
             steps = steps,
+            track = { state ->
+                if (showTicks) {
+                    SliderDefaults.Track(sliderState = state)
+                } else {
+                    SliderDefaults.Track(
+                        sliderState = state,
+                        drawStopIndicator = null,
+                        drawTick = { _, _ -> },
+                    )
+                }
+            },
         )
         Row(
             modifier = Modifier.fillMaxWidth(),

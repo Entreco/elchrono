@@ -1,5 +1,7 @@
 # Requirements traceability matrix
 
+Desktop keyboard changes: [PR #73](https://github.com/Entreco/elchrono/pull/73).
+
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-003 |
@@ -19,7 +21,7 @@ table. See [document controls](../governance/document-control.md#lifecycle-and-a
 This matrix is the authoritative cross-reference between the intended-use
 source, product requirements, risks, design/usability evidence, and test
 protocol. Requirement statements live in
-[M2-DOC-001, revision 1.2](../product/requirements.md); acceptance criteria and
+[M2-DOC-001, revision 1.3](../product/requirements.md); acceptance criteria and
 procedures live in [M2-DOC-002, revision 1.6](../testing/test-protocol.md).
 Do not duplicate those statements or criteria here.
 
@@ -30,11 +32,11 @@ actual evidence is recorded.
 | Source record | Revision | Relationship |
 |---|---|---|
 | [M1-DOC-002, intended use](../product/intended-use.md) | 1.0 candidate | Product purpose, roles, use, and limitations |
-| [M2-DOC-001, product requirements](../product/requirements.md) | 1.2 candidate | V1 requirements including issue #66 global appearance, immediate duration preview, stable geometry, and Ring thickness |
-| [M1-DOC-004, risk assessment](risk-assessment.md) | 1.2 candidate | RISK-001 through RISK-006 traced below; no control effectiveness or risk reduction claimed |
+| [M2-DOC-001, product requirements](../product/requirements.md) | 1.3 candidate | V1 requirements including desktop keyboard entry and issue #66 appearance refinements |
+| [M1-DOC-004, risk assessment](risk-assessment.md) | 1.1 candidate | RISK-001 through RISK-006 traced below; no control effectiveness or risk reduction claimed |
 | [M1-DOC-009, risk traceability matrix](risk-traceability-matrix.md) | 1.6 candidate | Refinement risks and planned verification; review pending |
-| [M2-DOC-002, product test protocol](../testing/test-protocol.md) | 1.6 candidate | Refinement and Settings foreground criteria; full protocol acceptance pending |
-| [M2-DOC-004, accessible screen flows and theme prototypes](../design/accessible-screen-flows-and-theme-prototypes.md) | 2.4 candidate | Updated Settings accents, global appearance, preview, Battery, stable overlays, cue placement, and Ring thickness; exact-head review pending |
+| [M2-DOC-002, product test protocol](../testing/test-protocol.md) | 1.6 candidate | Desktop keyboard criteria and bounded observations; full protocol acceptance pending |
+| [M2-DOC-004, accessible screen flows and theme prototypes](../design/accessible-screen-flows-and-theme-prototypes.md) | 2.4 candidate | Desktop keyboard flow and appearance refinements; exact-head review pending |
 | [M2-DOC-005, usability review plan](../usability/usability-plan.md) | 1.0 candidate | Future refinement review scope; no participant session authorized |
 | [M2-DOC-006, usability findings and evidence status](../usability/usability-findings.md) | 1.0 candidate | Retrospective sessions and extended G06 redesign gap |
 | [M3-DOC-007, platform architecture decision and support matrix](../architecture/platform-architecture-and-support-matrix.md) | 0.3 candidate | Retains the configured Kotlin Multiplatform/Compose architecture; records TV priorities, Wear/watch exclusion, evidence limits, and no support commitment |
@@ -43,7 +45,7 @@ actual evidence is recorded.
 
 | Requirement | Intended-use source | Applicable risks | Design/usability evidence | Test protocol | Verification evidence |
 |---|---|---|---|---|---|
-| [REQ-001](../product/requirements.md#requirement-identification) | [Duration and supported waiting use](../product/intended-use.md#supported-role-of-visual-time-and-optional-audio) | RISK-001 | [Settings duration entry](../design/accessible-screen-flows-and-theme-prototypes.md#settings-screen); planned [U-03](../usability/usability-plan.md#tasks-and-neutral-prompts); session scope [M2-DOC-006](../usability/usability-findings.md#session-scope-and-evidence-provenance), gap G04 | [TP-REQ-001](../testing/test-protocol.md#test-cases) | Focused JVM duration-entry and input-policy tests pass; all configured target builds compile. Rendered input behavior remains unverified, and the Wasm settings test runner fails during Skiko WebAssembly instantiation as recorded in M2-DOC-002. |
+| [REQ-001](../product/requirements.md#requirement-identification) | [Duration and supported waiting use](../product/intended-use.md#supported-role-of-visual-time-and-optional-audio) | RISK-001 | [Settings duration entry](../design/accessible-screen-flows-and-theme-prototypes.md#settings-screen); planned [U-03](../usability/usability-plan.md#tasks-and-neutral-prompts); session scope [M2-DOC-006](../usability/usability-findings.md#session-scope-and-evidence-provenance), gap G04 | [TP-REQ-001](../testing/test-protocol.md#test-cases) | JVM duration-entry, policy, and desktop Compose interaction tests cover sequential text edits and Backspace. Actual physical-keyboard entry, focus, layout, accessibility, and the zero-duration conflict remain unverified. The Wasm settings test runner previously failed during Skiko WebAssembly instantiation as recorded in M2-DOC-002. |
 | [REQ-002](../product/requirements.md#requirement-identification) | [Users and roles](../product/intended-use.md#users-population-and-roles) | RISK-001 | [Settings-open pause, save-to-start, and idle 00:00 behavior](../design/accessible-screen-flows-and-theme-prototypes.md#settings-screen); session gaps G04/G06 | [TP-REQ-002](../testing/test-protocol.md#test-cases) | Counter-domain pause/save/zero-duration JVM tests pass; bounded Chrome check observed opening Settings and returning to a running Timer at 320×640. Pause timing, save-to-full-duration, accessibility, and broader browser behavior remain unverified |
 | [REQ-003](../product/requirements.md#requirement-identification) | [Visual remaining-time use and limitations](../product/intended-use.md#supported-role-of-visual-time-and-optional-audio) | RISK-001, RISK-002, RISK-005, RISK-006 | [Main states and Timer mapping](../design/accessible-screen-flows-and-theme-prototypes.md#main-screen-and-states); session findings [F01/F04](../usability/usability-findings.md#participant-feedback-and-observations); gaps G04-G06 | [TP-REQ-003](../testing/test-protocol.md#test-cases) | Current candidate deliberately lacks a visible running/paused distinction at detail 0; REQ-003 is not established for that case. Earlier bounded Chrome observations do not verify the revised status presentation. Complete shape/state/detail, screen-reader, reduced-motion, offline, and human-review evidence remains pending. |
 | [REQ-004](../product/requirements.md#requirement-identification) | [Users and roles](../product/intended-use.md#users-population-and-roles); screen/content inventory is M2 product scope in [#22](https://github.com/Entreco/elchrono/issues/22) | RISK-004, RISK-005, RISK-006 | [Main, Settings, and About designs](../design/accessible-screen-flows-and-theme-prototypes.md#screen-flows); supporting-pane Settings; owner-supplied logo; unavailable content remains a blocker; no v1 audio/volume controls | [TP-REQ-004](../testing/test-protocol.md#test-cases) | About and browser builds, scoped JVM tests, and checks passed; the browser server returned HTTP 200. Required version/build, support, privacy, and licence sources remain unavailable, so TP-REQ-004 is blocked. Browser rendering, links, responsive no-clipping, keyboard, screen-reader, and integrated behavior with open issues #65/#66 remain unverified. See the #67 candidate execution record in M2-DOC-002. |
@@ -213,4 +215,4 @@ test procedures or acceptance criteria in this matrix.
 | 3.5 | Record bounded browser render observations for REQ-003/013 while retaining the unresolved accessibility, complete visual-matrix, and human-review gaps. |
 | 3.6 | Align requirements, protocol, risks, and usability sources with the demo-matching Clock labels and centered Fan geometry; keep rendered behavior and human review explicitly pending. |
 | 3.7 | Align refinement source revisions and trace preview, color, Battery/Ring geometry, and thickness migration tests; distinguish bounded browser observations from human acceptance. |
-| 3.8 | Trace Settings foreground accents, focused JVM color tests, unrestricted-color visibility risks, and outstanding rendered and human verification. |
+| 3.8 | Trace desktop keyboard-entry criteria and focused JVM interaction coverage; retain physical-device, accessibility, and zero-duration reconciliation gaps. |

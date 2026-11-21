@@ -1,5 +1,7 @@
 # Accessible screen flows and theme prototypes
 
+Desktop keyboard changes: [PR #73](https://github.com/Entreco/elchrono/pull/73).
+
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-004 |
@@ -201,9 +203,9 @@ side pane while the Timer remains the main pane. On compact windows, Settings
 is the single visible destination and remains reachable through the shell
 controls. Mobile targets accept sequential digits from the system keyboard
 when available and show the reusable numeric keypad as a fallback. Desktop
-and browser targets use that keypad without keyboard-based duration entry;
-the same keypad is the planned TV input even though no TV launcher is
-configured. These flows preserve `205` as `02:05`; layout, input, focus,
+uses physical-keyboard entry without the app keypad. Browser and TV use the
+keypad without keyboard-based duration entry; TV support is not established.
+These flows preserve `205` as `02:05`; layout, input, focus,
 accessibility, and no-clipping behavior remain unverified.
 
 The v1 flow has no caregiver-only access gate: Settings can be opened without
@@ -345,7 +347,7 @@ establish competent risk review, design approval, or verification:
 | D-10: text-free detail 0 | Hide all on-screen Timer text and running/paused cues at detail 0; retain interrupted/idle cues and accessible state/stale-progress descriptions. The missing visual distinction and revised warning have not received human review or usability validation. |
 | D-05: interruption recovery | No recovery behavior is provided or promised in v1. Retain the interrupted-state warning and never imply timing continuity when uncertain. |
 | D-06: manual pause, resume, and reset controls | No separate controls are provided in v1. Settings-open is the selected pause behavior; saving valid Settings is the only selected start/restart action and starts from the full saved duration. |
-| D-09: adaptive Settings and duration input | Use Settings as a supporting side pane when the window supports multiple panes, with a reachable compact destination. Mobile uses available system keyboard input and falls back to the shared keypad; desktop, browser, and future TV flows use the keypad without keyboard-based duration entry. TV support is not established. |
+| D-09: adaptive Settings and duration input | Use Settings as a supporting side pane when the window supports multiple panes, with a reachable compact destination. Mobile uses available system keyboard input and falls back to the shared keypad; desktop uses keyboard entry without the app keypad; browser and TV use the keypad without keyboard-based duration entry. TV support is not established. |
 | Visualization appearance | Font and color are proposed as conditional per-visualization settings; option lists, defaults, and persistence remain undecided and require accessibility/usability review. |
 
 The product owner approved the four demo visualizations for the v1 design.
@@ -383,4 +385,4 @@ PR.
 | 2.1 | Record Timer surface-color behavior and the bounded headless browser render observation; keep full visual, accessibility, reduced-motion, and human reviews pending. |
 | 2.2 | Align application Clock detail with the demo's outer duration labels and units instead of concentric bands; specify centered, unclipped Fan geometry and retain human review and verification gaps. |
 | 2.3 | Specify global background, translucent Settings, immediate duration preview, bottom-right status cue, shallow Battery, stable detail overlays, and normalized Ring thickness; retain review gaps. |
-| 2.4 | Describe Settings foreground accents and their contrast limitations; retain product, accessibility, usability, and risk review gaps. |
+| 2.4 | Describe desktop keyboard entry without the app keypad; retain physical-device, accessibility, and layout review gaps. |

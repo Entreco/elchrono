@@ -1,5 +1,7 @@
 # Product test protocol
 
+Desktop keyboard changes: [PR #73](https://github.com/Entreco/elchrono/pull/73).
+
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-002 |
@@ -33,7 +35,7 @@ hours. No accessibility conformance baseline is selected by this protocol.
 
 | Test ID | Requirement | Procedure | Acceptance criteria |
 |---|---|---|---|
-| TP-REQ-001 | [REQ-001](../product/requirements.md#requirement-identification) | Enter representative digit sequences through the mobile system-keyboard route and the on-screen keypad route. Confirm desktop/browser use the keypad without keyboard-based entry. Test duration boundaries, invalid values, and all whole-minute durations with a controllable input/test harness. | Both available input routes preserve the sequential mapping: `2`, `20`, `205`, and `2400` display as `00:02`, `00:20`, `02:05`, and `24:00`. Every duration from `00:01` through `24:00` is representable. `00:00`, minute values above `59`, and values above `24:00` cannot be configured as valid durations. On mobile, keypad visibility follows keyboard availability; desktop, browser, and TV use the keypad and do not expose keyboard-based duration entry. |
+| TP-REQ-001 | [REQ-001](../product/requirements.md#requirement-identification) | Enter representative digit sequences through the mobile system-keyboard route, desktop physical keyboard in each field, and on-screen keypad route. Test desktop focus, keyboard navigation, deletion, selection/replacement, non-digit input, and keypad absence at compact and expanded sizes. Confirm browser and TV use the keypad without keyboard-based entry. Test duration boundaries, invalid values, and all whole-minute durations with a controllable input/test harness. | All input routes preserve the sequential mapping: `2`, `20`, `205`, and `2400` display as `00:02`, `00:20`, `02:05`, and `24:00`. Every duration from `00:01` through `24:00` is representable. Minute values above `59` and values above `24:00` cannot be configured as valid durations. On mobile, keypad visibility follows keyboard availability; desktop fields accept physical keyboard input without the app keypad; browser and TV use the keypad and do not expose keyboard-based duration entry. The existing conflict over whether `00:00` is valid remains unresolved; do not mark this test fully passed until the owner reconciles REQ-001, REQ-002, and the 1-minute minimum in project instructions. |
 | TP-REQ-002 | [REQ-002](../product/requirements.md#requirement-identification) | Inspect Main and Settings for manual timer controls. Save valid settings and advance the injected time source. While running, open Settings and record remaining time; keep Settings open while advancing time, then save valid settings. | No separate manual pause, resume, or reset controls are available in v1. Saving starts the countdown from the full saved duration. Opening Settings pauses it (remaining time does not change while Settings is open). Saving again starts a new countdown from the full saved duration, not the previously remaining time. |
 | TP-REQ-003 | [REQ-003](../product/requirements.md#requirement-identification) | For Clock, Battery, Fan, and Ring, review running, paused, interrupted, and idle states at detail 0 and 1-12. Use a controllable time source for progress boundaries. In the browser, trigger hidden/return transitions and Settings navigation; inspect representative compact and expanded layouts and screen-reader output. | All four themes use the same continuous remaining-time fraction and remain fully visible without clipping. Clock's leading edge moves clockwise from 12 toward the right as time elapses; detail N shows N evenly spaced duration labels and no internal boundaries (for example, a 60-minute duration at detail 2 shows 0 at the top and 30 at the bottom). Durations below ten minutes use whole-second labels; longer durations use compact minute values and a unit label. Fan's complete semicircle is centered and visible at compact and expanded sizes. No clock face/time-of-day markings are added; states are distinct without relying on color. At detail 0, no Timer text is visible; interrupted and idle cues and accessible descriptions identify state and stale progress. Running and paused have no visible state indicator at detail 0: the candidate cannot currently establish the required visual distinction and this criterion remains unresolved. At detail 1-12, play/pause icons identify running/paused without text; interruption warning and remaining time remain visible. Hidden-page interruption does not resume automatically; valid Settings changes start a fresh countdown. Process-termination/restart recovery is not claimed. Human design, accessibility, usability, and risk review remain required. |
 | TP-REQ-004 | [REQ-004](../product/requirements.md#requirement-identification) | Inspect Main, Settings, and About against their required v1 content. At expanded widths confirm Settings and About use the supporting pane beside Timer; at compact widths confirm each is a reachable single-pane destination. Resize across the breakpoint while About is open. Verify the official logo's scaling and accessible name, actual version/build metadata, approved support/privacy/licence information and link destinations, intended-use/limitations copy, navigation back to Settings and Timer, keyboard operation, and screen-reader labels. | Main includes the selected timer visualization. Settings uses the supporting pane when space permits and remains available on compact windows; duration and theme controls are present, with no v1 music or volume controls. About contains all REQ-004 content from authoritative sources; the logo preserves its aspect ratio and is accessible, links work, navigation is correct, and content is readable and not clipped or obscured. A missing source or required item is explicitly recorded as a gap and makes this test blocked, not passed. |
@@ -50,29 +52,23 @@ hours. No accessibility conformance baseline is selected by this protocol.
 
 ## Execution record
 
-### Settings foreground accents
+### Desktop keyboard candidate
 
-The focused command `./kotlin test -p jvm -m settings -m design` passed in the
-`fix/66-settings-foreground` worktree. `SettingsAccentColorsTest` verifies the
-selected color and at least 4.5:1 keypad-label contrast for the six presets,
-and checks black/white contrast choices. `./kotlin build -m browser` passed.
-`./kotlin check -m settings -m design` was stopped after more than six minutes
-of multiplatform compilation and native-linker warnings; it did not complete.
-
-In Chrome 158.0.8127.37 headless with ANGLE/SwiftShader at 320 x 640, selecting
-orange in Settings changed the keypad buttons, the focused Hours and Minutes
-border/label, and the Details thumb/active track to orange. Keypad text was
-black. The Clear and Delete labels wrapped at this width; their usability
-requires review. This is a bounded visual observation, not a protocol pass.
-At 1440 x 1000, the Settings/foreground interaction sequence encountered
-Compose lookahead/layout exceptions and a blank render. The same sequence
-also produced exceptions on the unmodified `1cbc9cc` baseline. Expanded
-interaction remains unverified; this comparison does not establish a root
-cause. The current digit-entry implementation rejects invalid appended values
-and accepts zero, so an invalid draft was not produced through the checked
-input path. The unit tests and observations do not verify every color, live
-invalid-draft updates, keyboard navigation, browser persistence, or human
-accessibility/usability/risk review. Full TP-REQ-012 acceptance remains pending.
+- `./kotlin test -p jvm -m settings -m counter -m common` passed on the
+  current macOS host. Desktop Compose tests exercised injected text edits in
+  both fields, a simulated Backspace, keypad absence, and input-mode
+  recomposition; these are not physical-keyboard or full-layout evidence.
+- `./kotlin build -m desktop -m browser` and
+  `./kotlin build -m android -m androidtv -m ios` passed. A desktop window
+  was observed through the window manager after
+  `./kotlin run -m desktop --no-compose-hot-reload`; its contents and
+  interactions were not inspected.
+- Simulated digit key-down/up events did not enter text in the Compose test
+  harness. The pinned Compose Desktop text field requires AWT `KEY_TYPED`
+  events, which the harness's key-down/up injection does not supply. macOS UI automation was unavailable
+  because accessibility access was disabled. Real physical digit input,
+  keyboard navigation, selection, clipping, assistive technology, and human
+  review therefore remain pending; these observations do not pass TP-REQ-001.
 
 ### Issue #66 refinement acceptance extension
 
@@ -283,4 +279,4 @@ design, usability, accessibility, and product review remain pending.
 | 1.3 | Record the bounded Chrome render check at compact and expanded viewports; retain incomplete accessibility, visual-matrix, and human-review gates. |
 | 1.4 | Replace Clock segment criteria with demo-matching duration labels, add compact/expanded Fan centering checks, and retain browser, accessibility, usability, and human-review gates. |
 | 1.5 | Add measurable global-background, preview, stable-layout, Battery, and Ring-thickness criteria and scoped refinement evidence without claiming full protocol acceptance. |
-| 1.6 | Add Settings foreground-accent and keypad-label contrast checks; record focused JVM color tests and remaining rendered and human-review gaps. |
+| 1.6 | Add desktop keyboard entry criteria and identify the existing zero-duration requirement conflict; retain physical-device and accessibility verification gaps. |

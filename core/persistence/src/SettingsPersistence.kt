@@ -27,7 +27,12 @@ data class TimerSettings(
     val textColorArgb: Long = 0xFF17171Cu.toLong(),
     val font: TimerFont = TimerFont.DEFAULT,
     val detail: Int = 6,
-)
+    val ringThicknessPercent: Int = 24,
+) {
+    init {
+        require(ringThicknessPercent in 1..100)
+    }
+}
 
 data class RestoredSettings(
     val settings: TimerSettings,
@@ -40,10 +45,17 @@ class DefaultSettingsRepository(
 ) : SettingsRepository {
     override fun load(): RestoredSettings =
         when (val loaded = storage.load()) {
-            is StorageResult.Success -> RestoredSettings(
-                loaded.value?.let(::deserialize) ?: defaults,
-                null,
-            )
+            is StorageResult.Success -> {
+                val restored = loaded.value?.let(::deserialize)
+                RestoredSettings(
+                    restored ?: defaults,
+                    if (loaded.value != null && restored == null) {
+                        "Stored settings are invalid. Default settings have been restored."
+                    } else {
+                        null
+                    },
+                )
+            }
             is StorageResult.Failure -> RestoredSettings(defaults, loaded.message)
         }
 
@@ -59,23 +71,23 @@ class DefaultSettingsRepository(
             settings.textColorArgb,
             settings.font.name,
             settings.detail,
+            settings.ringThicknessPercent,
         ).joinToString("|")
 
     private fun deserialize(serialized: String): TimerSettings? {
         val values = serialized.split("|")
-        if (values.size != 7) return null
-        return try {
-            val duration = TimerDuration.fromMinutes(values[0].toInt()) ?: return null
-            val theme = TimerTheme.entries.firstOrNull { it.name == values[1] } ?: return null
-            val background = values[2].toLong().takeIf { it in 0..0xFFFFFFFF } ?: return null
-            val foreground = values[3].toLong().takeIf { it in 0..0xFFFFFFFF } ?: return null
-            val text = values[4].toLong().takeIf { it in 0..0xFFFFFFFF } ?: return null
-            val font = TimerFont.entries.firstOrNull { it.name == values[5] } ?: return null
-            val detail = values[6].toInt().takeIf { it in 0..12 } ?: return null
-            TimerSettings(duration, theme, background, foreground, text, font, detail)
-        } catch (_: IllegalArgumentException) {
-            null
+        if (values.size !in 7..8) return null
+        val duration = values[0].toIntOrNull()?.let(TimerDuration::fromMinutes) ?: return null
+        val theme = TimerTheme.entries.firstOrNull { it.name == values[1] } ?: return null
+        val background = values[2].toLongOrNull()?.takeIf { it in 0..0xFFFFFFFF } ?: return null
+        val foreground = values[3].toLongOrNull()?.takeIf { it in 0..0xFFFFFFFF } ?: return null
+        val text = values[4].toLongOrNull()?.takeIf { it in 0..0xFFFFFFFF } ?: return null
+        val font = TimerFont.entries.firstOrNull { it.name == values[5] } ?: return null
+        val detail = values[6].toIntOrNull()?.takeIf { it in 0..12 } ?: return null
+        val thickness = if (values.size == 7) defaults.ringThicknessPercent else {
+            values[7].toIntOrNull()?.takeIf { it in 1..100 } ?: return null
         }
+        return TimerSettings(duration, theme, background, foreground, text, font, detail, thickness)
     }
 
     companion object {

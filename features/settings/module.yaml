@@ -7,11 +7,16 @@ dependencies:
   - //core/design
   - //core/localization
   - //core/persistence
+  - $libs.compose.cloudy
   - $compose.runtime
   - $compose.foundation
   - $compose.material3
   - $compose.ui
   - $compose.components.resources
+
+test-dependencies@jvm:
+  - $libs.compose.ui.test
+  - $compose.desktop.currentOs: runtime-only
 
 settings:
   compose: enabled

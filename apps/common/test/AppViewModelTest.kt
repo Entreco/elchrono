@@ -18,6 +18,51 @@ import nl.entreco.elchrono.core.persistence.StorageResult
 
 class AppViewModelTest {
     @Test
+    fun `duration edits preview immediately without mutating the paused engine`() {
+        val clock = TestMonotonicClock()
+        val viewModel = testViewModel(TimerEngine(clock))
+        viewModel.saveSettings(settings(120))
+        clock.advance(2.minutes)
+        viewModel.openSettings()
+        val paused = viewModel.uiState.value.timer
+
+        listOf(0, 1, 9, 10, 60, 120, 1440).forEach { minutes ->
+            viewModel.updateSettings(settings(minutes))
+            val state = viewModel.uiState.value
+            assertEquals(minutes, state.presentationSnapshot.configuredDuration?.totalMinutes)
+            assertEquals(minutes.minutes, state.presentationSnapshot.remaining)
+            assertEquals(
+                if (minutes == 0) TimerStatus.NOT_CONFIGURED else TimerStatus.PAUSED,
+                state.presentationSnapshot.status,
+            )
+            clock.advance(1.minutes)
+            viewModel.tick()
+            assertEquals(paused, viewModel.uiState.value.timer)
+            assertFalse(state.isTicking)
+        }
+        viewModel.showAbout()
+        assertTrue(viewModel.uiState.value.isPreviewing)
+        viewModel.onBackPressed()
+        viewModel.onBackPressed()
+        assertFalse(viewModel.uiState.value.isPreviewing)
+        assertEquals(1440.minutes, viewModel.uiState.value.timer.snapshot.remaining)
+        assertTrue(viewModel.uiState.value.isTicking)
+    }
+
+    @Test
+    fun `appearance edits preserve duration preview and underlying interruption`() {
+        val viewModel = testViewModel(TimerEngine(TestMonotonicClock()))
+        viewModel.saveSettings(settings(5))
+        viewModel.onAppStopped()
+        viewModel.openSettings()
+        val paused = viewModel.uiState.value.timer
+        viewModel.updateSettings(settings(10).copy(theme = TimerTheme.BATTERY, detail = 0))
+        assertEquals(10.minutes, viewModel.uiState.value.presentationSnapshot.remaining)
+        assertEquals(paused, viewModel.uiState.value.timer)
+        assertTrue(viewModel.uiState.value.interrupted)
+    }
+
+    @Test
     fun `settings repository is injected and save failure is exposed`() {
         val repository = StubSettingsRepository(StorageResult.Failure("Save denied"))
         val viewModel = AppViewModel(

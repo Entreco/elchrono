@@ -1,13 +1,16 @@
 package nl.entreco.elchrono
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfoV2
 import androidx.compose.material3.adaptive.layout.calculatePaneScaffoldDirective
@@ -19,6 +22,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.tooling.preview.Preview
@@ -36,6 +40,9 @@ import kotlinx.coroutines.delay
 import nl.entreco.elchrono.core.design.LocalDimens
 import nl.entreco.elchrono.core.design.ElChronoMotion
 import nl.entreco.elchrono.core.design.ElChronoTheme
+import nl.entreco.elchrono.core.design.appColorScheme
+import nl.entreco.elchrono.core.design.toFontFamily
+import nl.entreco.elchrono.core.design.withFontFamily
 import nl.entreco.elchrono.core.localization.resources.Res as Strings
 import nl.entreco.elchrono.core.localization.resources.app_title
 import nl.entreco.elchrono.core.localization.resources.back
@@ -104,59 +111,81 @@ private fun AppContent(
         }
     }
 
-    Scaffold(topBar = {
-        AppBar(
-            screen = state.screen,
-            onNavigate = {
-                if (state.screen == AppScreen.TIMER) viewModel.openSettings()
-                else viewModel.onBackPressed()
+    MaterialTheme(
+        colorScheme = appColorScheme(
+            background = Color(state.settings.backgroundColorArgb),
+            textColor = if (state.screen == AppScreen.SETTINGS) {
+                Color(state.settings.textColorArgb)
+            } else {
+                null
             },
-        )
-    }) { contentPadding ->
-        NavDisplay(
-            backStack = state.backStack,
-            onBack = viewModel::onBackPressed,
-            modifier = Modifier.fillMaxSize().padding(contentPadding)
-                .padding(horizontal = LocalDimens.current.spaceXXXL, vertical = LocalDimens.current.spaceXL),
-            sceneStrategies = sceneStrategies,
-            transitionSpec = { openTransition },
-            popTransitionSpec = { backTransition },
-            predictivePopTransitionSpec = { backTransition },
-            entryProvider = entryProvider {
-                entry(
-                    AppScreen.TIMER,
-                    metadata = ListDetailSceneStrategy.detailPane() + ListDetailSceneStrategy.paneAnimation(
-                        enterTransition = ElChronoMotion.enterFromRight,
-                        exitTransition = ElChronoMotion.exitToRight,
-                    ),
-                ) {
-                    TimerFeature(
-                        snapshot = state.timer.snapshot,
-                        theme = state.settings.theme,
-                        backgroundColorArgb = state.settings.backgroundColorArgb,
-                        foregroundColorArgb = state.settings.foregroundColorArgb,
-                        textColorArgb = state.settings.textColorArgb,
-                        font = state.settings.font,
-                        detail = state.settings.detail,
-                        interrupted = state.interrupted,
-                        modifier = Modifier.fillMaxSize(),
-                    )
-                }
-                entry(AppScreen.SETTINGS, metadata = settingsPane) {
-                    SettingsPanel(
-                        initialSettings = state.settings,
-                        keyboardInputEnabled = allowKeyboardInput,
-                        keyboardAvailable = keyboardAvailable,
-                        onChange = viewModel::updateSettings,
-                        persistenceFailure = state.persistenceFailure,
-                        onShowAbout = viewModel::showAbout,
-                    )
-                }
-                entry(AppScreen.ABOUT, metadata = settingsPane) {
-                    AboutFeature(Modifier.verticalScroll(rememberScrollState()).padding(LocalDimens.current.spaceXL))
-                }
+        ),
+        typography = if (state.screen == AppScreen.SETTINGS) {
+            MaterialTheme.typography.withFontFamily(state.settings.font.toFontFamily())
+        } else {
+            MaterialTheme.typography
+        },
+    ) {
+        Scaffold(
+            modifier = Modifier.fillMaxSize().background(Color(state.settings.backgroundColorArgb)),
+            containerColor = Color.Transparent,
+            contentColor = MaterialTheme.colorScheme.onSurface,
+            topBar = {
+                AppBar(
+                    screen = state.screen,
+                    onNavigate = {
+                        if (state.screen == AppScreen.TIMER) viewModel.openSettings()
+                        else viewModel.onBackPressed()
+                    },
+                )
             },
-        )
+        ) { contentPadding ->
+            NavDisplay(
+                backStack = state.backStack,
+                onBack = viewModel::onBackPressed,
+                modifier = Modifier.fillMaxSize().padding(contentPadding)
+                    .padding(horizontal = LocalDimens.current.spaceXXXL, vertical = LocalDimens.current.spaceXL),
+                sceneStrategies = sceneStrategies,
+                transitionSpec = { openTransition },
+                popTransitionSpec = { backTransition },
+                predictivePopTransitionSpec = { backTransition },
+                entryProvider = entryProvider {
+                    entry(
+                        AppScreen.TIMER,
+                        metadata = ListDetailSceneStrategy.detailPane() + ListDetailSceneStrategy.paneAnimation(
+                            enterTransition = ElChronoMotion.enterFromRight,
+                            exitTransition = ElChronoMotion.exitToRight,
+                        ),
+                    ) {
+                        TimerFeature(
+                            snapshot = state.presentationSnapshot,
+                            theme = state.settings.theme,
+                            backgroundColorArgb = state.settings.backgroundColorArgb,
+                            foregroundColorArgb = state.settings.foregroundColorArgb,
+                            textColorArgb = state.settings.textColorArgb,
+                            font = state.settings.font,
+                            detail = state.settings.detail,
+                            ringThicknessPercent = state.settings.ringThicknessPercent,
+                            interrupted = state.interrupted && !state.isPreviewing,
+                            modifier = Modifier.fillMaxSize(),
+                        )
+                    }
+                    entry(AppScreen.SETTINGS, metadata = settingsPane) {
+                        SettingsPanel(
+                            initialSettings = state.settings,
+                            keyboardInputEnabled = allowKeyboardInput,
+                            keyboardAvailable = keyboardAvailable,
+                            onChange = viewModel::updateSettings,
+                            persistenceFailure = state.persistenceFailure,
+                            onShowAbout = viewModel::showAbout,
+                        )
+                    }
+                    entry(AppScreen.ABOUT, metadata = settingsPane) {
+                        AboutFeature(Modifier.verticalScroll(rememberScrollState()).padding(LocalDimens.current.spaceXL))
+                    }
+                },
+            )
+        }
     }
 }
 
@@ -169,6 +198,12 @@ private fun AppBar(screen: AppScreen, onNavigate: () -> Unit) {
     }
     val description = stringResource(label)
     TopAppBar(
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = Color.Transparent,
+            scrolledContainerColor = Color.Transparent,
+            titleContentColor = MaterialTheme.colorScheme.onSurface,
+            navigationIconContentColor = MaterialTheme.colorScheme.onSurface,
+        ),
         title = { Text(stringResource(Strings.string.app_title)) },
         navigationIcon = {
             IconButton(onClick = onNavigate) {

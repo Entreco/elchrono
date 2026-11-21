@@ -3,13 +3,13 @@
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-005 |
-| Revision | 0.7 |
+| Revision | 1.1 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Product usability, accessibility, and safeguarding/privacy review: @Entreco, designated by the product owner on 2026-11-19; exact-revision acceptance pending |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#24](https://github.com/Entreco/elchrono/issues/24) |
-| Review PR | Prior baselines: [PR #30](https://github.com/Entreco/elchrono/pull/30), [PR #32](https://github.com/Entreco/elchrono/pull/32), and [PR #41](https://github.com/Entreco/elchrono/pull/41); issue #47 review: [PR #59](https://github.com/Entreco/elchrono/pull/59); final exact-head acceptance pending |
+| Review PR | Prior baselines: [PR #30](https://github.com/Entreco/elchrono/pull/30), [PR #32](https://github.com/Entreco/elchrono/pull/32), and [PR #41](https://github.com/Entreco/elchrono/pull/41); issue #47 review: [PR #59](https://github.com/Entreco/elchrono/pull/59); issue #67: [PR #68](https://github.com/Entreco/elchrono/pull/68); issue #66 review: [draft PR #70](https://github.com/Entreco/elchrono/pull/70); status-indicator follow-up: [draft PR #74](https://github.com/Entreco/elchrono/pull/74); final exact-head acceptance pending |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](../governance/document-control.md#lifecycle-and-approval).
@@ -18,11 +18,11 @@ table. See [document controls](../governance/document-control.md#lifecycle-and-a
 
 This plan describes a proposed, safeguarded usability review of El Chrono's
 screen and timer-visualization prototypes. It is grounded in the proposed
-[requirements register, M2-DOC-001 revision 0.6](../product/requirements.md),
-the [test protocol, M2-DOC-002 revision 0.6](../testing/test-protocol.md), the
-[requirements traceability matrix, M2-DOC-003 revision 2.7](../safety/requirements-traceability-matrix.md),
-the [screen-flow and theme-prototype record, M2-DOC-004 revision 1.7](../design/accessible-screen-flows-and-theme-prototypes.md),
-and [risk assessment, M1-DOC-004 revision 0.6](../safety/risk-assessment.md).
+[requirements register, M2-DOC-001 revision 1.3](../product/requirements.md),
+the [test protocol, M2-DOC-002 revision 1.6](../testing/test-protocol.md), the
+[requirements traceability matrix, M2-DOC-003 revision 3.8](../safety/requirements-traceability-matrix.md),
+the [screen-flow and theme-prototype record, M2-DOC-004 revision 2.4](../design/accessible-screen-flows-and-theme-prototypes.md),
+and [risk assessment, M1-DOC-004 revision 1.2](../safety/risk-assessment.md).
 The product owner approved the four demo visualizations for the v1 theme
 selector; this plan does not claim their usability or representative-user
 preference.
@@ -51,7 +51,9 @@ future sessions.
 1. Explore whether people understand that each timer visualization represents
    remaining duration, not time of day, and how they interpret its progress.
 2. Explore whether running, paused, and interrupted states are distinguishable
-   and whether an interrupted display avoids implying reliable progress.
+   and whether an interrupted display avoids implying reliable progress,
+   including the absence of running/paused icons at detail 0, the retained
+   interrupted/idle cues, and the accessible stale-progress description.
 3. Review the proposed Main, Settings, and About flows, including the
    unprotected Settings access selected for v1.
 4. Explore caregiver comprehension of duration entry, theme selection, and
@@ -60,14 +62,24 @@ future sessions.
 5. Gather open-ended reactions to the proposed visualizations and sensory
    presentation without assuming a preference, fixed theme count, or
    representative preference from any one participant.
-6. Identify accessibility barriers and unanswered questions for the actual
+6. Explore how the Clock's duration labels and the centered Fan shape are
+   understood at compact and expanded sizes, without treating label values or
+   geometry as evidence of usability.
+7. Identify accessibility barriers and unanswered questions for the actual
    prototype/input methods reviewed, without implying standards conformance.
 
 ## Prototype and review scope
 
-Review the exact M2-DOC-004 revision 1.6 candidate content in PR #41. Before any
-session, verify that the materials shown match that revision and record any
-changed artifact and revision in the findings record.
+Review the exact M2-DOC-004 revision 2.4 candidate content. Before any session,
+verify that the materials shown match that revision and record any changed
+artifact and revision in the findings record.
+
+The future review scope includes readability of translucent Settings against
+each global background, whether the bottom-right cue is mistaken for a button,
+understanding immediate duration previews versus a paused countdown, Battery
+recognition, absence of detail-induced motion, and thin/solid Ring
+interpretation. Ask neutral prompts; do not assume these treatments are
+preferred. No new participant session is authorized by this change.
 
 The candidate evidence includes:
 
@@ -154,13 +166,14 @@ meaning in their own terms where safely paraphrasable.
 | ID | Participant / material | Task and prompts | Evidence sought |
 |---|---|---|---|
 | U-01 | Patient participant; same-progress examples from the Clock, Battery, Hand fan, and Ring demo | “What do you think this shows?” “What makes you think that?” “What do you think will happen next?” Ask before explaining the intended meaning. | Interpretation of remaining duration, progress direction, ambiguity with a clock/time of day, and differences between shapes. Do not treat a preference as a usability result. |
-| U-02 | Patient participant; static running, paused, and interrupted Main-state examples | “What do you think is happening in each picture?” “How can you tell?” “In which one might the progress be out of date?” | Whether state meanings and the interruption warning are understood without relying on colour. These are static comprehension tasks, not transition tests. |
+| U-02 | Patient participant; running, paused, interrupted, and idle Main-state examples at detail 0 and 1-12 | “What do you think is happening in each picture?” “How can you tell?” “In which one might the progress be out of date?” Ask about any visible cue before explaining it. | Whether icons and warnings are understood without relying on colour, including stale-progress meaning and the absence of running/paused cues at detail 0. These are static comprehension tasks, not transition tests; do not infer accessibility from the design alone. |
 | U-03 | Caregiver participant; duration-entry proposal and demo duration selector | Ask the caregiver to describe how they would enter a short duration and a duration with hours. Use examples `2`, `20`, `205`, and `2400`; ask what each should display and whether any value is unclear. | Comprehension of the proposed Hours/Minutes sequential-digit rule and range, not proof that the demo implements or verifies REQ-001. |
 | U-04 | Caregiver and patient participants as appropriate; static Main/Settings flow | “Show me how you would change the timer duration or theme.” Explain that v1 Settings has no caregiver-protection mechanism and may be opened by a patient; ask what they expect or consider concerning about that choice. Ask what they expect after Settings pauses a running timer and confirm that no separate manual pause, resume, or reset controls are provided. | Comprehension of the open Settings behavior, the selected save-to-start behavior, and possible consequences of open access. This is formative feedback, not evidence that RISK-004 is acceptable or controlled. |
 | U-05 | Caregiver participant; four demo shapes in a counterbalanced order where feasible | “What do you notice?” “Is any option easier or harder to understand?” “Would you choose one for this wait? Why or why not?” “Is there anything you would avoid?” | Individual reactions and reasons, including no preference or mixed preference. Do not generalize to all users or prescribe a fixed theme set. |
 | U-06 | Patient participant; chosen prototype at a comfortable viewing size | Ask what text, progress, and state information is noticeable; offer the participant's preferred zoom, communication, or assistive method if available. “Is anything difficult to see, understand, or use?” | Observed barriers and accommodations. The artifacts are not instrumented for assistive technology; do not claim screen-reader, keyboard, touch, or conformance verification unless separately performed and recorded. |
 | U-07 | Caregiver and patient participants as appropriate; Settings and About static proposals | “What do you understand about the app's purpose and limitations from About?” “What do you expect when you save these settings?” | Comprehension of the ordinary-waiting boundary and save-to-start behavior. Music and in-app volume controls are not v1 capabilities and are not evaluated. |
 | U-08 | Caregiver and patient participants as appropriate; completion description in the design record | Ask what they expect when the timer reaches zero, then ask what they expect after Settings are opened while it is running and saved. | Comprehension of immediate reset/no completed state and Settings-open pause/save-to-start. Audio behavior is not evaluated in v1. These are description-only tasks unless a later prototype demonstrates transitions. |
+| U-09 | Patient participant; the issue #66 detail-0 Timer in each state and the accessible description where available | Ask what the timer is doing and whether the progress can be trusted after interruption. Ask what the person expects at 00:00. Do not teach the intended meaning first. | How the absence of running/paused cues affects interpretation, whether interrupted/stale and idle cues are understood, and whether idle 00:00 is mistaken for completion. This proposed future review has not been performed. |
 
 After each relevant task, ask “What would you change?” and “Is there anything
 you want us to know?” Allow “nothing,” “not sure,” or no response. Record
@@ -225,3 +238,7 @@ iteration, not validation of caregiver workflows or waiver of M2 gates.
 | 0.5 | Update the exact design source revision to M2-DOC-004 revision 1.5 and retain all participant, safeguarding, and review prerequisites. |
 | 0.6 | Align requirements, protocol, traceability, and design references to the review candidate; include the no-manual-controls decision in future usability scope. |
 | 0.7 | Align source references with current product/design/risk candidates and record the owner's reviewer designation and four-theme scope without claiming usability validation. |
+| 0.8 | Align review scope with issue #66's text-free detail-0 cues, stale-progress warning, idle 00:00, and source revisions; add neutral future review tasks without claiming they were performed. |
+| 0.9 | Align review sources with the demo-matching Clock labels and centered Fan geometry; add a neutral future review task while keeping all usability and accessibility reviews pending. |
+| 1.0 | Extend future review scope to global appearance, cue interpretation, preview, stable details, Battery, and thin/solid Ring; authorize no new session. |
+| 1.1 | Add the absent detail-0 running/paused distinction and revised indicator policy to future review; authorize no new session. |

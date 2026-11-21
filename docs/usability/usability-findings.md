@@ -3,18 +3,27 @@
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-006 |
-| Revision | 0.7 |
+| Revision | 1.1 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Product usability, accessibility, and safeguarding/privacy review: @Entreco, designated by the product owner on 2026-11-19; exact-revision acceptance pending |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#24](https://github.com/Entreco/elchrono/issues/24) |
-| Review PR | Prior baselines: [PR #30](https://github.com/Entreco/elchrono/pull/30), [PR #32](https://github.com/Entreco/elchrono/pull/32), and [PR #41](https://github.com/Entreco/elchrono/pull/41); issue #47 review: [PR #59](https://github.com/Entreco/elchrono/pull/59); final exact-head acceptance pending |
+| Review PR | Prior baselines: [PR #30](https://github.com/Entreco/elchrono/pull/30), [PR #32](https://github.com/Entreco/elchrono/pull/32), and [PR #41](https://github.com/Entreco/elchrono/pull/41); issue #47 review: [PR #59](https://github.com/Entreco/elchrono/pull/59); issue #67: [PR #68](https://github.com/Entreco/elchrono/pull/68); issue #66 review: [draft PR #70](https://github.com/Entreco/elchrono/pull/70); status-indicator follow-up: [draft PR #74](https://github.com/Entreco/elchrono/pull/74); final exact-head acceptance pending |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](../governance/document-control.md#lifecycle-and-approval).
 
 ## Purpose and evidence boundary
+
+The existing issue #66 gap G06 also covers the new global background,
+translucent Settings, bottom-right non-interactive cue, immediate duration
+preview, shallow Battery, stable detail overlays, and Ring thickness
+(M2-DOC-004 revision 2.4). The revised status policy, including the absence
+of visible running/paused indicators at detail 0, has not been evaluated.
+No additional participant/caregiver session or
+human accessibility/risk review has been supplied for these changes. Automated
+checks and rendered screenshots are not participant findings or acceptance.
 
 This record reports two usability-review sessions and distinguishes
 participant feedback, facilitator recollection, retained screenshots, and
@@ -125,6 +134,7 @@ estimates or evidence that all intended users share a preference.
 | M2-DOC-006-G03 | Only two people from the intended user population participated. The expected caregiver was unavailable; their reported delegation to Participant B is not direct caregiver feedback. The small qualitative sample does not establish representative preferences or caregiver workflow usability. | REQ-001 through REQ-006, REQ-008 through REQ-010; M2-DOC-004 | RISK-001 through RISK-005 | Owner @Entreco elects to skip a replacement caregiver session for this formative round under the bounded rationale above. Retain the caregiver evidence gap; reassess against the revised v1 workflow, especially unprotected Settings, save-to-start behavior, and omission of separate manual timer controls. No milestone gate or risk-control verification is waived. |
 | M2-DOC-006-G04 | The sessions explored the interactive controls and shapes, but no reported evidence establishes comprehension of sequential duration entry, Settings-open pause/save-to-start, absence of separate manual pause/resume/reset controls, open Settings access, interruption behavior, completion behavior, or About content. Music and volume are not v1 capabilities and were not tested. | REQ-001 through REQ-006, REQ-008 through REQ-010; M2-DOC-004 static flows and prototype limits | RISK-001 through RISK-005 | Unresolved; revised settings and lifecycle behaviors were not part of the sessions. Do not claim these areas were tested. |
 | M2-DOC-006-G05 | No screen-reader, keyboard, touch, or other assistive-technology evaluation is reported. Viewport size and browser zoom for the clipped display are unknown. | REQ-003 through REQ-006; M2-DOC-004 revision 1.3 | RISK-005 | Accessibility and layout evidence remains incomplete. Investigate clipping across relevant viewport/layout conditions and evaluate applicable input methods separately; no conformance result is claimed. |
+| M2-DOC-006-G06 | The 2026-11-16 sessions did not include issue #66's detail-0 state cues, revised interruption presentation, demo-matching Clock duration labels, or corrected Fan geometry. No participant, caregiver, screen-reader, or risk-review evidence establishes that the cues distinguish states, that Clock labels are understood, or that the Fan remains visible across layouts. | REQ-002, REQ-003, REQ-013; M2-DOC-004 revision 2.2 | RISK-002, RISK-005 | New review gap. The visual cues, Clock labels, centered Fan, and accessible descriptions are implementation/design candidates only. Obtain the required product, accessibility/usability, and risk review before claiming comprehension or effectiveness; no additional session is authorized by this record. |
 
 RISK-001 through RISK-005 remain proposed and subject to review; these sessions
 do not establish risk acceptance, control effectiveness, or risk reduction.
@@ -133,7 +143,7 @@ matrix.
 
 The owner-reported availability explanation and formative disposition above
 replace the earlier assumption that no caregiver-arrangement information was
-available. They do not resolve G01, G02, G04, or G05.
+available. They do not resolve G01, G02, G04, G05, or G06.
 
 ## Follow-up and completion criteria
 
@@ -147,7 +157,7 @@ Review the actual consent/safeguarding process and the retrospective evidence
 limitations in G01/G02 with appropriately competent reviewers. Any additional
 sessions must follow an approved protocol, including consent, safeguarding,
 privacy, and data-handling arrangements, before they take place. Address G03
-through G05 as appropriate to the reviewed usability scope and update
+through G06 as appropriate to the reviewed usability scope and update
 M2-DOC-003 with subsequent evidence. Do not close #24 until the issue's
 acceptance criteria and review gates are met; these two sessions do not by
 themselves establish completed validation.
@@ -163,3 +173,7 @@ themselves establish completed validation.
 | 0.5 | Record the owner-reported clipping resolution and the Chrome layout check at 500 × 1000 px and 1440 × 1200 px; close the prototype-specific finding for those layouts while retaining the undefined supported-layout and actual-product verification gaps. |
 | 0.6 | Record that the current no-manual-controls decision was not included in the retrospective sessions; preserve the resulting usability evidence gaps. |
 | 0.7 | Update current requirements and risk references and record the owner's reviewer designation; preserve the retrospective, caregiver, preference, and assistive-technology evidence gaps. |
+| 0.8 | Record that the retrospective sessions did not evaluate issue #66's text-free detail-0 and interruption cues; keep comprehension, assistive-technology, and risk review explicitly pending. |
+| 0.9 | Extend the issue #66 review gap to the corrected Clock labels and Fan geometry; preserve the retrospective-evidence boundary and pending human review. |
+| 1.0 | Extend G06 to the latest appearance/preview/geometry/thickness refinements; retain the absence of new participant or human-review evidence. |
+| 1.1 | Record that the revised status policy and absent detail-0 running/paused distinction have no participant or human-review evidence. |

@@ -3,11 +3,48 @@ package nl.entreco.elchrono.core.persistence
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
+import kotlin.test.assertFailsWith
 import nl.entreco.elchrono.core.counter.TimerDuration
 import nl.entreco.elchrono.core.design.TimerFont
 import nl.entreco.elchrono.core.design.TimerTheme
 
 class SettingsPersistenceTest {
+    @Test
+    fun `ring thickness round trips at every supported value`() {
+        val storage = StubSettingsStorage()
+        val repository = DefaultSettingsRepository(storage, settings(6))
+        (1..100).forEach { thickness ->
+            val configured = settings(6).copy(ringThicknessPercent = thickness)
+            assertTrue(repository.save(configured) is StorageResult.Success)
+            assertEquals(configured, repository.load().settings)
+        }
+        assertFailsWith<IllegalArgumentException> { settings(6).copy(ringThicknessPercent = 0) }
+        assertFailsWith<IllegalArgumentException> { settings(6).copy(ringThicknessPercent = 101) }
+    }
+
+    @Test
+    fun `legacy settings preserve selections and receive default thickness`() {
+        val storage = StubSettingsStorage(serialized = "60|BATTERY|4280163870|4286545799|4279703318|MONOSPACE|12")
+        val restored = DefaultSettingsRepository(storage, settings(6)).load()
+        assertEquals(
+            TimerSettings(checkNotNull(TimerDuration.fromMinutes(60)), TimerTheme.BATTERY,
+                4280163870, 4286545799, 4279703318, TimerFont.MONOSPACE, 12, 24),
+            restored.settings,
+        )
+        assertEquals(null, restored.storageFailure)
+    }
+
+    @Test
+    fun `invalid stored thickness is reported and uses safe defaults`() {
+        listOf("0", "101", "-1", "NaN", "", "999999999999999").forEach { thickness ->
+            val defaults = settings(6)
+            val storage = StubSettingsStorage(serialized = "60|RING|0|0|0|DEFAULT|6|$thickness")
+            val restored = DefaultSettingsRepository(storage, defaults).load()
+            assertEquals(defaults, restored.settings)
+            assertTrue(restored.storageFailure != null)
+        }
+    }
+
     @Test
     fun `save and restore covers every detail`() {
         val storage = StubSettingsStorage()

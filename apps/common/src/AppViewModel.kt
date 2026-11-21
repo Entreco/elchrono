@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.StateFlow
 import nl.entreco.elchrono.core.counter.TimerDuration
 import nl.entreco.elchrono.core.counter.TimerEngine
 import nl.entreco.elchrono.core.counter.TimerStatus
+import nl.entreco.elchrono.core.counter.TimerSnapshot
 import nl.entreco.elchrono.core.counter.TimerUpdate
 import nl.entreco.elchrono.core.design.TimerTheme
 import nl.entreco.elchrono.core.persistence.SettingsRepository
@@ -30,6 +31,17 @@ data class AppUiState(
     
     val screen: AppScreen get() = backStack.last()
     val isTicking: Boolean get() = timer.snapshot.status == TimerStatus.RUNNING && !interrupted
+    val isPreviewing: Boolean get() = AppScreen.SETTINGS in backStack
+    val presentationSnapshot: TimerSnapshot
+        get() = if (isPreviewing) {
+            TimerSnapshot(
+                status = if (settings.duration.totalMinutes == 0) TimerStatus.NOT_CONFIGURED else TimerStatus.PAUSED,
+                configuredDuration = settings.duration,
+                remaining = settings.duration.asDuration,
+            )
+        } else {
+            timer.snapshot
+        }
 }
 
 class AppViewModel(

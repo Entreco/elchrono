@@ -1,6 +1,8 @@
 package nl.entreco.elchrono.features.settings
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,9 +12,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -24,11 +31,22 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.compositeOver
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
+import com.skydoves.cloudy.LiquidGlassDefaults
+import com.skydoves.cloudy.LiquidGlassGlow
+import com.skydoves.cloudy.liquidGlass
 import nl.entreco.elchrono.core.counter.DurationDigitEntry
 import nl.entreco.elchrono.core.design.NumericKeypad
 import nl.entreco.elchrono.core.design.DesignChoice
@@ -38,6 +56,15 @@ import nl.entreco.elchrono.core.design.DesignColorSwatch
 import nl.entreco.elchrono.core.design.LocalDimens
 import nl.entreco.elchrono.core.design.TimerTheme
 import nl.entreco.elchrono.core.design.TimerFont
+import nl.entreco.elchrono.core.design.appColorScheme
+import nl.entreco.elchrono.core.design.LabeledSlider
+import nl.entreco.elchrono.core.design.toFontFamily
+import nl.entreco.elchrono.core.design.withFontFamily
+import kotlin.math.roundToInt
+import nl.entreco.elchrono.core.localization.resources.ring_thickness
+import nl.entreco.elchrono.core.localization.resources.ring_thickness_value
+import nl.entreco.elchrono.core.localization.resources.ring_thin
+import nl.entreco.elchrono.core.localization.resources.ring_solid
 import nl.entreco.elchrono.core.persistence.TimerSettings
 import nl.entreco.elchrono.core.localization.resources.Res as Strings
 import nl.entreco.elchrono.core.localization.resources.about
@@ -75,31 +102,89 @@ fun SettingsPanel(
     persistenceFailure: String? = null,
     modifier: Modifier = Modifier,
 ) {
-    Surface(
-        modifier = modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.surfaceVariant,
-        tonalElevation = 2.dp,
-    ) {
-        
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .padding(LocalDimens.current.spaceXL),
+    val backgroundColor = Color(initialSettings.backgroundColorArgb)
+    val surfaceTint = appColorScheme(backgroundColor).onSurface.copy(alpha = 0.08f)
+    var lensSize by remember { mutableStateOf(Size.Zero) }
+    val glassRadius = LocalDimens.current.spaceXL
+    val glassRadiusPx = with(LocalDensity.current) { glassRadius.toPx() }
+
+    SettingsAppearanceTheme(initialSettings) {
+        Surface(
+            modifier = modifier.fillMaxSize(),
+            color = Color.Transparent,
+            contentColor = MaterialTheme.colorScheme.onSurface,
         ) {
-            SettingsScreen(
-                initialSettings = initialSettings,
-                onChange = onChange,
-                onShowAbout = onShowAbout,
-                keyboardInputEnabled = keyboardInputEnabled,
-                keyboardAvailable = keyboardAvailable,
-            )
-            persistenceFailure?.let {
-                Spacer(Modifier.height(LocalDimens.current.spaceM))
-                Text(it, color = MaterialTheme.colorScheme.error)
+            Box {
+                Box(
+                    Modifier
+                        .matchParentSize()
+                        .onSizeChanged { size -> lensSize = Size(size.width.toFloat(), size.height.toFloat()) }
+                        .graphicsLayer { alpha = 0.65f }
+                        .liquidGlass(
+                            lensCenter = Offset(lensSize.width / 2f, lensSize.height / 2f),
+                            lensSize = if (lensSize.width <= 0f || lensSize.height <= 0f) {
+                                LiquidGlassDefaults.LENS_SIZE
+                            } else {
+                                lensSize
+                            },
+                            cornerRadius = glassRadiusPx,
+                            refraction = 0.16f,
+                            curve = 0.18f,
+                            dispersion = 0.01f,
+                            saturation = 1.05f,
+                            contrast = 1.02f,
+                            tint = backgroundColor.copy(alpha = 0.12f),
+                            edge = 0.18f,
+                            light = LiquidGlassDefaults.Light,
+                            glow = LiquidGlassGlow(intensity = 0.2f),
+                        )
+                        .background(surfaceTint.compositeOver(backgroundColor), RoundedCornerShape(glassRadius)),
+                )
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState())
+                        .padding(LocalDimens.current.spaceXL),
+                ) {
+                    SettingsScreen(
+                        initialSettings = initialSettings,
+                        onChange = onChange,
+                        onShowAbout = onShowAbout,
+                        keyboardInputEnabled = keyboardInputEnabled,
+                        keyboardAvailable = keyboardAvailable,
+                    )
+                    persistenceFailure?.let {
+                        Spacer(Modifier.height(LocalDimens.current.spaceM))
+                        Surface(
+                            color = MaterialTheme.colorScheme.errorContainer,
+                            contentColor = MaterialTheme.colorScheme.onErrorContainer,
+                            shape = MaterialTheme.shapes.small,
+                        ) {
+                            Text(it, Modifier.padding(LocalDimens.current.spaceM))
+                        }
+                    }
+                }
             }
         }
     }
+}
+@Composable
+internal fun SettingsAppearanceTheme(settings: TimerSettings, content: @Composable () -> Unit) {
+    val backgroundColor = Color(settings.backgroundColorArgb)
+    val accent = settingsAccentColors(Color(settings.foregroundColorArgb))
+    MaterialTheme(
+        colorScheme = appColorScheme(
+            background = backgroundColor,
+            textColor = Color(settings.textColorArgb),
+        ).copy(
+            primary = accent.foreground,
+            onPrimary = accent.onForeground,
+            secondaryContainer = accent.foreground.copy(alpha = 0.2f).compositeOver(backgroundColor),
+            onSecondaryContainer = Color(settings.textColorArgb),
+        ),
+        typography = MaterialTheme.typography.withFontFamily(settings.font.toFontFamily()),
+        content = content,
+    )
 }
 
 @Composable
@@ -115,7 +200,7 @@ fun SettingsScreen(
         keyboardInputEnabled = keyboardInputEnabled,
         keyboardAvailable = keyboardAvailable,
     )
-    var entry by remember(initialSettings) {
+    var entry by remember(initialSettings.duration) {
         mutableStateOf(DurationDigitEntry.fromDuration(initialSettings.duration))
     }
     var selectedTheme by remember(initialSettings) {
@@ -126,18 +211,31 @@ fun SettingsScreen(
     var textColor by remember(initialSettings) { mutableStateOf(initialSettings.textColorArgb) }
     var font by remember(initialSettings) { mutableStateOf(initialSettings.font) }
     var detail by remember(initialSettings) { mutableStateOf(initialSettings.detail) }
+    var ringThickness by remember(initialSettings) { mutableStateOf(initialSettings.ringThicknessPercent) }
+    val accent = settingsAccentColors(Color(foregroundColor))
+    val fieldColors = OutlinedTextFieldDefaults.colors(
+        focusedBorderColor = accent.foreground,
+        focusedLabelColor = accent.foreground,
+        cursorColor = accent.foreground,
+        selectionColors = TextSelectionColors(
+            handleColor = accent.foreground,
+            backgroundColor = accent.foreground.copy(alpha = 0.4f),
+        ),
+    )
 
-    fun publish(updatedEntry: DurationDigitEntry = entry) {
-        updatedEntry.duration?.let {
+    fun publish(updatedEntry: DurationDigitEntry = entry, allowInvalidDuration: Boolean = false) {
+        val duration = updatedEntry.duration ?: if (allowInvalidDuration) initialSettings.duration else null
+        duration?.let {
             onChange(
-                TimerSettings(
-                    it,
-                    selectedTheme,
-                    backgroundColor,
-                    foregroundColor,
-                    textColor,
-                    font,
-                    detail,
+                initialSettings.copy(
+                    duration = it,
+                    theme = selectedTheme,
+                    backgroundColorArgb = backgroundColor,
+                    foregroundColorArgb = foregroundColor,
+                    textColorArgb = textColor,
+                    font = font,
+                    detail = detail,
+                    ringThicknessPercent = ringThickness,
                 ),
             )
         }
@@ -158,12 +256,13 @@ fun SettingsScreen(
                     entry = entry.applyTextEdit(
                         previousText = entry.hours.toString().padStart(2, '0'),
                         editedText = edited,
-                    ).also(::publish)
+                    ).also { publish(it) }
                 },
                 modifier = Modifier.weight(1f),
                 readOnly = inputMode.fieldsReadOnly,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 label = { Text(stringResource(Strings.string.hours)) },
+                colors = fieldColors,
                 singleLine = true,
             )
             OutlinedTextField(
@@ -172,12 +271,13 @@ fun SettingsScreen(
                     entry = entry.applyTextEdit(
                         previousText = entry.minutes.toString().padStart(2, '0'),
                         editedText = edited,
-                    ).also(::publish)
+                    ).also { publish(it) }
                 },
                 modifier = Modifier.weight(1f),
                 readOnly = inputMode.fieldsReadOnly,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 label = { Text(stringResource(Strings.string.minutes)) },
+                colors = fieldColors,
                 singleLine = true,
             )
         }
@@ -193,15 +293,25 @@ fun SettingsScreen(
                 deleteLabel = stringResource(Strings.string.delete),
                 onDigit = { val updated = entry.append(it); entry = updated; publish(updated) },
                 onDelete = { val updated = entry.deleteLast(); entry = updated; publish(updated) },
-                onClear = { val updated = entry.clear(); entry = updated },
+                onClear = { val updated = entry.clear(); entry = updated; publish(updated) },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = accent.foreground,
+                    contentColor = accent.onForeground,
+                ),
             )
         }
         if (entry.duration == null) {
             Spacer(Modifier.height(LocalDimens.current.spaceM))
-            Text(
-                text = stringResource(Strings.string.invalid_duration_including_zero),
-                color = MaterialTheme.colorScheme.error,
-            )
+            Surface(
+                color = MaterialTheme.colorScheme.errorContainer,
+                contentColor = MaterialTheme.colorScheme.onErrorContainer,
+                shape = MaterialTheme.shapes.small,
+            ) {
+                Text(
+                    text = stringResource(Strings.string.invalid_duration_including_zero),
+                    modifier = Modifier.padding(LocalDimens.current.spaceM),
+                )
+            }
         }
         Spacer(Modifier.height(LocalDimens.current.spaceXXL))
         Text(stringResource(Strings.string.theme), style = MaterialTheme.typography.titleLarge)
@@ -213,9 +323,22 @@ fun SettingsScreen(
             selected = selectedTheme,
             onSelected = { theme ->
                 selectedTheme = theme
-                publish()
+                publish(allowInvalidDuration = true)
             }
         )
+        if (selectedTheme == TimerTheme.RING) {
+            Spacer(Modifier.height(LocalDimens.current.spaceXL))
+            LabeledSlider(
+                label = stringResource(Strings.string.ring_thickness),
+                value = ringThickness.toFloat(),
+                valueLabel = stringResource(Strings.string.ring_thickness_value, ringThickness),
+                onValueChange = { ringThickness = it.roundToInt(); publish(allowInvalidDuration = true) },
+                minimumLabel = stringResource(Strings.string.ring_thin),
+                maximumLabel = stringResource(Strings.string.ring_solid),
+                valueRange = 1f..100f,
+                steps = 98,
+            )
+        }
         Spacer(Modifier.height(LocalDimens.current.spaceXL))
         Text(stringResource(Strings.string.colors), style = MaterialTheme.typography.titleLarge)
         Spacer(Modifier.height(LocalDimens.current.spaceM))
@@ -231,21 +354,21 @@ fun SettingsScreen(
         ColorSwatchPicker(swatches, swatches.firstOrNull { it.color.toArgb().toLong() and 0xffffffffL == backgroundColor }?.id ?: "", onSelected = { id ->
             val selected = swatches.first { it.id == id }
             backgroundColor = selected.color.toArgb().toLong() and 0xffffffffL
-            publish()
+            publish(allowInvalidDuration = true)
         })
         Spacer(Modifier.height(LocalDimens.current.spaceM))
         Text(stringResource(Strings.string.foreground), style = MaterialTheme.typography.titleSmall)
         ColorSwatchPicker(swatches, swatches.firstOrNull { it.color.toArgb().toLong() and 0xffffffffL == foregroundColor }?.id ?: "", onSelected = { id ->
             val selected = swatches.first { it.id == id }
             foregroundColor = selected.color.toArgb().toLong() and 0xffffffffL
-            publish()
+            publish(allowInvalidDuration = true)
         })
         Spacer(Modifier.height(LocalDimens.current.spaceM))
         Text(stringResource(Strings.string.text), style = MaterialTheme.typography.titleSmall)
         ColorSwatchPicker(swatches, swatches.firstOrNull { it.color.toArgb().toLong() and 0xffffffffL == textColor }?.id ?: "", onSelected = { id ->
             val selected = swatches.first { it.id == id }
             textColor = selected.color.toArgb().toLong() and 0xffffffffL
-            publish()
+            publish(allowInvalidDuration = true)
         })
         Spacer(Modifier.height(LocalDimens.current.spaceXL))
         Text(stringResource(Strings.string.font), style = MaterialTheme.typography.titleLarge)
@@ -256,25 +379,46 @@ fun SettingsScreen(
             selected = font,
             onSelected = {
                 font = it
-                publish()
+                publish(allowInvalidDuration = true)
             },
         )
         Spacer(Modifier.height(LocalDimens.current.spaceXL))
-        Text(stringResource(Strings.string.detail), style = MaterialTheme.typography.titleLarge)
+        val detailLabel = stringResource(Strings.string.detail)
+        Text(detailLabel, style = MaterialTheme.typography.titleLarge)
+        val detailColors = SliderDefaults.colors(
+            thumbColor = accent.foreground,
+            activeTrackColor = accent.foreground,
+            activeTickColor = accent.onForeground,
+        )
         Slider(
             value = detail.toFloat(),
             onValueChange = {
-                detail = it.toInt()
-                publish()
+                detail = it.roundToInt()
+                publish(allowInvalidDuration = true)
             },
+            modifier = Modifier.semantics { contentDescription = detailLabel },
             valueRange = 0f..12f,
             steps = 11,
+            colors = detailColors,
+            track = { state ->
+                if (detail == 0) {
+                    SliderDefaults.Track(
+                        sliderState = state,
+                        colors = detailColors,
+                        drawStopIndicator = null,
+                        drawTick = { _, _ -> },
+                    )
+                } else {
+                    SliderDefaults.Track(sliderState = state, colors = detailColors)
+                }
+            },
         )
         Text("$detail")
         Spacer(Modifier.height(LocalDimens.current.spaceL))
         TextButton(onClick = onShowAbout) {
             Text(stringResource(Strings.string.about))
         }
+
     }
 }
 

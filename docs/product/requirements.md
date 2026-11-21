@@ -1,15 +1,19 @@
 # Product requirements
 
+Settings appearance review: [PR #76](https://github.com/Entreco/elchrono/pull/76).
+
+Desktop keyboard changes: [PR #73](https://github.com/Entreco/elchrono/pull/73).
+
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-001 |
-| Revision | 0.9 |
+| Revision | 1.6 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Product requirements and accessibility: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#22](https://github.com/Entreco/elchrono/issues/22) |
-| Review PR | Prior baseline: [PR #32](https://github.com/Entreco/elchrono/pull/32); prior review: [PR #41](https://github.com/Entreco/elchrono/pull/41); issue #47 review: [PR #59](https://github.com/Entreco/elchrono/pull/59); issue #67 candidate: [draft PR #68](https://github.com/Entreco/elchrono/pull/68); final exact-head acceptance pending |
+| Review PR | Prior baseline: [PR #32](https://github.com/Entreco/elchrono/pull/32); prior review: [PR #41](https://github.com/Entreco/elchrono/pull/41); issue #47 review: [PR #59](https://github.com/Entreco/elchrono/pull/59); issue #67: [PR #68](https://github.com/Entreco/elchrono/pull/68); issue #66 review: [draft PR #70](https://github.com/Entreco/elchrono/pull/70); status-indicator follow-up: [draft PR #74](https://github.com/Entreco/elchrono/pull/74); final exact-head acceptance pending |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](../governance/document-control.md#lifecycle-and-approval).
@@ -21,11 +25,11 @@ non-medical visual support for ordinary waiting. It records the product
 requirements that guide design and implementation. Acceptance criteria and
 verification procedures belong in the test protocol; requirement, risk,
 design, usability, and test relationships belong in the traceability matrix.
-The issue #47 candidate implements a browser MVP against this proposed
-requirements baseline. Issue #67 implements an About presentation candidate;
-it does not establish that the required About content is complete. Product-level
-verification, usability, accessibility, offline behavior, and platform support
-are not established by builds or domain tests.
+Issues #47, #65, and #67 provide the browser shell, Settings, and About
+implementation candidates against this proposed requirements baseline. Issue
+#66 completes the Timer presentation. Product-level verification, usability,
+accessibility, offline behavior, and platform support are not established by
+builds or domain tests.
 
 The [intended-use record, M1-DOC-002 revision 1.0](intended-use.md) is a
 candidate whose review/approval gaps remain open. This register does not
@@ -47,20 +51,32 @@ exact-revision review and acceptance are recorded in the current review PR.
 
 | ID | Requirement |
 |---|---|
-| REQ-001 | A caregiver shall be able to configure every whole-minute waiting duration from 00:00 through 24:00 using two numeric fields, Hours and Minutes, populated by sequential digits. The first digit enters the minute ones place, the second the minute tens place, and each subsequent digit shifts the existing digits left, moving them into the hour field. Mobile targets shall accept system-keyboard input when a keyboard is available and provide an on-screen numeric keypad otherwise. Desktop, browser, and TV targets shall use the on-screen numeric keypad and shall not expose keyboard-based duration entry. |
-| REQ-002 | Valid settings changes shall be saved automatically with no explicit Save action. Opening Settings while a countdown is running shall pause it. Closing Settings shall start a fresh countdown at the configured duration; 00:00 shall remain non-counting and non-animating. In v1, no separate manual pause, resume, or reset controls shall be provided. |
-| REQ-003 | A patient shall be able to see the timer's remaining-time presentation while it is running, paused, or interrupted. Each available visualization shall specify whether it shows numeric remaining time, visual progress, or both; no visualization shall show a clock face or time of day. |
-| REQ-004 | The product shall provide Main, Settings, and About screens. Main shall contain the selected timer visualization; Settings shall provide controls for duration and theme and appear as a supporting side pane alongside Main when the available window supports multiple panes, with a reachable single-pane destination on compact windows; About shall contain the company logo, actual version/build details, support information, privacy policy, relevant licences, intended use, and limitations. Unavailable owner-controlled content shall be recorded as unresolved, not fabricated or treated as satisfying this requirement. Music integration and in-app volume controls are excluded from v1. |
+| REQ-001 | A caregiver shall be able to configure every whole-minute waiting duration from 00:00 through 24:00 using two numeric fields, Hours and Minutes, populated by sequential digits. The first digit enters the minute ones place, the second the minute tens place, and each subsequent digit shifts the existing digits left, moving them into the hour field. Mobile targets shall accept system-keyboard input when a keyboard is available and provide an on-screen numeric keypad otherwise. Desktop shall accept physical-keyboard duration entry without the app's on-screen keypad. Browser and TV targets shall use the on-screen numeric keypad and shall not expose keyboard-based duration entry. |
+| REQ-002 | Valid settings changes shall be saved automatically with no explicit Save action. Opening Settings while a countdown is running shall pause it. Closing Settings shall start a fresh countdown at the configured duration; 00:00 shall remain an explicitly idle, non-counting, non-animating state and shall not be represented as a completed countdown. In v1, no separate manual pause, resume, or reset controls shall be provided. |
+| REQ-003 | A patient shall be able to distinguish the timer's running, paused, and interrupted states and understand its remaining-time presentation. State and progress meaning shall not rely on color alone; interruption shall communicate that progress may be stale. Each available visualization shall specify whether it shows numeric remaining time, visual progress, or both; no visualization shall show a clock face or time of day. |
+| REQ-004 | The product shall provide Main, Settings, and About screens. Main shall contain the selected timer visualization; Settings shall provide controls for duration and theme and appear over the Timer on compact and expanded windows; About shall contain the company logo, actual version/build details, support information, privacy policy, relevant licences, intended use, and limitations. Unavailable owner-controlled content shall be recorded as unresolved, not fabricated or treated as satisfying this requirement. Music integration and in-app volume controls are excluded from v1. |
 | REQ-005 | In v1, Settings shall not require a caregiver-protection mechanism. |
 | REQ-006 | A caregiver shall be able to select one of the four v1 themes available in Settings: Clock, Battery, Fan, and Ring. |
 | REQ-008 | Timer operation and remaining-time presentation shall not depend on internet connectivity. Music integration and associated playback-failure handling are deferred to v2 and are not v1 capabilities. |
 | REQ-009 | Product screens and user-facing claims shall describe ordinary waiting-time support only; they shall not present El Chrono as a clock, deadline guarantee, medical function, or safety-critical timer. |
 | REQ-010 | When the countdown reaches zero, the timer shall reset immediately to the configured duration and shall not display a completed timer state. If optional music is introduced in v2, playback shall stop at zero. |
 | REQ-011 | Android TV and Apple TV are primary v1 product targets. Their user-facing flows shall be operable through the target platform's remote/controller focus model, with a visible focus indicator, predictable navigation, readable content at ordinary viewing distance, and no interaction that relies on colour alone. Platform support is not claimed until the target is configured and the approved platform verification is passed. |
-| REQ-012 | Settings shall allow caregivers to configure background, foreground, and text colors, font, and an integer detail level from 0 through 12 without contrast restrictions or warnings. Shape changes and temporary control hiding shall preserve all selected values. |
-| REQ-013 | At detail 0, extra segment details and all on-screen timer text shall be hidden while the underlying timer visualization remains visible. At detail 1 through 12, the Timer shall show the selected number of segments and remaining-time text. |
-| REQ-014 | Settings changes shall preview immediately in the Timer while Settings is open and shall persist after app close and reopen. Stored invalid or stale data shall fall back safely to defaults. Storage failures shall be surfaced rather than presented as successful saves. Persistence shall not imply recovery of a previously running countdown. |
-| REQ-015 | Settings shall remain reachable on compact layouts and use a supporting pane beside the Timer where space permits. Controls shall have labels and applicable browser, keyboard, touch, and assistive-technology semantics without clipping. |
+| REQ-012 | Settings shall allow caregivers to configure background, foreground, and text colors, font, and an integer detail level from 0 through 12 without contrast restrictions or warnings. The selected background shall cover the full app-owned area across Main, Settings, About, app bars, and navigation gutters. Settings shall reflect applicable colors and font immediately; its Detail slider shall hide track dots at zero while retaining its discrete values and accessible label and value. Ring shall additionally offer thickness from thin to solid fill, with its control shown only for Ring. Shape changes and temporary control hiding shall preserve all selected values. |
+| REQ-013 | At detail 0, extra segment boundaries, Clock duration labels, and all on-screen timer text, including state labels and interruption warnings, shall be hidden; no running or paused indicator shall appear, while the interrupted and idle cues remain visible. At detail 1 through 12, show non-interactive play/pause state indicators at the bottom right for running/paused respectively. Never show textual running/paused status. Accessible descriptions shall identify running, paused, and interrupted states and explain that interrupted progress may be stale. At detail 1 through 12, Clock shall show that number of evenly spaced duration labels around its continuous disk, with no segment boundaries; other shapes shall show that number of equal visual segments, including one continuous segment at level 1. Clock labels shall show whole seconds for configured durations below ten minutes and compact minutes otherwise, with a unit label. Remaining-time text is shown at detail 1 through 12. No treatment shall add clock-face markings or time-of-day information. |
+| REQ-014 | Valid Settings changes, including duration and Ring thickness, shall immediately update the Timer presentation behind Settings and shall persist after app close and reopen. The background presentation uses the full selected duration without advancing or mutating the paused countdown; it need not be a sharp or unobstructed preview while Settings is open. Invalid drafts shall retain the last valid presentation and display the input error. Stored invalid or stale data shall fall back safely to defaults with a surfaced error; legacy settings shall retain their selections when thickness is introduced. Storage failures shall be surfaced rather than presented as successful saves. Persistence shall not imply recovery of a previously running countdown. |
+| REQ-015 | The Timer shall remain a stationary full-window layer behind the app bar, Settings and About. Settings and About shall slide in from and out to the left, with About over Settings. Panels shall fill compact windows and be at most 440 dp wide in expanded windows. Apply native Timer blur where supported and a liquid-glass treatment to the panels without blurring controls; where native blur is unavailable the Timer remains unblurred. Controls shall have labels and applicable browser, keyboard, touch, and assistive-technology semantics without clipping. |
+
+Changing detail shall add or remove decorations without changing any base
+shape's center or bounds at otherwise identical inputs (REQ-003/REQ-013).
+Battery shall retain its shallow horizontal silhouette, visible outline,
+inset fill, and external terminal; Ring shall retain its outer radius across
+thickness changes (REQ-003/REQ-006/REQ-012). Visible state indicators
+shall occupy the Timer pane's bottom-right corner and remain non-interactive;
+this does not introduce manual timer controls or change D-06.
+At detail 0, running and paused have no distinct visible state indicator.
+This candidate does not establish that REQ-003 is met for sighted users at
+that level. Product, accessibility/usability, and risk review must resolve
+this gap; accessible descriptions alone are not equivalent for all users.
 
 ## Product decisions and scope
 
@@ -83,7 +99,9 @@ change to intended use.
 | D-06 | Manual pause, resume, and reset controls | No separate manual pause, resume, or reset controls are included in v1. Opening Settings while running is the selected pause behavior; saving valid Settings is the only selected start/restart action and starts from the full saved duration. |
 | D-07 | Primary platforms and v1 exclusions | Android TV and Apple TV are the primary product targets. Wear OS and watchOS are outside v1 scope. The browser remains the M5 implementation/verification target; its completion does not establish TV support. TV support requires separate target configuration, packaging, remote/focus, viewing-distance, lifecycle, accessibility, and usability verification. |
 | D-08 | V1 visualization set | The v1 theme choices are Clock, Battery, Fan, and Ring, as shown in the approved demo. Clock is the initial selection, matching the demo; this default is not evidence of user preference. The visual mapping and use of each theme still require application verification and appropriate usability/accessibility review. |
-| D-09 | Adaptive Settings and duration input methods | Show Settings in a supporting side pane when the available window supports multiple panes and as a reachable single-pane destination on compact windows. Mobile may use an available system keyboard, with the on-screen keypad as fallback; desktop, browser, and TV use the on-screen keypad and do not expose keyboard-based duration entry. This does not establish support for unconfigured TV targets. |
+| D-09 | Settings layout and duration input methods | Show Settings over the Timer at compact and expanded widths. Mobile may use an available system keyboard, with the on-screen keypad as fallback. Desktop uses keyboard entry without the app keypad; browser and TV use the on-screen keypad without keyboard-based duration entry. This does not establish support for unconfigured TV targets. |
+| D-10 | Text-free Timer at detail 0 | Issue #66 carries the owner-requested behavior that detail 0 hides every on-screen timer text, including interruption warnings, while retaining distinct non-text state cues and accessible state/stale-progress descriptions. The revised interrupted-warning design and its risk/usability implications require human review; no equivalent accessibility or effectiveness is presumed. |
+| D-11 | Issue #66 appearance refinements | The owner requested global edge-to-edge background, bottom-right icon, demo Battery geometry, stable detail overlays, and Ring thickness. The owner selected a stationary full-window Timer with native blur and left-sliding liquid-glass Settings and About panels, and accepted that a sharp preview is not required while Settings is open. Product, accessibility, usability, risk and exact-head review of this change remain pending. |
 
 Requirement REQ-007 was retired before approval at the product owner's
 direction; it must not be reused. No WCAG conformance baseline is selected by
@@ -125,3 +143,10 @@ does not establish that they were resolved.
 | 0.7 | Clarify the existing in-process interruption behavior for common lifecycle stop/start events: pause and mark interrupted on stop, do not automatically resume, and retain no process-termination or restart recovery; keep platform verification and risk review pending. |
 | 0.8 | Add the owner-directed supporting-pane Settings layout and target-specific duration-input methods; retain sequential digit semantics and keep layout, keyboard, accessibility, and TV verification pending. |
 | 0.9 | Add zero-duration, automatic-save, complete personalization, detail 0-12, persistence, and compact/adaptive Settings requirements for issue #65. |
+| 1.0 | Clarify idle zero-duration and Timer-state requirements; record issue #66's text-free detail-0 state cues and stale-progress semantics, with review and verification pending. |
+| 1.1 | Align Clock detail levels with the demo's outer duration labels rather than segments; require a continuous Clock fill and specify duration units while retaining equal segment divisions for Battery, Fan, and Ring. |
+| 1.2 | Extend issue #66 appearance scope to global background, translucent Settings, immediate duration preview, stable detail geometry, shallow Battery, and Ring thickness; preserve manual-control and review boundaries. |
+| 1.3 | Replace desktop keypad-only duration entry with physical-keyboard entry; retain mobile, browser, and TV input policies and pending verification. |
+| 1.4 | Specify live Settings appearance, detail-zero slider dots, and an always-on subtle glass treatment with platform fallback; retain accessibility and platform review gaps. |
+| 1.5 | Replace the Settings side pane and sharp-preview requirement with a native-blurred Timer backdrop and translucent overlay; retain unblurred fallback and review gaps. |
+| 1.6 | Specify stationary full-window Timer and left-sliding glass Settings and About layers; retain platform and review gaps. |

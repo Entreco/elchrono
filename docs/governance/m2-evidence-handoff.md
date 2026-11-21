@@ -1,9 +1,11 @@
 # M2 evidence baseline review and M3 handoff
 
+Desktop keyboard changes: [PR #73](https://github.com/Entreco/elchrono/pull/73).
+
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-007 |
-| Revision | 1.3 |
+| Revision | 1.4 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | M1/M2/M3 product, requirements, design/usability, accessibility, test/traceability, software-safety, and platform-architecture scopes: @Entreco, designated by the product owner on 2026-11-19; review of this final PR head remains pending |
@@ -119,7 +121,7 @@ M2-DOC-004 revision 1.8.
 | D-06 — Manual pause, resume, and reset controls | No separate manual pause, resume, or reset controls are included in v1. Settings-open is the selected pause behavior; saving valid Settings is the only selected start/restart action and starts from the full saved duration. The candidate implements this behavior in the counter domain; focused tests pass, while browser UI verification remains pending. |
 | D-07 — Primary platforms and v1 exclusions | Android TV and Apple TV are primary product targets. Wear OS and watchOS are outside v1. The browser remains the M5 implementation target; no TV support is claimed. |
 | D-08 — V1 visualization set | Clock, Battery, Fan, and Ring are approved v1 choices as presented in the demo; Clock is the initial selection, not a user-preference claim. |
-| D-09 — Adaptive Settings and duration input methods | Settings uses a supporting pane when space permits and a reachable single-pane destination on compact windows. Mobile uses an available system keyboard with the shared keypad as fallback; desktop/browser and future TV flows use keypad-only entry. TV support is not established. Implementation and policy tests do not verify rendered layout, runtime keyboard selection, accessibility, or clipping. |
+| D-09 — Adaptive Settings and duration input methods | The issue #47 baseline used keypad-only entry on desktop/browser and future TV flows, and mobile system-keyboard input with keypad fallback. The later desktop candidate changes desktop to keyboard entry without the app keypad; browser and TV remain keypad-only. TV support is not established. Implementation and policy tests do not verify physical keyboard input, rendered layout, accessibility, or clipping. |
 
 These are product-scope justifications, not evidence that risks are eliminated,
 controls are effective, or residual risks are acceptable. The non-medical
@@ -181,3 +183,4 @@ branch-derived lifecycle as evidence that the final PR head has been accepted.
 | 1.1 | Align risk, test-protocol, traceability, and development-plan references with the core/counter refactor; record focused domain-test evidence while retaining product-level verification gaps. |
 | 1.2 | Update the evidence baseline for D-09 and the adaptive supporting-pane/keypad implementation; keep rendered behavior, accessibility, TV support, and exact-head acceptance pending. |
 | 1.3 | Record the test-protocol/traceability revisions, passing JVM tests and target builds, and unresolved Skiko Wasm test-runner failure; retain product-verification and human-acceptance gaps. |
+| 1.4 | Distinguish the issue #47 input baseline from the subsequent desktop keyboard candidate; retain physical-input and review gaps. |

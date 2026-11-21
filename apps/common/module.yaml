@@ -19,9 +19,8 @@ dependencies:
   - $compose.hotReload.runtimeApi
   - $libs.androidx.lifecycle.runtime.compose
   - $libs.androidx.lifecycle.viewmodel.compose
-  - $libs.compose.material3.adaptive
-  - $libs.compose.material3.adaptive.navigation3
   - $libs.compose.navigation3.ui
+  - $libs.compose.cloudy
   - $libs.kotlinx.coroutines.core
   - $libs.koin.core
   - $libs.koin.compose
@@ -29,6 +28,11 @@ dependencies:
 
 dependencies@android:
   - $compose.uiTooling
+
+test-dependencies@jvm:
+  - $libs.compose.ui.test
+  - $compose.desktop.currentOs: runtime-only
+  - $libs.kotlinx.coroutines.swing: runtime-only
 
 settings:
   compose: enabled

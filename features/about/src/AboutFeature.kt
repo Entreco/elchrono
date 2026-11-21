@@ -92,7 +92,8 @@ private fun AboutSection(
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.large,
-        color = MaterialTheme.colorScheme.surfaceContainerLow,
+        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),
+        contentColor = MaterialTheme.colorScheme.onSurface,
     ) {
         Column(
             modifier = Modifier.padding(LocalDimens.current.spaceL),

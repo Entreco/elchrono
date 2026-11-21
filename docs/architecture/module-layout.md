@@ -1,5 +1,7 @@
 # Module layout
 
+Desktop keyboard changes: [PR #73](https://github.com/Entreco/elchrono/pull/73).
+
 Lifecycle status follows the [branch/PR rule](../governance/document-control.md#lifecycle-and-approval)
 for all documents under `docs/`; no status is stored in this record.
 
@@ -29,9 +31,14 @@ must not depend on features or apps. `core/design` owns shared design types,
 components, and theme assets; `core/localization` owns all user-visible
 strings. Platform lifecycle and keyboard-capability integration stay outside
 core. Android uses the experimental Compose `mediaQuery` API for keyboard
-availability; iOS uses its system keyboard, while desktop and browser use the
-numeric keypad and do not enable keyboard duration entry. Future TV launchers
-must explicitly use keypad-only entry; no TV support is established.
+availability; iOS uses its system keyboard. Desktop enables keyboard entry
+without the app keypad; browser uses keypad-only entry. The pinned Compose
+Desktop [1.12.1 sources](https://repo.maven.apache.org/maven2/org/jetbrains/compose/ui/ui-desktop/1.12.1/ui-desktop-1.12.1-sources.jar)
+expose the experimental media query API but do not provide
+`LocalUiMediaScope`, so the JVM adapter treats keyboard entry as
+available instead of attempting unsupported runtime detection. This is a
+desktop input policy, not evidence that a physical keyboard is connected.
+TV launchers must explicitly use keypad-only entry; no TV support is established.
 
 The issue #47 implementation of this boundary is recorded in
 [PR #59](https://github.com/Entreco/elchrono/pull/59).
@@ -104,8 +111,9 @@ platform tests, localized-string formatting, all configured app builds, and
 actual desktop/browser/Android/iOS simulator launches with resources rendered.
 Record observed outcomes separately from unsupported targets or signing limits.
 Counter behavior and settings input policy have focused JVM regression tests.
-Compose feature layout/accessibility and interactive browser behavior remain
-unverified by UI-level tests.
+Settings also has desktop Compose interaction tests for text input and
+Backspace. Physical-keyboard entry, feature layout/accessibility, and
+interactive browser behavior remain unverified by those tests.
 
 Historical scaffold verification outcomes (not evidence for the #47 UI):
 

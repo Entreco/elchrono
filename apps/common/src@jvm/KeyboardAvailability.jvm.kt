@@ -3,4 +3,5 @@ package nl.entreco.elchrono
 import androidx.compose.runtime.Composable
 
 @Composable
-actual fun isKeyboardAvailable(): Boolean = false
+// Compose Desktop does not provide LocalUiMediaScope in the pinned version.
+actual fun isKeyboardAvailable(): Boolean = true

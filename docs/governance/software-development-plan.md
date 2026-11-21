@@ -4,6 +4,7 @@
 |---|---|
 | Document ID | M1-DOC-007 |
 | Revision | 2.0 |
+| Current change review | [PR #78](https://github.com/Entreco/elchrono/pull/78); human acceptance and required specialist review pending |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | @Entreco, designated by the product owner as human reviewer across applicable M1/M2/M3 disciplines for issue #47; designation is self-attested, with final exact-head acceptance pending |

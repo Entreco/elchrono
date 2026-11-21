@@ -6,6 +6,7 @@ Desktop keyboard changes: [PR #73](https://github.com/Entreco/elchrono/pull/73).
 |---|---|
 | Document ID | M2-DOC-007 |
 | Revision | 1.5 |
+| Current change review | [PR #78](https://github.com/Entreco/elchrono/pull/78); human acceptance and required specialist review pending |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | M1/M2/M3 product, requirements, design/usability, accessibility, test/traceability, software-safety, and platform-architecture scopes: @Entreco, designated by the product owner on 2026-11-19; review of this final PR head remains pending |

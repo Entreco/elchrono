@@ -8,6 +8,7 @@ Desktop keyboard changes: [PR #73](https://github.com/Entreco/elchrono/pull/73).
 |---|---|
 | Document ID | M3-DOC-005 |
 | Revision | 1.0 |
+| Current change review | [PR #78](https://github.com/Entreco/elchrono/pull/78); human acceptance and required specialist review pending |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Architecture/dependency, licensing, and security reviewers as applicable; appointments and competence confirmation pending |

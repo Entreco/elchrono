@@ -9,7 +9,7 @@
 | Required reviewers | Software-safety review: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#4](https://github.com/Entreco/elchrono/issues/4); duration/traceability update in [#22](https://github.com/Entreco/elchrono/issues/22); provider-feasibility update in [#36](https://github.com/Entreco/elchrono/issues/36) |
-| Review PR | Prior baseline: [PR #14](https://github.com/Entreco/elchrono/pull/14); revision 0.7: [PR #32](https://github.com/Entreco/elchrono/pull/32); revision 0.8 in [PR #49](https://github.com/Entreco/elchrono/pull/49); issue #47 review: [PR #59](https://github.com/Entreco/elchrono/pull/59); #67 candidate: [draft PR #68](https://github.com/Entreco/elchrono/pull/68); final exact-head acceptance pending |
+| Review PR | Prior baseline: [PR #14](https://github.com/Entreco/elchrono/pull/14); revision 0.7: [PR #32](https://github.com/Entreco/elchrono/pull/32); revision 0.8 in [PR #49](https://github.com/Entreco/elchrono/pull/49); issue #47 review: [PR #59](https://github.com/Entreco/elchrono/pull/59); #67 candidate: [draft PR #68](https://github.com/Entreco/elchrono/pull/68); #66 review: [draft PR #70](https://github.com/Entreco/elchrono/pull/70); final exact-head acceptance pending |
 
 Lifecycle status is derived from the branch and PR context; see
 [document controls](../governance/document-control.md#lifecycle-and-approval).

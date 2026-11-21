@@ -65,6 +65,7 @@ fun SettingsPanel(
         color = MaterialTheme.colorScheme.surfaceVariant,
         tonalElevation = 2.dp,
     ) {
+        
         Column(
             modifier = Modifier
                 .fillMaxSize()

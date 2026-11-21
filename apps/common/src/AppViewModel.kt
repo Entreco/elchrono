@@ -24,6 +24,7 @@ data class AppUiState(
     val backStack: List<AppScreen> = TimerBackStack,
     val interrupted: Boolean = false,
 ) {
+    
     val screen: AppScreen get() = backStack.last()
     val isTicking: Boolean get() = timer.snapshot.status == TimerStatus.RUNNING && !interrupted
 }

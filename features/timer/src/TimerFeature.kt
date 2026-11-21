@@ -65,9 +65,7 @@ import nl.entreco.elchrono.core.localization.resources.timer_idle_accessibility
 import nl.entreco.elchrono.core.localization.resources.timer_interrupted
 import nl.entreco.elchrono.core.localization.resources.timer_interrupted_accessibility
 import nl.entreco.elchrono.core.localization.resources.timer_not_configured
-import nl.entreco.elchrono.core.localization.resources.timer_paused
 import nl.entreco.elchrono.core.localization.resources.timer_paused_accessibility
-import nl.entreco.elchrono.core.localization.resources.timer_running
 import nl.entreco.elchrono.core.localization.resources.timer_running_accessibility
 import nl.entreco.elchrono.core.localization.resources.timer_zero_duration_accessibility
 import nl.entreco.elchrono.core.localization.resources.timer_clock_minutes
@@ -102,12 +100,6 @@ fun TimerFeature(
             .toFloat()
     } else {
         0f
-    }
-    val stateText = when (visualState) {
-        TimerVisualState.RUNNING -> stringResource(Strings.string.timer_running)
-        TimerVisualState.PAUSED -> stringResource(Strings.string.timer_paused)
-        TimerVisualState.INTERRUPTED -> stringResource(Strings.string.timer_interrupted)
-        TimerVisualState.IDLE -> stringResource(Strings.string.timer_not_configured)
     }
     val stateDescription = when (visualState) {
         TimerVisualState.RUNNING -> stringResource(Strings.string.timer_running_accessibility)
@@ -158,9 +150,15 @@ fun TimerFeature(
                 .heightIn(max = overlayInset).verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            if (showsTimerText(detail)) {
+            if (showsTimerStateText(detail, visualState)) {
                 Text(
-                    stateText,
+                    stringResource(
+                        if (visualState == TimerVisualState.INTERRUPTED) {
+                            Strings.string.timer_interrupted
+                        } else {
+                            Strings.string.timer_not_configured
+                        },
+                    ),
                     style = MaterialTheme.typography.titleLarge.copy(
                         color = Color(textColorArgb),
                         fontFamily = font.toFontFamily(),
@@ -202,7 +200,7 @@ fun TimerFeature(
         }
         Column(
             modifier = Modifier.align(Alignment.BottomCenter).fillMaxWidth()
-                .padding(horizontal = 48.dp)
+                .padding(horizontal = 56.dp)
                 .heightIn(max = overlayInset).verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
@@ -235,10 +233,9 @@ fun TimerFeature(
             }
         }
 
-        if (showsTextFreeStateCue(detail)) {
+        if (showsTimerStateIndicator(detail, visualState)) {
             Canvas(
-                Modifier.align(Alignment.BottomEnd).padding(LocalDimens.current.spaceS).size(40.dp)
-                    .semantics { contentDescription = stateDescription },
+                Modifier.align(Alignment.BottomEnd).padding(LocalDimens.current.spaceS).size(40.dp),
             ) {
                 drawStateIndicator(visualState, Color(textColorArgb))
             }
@@ -270,10 +267,10 @@ private fun TimerVisualization(
 
     BoxWithConstraints(
         modifier = modifier.semantics {
-            contentDescription = if (showsTextFreeStateCue(detail) || idle) {
+            contentDescription = if (idle) {
                 stateDescription
             } else {
-                progressDescription
+                "$progressDescription. $stateDescription"
             }
             if (!idle) {
                 progressBarRangeInfo = ProgressBarRangeInfo(fractionRemaining, 0f..1f)

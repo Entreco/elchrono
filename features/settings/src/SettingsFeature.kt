@@ -10,10 +10,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -88,34 +92,18 @@ fun SettingsPanel(
     persistenceFailure: String? = null,
     modifier: Modifier = Modifier,
 ) {
-    MaterialTheme(colorScheme = appColorScheme(Color(initialSettings.backgroundColorArgb))) {
-        var lensCenter by remember { mutableStateOf(Offset.Zero) }
-        var lensSize by remember { mutableStateOf(Size.Zero) }
-        val glassShape = RoundedCornerShape(LocalDimens.current.spaceXL)
+    val backgroundColor = Color(initialSettings.backgroundColorArgb)
+    val surfaceTint = appColorScheme(backgroundColor).onSurface.copy(alpha = 0.08f)
 
+    MaterialTheme(
+        colorScheme = appColorScheme(
+            background = backgroundColor,
+            textColor = Color(initialSettings.textColorArgb),
+        ),
+    ) {
         Surface(
-            modifier = modifier
-                .fillMaxSize()
-                .onSizeChanged { size ->
-                    lensSize = Size(size.width.toFloat(), size.height.toFloat())
-                    lensCenter = Offset(size.width / 2f, size.height / 2f)
-                }
-                .liquidGlass(
-                    lensCenter = lensCenter,
-                    lensSize = if (lensSize == Size.Zero) LiquidGlassDefaults.LENS_SIZE else lensSize,
-                    cornerRadius = 24f,
-                    refraction = 0.16f,
-                    curve = 0.18f,
-                    dispersion = 0.01f,
-                    saturation = 1.05f,
-                    contrast = 1.02f,
-                    tint = MaterialTheme.colorScheme.surface.copy(alpha = 0.12f),
-                    edge = 0.18f,
-                    light = LiquidGlassDefaults.Light,
-                    glow = LiquidGlassDefaults.Glow,
-                ),
-            shape = glassShape,
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),
+            modifier = modifier.fillMaxSize(),
+            color = surfaceTint,
             contentColor = MaterialTheme.colorScheme.onSurface,
         ) {
             Column(
@@ -171,6 +159,16 @@ fun SettingsScreen(
     var font by remember(initialSettings) { mutableStateOf(initialSettings.font) }
     var detail by remember(initialSettings) { mutableStateOf(initialSettings.detail) }
     var ringThickness by remember(initialSettings) { mutableStateOf(initialSettings.ringThicknessPercent) }
+    val accent = settingsAccentColors(Color(foregroundColor))
+    val fieldColors = OutlinedTextFieldDefaults.colors(
+        focusedBorderColor = accent.foreground,
+        focusedLabelColor = accent.foreground,
+        cursorColor = accent.foreground,
+        selectionColors = TextSelectionColors(
+            handleColor = accent.foreground,
+            backgroundColor = accent.foreground.copy(alpha = 0.4f),
+        ),
+    )
 
     fun publish(updatedEntry: DurationDigitEntry = entry) {
         updatedEntry.duration?.let {
@@ -210,6 +208,7 @@ fun SettingsScreen(
                 readOnly = inputMode.fieldsReadOnly,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 label = { Text(stringResource(Strings.string.hours)) },
+                colors = fieldColors,
                 singleLine = true,
             )
             OutlinedTextField(
@@ -224,6 +223,7 @@ fun SettingsScreen(
                 readOnly = inputMode.fieldsReadOnly,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 label = { Text(stringResource(Strings.string.minutes)) },
+                colors = fieldColors,
                 singleLine = true,
             )
         }
@@ -240,6 +240,10 @@ fun SettingsScreen(
                 onDigit = { val updated = entry.append(it); entry = updated; publish(updated) },
                 onDelete = { val updated = entry.deleteLast(); entry = updated; publish(updated) },
                 onClear = { val updated = entry.clear(); entry = updated; publish(updated) },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = accent.foreground,
+                    contentColor = accent.onForeground,
+                ),
             )
         }
         if (entry.duration == null) {
@@ -334,6 +338,11 @@ fun SettingsScreen(
             },
             valueRange = 0f..12f,
             steps = 11,
+            colors = SliderDefaults.colors(
+                thumbColor = accent.foreground,
+                activeTrackColor = accent.foreground,
+                activeTickColor = accent.onForeground,
+            ),
         )
         Text("$detail")
         Spacer(Modifier.height(LocalDimens.current.spaceL))

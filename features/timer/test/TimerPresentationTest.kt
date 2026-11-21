@@ -160,10 +160,22 @@ class TimerPresentationTest {
     }
 
     @Test
-    fun `zero detail hides text and uses a visual state cue`() {
+    fun `detail controls timer status text and indicators for every state`() {
         (0..12).forEach { detail ->
             assertEquals(detail > 0, showsTimerText(detail))
-            assertEquals(detail == 0, showsTextFreeStateCue(detail))
+            TimerVisualState.entries.forEach { state ->
+                val isRunningOrPaused = state == TimerVisualState.RUNNING || state == TimerVisualState.PAUSED
+                assertEquals(
+                    detail > 0 && !isRunningOrPaused,
+                    showsTimerStateText(detail, state),
+                    "$state at detail $detail",
+                )
+                assertEquals(
+                    if (detail == 0) !isRunningOrPaused else isRunningOrPaused,
+                    showsTimerStateIndicator(detail, state),
+                    "$state at detail $detail",
+                )
+            }
         }
     }
 

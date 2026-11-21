@@ -93,7 +93,15 @@ internal fun remainingArc(fractionRemaining: Float): RemainingArc {
 
 internal fun showsTimerText(detail: Int): Boolean = detail > 0
 
-internal fun showsTextFreeStateCue(detail: Int): Boolean = detail == 0
+internal fun showsTimerStateText(detail: Int, state: TimerVisualState): Boolean =
+    showsTimerText(detail) && (state == TimerVisualState.INTERRUPTED || state == TimerVisualState.IDLE)
+
+internal fun showsTimerStateIndicator(detail: Int, state: TimerVisualState): Boolean =
+    if (detail == 0) {
+        state == TimerVisualState.INTERRUPTED || state == TimerVisualState.IDLE
+    } else {
+        state == TimerVisualState.RUNNING || state == TimerVisualState.PAUSED
+    }
 
 internal fun segmentBoundaryFractions(detail: Int): List<Float> {
     require(detail in 0..12)

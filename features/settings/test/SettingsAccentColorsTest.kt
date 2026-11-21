@@ -1,0 +1,37 @@
+package nl.entreco.elchrono.features.settings
+
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
+
+class SettingsAccentColorsTest {
+    @Test
+    fun `selected foreground is preserved and keypad labels remain legible`() {
+        val presets = listOf(
+            0xFFF7F7F2, 0xFF17171C, 0xFF5B5BD6,
+            0xFFE58A3A, 0xFF3D7A57, 0xFFC54A4A,
+        )
+        presets.forEach {
+            val foreground = Color(it)
+            val colors = settingsAccentColors(foreground)
+            assertEquals(foreground, colors.foreground)
+            val luminances = listOf(foreground.luminance(), colors.onForeground.luminance()).sorted()
+            assertTrue(
+                (luminances[1] + 0.05f) / (luminances[0] + 0.05f) >= 4.5f,
+                "Insufficient keypad text contrast for $foreground",
+            )
+        }
+    }
+
+    @Test
+    fun `changing foreground changes accent and suitable content color`() {
+        val dark = settingsAccentColors(Color.Black)
+        val light = settingsAccentColors(Color.White)
+        assertEquals(Color.Black, dark.foreground)
+        assertEquals(Color.White, dark.onForeground)
+        assertEquals(Color.White, light.foreground)
+        assertEquals(Color.Black, light.onForeground)
+    }
+}

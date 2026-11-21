@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-001 |
-| Revision | 0.8 |
+| Revision | 0.9 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Product requirements and accessibility: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
@@ -22,9 +22,10 @@ requirements that guide design and implementation. Acceptance criteria and
 verification procedures belong in the test protocol; requirement, risk,
 design, usability, and test relationships belong in the traceability matrix.
 The issue #47 candidate implements a browser MVP against this proposed
-requirements baseline. Product-level verification, usability, accessibility,
-offline behavior, and platform support are not established by its builds or
-domain tests.
+requirements baseline. Issue #67 implements an About presentation candidate;
+it does not establish that the required About content is complete. Product-level
+verification, usability, accessibility, offline behavior, and platform support
+are not established by builds or domain tests.
 
 The [intended-use record, M1-DOC-002 revision 1.0](intended-use.md) is a
 candidate whose review/approval gaps remain open. This register does not
@@ -49,7 +50,7 @@ exact-revision review and acceptance are recorded in the current review PR.
 | REQ-001 | A caregiver shall be able to configure every whole-minute waiting duration from 00:01 through 24:00 using two numeric fields, Hours and Minutes, populated by sequential digits. The first digit enters the minute ones place, the second the minute tens place, and each subsequent digit shifts the existing digits left, moving them into the hour field. Mobile targets shall accept system-keyboard input when a keyboard is available and provide an on-screen numeric keypad otherwise. Desktop, browser, and TV targets shall use the on-screen numeric keypad and shall not expose keyboard-based duration entry. |
 | REQ-002 | Saving valid timer settings shall start the countdown from the saved duration. Opening Settings while a countdown is running shall pause it; saving valid Settings shall start a new countdown from the full saved duration. In v1, no separate manual pause, resume, or reset controls shall be provided; the Settings-open pause and valid-save start behavior are the only selected timer controls. |
 | REQ-003 | A patient shall be able to see the timer's remaining-time presentation while it is running, paused, or interrupted. Each available visualization shall specify whether it shows numeric remaining time, visual progress, or both; no visualization shall show a clock face or time of day. |
-| REQ-004 | The product shall provide Main, Settings, and About screens. Main shall contain the selected timer visualization; Settings shall provide controls for duration and theme and appear as a supporting side pane alongside Main when the available window supports multiple panes, with a reachable single-pane destination on compact windows; About shall contain the company logo, version/build details, support information, privacy policy, relevant licences, intended use, and limitations. Music integration and in-app volume controls are excluded from v1. |
+| REQ-004 | The product shall provide Main, Settings, and About screens. Main shall contain the selected timer visualization; Settings shall provide controls for duration and theme and appear as a supporting side pane alongside Main when the available window supports multiple panes, with a reachable single-pane destination on compact windows; About shall contain the company logo, actual version/build details, support information, privacy policy, relevant licences, intended use, and limitations. Unavailable owner-controlled content shall be recorded as unresolved, not fabricated or treated as satisfying this requirement. Music integration and in-app volume controls are excluded from v1. |
 | REQ-005 | In v1, Settings shall not require a caregiver-protection mechanism. |
 | REQ-006 | A caregiver shall be able to select one of the four v1 themes available in Settings: Clock, Battery, Fan, and Ring. |
 | REQ-008 | Timer operation and remaining-time presentation shall not depend on internet connectivity. Music integration and associated playback-failure handling are deferred to v2 and are not v1 capabilities. |
@@ -119,3 +120,4 @@ does not establish that they were resolved.
 | 0.6 | Add the owner-approved Clock, Battery, Fan, and Ring v1 theme set, define Clock as the demo-matching initial selection, designate Android TV and Apple TV as primary targets and Wear/watch as outside v1, and retain separate verification/support gates. |
 | 0.7 | Clarify the existing in-process interruption behavior for common lifecycle stop/start events: pause and mark interrupted on stop, do not automatically resume, and retain no process-termination or restart recovery; keep platform verification and risk review pending. |
 | 0.8 | Add the owner-directed supporting-pane Settings layout and target-specific duration-input methods; retain sequential digit semantics and keep layout, keyboard, accessibility, and TV verification pending. |
+| 0.9 | Clarify that About's required version/build and owner-controlled content must be authoritative; explicit gaps do not satisfy REQ-004. |

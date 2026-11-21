@@ -12,4 +12,8 @@ dependencies:
   - $compose.components.resources
 
 settings:
-  compose: enabled
+  compose:
+    enabled: true
+    resources:
+      packageName: nl.entreco.elchrono.features.about.resources
+      exposedAccessors: true

@@ -24,6 +24,7 @@ import nl.entreco.elchrono.core.counter.TimerSnapshot
 import nl.entreco.elchrono.core.counter.TimerStatus
 import nl.entreco.elchrono.core.design.TimerTheme
 import nl.entreco.elchrono.core.design.LocalDimens
+import nl.entreco.elchrono.core.design.TimerFont
 import nl.entreco.elchrono.core.localization.resources.Res as Strings
 import nl.entreco.elchrono.core.localization.resources.battery
 import nl.entreco.elchrono.core.localization.resources.choose_duration_message
@@ -38,18 +39,29 @@ import nl.entreco.elchrono.core.localization.resources.timer_not_configured
 import nl.entreco.elchrono.core.localization.resources.timer_paused
 import nl.entreco.elchrono.core.localization.resources.timer_running
 import org.jetbrains.compose.resources.stringResource
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
 
 @Composable
 fun TimerFeature(
     snapshot: TimerSnapshot,
     theme: TimerTheme,
+    backgroundColorArgb: Long,
+    foregroundColorArgb: Long,
+    textColorArgb: Long,
+    font: TimerFont,
+    detail: Int,
     interrupted: Boolean,
     modifier: Modifier = Modifier,
 ) {
     val remaining = snapshot.remaining
     val totalMinutes = remaining?.let(::roundedUpMinutes)
     val configuredDuration = snapshot.configuredDuration
-    val fraction = if (configuredDuration != null && remaining != null) {
+    val fraction = if (configuredDuration != null &&
+        remaining != null &&
+        configuredDuration.totalMinutes > 0
+    ) {
         (remaining.inWholeNanoseconds.toDouble() /
             configuredDuration.asDuration.inWholeNanoseconds.toDouble())
             .coerceIn(0.0, 1.0)
@@ -69,24 +81,38 @@ fun TimerFeature(
         modifier = modifier,
         horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally,
     ) {
-        Text(stateText, style = MaterialTheme.typography.titleLarge)
+        if (detail > 0) {
+            Text(
+                stateText,
+                style = MaterialTheme.typography.titleLarge.copy(
+                    color = Color(textColorArgb),
+                    fontFamily = font.toFontFamily(),
+                ),
+            )
+        }
         if (interrupted) {
             Spacer(Modifier.height(LocalDimens.current.spaceM))
             Text(stringResource(Strings.string.interruption_warning), textAlign = TextAlign.Center)
         }
         if (remaining != null && totalMinutes != null) {
             Spacer(Modifier.height(LocalDimens.current.spaceM))
-            Text(
+            if (detail > 0) Text(
                 text = stringResource(
                     Strings.string.remaining_time,
                     totalMinutes / 60,
                     totalMinutes % 60,
                 ),
-                style = MaterialTheme.typography.headlineSmall,
+                style = MaterialTheme.typography.headlineSmall.copy(
+                    color = Color(textColorArgb),
+                    fontFamily = font.toFontFamily(),
+                ),
             )
             TimerVisualization(
                 theme = theme,
                 fractionRemaining = fraction,
+                detail = detail,
+                backgroundColor = Color(backgroundColorArgb),
+                foregroundColor = Color(foregroundColorArgb),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(280.dp)
@@ -97,13 +123,24 @@ fun TimerFeature(
             )
         } else {
             Spacer(Modifier.height(LocalDimens.current.spaceXXXL))
+            if (detail > 0) {
+                Text(
+                    stringResource(Strings.string.choose_duration_message),
+                    textAlign = TextAlign.Center,
+                    color = Color(textColorArgb),
+                )
+            }
+        }
+        if (detail > 0) {
+            Spacer(Modifier.height(LocalDimens.current.spaceL))
             Text(
-                stringResource(Strings.string.choose_duration_message),
-                textAlign = TextAlign.Center,
+                stringResource(theme.label),
+                style = MaterialTheme.typography.titleMedium.copy(
+                    color = Color(textColorArgb),
+                    fontFamily = font.toFontFamily(),
+                ),
             )
         }
-        Spacer(Modifier.height(LocalDimens.current.spaceL))
-        Text(stringResource(theme.label), style = MaterialTheme.typography.titleMedium)
     }
 }
 
@@ -111,10 +148,13 @@ fun TimerFeature(
 private fun TimerVisualization(
     theme: TimerTheme,
     fractionRemaining: Float,
+    detail: Int,
+    backgroundColor: Color,
+    foregroundColor: Color,
     modifier: Modifier = Modifier,
 ) {
-    val track = MaterialTheme.colorScheme.surfaceVariant
-    val remaining = MaterialTheme.colorScheme.primary
+    val track = backgroundColor
+    val remaining = foregroundColor
     Canvas(modifier = modifier.padding(LocalDimens.current.spaceXXXL)) {
         val diameter = size.minDimension * 0.72f
         val left = (size.width - diameter) / 2f
@@ -184,6 +224,61 @@ private fun TimerVisualization(
                     )
                 }
             }
+            if (detail > 0) {
+                val center = androidx.compose.ui.geometry.Offset(size.width / 2f, size.height / 2f)
+                val radius = size.minDimension * 0.36f
+                when (theme) {
+                    TimerTheme.CLOCK, TimerTheme.RING -> {
+                        repeat(detail) { index ->
+                            val angle = (-90f + 360f * index / detail.toFloat()) *
+                                kotlin.math.PI.toFloat() / 180f
+                            val inner = radius * 0.82f
+                            drawLine(
+                                color = remaining,
+                                start = androidx.compose.ui.geometry.Offset(
+                                    center.x + kotlin.math.cos(angle) * inner,
+                                    center.y + kotlin.math.sin(angle) * inner,
+                                ),
+                                end = androidx.compose.ui.geometry.Offset(
+                                    center.x + kotlin.math.cos(angle) * radius,
+                                    center.y + kotlin.math.sin(angle) * radius,
+                                ),
+                                strokeWidth = 2.dp.toPx(),
+                            )
+                        }
+                    }
+                    TimerTheme.BATTERY -> {
+                        val bodyWidth = size.width * 0.72f
+                        val bodyHeight = size.height * 0.52f
+                        val bodyTop = (size.height - bodyHeight) / 2f
+                        val bodyLeft = (size.width - bodyWidth) / 2f
+                        repeat(detail - 1) { index ->
+                            val x = bodyLeft + bodyWidth * (index + 1) / detail.toFloat()
+                            drawLine(
+                                remaining,
+                                androidx.compose.ui.geometry.Offset(x, bodyTop),
+                                androidx.compose.ui.geometry.Offset(x, bodyTop + bodyHeight),
+                                2.dp.toPx(),
+                            )
+                        }
+                    }
+                    TimerTheme.FAN -> {
+                        repeat(detail) { index ->
+                            val angle = (180f + 180f * index / detail.toFloat()) *
+                                kotlin.math.PI.toFloat() / 180f
+                            drawLine(
+                                remaining,
+                                center,
+                                androidx.compose.ui.geometry.Offset(
+                                    center.x + kotlin.math.cos(angle) * radius,
+                                    center.y + kotlin.math.sin(angle) * radius,
+                                ),
+                                2.dp.toPx(),
+                            )
+                        }
+                    }
+                }
+            }
         }
     }
 }
@@ -192,6 +287,12 @@ private fun roundedUpMinutes(duration: Duration): Int {
     val minuteNanos = 60_000_000_000L
     val nanos = duration.inWholeNanoseconds.coerceAtLeast(0)
     return ((nanos + minuteNanos - 1) / minuteNanos).toInt()
+}
+
+private fun TimerFont.toFontFamily(): FontFamily = when (this) {
+    TimerFont.DEFAULT -> FontFamily.Default
+    TimerFont.ROUNDED -> FontFamily.SansSerif
+    TimerFont.MONOSPACE -> FontFamily.Monospace
 }
 
 private val TimerTheme.label: org.jetbrains.compose.resources.StringResource

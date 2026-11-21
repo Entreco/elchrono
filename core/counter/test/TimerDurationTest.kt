@@ -13,7 +13,7 @@ import kotlin.time.Duration.Companion.seconds
 class TimerDurationTest {
     @Test
     fun `every whole minute in the supported range is representable`() {
-        for (minutes in 1..TimerDuration.MAX_MINUTES) {
+        for (minutes in 0..TimerDuration.MAX_MINUTES) {
             val duration = assertNotNull(TimerDuration.fromMinutes(minutes))
             assertEquals(minutes, duration.totalMinutes)
             assertEquals(duration, TimerDuration.fromHoursAndMinutes(duration.hours, duration.minutes))
@@ -29,8 +29,8 @@ class TimerDurationTest {
     }
 
     @Test
-    fun `zero and durations above the maximum are rejected`() {
-        assertNull(TimerDuration.fromMinutes(0))
+    fun `zero and durations above the maximum are handled`() {
+        assertNotNull(TimerDuration.fromMinutes(0))
         assertNull(TimerDuration.fromMinutes(-1))
         assertNull(TimerDuration.fromMinutes(1_441))
         assertNull(TimerDuration.fromHoursAndMinutes(24, 1))
@@ -42,7 +42,7 @@ class TimerDurationTest {
         assertNull(TimerDuration.fromHoursAndMinutes(25, 0))
         assertNull(TimerDuration.fromHoursAndMinutes(0, -1))
         assertNull(TimerDuration.fromHoursAndMinutes(0, 60))
-        assertNull(TimerDuration.fromHoursAndMinutes(0, 0))
+        assertNotNull(TimerDuration.fromHoursAndMinutes(0, 0))
     }
 
     @Test

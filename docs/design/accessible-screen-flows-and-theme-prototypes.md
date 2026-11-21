@@ -141,7 +141,7 @@ to review and approval.
 
 The duration entry example follows the candidate sequential-digit rule:
 `205` displays as `02:05`. The configured duration is a whole-minute value
-from 00:01 through 24:00. The examples describe field content, not a
+from 00:00 through 24:00. The examples describe field content, not a
 verification result.
 
 Requirements: REQ-001 (duration entry), REQ-002 (no separate manual timer
@@ -159,8 +159,10 @@ configured. These flows preserve `205` as `02:05`; layout, input, focus,
 accessibility, and no-clipping behavior remain unverified.
 
 The v1 flow has no caregiver-only access gate: Settings can be opened without
-protection. The user configures duration and visualization, then saves; saving
-starts a new countdown from the full saved duration. The duration entry starts
+protection. The user configures duration and visualization; valid changes
+preview immediately and are saved automatically, without a Save action.
+Closing Settings starts a fresh countdown from the full configured duration.
+At 00:00, the Timer remains non-counting and non-animating. The duration entry starts
 at 02:00, matching the demo; this is an initial field value, not saved
 preference. Clock is initially selected, also matching the demo. Opening Settings while
 the countdown is running pauses it. No separate manual pause, resume, or reset

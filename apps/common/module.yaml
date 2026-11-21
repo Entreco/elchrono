@@ -6,6 +6,7 @@ dependencies:
   - //core/counter
   - //core/design
   - //core/localization
+  - //core/persistence
   - //features/about
   - //features/settings
   - //features/timer
@@ -22,6 +23,9 @@ dependencies:
   - $libs.compose.material3.adaptive.navigation3
   - $libs.compose.navigation3.ui
   - $libs.kotlinx.coroutines.core
+  - $libs.koin.core
+  - $libs.koin.compose
+  - $libs.koin.compose.viewmodel
 
 dependencies@android:
   - $compose.uiTooling

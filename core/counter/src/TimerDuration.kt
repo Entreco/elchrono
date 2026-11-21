@@ -24,7 +24,7 @@ value class TimerDuration private constructor(val totalMinutes: Int) {
         val MAX_MINUTES = MAX_DURATION.inWholeMinutes.toInt()
 
         fun fromMinutes(totalMinutes: Int): TimerDuration? =
-            totalMinutes.takeIf { it in 1..MAX_MINUTES }?.let(::TimerDuration)
+            totalMinutes.takeIf { it in 0..MAX_MINUTES }?.let(::TimerDuration)
 
         fun fromHoursAndMinutes(hours: Int, minutes: Int): TimerDuration? {
             if (hours !in 0..MAX_HOURS || minutes !in 0 until MINUTES_PER_HOUR) return null
@@ -32,7 +32,7 @@ value class TimerDuration private constructor(val totalMinutes: Int) {
         }
 
         fun fromDuration(duration: Duration): TimerDuration? {
-            if (duration !in 1.minutes..MAX_DURATION) return null
+            if (duration !in Duration.ZERO..MAX_DURATION) return null
             val wholeMinutes = duration.inWholeMinutes.toInt()
             if (wholeMinutes.minutes != duration) return null
             return TimerDuration(wholeMinutes)

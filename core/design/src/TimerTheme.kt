@@ -6,3 +6,9 @@ enum class TimerTheme {
     FAN,
     RING,
 }
+
+enum class TimerFont {
+    DEFAULT,
+    ROUNDED,
+    MONOSPACE,
+}

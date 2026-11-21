@@ -28,7 +28,7 @@ import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
+import org.koin.compose.viewmodel.koinViewModel
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.scene.SceneStrategy
 import androidx.navigation3.ui.NavDisplay
@@ -41,6 +41,7 @@ import nl.entreco.elchrono.core.localization.resources.app_title
 import nl.entreco.elchrono.core.localization.resources.back
 import nl.entreco.elchrono.core.localization.resources.hide_settings
 import nl.entreco.elchrono.core.localization.resources.open_settings
+import nl.entreco.elchrono.core.persistence.platformSettingsRepository
 import nl.entreco.elchrono.features.about.AboutFeature
 import nl.entreco.elchrono.features.settings.SettingsPanel
 import nl.entreco.elchrono.features.timer.TimerFeature
@@ -57,7 +58,7 @@ fun App(allowKeyboardInput: Boolean = false) {
 @Composable
 private fun AppContent(
     allowKeyboardInput: Boolean,
-    viewModel: AppViewModel = viewModel { AppViewModel() },
+    viewModel: AppViewModel = koinViewModel(),
 ) {
 
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -132,6 +133,11 @@ private fun AppContent(
                     TimerFeature(
                         snapshot = state.timer.snapshot,
                         theme = state.settings.theme,
+                        backgroundColorArgb = state.settings.backgroundColorArgb,
+                        foregroundColorArgb = state.settings.foregroundColorArgb,
+                        textColorArgb = state.settings.textColorArgb,
+                        font = state.settings.font,
+                        detail = state.settings.detail,
                         interrupted = state.interrupted,
                         modifier = Modifier.fillMaxSize(),
                     )
@@ -141,7 +147,8 @@ private fun AppContent(
                         initialSettings = state.settings,
                         keyboardInputEnabled = allowKeyboardInput,
                         keyboardAvailable = keyboardAvailable,
-                        onSave = viewModel::saveSettings,
+                        onChange = viewModel::updateSettings,
+                        persistenceFailure = state.persistenceFailure,
                         onShowAbout = viewModel::showAbout,
                     )
                 }

@@ -17,7 +17,8 @@ class DurationDigitEntry private constructor(
 
     fun append(digit: Int): DurationDigitEntry {
         require(digit in 0..9)
-        return DurationDigitEntry((digits + digit).takeLast(4))
+        val candidate = DurationDigitEntry((digits + digit).takeLast(4))
+        return if (candidate.duration != null) candidate else this
     }
 
     fun deleteLast(): DurationDigitEntry = DurationDigitEntry(digits.dropLast(1))

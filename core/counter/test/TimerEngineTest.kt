@@ -10,6 +10,14 @@ import kotlin.time.Duration.Companion.seconds
 
 class TimerEngineTest {
     @Test
+    fun `zero duration stays non-running and non-animating`() {
+        val engine = TimerEngine(TestMonotonicClock())
+        val update = engine.saveSettings(duration(0))
+        assertEquals(TimerStatus.NOT_CONFIGURED, update.snapshot.status)
+        assertEquals(kotlin.time.Duration.ZERO, update.snapshot.remaining)
+        assertEquals(TimerStatus.NOT_CONFIGURED, engine.current().snapshot.status)
+    }
+    @Test
     fun `saving settings starts at the full configured duration`() {
         val clock = TestMonotonicClock()
         val engine = TimerEngine(clock)

@@ -53,14 +53,10 @@ import nl.entreco.elchrono.core.design.LocalDimens
 import nl.entreco.elchrono.core.design.TimerFont
 import nl.entreco.elchrono.core.design.TimerTheme
 import nl.entreco.elchrono.core.localization.resources.Res as Strings
-import nl.entreco.elchrono.core.localization.resources.battery
 import nl.entreco.elchrono.core.localization.resources.choose_duration_message
-import nl.entreco.elchrono.core.localization.resources.clock
-import nl.entreco.elchrono.core.localization.resources.fan
 import nl.entreco.elchrono.core.localization.resources.interruption_warning
 import nl.entreco.elchrono.core.localization.resources.remaining_time
 import nl.entreco.elchrono.core.localization.resources.remaining_time_accessibility
-import nl.entreco.elchrono.core.localization.resources.ring
 import nl.entreco.elchrono.core.localization.resources.timer_idle_accessibility
 import nl.entreco.elchrono.core.localization.resources.timer_interrupted
 import nl.entreco.elchrono.core.localization.resources.timer_interrupted_accessibility
@@ -215,17 +211,6 @@ fun TimerFeature(
                 Text(
                     stringResource(unit),
                     style = MaterialTheme.typography.bodyMedium.copy(
-                        color = Color(textColorArgb),
-                        fontFamily = font.toFontFamily(),
-                    ),
-                )
-            }
-
-            if (showsTimerText(detail)) {
-                Spacer(Modifier.height(LocalDimens.current.spaceL))
-                Text(
-                    stringResource(theme.label),
-                    style = MaterialTheme.typography.titleMedium.copy(
                         color = Color(textColorArgb),
                         fontFamily = font.toFontFamily(),
                     ),
@@ -544,11 +529,3 @@ private fun TimerFont.toFontFamily(): FontFamily = when (this) {
     TimerFont.ROUNDED -> FontFamily.SansSerif
     TimerFont.MONOSPACE -> FontFamily.Monospace
 }
-
-private val TimerTheme.label: org.jetbrains.compose.resources.StringResource
-    get() = when (this) {
-        TimerTheme.CLOCK -> Strings.string.clock
-        TimerTheme.BATTERY -> Strings.string.battery
-        TimerTheme.FAN -> Strings.string.fan
-        TimerTheme.RING -> Strings.string.ring
-    }

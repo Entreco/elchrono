@@ -15,7 +15,7 @@ fun main() {
             title = "El Chrono",
             icon = painterResource(Res.drawable.app_icon),
         ) {
-            App()
+            App(allowKeyboardInput = true)
         }
     }
 }

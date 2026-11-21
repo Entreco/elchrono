@@ -13,5 +13,9 @@ dependencies:
   - $compose.ui
   - $compose.components.resources
 
+test-dependencies@jvm:
+  - $libs.compose.ui.test
+  - $compose.desktop.currentOs: runtime-only
+
 settings:
   compose: enabled

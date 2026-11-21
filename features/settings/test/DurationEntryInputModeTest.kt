@@ -6,8 +6,16 @@ import kotlin.test.assertTrue
 
 class DurationEntryInputModeTest {
     @Test
-    fun `non-mobile target always uses the numeric keypad`() {
+    fun `keypad-only target ignores keyboard availability`() {
         val mode = DurationEntryInputMode(keyboardInputEnabled = false, keyboardAvailable = true)
+
+        assertTrue(mode.fieldsReadOnly)
+        assertTrue(mode.showNumericKeypad)
+    }
+
+    @Test
+    fun `keypad-only target remains available without a keyboard`() {
+        val mode = DurationEntryInputMode(keyboardInputEnabled = false, keyboardAvailable = false)
 
         assertTrue(mode.fieldsReadOnly)
         assertTrue(mode.showNumericKeypad)
@@ -22,7 +30,7 @@ class DurationEntryInputModeTest {
     }
 
     @Test
-    fun `mobile with a detected keyboard uses text entry without keypad`() {
+    fun `enabled keyboard entry uses text entry without keypad`() {
         val mode = DurationEntryInputMode(keyboardInputEnabled = true, keyboardAvailable = true)
 
         assertFalse(mode.fieldsReadOnly)

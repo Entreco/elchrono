@@ -39,9 +39,10 @@ class DurationDigitEntry private constructor(
 
         val removedDigits = previousText.length - prefixLength - suffixLength
         val insertedDigits = editedText.substring(prefixLength, editedText.length - suffixLength)
+        if (insertedDigits.any { it !in '0'..'9' }) return this
         var updated = this
         repeat(removedDigits) { updated = updated.deleteLast() }
-        insertedDigits.filter { it in '0'..'9' }.forEach { updated = updated.append(it.digitToInt()) }
+        insertedDigits.forEach { updated = updated.append(it.digitToInt()) }
         return updated
     }
 

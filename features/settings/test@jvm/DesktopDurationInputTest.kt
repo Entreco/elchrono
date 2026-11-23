@@ -7,14 +7,17 @@ import androidx.compose.runtime.saveable.LocalSaveableStateRegistry
 import androidx.compose.runtime.saveable.SaveableStateRegistry
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertTextContains
+import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performKeyInput
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.pressKey
 import androidx.compose.ui.test.v2.runDesktopComposeUiTest
+import androidx.compose.ui.text.TextRange
 import nl.entreco.elchrono.core.counter.TimerDuration
 import nl.entreco.elchrono.core.design.TimerTheme
 import nl.entreco.elchrono.core.persistence.TimerSettings
@@ -25,18 +28,21 @@ import kotlin.test.assertEquals
 class DesktopDurationInputTest {
     @Test
     fun `duration draft restores without republishing a setting`() = runDesktopComposeUiTest {
-        val settings = TimerSettings(checkNotNull(TimerDuration.fromMinutes(0)), TimerTheme.CLOCK)
+        val settings = settingsWithDuration(0)
         var registry by mutableStateOf(SaveableStateRegistry(null) { true })
         var visible by mutableStateOf(true)
         var publications = 0
         setContent {
             if (visible) {
                 CompositionLocalProvider(LocalSaveableStateRegistry provides registry) {
-                    SettingsScreen(settings, { publications++ }, {}, true, true)
+                    SettingsScreen(settings, { publications++ }, {})
                 }
             }
         }
-        onNodeWithText("Minutes").performClick().performTextInput("2")
+
+        onNodeWithText("Minutes").performClick()
+        runOnIdle { }
+        onNodeWithText("Minutes").performTextInput("2")
         onNodeWithText("Minutes").performTextInput("0")
         onNodeWithText("Minutes").assertTextContains("20")
         val saved = runOnIdle {
@@ -49,80 +55,88 @@ class DesktopDurationInputTest {
         }
         onNodeWithText("Minutes").assertTextContains("20")
         runOnIdle { assertEquals(2, publications) }
-        onNodeWithText("Minutes").performClick().performTextInput("5")
-        onNodeWithText("Hours").assertTextContains("02")
-        onNodeWithText("Minutes").assertTextContains("05")
+
+        onNodeWithText("Minutes").performClick()
+        runOnIdle { }
+        onNodeWithText("Minutes").performTextInput("5")
+        onNodeWithText("Minutes").assertTextContains("5")
+        onNodeWithText("Hours").assertTextContains("00")
     }
 
     @Test
-    fun `desktop fields accept sequential input without an app keypad`() = runDesktopComposeUiTest {
-        var settings by mutableStateOf(
-            TimerSettings(checkNotNull(TimerDuration.fromMinutes(0)), TimerTheme.CLOCK),
-        )
-        setContent {
-            SettingsScreen(
-                initialSettings = settings,
-                onChange = { settings = it },
-                onShowAbout = {},
-                keyboardInputEnabled = true,
-                keyboardAvailable = true,
+    fun `fields edit independently select on focus and pad on blur without an app keypad`() =
+        runDesktopComposeUiTest {
+            var settings by mutableStateOf(settingsWithDuration(125))
+            setContent {
+                SettingsScreen(
+                    initialSettings = settings,
+                    onChange = { settings = it },
+                    onShowAbout = {},
+                )
+            }
+
+            assertEquals(0, onAllNodesWithText("Clear").fetchSemanticsNodes().size)
+            onNodeWithText("Hours").performClick()
+            runOnIdle { }
+            assertEquals(
+                TextRange(0, 2),
+                onNodeWithText("Hours").fetchSemanticsNode().config[SemanticsProperties.TextSelectionRange],
             )
+            onNodeWithText("Hours").performTextInput("3")
+            onNodeWithText("Hours").assertTextContains("3")
+            onNodeWithText("Minutes").assertTextContains("05")
+            runOnIdle { assertEquals(185, settings.duration.totalMinutes) }
+
+            onNodeWithText("Minutes").performClick()
+            runOnIdle { }
+            onNodeWithText("Minutes").performTextInput("6")
+            onNodeWithText("Minutes").assertTextContains("6")
+            onNodeWithText("Hours").assertTextContains("03")
+            runOnIdle { assertEquals(186, settings.duration.totalMinutes) }
         }
 
-        onNodeWithText("Clear").assertDoesNotExist()
-        onNodeWithText("Minutes").performClick().performTextInput("2")
-        onNodeWithText("Minutes").assertTextContains("02")
-        onNodeWithText("Minutes").performTextInput("0")
-        onNodeWithText("Minutes").assertTextContains("20")
-        onNodeWithText("Hours").performClick().performTextInput("5")
-        onNodeWithText("Hours").assertTextContains("02")
-        onNodeWithText("Minutes").assertTextContains("05")
-    }
+    @Test
+    fun `empty focused field immediately contributes zero and pads when focus leaves`() =
+        runDesktopComposeUiTest {
+            var settings by mutableStateOf(settingsWithDuration(125))
+            setContent {
+                SettingsScreen(
+                    initialSettings = settings,
+                    onChange = { settings = it },
+                    onShowAbout = {},
+                )
+            }
+
+            onNodeWithText("Minutes").performClick()
+            runOnIdle { }
+            onNodeWithText("Minutes").performKeyInput { pressKey(Key.Backspace) }
+                .assertTextContains("")
+            runOnIdle { assertEquals(120, settings.duration.totalMinutes) }
+
+            onNodeWithText("Hours").performClick()
+            onNodeWithText("Minutes").assertTextContains("00")
+        }
 
     @Test
     fun `desktop fields accept backspace key events`() = runDesktopComposeUiTest {
-        var settings by mutableStateOf(
-            TimerSettings(checkNotNull(TimerDuration.fromMinutes(0)), TimerTheme.CLOCK),
-        )
+        var settings by mutableStateOf(settingsWithDuration(125))
         setContent {
             SettingsScreen(
                 initialSettings = settings,
                 onChange = { settings = it },
                 onShowAbout = {},
-                keyboardInputEnabled = true,
-                keyboardAvailable = true,
             )
         }
 
-        onNodeWithText("Minutes").performClick().performTextInput("2")
-        onNodeWithText("Minutes").performTextInput("0")
+        onNodeWithText("Minutes").performClick()
+        runOnIdle { }
         onNodeWithText("Minutes").performKeyInput { pressKey(Key.Backspace) }
-        onNodeWithText("Minutes").assertTextContains("02")
+        onNodeWithText("Minutes").assertTextContains("")
+        runOnIdle { assertEquals(120, settings.duration.totalMinutes) }
     }
 
-    @Test
-    fun `changing keyboard availability preserves the current duration`() = runDesktopComposeUiTest {
-        var keyboardAvailable by mutableStateOf(true)
-        var settings by mutableStateOf(
-            TimerSettings(checkNotNull(TimerDuration.fromMinutes(0)), TimerTheme.CLOCK),
-        )
-        setContent {
-            SettingsScreen(
-                initialSettings = settings,
-                onChange = { settings = it },
-                onShowAbout = {},
-                keyboardInputEnabled = true,
-                keyboardAvailable = keyboardAvailable,
-            )
-        }
-
-        onNodeWithText("Minutes").performClick().performTextInput("2")
-        runOnIdle { keyboardAvailable = false }
-        onNodeWithText("Minutes").assertTextContains("02")
-        onNodeWithText("Clear").assertExists()
-        runOnIdle { keyboardAvailable = true }
-        onNodeWithText("Clear").assertDoesNotExist()
-        onNodeWithText("Minutes").assertTextContains("02")
-    }
-
+    private fun settingsWithDuration(totalMinutes: Int) = TimerSettings(
+        checkNotNull(TimerDuration.fromMinutes(totalMinutes)),
+        TimerTheme.CLOCK,
+    )
 }

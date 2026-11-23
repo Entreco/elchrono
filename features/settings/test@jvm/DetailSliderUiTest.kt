@@ -41,8 +41,6 @@ class DetailSliderUiTest {
                     initialSettings = settings,
                     onChange = { settings = it },
                     onShowAbout = {},
-                    keyboardInputEnabled = true,
-                    keyboardAvailable = true,
                 )
             }
         }
@@ -68,8 +66,6 @@ class DetailSliderUiTest {
                 initialSettings = settings,
                 onChange = { settings = it },
                 onShowAbout = {},
-                keyboardInputEnabled = true,
-                keyboardAvailable = true,
             )
         }
 
@@ -98,8 +94,6 @@ class DetailSliderUiTest {
                     initialSettings = settings,
                     onChange = { settings = it },
                     onShowAbout = {},
-                    keyboardInputEnabled = true,
-                    keyboardAvailable = true,
                 )
             }
         }

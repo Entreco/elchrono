@@ -49,7 +49,7 @@ class TimerControlsUiTest {
     fun `pause resume and restart remain usable at every detail level`() = runDesktopComposeUiTest {
         val clock = TestClock()
         val viewModel = viewModel(clock)
-        setContent { ElChronoTheme { Box(Modifier.size(320.dp, 640.dp)) { AppContent(false, viewModel) } } }
+        setContent { ElChronoTheme { Box(Modifier.size(320.dp, 640.dp)) { AppContent(viewModel) } } }
         (0..12).forEach { detail ->
             runOnIdle {
                 viewModel.updateSettings(settings.copy(detail = detail))
@@ -86,7 +86,7 @@ class TimerControlsUiTest {
     @Test
     fun `timer action supports keyboard focus and activation`() = runDesktopComposeUiTest {
         val viewModel = viewModel(TestClock())
-        setContent { ElChronoTheme { AppContent(false, viewModel) } }
+        setContent { ElChronoTheme { AppContent(viewModel) } }
         val action = onNodeWithTag("timer-action")
         repeat(6) {
             if (action.fetchSemanticsNode().config.getOrNull(SemanticsProperties.Focused) != true) {
@@ -102,7 +102,7 @@ class TimerControlsUiTest {
     fun `interruption offers restart and zero duration never offers an enabled action`() = runDesktopComposeUiTest {
         val clock = TestClock()
         val viewModel = viewModel(clock)
-        setContent { ElChronoTheme { AppContent(false, viewModel) } }
+        setContent { ElChronoTheme { AppContent(viewModel) } }
         onNodeWithContentDescription("Resume").performClick()
         runOnIdle { viewModel.onAppBackgrounded() }
         onNodeWithText("Restart").assertIsDisplayed()
@@ -126,7 +126,7 @@ class TimerControlsUiTest {
     @Test
     fun `expanded overlay blocks pointer and semantics through exit animation`() = runDesktopComposeUiTest {
         val viewModel = viewModel(TestClock())
-        setContent { ElChronoTheme { Box(Modifier.size(1200.dp, 720.dp)) { AppContent(false, viewModel) } } }
+        setContent { ElChronoTheme { Box(Modifier.size(1200.dp, 720.dp)) { AppContent(viewModel) } } }
         val actionCenter = onNodeWithTag("timer-action").fetchSemanticsNode().boundsInRoot.center
         onNodeWithContentDescription("Open Settings").performClick()
         onNodeWithTag("timer-action", useUnmergedTree = true).assertDoesNotExist()
@@ -151,7 +151,7 @@ class TimerControlsUiTest {
         setContent {
             val density = LocalDensity.current
             CompositionLocalProvider(LocalDensity provides Density(density.density, 2f)) {
-                ElChronoTheme { Box(Modifier.size(320.dp, 640.dp)) { AppContent(false, viewModel) } }
+                ElChronoTheme { Box(Modifier.size(320.dp, 640.dp)) { AppContent(viewModel) } }
             }
         }
         runOnIdle { viewModel.onTimerAction(); clock.advance(1.minutes); viewModel.tick() }

@@ -7,7 +7,7 @@ Desktop keyboard changes: [PR #73](https://github.com/Entreco/elchrono/pull/73).
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-002 |
-| Revision | 2.8 |
+| Revision | 2.9 |
 | Current change review | No PR opened yet; human acceptance and required specialist review pending |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
@@ -22,7 +22,7 @@ table. See [document controls](../governance/document-control.md#lifecycle-and-a
 ## Purpose and limits
 
 This protocol contains planned test procedures and acceptance criteria for
-[M2-DOC-001, revision 2.0, Product requirements](../product/requirements.md).
+[M2-DOC-001, revision 2.1, Product requirements](../product/requirements.md).
 The exact source revisions and requirement-to-source, risk, design, usability,
 and test relationships are identified in the
 [requirements traceability matrix](../safety/requirements-traceability-matrix.md).
@@ -38,7 +38,7 @@ hours. No accessibility conformance baseline is selected by this protocol.
 
 | Test ID | Requirement | Procedure | Acceptance criteria |
 |---|---|---|---|
-| TP-REQ-001 | [REQ-001](../product/requirements.md#requirement-identification) | Exercise each field independently via platform text input; test focus selection, keyboard navigation, replacement, cursor and deletion, empty input, paste, non-digits, overlength edits, carry, clamping, recreation and no app keypad at compact and expanded sizes. Test all whole-minute durations and real platform keyboard and TV remote operation where available. | Every positive duration from 00:01 through 24:00 and idle 00:00 is representable. Empty means zero immediately; field input is limited and clamped as specified, 60 minutes carries an hour, and the total never exceeds 24:00. Single-digit editing and blur padding follow REQ-001. Rejected or unchanged edits do not change or reset the setting; actual changes save and reset under REQ-002. Fields are independently focusable and operable without clipping; no app keypad is shown. Previous sequential-entry tests do not verify these criteria; platform input, accessibility and remote results remain pending until observed. |
+| TP-REQ-001 | [REQ-001](../product/requirements.md#requirement-identification) | Exercise each field independently via platform text input; test focus selection, keyboard navigation, replacement, cursor and deletion, empty input, paste, non-digits, overlength edits, carry, clamping, recreation and no app keypad at compact and expanded sizes. Test all whole-minute durations and real platform keyboard and TV remote operation where available. | Every positive duration from 00:01 through 24:00 and idle 00:00 is representable. Empty means zero immediately; field input is limited and clamped as specified, 60 minutes carries an hour, and the total never exceeds 24:00. Single-digit editing and blur padding follow REQ-001. Rejected or unchanged edits do not change or reset the setting; actual changes save and reset under REQ-002. Fields are independently focusable and operable without clipping; no app keypad is shown. Earlier sequential-entry tests do not verify these criteria. Focused JVM implementation tests pass; platform input, accessibility, remote results and usability remain pending until observed. |
 | TP-REQ-002 | [REQ-002](../product/requirements.md#requirement-identification) | Use injected time to test running, manually paused, finished, initial positive, zero and interrupted states; open Settings, visit About and close via icon and Back. Exercise actual valid duration changes, unchanged values, appearance-only edits and invalid drafts; advance time while Settings is open. Inject lifecycle stop while Settings retains running intent. | Running pauses without losing time; About return does not resume; closing resumes only retained running intent with remaining time or new full duration after a valid duration change. Changed valid duration immediately resets the engine paused; appearance-only, invalid and unchanged edits do not. Manually paused stays paused; finished stays zero unless duration changes, which prepares paused full duration requiring Resume. Initial positive configuration does not auto-start and offers Resume; zero is idle with no enabled action. Stop during Settings revokes resume and shows interruption. Settings alone never clears interruption. |
 | TP-REQ-003 | [REQ-003](../product/requirements.md#requirement-identification) | For all four shapes and details 0-12 inspect running, paused, finished, idle and interrupted states, progress, accessible names, stale warning, compact/expanded layouts, keyboard, touch and screen-reader output. Trigger lifecycle interruption including while Settings holds running intent. | States and progress are distinguishable without color alone; no clock face or time of day is shown. Detail 0 has no visible Timer text but has accessible icon actions and distinct idle/interrupted cues. Higher details show interruption warning and remaining time. No automatic interruption recovery; explicit Restart clears warning and starts full duration. All shape geometry, Clock labels and Fan bounds remain correct and unclipped. Human review of comprehension and platform delivery remains required. |
 | TP-REQ-004 | [REQ-004](../product/requirements.md#requirement-identification) | Inspect Main, Settings, and About against their required v1 content. At compact and expanded widths confirm Settings overlays Timer; resize across the breakpoint while About is open. Verify the official logo's scaling and accessible name, actual version/build metadata, approved support/privacy/licence information and link destinations, intended-use/limitations copy, navigation back to Settings and Timer, keyboard operation, and screen-reader labels. | Main includes the selected timer visualization. Settings overlays Timer on compact and expanded windows; duration and theme controls are present, with no v1 music or volume controls. About contains all REQ-004 content from authoritative sources; the logo preserves its aspect ratio and is accessible, links work, navigation is correct, and content is readable and not clipped or obscured. A missing source or required item is explicitly recorded as a gap and makes this test blocked, not passed. |
@@ -106,6 +106,12 @@ mean genuine background stop, not an Android configuration-change stop.
    and reboot recovery are not added by this change.
 
 ## Execution record
+
+### Independent duration-fields candidate
+
+| Command | Result and scope |
+|---|---|
+| `./kotlin test -p jvm -m settings` | Passed: 26 tests. The Settings module's field-entry tests cover ASCII/length validation, empty values, clamping, minute carry, the 24-hour boundary, focus selection, independent desktop field editing, blur padding, no app keypad, and saveable input restoration. This does not verify physical keyboard/IME behavior on each platform, screen-reader use, real TV remote operation, usability, or risk-control effectiveness. |
 
 ### Configuration recreation refactor candidate
 
@@ -541,3 +547,4 @@ input, screen readers, no-clipping across sizes and human review remain open.
 | 2.6 | Record issue #81's shared-control remote-focus candidate; retain blocked remote, device, usability, and human-review verification. |
 | 2.7 | Add configuration-recreation acceptance procedures, observed local refactor results and explicit common-JVM/device verification blockers. |
 | 2.8 | Replace duration-entry acceptance criteria with the proposed independent-field behavior; retain historical results and pending platform verification. |
+| 2.9 | Record focused JVM verification of the independent-field implementation; retain platform, accessibility, usability, and human-review gaps. |

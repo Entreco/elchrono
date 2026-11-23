@@ -99,22 +99,18 @@ import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
 @Preview
-fun App(
-    allowKeyboardInput: Boolean = false,
-) {
+fun App() {
     ElChronoTheme {
-        AppContent(allowKeyboardInput)
+        AppContent()
     }
 }
 
 @Composable
 internal fun AppContent(
-    allowKeyboardInput: Boolean,
     viewModel: AppViewModel = koinViewModel(),
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val lifecycle = LocalLifecycleOwner.current.lifecycle
-    val keyboardAvailable = allowKeyboardInput && isKeyboardAvailable()
     val focusManager = LocalFocusManager.current
     val focusRequester = remember { FocusRequester() }
     val settingsVisibility = remember { MutableTransitionState(state.isPreviewing) }
@@ -244,8 +240,6 @@ internal fun AppContent(
                         ) {
                             SettingsPanel(
                                 initialSettings = state.settings,
-                                keyboardInputEnabled = allowKeyboardInput,
-                                keyboardAvailable = keyboardAvailable,
                                 onChange = viewModel::updateSettings,
                                 persistenceFailure = state.persistenceFailure,
                                 onShowAbout = viewModel::showAbout,

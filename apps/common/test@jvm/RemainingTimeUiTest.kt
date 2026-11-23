@@ -49,7 +49,7 @@ class RemainingTimeUiTest {
             val density = LocalDensity.current
             CompositionLocalProvider(LocalDensity provides Density(density.density, fontScale)) {
                 ElChronoTheme {
-                    Box(Modifier.size(width, height)) { AppContent(false, viewModel) }
+                    Box(Modifier.size(width, height)) { AppContent(viewModel) }
                 }
             }
         }
@@ -109,7 +109,7 @@ class RemainingTimeUiTest {
     fun `glass is absent for detail zero and idle`() = runDesktopComposeUiTest {
         val initial = settings(1)
         val viewModel = AppViewModel(TimerEngine(), TestRepository(initial), initial, null)
-        setContent { ElChronoTheme { AppContent(false, viewModel) } }
+        setContent { ElChronoTheme { AppContent(viewModel) } }
         onNodeWithTag("remaining-time-panel").assertIsDisplayed()
         runOnIdle { viewModel.saveSettings(initial.copy(detail = 0)) }
         onNodeWithTag("remaining-time-panel").assertDoesNotExist()
@@ -132,7 +132,7 @@ class RemainingTimeUiTest {
             textColorArgb = 0xFFFFFFFF,
         )
         val viewModel = AppViewModel(TimerEngine(), TestRepository(initial), initial, null)
-        setContent { ElChronoTheme { Box(Modifier.size(600.dp, 400.dp)) { AppContent(false, viewModel) } } }
+        setContent { ElChronoTheme { Box(Modifier.size(600.dp, 400.dp)) { AppContent(viewModel) } } }
         runOnIdle { viewModel.saveSettings(initial) }
         val red = onNodeWithTag("remaining-time-panel").captureToImage().toPixelMap()
         runOnIdle { viewModel.updateSettings(initial.copy(foregroundColorArgb = 0xFF00FF00)) }

@@ -8,6 +8,7 @@ import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertIsFocused
 import androidx.compose.ui.test.hasSetTextAction
+import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
@@ -40,7 +41,7 @@ class TvControlsUiTest {
         setContent {
             ElChronoTheme {
                 Box(Modifier.size(1280.dp, 720.dp)) {
-                    AppContent(false, viewModel, tvInteractionMode = true)
+                    AppContent(viewModel)
                 }
             }
         }
@@ -61,7 +62,7 @@ class TvControlsUiTest {
         setContent {
             ElChronoTheme {
                 Box(Modifier.size(1280.dp, 720.dp)) {
-                    AppContent(false, viewModel, tvInteractionMode = true)
+                    AppContent(viewModel)
                 }
             }
         }
@@ -82,44 +83,37 @@ class TvControlsUiTest {
     }
 
     @Test
-    fun `settings keypad remains the only duration input`() = runDesktopComposeUiTest {
+    fun `settings expose editable duration fields without an app keypad`() = runDesktopComposeUiTest {
         val viewModel = viewModel()
         setContent {
             ElChronoTheme {
                 Box(Modifier.size(1280.dp, 720.dp)) {
-                    AppContent(false, viewModel, tvInteractionMode = true)
+                    AppContent(viewModel)
                 }
             }
         }
 
         onNodeWithContentDescription("Open Settings").performClick()
-        onNodeWithText("Clear").assertExists()
-        assertEquals(0, onAllNodes(hasSetTextAction(), useUnmergedTree = true).fetchSemanticsNodes().size)
+        assertEquals(0, onAllNodesWithText("Clear").fetchSemanticsNodes().size)
+        assertEquals(2, onAllNodes(hasSetTextAction(), useUnmergedTree = true).fetchSemanticsNodes().size)
 
         assertEquals(120, viewModel.uiState.value.settings.duration.totalMinutes)
     }
 
     @Test
-    fun `remote reaches and activates keypad from settings`() = runDesktopComposeUiTest {
+    fun `remote can move focus between the duration fields`() = runDesktopComposeUiTest {
         val viewModel = viewModel()
         setContent {
             ElChronoTheme {
                 Box(Modifier.size(1280.dp, 720.dp)) {
-                    AppContent(false, viewModel, tvInteractionMode = true)
+                    AppContent(viewModel)
                 }
             }
         }
-        onNodeWithContentDescription("Open Settings").performKeyInput { pressKey(Key.Enter) }
-        onNodeWithContentDescription("Hide Settings").assertIsFocused().performKeyInput {
-            pressKey(Key.DirectionDown)
-        }
-        onNodeWithText("1").assertIsFocused().performKeyInput { pressKey(Key.DirectionRight) }
-        onNodeWithText("2").assertIsFocused().performKeyInput { pressKey(Key.Enter) }
-        assertEquals(1202, viewModel.uiState.value.settings.duration.totalMinutes)
-        onNodeWithText("2").performKeyInput { pressKey(Key.DirectionDown) }
-        onNodeWithText("5").assertIsFocused().performKeyInput { pressKey(Key.DirectionDown) }
-        onNodeWithText("8").assertIsFocused().performKeyInput { pressKey(Key.DirectionDown) }
-        onNodeWithText("0").assertIsFocused()
+        onNodeWithContentDescription("Open Settings").performClick()
+        onNodeWithText("Hours").performSemanticsAction(SemanticsActions.RequestFocus)
+        onNodeWithText("Hours").assertIsFocused().performKeyInput { pressKey(Key.DirectionRight) }
+        onNodeWithText("Minutes").assertIsFocused()
     }
 
     @Test
@@ -128,7 +122,7 @@ class TvControlsUiTest {
         setContent {
             ElChronoTheme {
                 Box(Modifier.size(1280.dp, 720.dp)) {
-                    AppContent(false, viewModel, tvInteractionMode = true)
+                    AppContent(viewModel)
                 }
             }
         }
@@ -151,7 +145,7 @@ class TvControlsUiTest {
         setContent {
             ElChronoTheme {
                 Box(Modifier.size(1280.dp, 720.dp)) {
-                    AppContent(false, viewModel, tvInteractionMode = true)
+                    AppContent(viewModel)
                 }
             }
         }

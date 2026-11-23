@@ -7,7 +7,7 @@ Desktop keyboard changes: [PR #73](https://github.com/Entreco/elchrono/pull/73).
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-001 |
-| Revision | 2.0 |
+| Revision | 2.1 |
 | Current change review | No PR opened yet; human acceptance and required specialist review pending |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
@@ -33,8 +33,11 @@ accessibility, offline behavior, and platform support are not established by
 builds or domain tests.
 
 Revision 2.0 specifies the owner-requested replacement of sequential duration
-entry and the app keypad. The existing implementation still uses the previous
-input behavior; this revision does not constitute implementation or verification.
+entry and the app keypad. Revision 2.1 records the independent-field
+implementation candidate and focused JVM test coverage. Platform keyboard,
+accessibility, remote-operation, usability, risk review, and requirement
+approval remain pending; implementation tests do not establish platform
+support or control effectiveness.
 
 The [intended-use record, M1-DOC-002 revision 1.1](intended-use.md) is a
 candidate whose review/approval gaps remain open. This register does not
@@ -111,7 +114,7 @@ change to intended use.
 | D-06 | Manual pause, resume, and restart controls | Main offers bottom-right Pause while running, Resume while paused, and Restart when finished or interrupted; Restart begins the full configured duration. Actions are available at all detail levels with localized accessible names, icon-only at detail 0. No enabled action is offered at zero configuration. |
 | D-07 | Primary platforms and v1 exclusions | Android TV and Apple TV are the primary product targets. Wear OS and watchOS are outside v1 scope. The browser remains the M5 implementation/verification target; its completion does not establish TV support. TV support requires separate target configuration, packaging, remote/focus, viewing-distance, lifecycle, accessibility, and usability verification. |
 | D-08 | V1 visualization set | The v1 theme choices are Clock, Battery, Fan, and Ring, as shown in the approved demo. Clock is the initial selection, matching the demo; this default is not evidence of user preference. The visual mapping and use of each theme still require application verification and appropriate usability/accessibility review. |
-| D-09 | Settings layout and duration input methods | Show Settings over the Timer at compact and expanded widths. Use independently editable Hours and Minutes fields and platform text input rather than the app keypad on all targets. The existing input implementation has not yet been changed; platform keyboard and remote usability require verification. This does not establish support for unconfigured TV targets. |
+| D-09 | Settings layout and duration input methods | Show Settings over the Timer at compact and expanded widths. Use independently editable Hours and Minutes fields and platform text input rather than the app keypad on all targets. The independent-field implementation candidate has focused JVM test coverage; platform keyboard, accessibility and remote usability require verification. This does not establish support for unconfigured TV targets. |
 | D-10 | Text-free Timer at detail 0 | All visible Timer text remains hidden at detail 0, including interruption warnings; action icons, interrupted/idle cues and accessible state/stale-progress descriptions remain. The changed visual distinction and warning need human accessibility, usability and risk review. |
 | D-11 | Issue #66 appearance refinements | The owner requested global edge-to-edge background, bottom-right icon, demo Battery geometry, stable detail overlays, and Ring thickness. The owner selected a stationary full-window Timer with native blur and left-sliding liquid-glass Settings and About panels, and accepted that a sharp preview is not required while Settings is open. Product, accessibility, usability, risk and exact-head review of this change remain pending. |
 
@@ -166,3 +169,4 @@ does not establish that they were resolved.
 | 1.8 | Specify zero-duration idle priority and retained interruption with warning restored after positive reconfiguration; retain review gaps. |
 | 1.9 | Distinguish configuration recreation from genuine background interruption; require retained session and UI continuity without expanding restart recovery. |
 | 2.0 | Specify independently editable duration fields and platform text input in place of sequential entry and the app keypad; retain implementation, accessibility, usability, risk and platform verification gaps. |
+| 2.1 | Record the independent-field implementation candidate and focused JVM test coverage; retain platform, accessibility, usability, risk-review, and requirement-approval gaps. |

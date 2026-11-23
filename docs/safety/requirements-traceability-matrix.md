@@ -7,7 +7,7 @@ Desktop keyboard changes: [PR #73](https://github.com/Entreco/elchrono/pull/73).
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-003 |
-| Revision | 4.9 |
+| Revision | 5.0 |
 | Current change review | No PR opened yet; human acceptance and required specialist review pending |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
@@ -24,8 +24,8 @@ table. See [document controls](../governance/document-control.md#lifecycle-and-a
 This matrix is the authoritative cross-reference between the intended-use
 source, product requirements, risks, design/usability evidence, and test
 protocol. Requirement statements live in
-[M2-DOC-001, revision 2.0](../product/requirements.md); acceptance criteria and
-procedures live in [M2-DOC-002, revision 2.8](../testing/test-protocol.md).
+[M2-DOC-001, revision 2.1](../product/requirements.md); acceptance criteria and
+procedures live in [M2-DOC-002, revision 2.9](../testing/test-protocol.md).
 Do not duplicate those statements or criteria here.
 
 The mappings below are initial and proposed. Design links are included when
@@ -35,12 +35,12 @@ actual evidence is recorded.
 | Source record | Revision | Relationship |
 |---|---|---|
 | [M1-DOC-002, intended use](../product/intended-use.md) | 1.2 candidate | Product purpose, roles, use, and limitations |
-| [M2-DOC-001, product requirements](../product/requirements.md) | 2.0 candidate | Independent duration fields proposed; product review and implementation pending |
-| [M1-DOC-004, risk assessment](risk-assessment.md) | 1.14 candidate | RISK-001 through RISK-006 traced below; review pending; no control effectiveness or risk reduction claimed |
-| [M1-DOC-009, risk traceability matrix](risk-traceability-matrix.md) | 1.11 candidate | Bounded JVM evidence and planned recreation verification; review pending |
-| [M2-DOC-002, product test protocol](../testing/test-protocol.md) | 2.8 candidate | Independent duration-field criteria pending; earlier evidence remains bounded |
+| [M2-DOC-001, product requirements](../product/requirements.md) | 2.1 candidate | Independent-field implementation and focused JVM test coverage recorded; platform, accessibility, usability, risk review, and approval remain pending |
+| [M1-DOC-004, risk assessment](risk-assessment.md) | 1.15 candidate | RISK-001 through RISK-006 traced below; review pending; no control effectiveness or risk reduction claimed |
+| [M1-DOC-009, risk traceability matrix](risk-traceability-matrix.md) | 1.12 candidate | Independent-field implementation and focused JVM tests linked; platform and human review remain pending |
+| [M2-DOC-002, product test protocol](../testing/test-protocol.md) | 2.9 candidate | Independent duration-field criteria and bounded JVM execution recorded; platform and human verification remain pending |
 | [M2-DOC-004, accessible screen flows and theme prototypes](../design/accessible-screen-flows-and-theme-prototypes.md) | 3.5 candidate | Proposed duration input and Settings design; exact-head review pending |
-| [M2-DOC-005, usability review plan](../usability/usability-plan.md) | 1.3 candidate | Future refinement review scope; no participant session authorized |
+| [M2-DOC-005, usability review plan](../usability/usability-plan.md) | 1.4 candidate | Future refinement review scope; no participant session authorized |
 | [M2-DOC-006, usability findings and evidence status](../usability/usability-findings.md) | 1.2 candidate | Retrospective sessions and extended G06 redesign gap |
 | [M3-DOC-007, platform architecture decision and support matrix](../architecture/platform-architecture-and-support-matrix.md) | 0.4 candidate | Retains shared Compose controls, records the remote-focus candidate, evidence limits, and no support commitment |
 
@@ -48,7 +48,7 @@ actual evidence is recorded.
 
 | Requirement | Intended-use source | Applicable risks | Design/usability evidence | Test protocol | Verification evidence |
 |---|---|---|---|---|---|
-| [REQ-001](../product/requirements.md#requirement-identification) | [Duration and supported waiting use](../product/intended-use.md#supported-role-of-visual-time-and-optional-audio) | RISK-001, RISK-004, RISK-005 | [Settings duration entry](../design/accessible-screen-flows-and-theme-prototypes.md#settings-screen); planned [U-03](../usability/usability-plan.md#tasks-and-neutral-prompts); session scope [M2-DOC-006](../usability/usability-findings.md#session-scope-and-evidence-provenance), gap G04 | [TP-REQ-001](../testing/test-protocol.md#test-cases) | The independent-field requirement is not yet implemented or verified. Earlier JVM tests cover the superseded sequential entry and cannot verify it. Actual platform keyboard, remote, focus, layout, accessibility and usability remain unverified. The Wasm settings test runner previously failed during Skiko WebAssembly instantiation as recorded in M2-DOC-002. |
+| [REQ-001](../product/requirements.md#requirement-identification) | [Duration and supported waiting use](../product/intended-use.md#supported-role-of-visual-time-and-optional-audio) | RISK-001, RISK-004, RISK-005 | [Settings duration entry](../design/accessible-screen-flows-and-theme-prototypes.md#settings-screen); planned [U-03](../usability/usability-plan.md#tasks-and-neutral-prompts); session scope [M2-DOC-006](../usability/usability-findings.md#session-scope-and-evidence-provenance), gap G04 | [TP-REQ-001](../testing/test-protocol.md#test-cases) | The independent-field implementation candidate has focused JVM unit and Desktop Compose tests; see the [M2-DOC-002 execution record](../testing/test-protocol.md#independent-duration-fields-candidate). Platform keyboards/IME, remote operation, accessibility, supported-layout no-clipping and usability remain unverified. The earlier Wasm settings test-runner failure remains a platform test limitation. |
 | [REQ-002](../product/requirements.md#requirement-identification) | [Users and roles](../product/intended-use.md#users-population-and-roles) | RISK-001, RISK-002, RISK-004, RISK-005 | [Settings lifecycle and manual actions](../design/accessible-screen-flows-and-theme-prototypes.md#settings-screen); usability gaps G03/G04/G06 | [TP-REQ-002](../testing/test-protocol.md#test-cases) | Operator-reported passing JVM tests cover retained time, actual duration reset, manual pause, finished/initial state, About and lifecycle-stop intent. Zero idle priority and warning restoration require full platform/human review; see [execution record](../testing/test-protocol.md#one-shot-timer-and-manual-controls-candidate). |
 | [REQ-003](../product/requirements.md#requirement-identification) | [Remaining-time use](../product/intended-use.md#supported-role-of-visual-time-and-optional-audio) | RISK-001, RISK-002, RISK-005, RISK-006 | [Main states](../design/accessible-screen-flows-and-theme-prototypes.md#main-screen-and-states); gaps G04-G06 | [TP-REQ-003](../testing/test-protocol.md#test-cases) | Reported JVM state mapping and Compose interaction tests cover several action/state semantics. Zero after interruption renders idle without a warning; full visual matrix, screen-reader, device and human review remain pending. |
 | [REQ-004](../product/requirements.md#requirement-identification) | [Users and roles](../product/intended-use.md#users-population-and-roles); screen/content inventory is M2 product scope in [#22](https://github.com/Entreco/elchrono/issues/22) | RISK-004, RISK-005, RISK-006 | [Main, Settings, and About designs](../design/accessible-screen-flows-and-theme-prototypes.md#screen-flows); Settings overlay; owner-supplied logo; unavailable content remains a blocker; no v1 audio/volume controls | [TP-REQ-004](../testing/test-protocol.md#test-cases) | Prior About and browser checks do not verify the revised overlay. Required version/build, support, privacy, and licence sources remain unavailable, so TP-REQ-004 is blocked. Browser rendering, links, responsive no-clipping, keyboard, screen-reader, and integrated behavior remain unverified. See the #67 candidate execution record in M2-DOC-002. |
@@ -264,3 +264,4 @@ test procedures or acceptance criteria in this matrix.
 | 4.6 | Align traceability with approved zero idle priority and retained interruption; retain human and platform review gaps. |
 | 4.8 | Trace retained session/UI continuity to configuration-recreation procedures and bounded results; retain common JVM compilation and device-review gaps. |
 | 4.9 | Trace proposed independent duration entry to tests, usability and risk review; retain implementation and verification gaps. |
+| 5.0 | Record the independent-field implementation candidate and focused JVM test results; retain platform, accessibility, usability, risk-review, and approval gaps. |

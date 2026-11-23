@@ -5,5 +5,5 @@ import nl.entreco.elchrono.di.initApp
 
 fun ViewController() = run {
     initApp()
-    ComposeUIViewController { App(allowKeyboardInput = true) }
+    ComposeUIViewController { App() }
 }

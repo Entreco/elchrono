@@ -5,7 +5,7 @@ Settings appearance review: [PR #76](https://github.com/Entreco/elchrono/pull/76
 | Field | Value |
 |---|---|
 | Document ID | M1-DOC-004 |
-| Revision | 1.14 |
+| Revision | 1.15 |
 | Current change review | No PR opened yet; human acceptance and required specialist review pending |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
@@ -99,21 +99,20 @@ the overlay, unblurred fallback, and unrestricted colors impair readability
 or focus (RISK-001, RISK-004 and RISK-005). No revised risk acceptance or
 control effectiveness is implied by the owner's design choice.
 
-The proposed replacement of sequential entry and the app keypad requires
+The independent-field replacement of sequential entry and the app keypad is
+implemented as a candidate and covered by focused JVM tests. It still requires
 review under RISK-001, RISK-004 and RISK-005: intermediate edits immediately
 change the saved duration and reset the timer, clamping and minute carry may
 be misunderstood, and platform text input may be inaccessible or unavailable
-to remote users. Implementation, usability and platform evidence are pending;
-no risk acceptance or control effectiveness is inferred.
+to remote users. Platform and usability evidence and risk review remain
+pending; no risk acceptance or control effectiveness is inferred.
 
-The Settings foreground accent adds review scope for keypad, duration-field,
-and Details slider visibility and operation when foreground and background
-colors match or have low contrast. Black/white keypad labels do not establish
-that button boundaries, focus, selection, or slider positions are
-distinguishable. REQ-012 permits these combinations without restrictions or
-warnings. Review the resulting Settings interaction and configuration risks
-under RISK-004 and RISK-005; no risk disposition or control effectiveness is
-claimed.
+The Settings foreground accent adds review scope for duration-field labels,
+focus and selection, and Details slider visibility and operation when
+foreground and background colors match or have low contrast. REQ-012 permits
+these combinations without restrictions or warnings. Review the resulting
+Settings interaction and configuration risks under RISK-004 and RISK-005; no
+risk disposition or control effectiveness is claimed.
 
 The sliding glass layers and selected Settings font and text color add review
 scope for control legibility, focus, clipping, shader and tint fallback, and
@@ -382,3 +381,4 @@ they are not waived by this initial assessment.
 | 1.12 | Add Android TV remote-focus, selection, and viewing-distance review scope to RISK-005; retain pending verification and risk disposition. |
 | 1.13 | Exclude configuration recreation from genuine interruption and identify unnecessary stopped waits under RC-002-1; retain platform, UX and risk-review gaps. |
 | 1.14 | Add risk review scope for proposed independent duration entry, immediate changes, carry, clamping and platform input; no risk disposition is inferred. |
+| 1.15 | Record the independent-field implementation candidate and focused JVM test coverage; retain platform, usability, and risk-review gaps without inferring control effectiveness or acceptance. |

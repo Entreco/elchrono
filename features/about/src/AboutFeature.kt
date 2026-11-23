@@ -22,7 +22,6 @@ import nl.entreco.elchrono.core.localization.resources.about_privacy_gap
 import nl.entreco.elchrono.core.localization.resources.about_support_gap
 import nl.entreco.elchrono.core.localization.resources.about_tagline
 import nl.entreco.elchrono.core.localization.resources.about_version_build_gap
-import nl.entreco.elchrono.core.localization.resources.brand_wordmark
 import nl.entreco.elchrono.core.localization.resources.intended_use_heading
 import nl.entreco.elchrono.core.localization.resources.intended_use_summary
 import nl.entreco.elchrono.core.localization.resources.licence_information_heading
@@ -33,6 +32,7 @@ import nl.entreco.elchrono.core.localization.resources.support_information_headi
 import nl.entreco.elchrono.core.localization.resources.version_build_heading
 import nl.entreco.elchrono.features.about.resources.Res as AboutResources
 import nl.entreco.elchrono.features.about.resources.entreco_logo
+import nl.entreco.elchrono.features.about.resources.icon
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -45,12 +45,14 @@ fun AboutFeature(modifier: Modifier = Modifier) {
         verticalArrangement = Arrangement.spacedBy(LocalDimens.current.spaceL),
     ) {
         Image(
-            painter = painterResource(AboutResources.drawable.entreco_logo),
-            contentDescription = stringResource(Strings.string.about_logo_description),
-            modifier = Modifier.fillMaxWidth().aspectRatio(404f / 326f),
+            painter = painterResource(AboutResources.drawable.icon),
+            contentDescription = "icon",
+            modifier = Modifier
+                .fillMaxWidth(.12f)
+                .aspectRatio(404f / 326f),
             contentScale = ContentScale.Fit,
         )
-        Text(stringResource(Strings.string.brand_wordmark), style = MaterialTheme.typography.headlineLarge)
+
         Text(
             text = stringResource(Strings.string.about_tagline),
             style = MaterialTheme.typography.bodyLarge,
@@ -81,6 +83,15 @@ fun AboutFeature(modifier: Modifier = Modifier) {
             title = Strings.string.limitations_heading,
             body = Strings.string.limitations_summary,
         )
+
+        Image(
+            painter = painterResource(AboutResources.drawable.entreco_logo),
+            contentDescription = stringResource(Strings.string.about_logo_description),
+            modifier = Modifier
+                .fillMaxWidth(.12f)
+                .aspectRatio(404f / 326f),
+            contentScale = ContentScale.Fit,
+        )
     }
 }
 
@@ -99,8 +110,8 @@ private fun AboutSection(
             modifier = Modifier.padding(LocalDimens.current.spaceL),
             verticalArrangement = Arrangement.spacedBy(LocalDimens.current.spaceS),
         ) {
-            Text(stringResource(title), style = MaterialTheme.typography.titleMedium)
-            Text(stringResource(body), style = MaterialTheme.typography.bodyMedium)
+            Text(stringResource(title), style = MaterialTheme.typography.titleSmall)
+            Text(stringResource(body), style = MaterialTheme.typography.bodySmall)
         }
     }
 }

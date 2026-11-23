@@ -45,7 +45,7 @@ class SettingsStateRestorationUiTest {
                             if (landscape) 360.dp else 640.dp,
                         ).testTag("settings-viewport"),
                     ) {
-                        SettingsPanel(settings, { settings = it }, {}, true, true)
+                        SettingsPanel(settings, { settings = it }, {})
                     }
                 }
             }

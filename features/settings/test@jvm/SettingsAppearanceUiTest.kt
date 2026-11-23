@@ -106,7 +106,7 @@ class SettingsAppearanceUiTest {
             TimerSettings(checkNotNull(TimerDuration.fromMinutes(10)), TimerTheme.CLOCK),
         )
         setContent {
-            SettingsPanel(settings, { settings = it }, {}, true, true)
+            SettingsPanel(settings, { settings = it }, {})
         }
         val labels = listOf(
             "White", "Paper", "Gray", "Ink", "Black", "Yellow", "Orange", "Red",
@@ -206,8 +206,6 @@ class SettingsAppearanceUiTest {
                 initialSettings = settings,
                 onChange = { settings = it },
                 onShowAbout = {},
-                keyboardInputEnabled = true,
-                keyboardAvailable = true,
             )
         }
 

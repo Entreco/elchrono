@@ -12,7 +12,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -22,15 +23,22 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.Slider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.Color
@@ -38,8 +46,6 @@ import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import nl.entreco.elchrono.core.counter.DurationDigitEntry
-import nl.entreco.elchrono.core.design.NumericKeypad
 import nl.entreco.elchrono.core.design.DesignChoice
 import nl.entreco.elchrono.core.design.elChronoFocusOutline
 import nl.entreco.elchrono.core.design.ChoicePicker
@@ -61,9 +67,7 @@ import nl.entreco.elchrono.core.persistence.TimerSettings
 import nl.entreco.elchrono.core.localization.resources.Res as Strings
 import nl.entreco.elchrono.core.localization.resources.about
 import nl.entreco.elchrono.core.localization.resources.battery
-import nl.entreco.elchrono.core.localization.resources.clear
 import nl.entreco.elchrono.core.localization.resources.clock
-import nl.entreco.elchrono.core.localization.resources.delete
 import nl.entreco.elchrono.core.localization.resources.background
 import nl.entreco.elchrono.core.localization.resources.colors
 import nl.entreco.elchrono.core.localization.resources.detail
@@ -94,23 +98,19 @@ import nl.entreco.elchrono.core.localization.resources.duration
 import nl.entreco.elchrono.core.localization.resources.duration_entry_help
 import nl.entreco.elchrono.core.localization.resources.fan
 import nl.entreco.elchrono.core.localization.resources.hours
-import nl.entreco.elchrono.core.localization.resources.invalid_duration
-import nl.entreco.elchrono.core.localization.resources.invalid_duration_including_zero
 import nl.entreco.elchrono.core.localization.resources.minutes
 import nl.entreco.elchrono.core.localization.resources.ring
-import nl.entreco.elchrono.core.localization.resources.save_and_start
 import nl.entreco.elchrono.core.localization.resources.selected_theme_format
 import nl.entreco.elchrono.core.localization.resources.theme
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
+import kotlinx.coroutines.flow.collect
 
 @Composable
 fun SettingsPanel(
     initialSettings: TimerSettings,
     onChange: (TimerSettings) -> Unit,
     onShowAbout: () -> Unit,
-    keyboardInputEnabled: Boolean,
-    keyboardAvailable: Boolean,
     persistenceFailure: String? = null,
     modifier: Modifier = Modifier,
 ) {
@@ -131,8 +131,6 @@ fun SettingsPanel(
                     initialSettings = initialSettings,
                     onChange = onChange,
                     onShowAbout = onShowAbout,
-                    keyboardInputEnabled = keyboardInputEnabled,
-                    keyboardAvailable = keyboardAvailable,
                 )
                 persistenceFailure?.let {
                     Spacer(Modifier.height(LocalDimens.current.spaceM))
@@ -172,16 +170,48 @@ fun SettingsScreen(
     initialSettings: TimerSettings,
     onChange: (TimerSettings) -> Unit,
     onShowAbout: () -> Unit,
-    keyboardInputEnabled: Boolean,
-    keyboardAvailable: Boolean,
     modifier: Modifier = Modifier,
 ) {
-    val inputMode = DurationEntryInputMode(
-        keyboardInputEnabled = keyboardInputEnabled,
-        keyboardAvailable = keyboardAvailable,
-    )
-    var entry by rememberSaveable(stateSaver = DurationEntrySaver) {
-        mutableStateOf(DurationDigitEntry.fromDuration(initialSettings.duration))
+    var entry by rememberSaveable(stateSaver = DurationFieldEntrySaver) {
+        mutableStateOf(DurationFieldEntry.fromDuration(initialSettings.duration))
+    }
+    var hoursValue by rememberSaveable(stateSaver = TextFieldValue.Saver) {
+        mutableStateOf(TextFieldValue(initialSettings.duration.hours.toString().padStart(2, '0')))
+    }
+    var minutesValue by rememberSaveable(stateSaver = TextFieldValue.Saver) {
+        mutableStateOf(TextFieldValue(initialSettings.duration.minutes.toString().padStart(2, '0')))
+    }
+    var focusedField by remember { mutableStateOf<DurationField?>(null) }
+    val currentFocusedField = rememberUpdatedState(focusedField)
+    val hoursInteractionSource = remember { MutableInteractionSource() }
+    val minutesInteractionSource = remember { MutableInteractionSource() }
+    LaunchedEffect(focusedField) {
+        withFrameNanos { }
+        when (focusedField) {
+            DurationField.HOURS ->
+                hoursValue = hoursValue.copy(selection = TextRange(0, hoursValue.text.length))
+            DurationField.MINUTES ->
+                minutesValue = minutesValue.copy(selection = TextRange(0, minutesValue.text.length))
+            null -> Unit
+        }
+    }
+    LaunchedEffect(hoursInteractionSource) {
+        hoursInteractionSource.interactions.collect { interaction ->
+            if (interaction is PressInteraction.Release &&
+                currentFocusedField.value == DurationField.HOURS
+            ) {
+                hoursValue = hoursValue.copy(selection = TextRange(0, hoursValue.text.length))
+            }
+        }
+    }
+    LaunchedEffect(minutesInteractionSource) {
+        minutesInteractionSource.interactions.collect { interaction ->
+            if (interaction is PressInteraction.Release &&
+                currentFocusedField.value == DurationField.MINUTES
+            ) {
+                minutesValue = minutesValue.copy(selection = TextRange(0, minutesValue.text.length))
+            }
+        }
     }
     val accent = settingsAccentColors(Color(initialSettings.foregroundColorArgb))
     val fieldColors = OutlinedTextFieldDefaults.colors(
@@ -194,8 +224,8 @@ fun SettingsScreen(
         ),
     )
 
-    fun publish(updatedEntry: DurationDigitEntry) {
-        updatedEntry.duration?.let { onChange(initialSettings.copy(duration = it)) }
+    fun publish(updatedEntry: DurationFieldEntry) {
+        onChange(initialSettings.copy(duration = updatedEntry.duration))
     }
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -208,32 +238,66 @@ fun SettingsScreen(
             horizontalArrangement = Arrangement.spacedBy(LocalDimens.current.spaceL),
         ) {
             OutlinedTextField(
-                value = entry.hours.toString().padStart(2, '0'),
+                value = hoursValue,
+                interactionSource = hoursInteractionSource,
                 onValueChange = { edited ->
-                    entry = entry.applyTextEdit(
-                        previousText = entry.hours.toString().padStart(2, '0'),
-                        editedText = edited,
-                    ).also { publish(it) }
+                    entry.editHours(edited.text)?.let { update ->
+                        val durationChanged = update.entry.duration != entry.duration
+                        entry = update.entry
+                        hoursValue = edited.copy(
+                            text = update.text,
+                            selection = if (update.text == edited.text) edited.selection
+                            else TextRange(update.text.length),
+                        )
+                        minutesValue = TextFieldValue(update.entry.minutes.toString().padStart(2, '0'))
+                        if (durationChanged) publish(update.entry)
+                    }
                 },
                 modifier = Modifier.weight(1f)
-                    .then(Modifier.focusProperties { canFocus = true }),
-                readOnly = inputMode.fieldsReadOnly,
+                    .focusProperties { canFocus = true }
+                    .onFocusChanged { focusState ->
+                        if (focusState.isFocused) {
+                            focusedField = DurationField.HOURS
+                            val text = entry.hours.toString().padStart(2, '0')
+                            hoursValue = TextFieldValue(text)
+                        } else if (focusedField == DurationField.HOURS) {
+                            focusedField = null
+                            hoursValue = TextFieldValue(entry.hours.toString().padStart(2, '0'))
+                        }
+                    },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 label = { Text(stringResource(Strings.string.hours)) },
                 colors = fieldColors,
                 singleLine = true,
             )
             OutlinedTextField(
-                value = entry.minutes.toString().padStart(2, '0'),
+                value = minutesValue,
+                interactionSource = minutesInteractionSource,
                 onValueChange = { edited ->
-                    entry = entry.applyTextEdit(
-                        previousText = entry.minutes.toString().padStart(2, '0'),
-                        editedText = edited,
-                    ).also { publish(it) }
+                    entry.editMinutes(edited.text)?.let { update ->
+                        val durationChanged = update.entry.duration != entry.duration
+                        entry = update.entry
+                        minutesValue = edited.copy(
+                            text = update.text,
+                            selection = if (update.text == edited.text) edited.selection
+                            else TextRange(update.text.length),
+                        )
+                        hoursValue = TextFieldValue(update.entry.hours.toString().padStart(2, '0'))
+                        if (durationChanged) publish(update.entry)
+                    }
                 },
                 modifier = Modifier.weight(1f)
-                    .then(Modifier.focusProperties { canFocus = true }),
-                readOnly = inputMode.fieldsReadOnly,
+                    .focusProperties { canFocus = true }
+                    .onFocusChanged { focusState ->
+                        if (focusState.isFocused) {
+                            focusedField = DurationField.MINUTES
+                            val text = entry.minutes.toString().padStart(2, '0')
+                            minutesValue = TextFieldValue(text)
+                        } else if (focusedField == DurationField.MINUTES) {
+                            focusedField = null
+                            minutesValue = TextFieldValue(entry.minutes.toString().padStart(2, '0'))
+                        }
+                    },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 label = { Text(stringResource(Strings.string.minutes)) },
                 colors = fieldColors,
@@ -245,33 +309,6 @@ fun SettingsScreen(
             stringResource(Strings.string.duration_entry_help),
             textAlign = TextAlign.Center,
         )
-        Spacer(Modifier.height(LocalDimens.current.spaceL))
-        if (inputMode.showNumericKeypad) {
-            NumericKeypad(
-                clearLabel = stringResource(Strings.string.clear),
-                deleteLabel = stringResource(Strings.string.delete),
-                onDigit = { val updated = entry.append(it); entry = updated; publish(updated) },
-                onDelete = { val updated = entry.deleteLast(); entry = updated; publish(updated) },
-                onClear = { val updated = entry.clear(); entry = updated; publish(updated) },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = accent.foreground,
-                    contentColor = accent.onForeground,
-                ),
-            )
-        }
-        if (entry.duration == null) {
-            Spacer(Modifier.height(LocalDimens.current.spaceM))
-            Surface(
-                color = MaterialTheme.colorScheme.errorContainer,
-                contentColor = MaterialTheme.colorScheme.onErrorContainer,
-                shape = MaterialTheme.shapes.small,
-            ) {
-                Text(
-                    text = stringResource(Strings.string.invalid_duration_including_zero),
-                    modifier = Modifier.padding(LocalDimens.current.spaceM),
-                )
-            }
-        }
         Spacer(Modifier.height(LocalDimens.current.spaceXXL))
         Text(stringResource(Strings.string.theme), style = MaterialTheme.typography.titleLarge)
         Spacer(Modifier.height(LocalDimens.current.spaceM))
@@ -370,10 +407,12 @@ fun SettingsScreen(
     }
 }
 
-private val DurationEntrySaver = Saver<DurationDigitEntry, String>(
-    save = { it.hours.toString().padStart(2, '0') + it.minutes.toString().padStart(2, '0') },
-    restore = { DurationDigitEntry.empty().applyTextEdit("", it) },
+private val DurationFieldEntrySaver = Saver<DurationFieldEntry, Int>(
+    save = { it.duration.totalMinutes },
+    restore = { DurationFieldEntry.fromTotalMinutes(it) },
 )
+
+private enum class DurationField { HOURS, MINUTES }
 
 private val TimerTheme.label: StringResource
     get() = when (this) {

@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M1-DOC-009 |
-| Revision | 1.11 |
+| Revision | 1.12 |
 | Current change review | [PR #78](https://github.com/Entreco/elchrono/pull/78); human acceptance and required specialist review pending |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
@@ -18,7 +18,7 @@ Lifecycle status is derived from the branch and PR context; see
 ## Purpose and use
 
 This matrix links the scenarios and proposed controls in
-[M1-DOC-004 revision 1.13](risk-assessment.md#risk-analysis) to intended-use
+[M1-DOC-004 revision 1.15](risk-assessment.md#risk-analysis) to intended-use
 sources, assessment assumptions, and planned verification. Each risk and
 follow-up is owned by the product owner, @Entreco. The M2
 [requirements traceability matrix](requirements-traceability-matrix.md) is the
@@ -57,7 +57,7 @@ establishes control effectiveness or residual-risk acceptability.
 
 | Risk and proposed controls | Intended-use trace | Assessment basis and assumptions | Planned verification | Test/review evidence and result |
 |---|---|---|---|---|
-| [RISK-001](risk-assessment.md#risk-analysis) | [Waiting and limitations](../product/intended-use.md#foreseeable-use-and-limitations) | Duration changes, remaining time and one-shot completion can be misunderstood or incorrect. | TP-REQ-002/010/014: deterministic all-duration boundaries, Settings intent, actual changes and appearance-only edits; UI and usability review. | Operator-reported passing JVM tests exercise all positive durations and one-shot completion, Settings intent and duration resets. [Execution record](../testing/test-protocol.md#one-shot-timer-and-manual-controls-candidate); product and risk review pending. |
+| [RISK-001](risk-assessment.md#risk-analysis) | [Waiting and limitations](../product/intended-use.md#foreseeable-use-and-limitations) | Duration changes, remaining time and one-shot completion can be misunderstood or incorrect. | TP-REQ-001/002/010/014: field clamping, carry, empty input, actual changes and timer boundaries; UI and usability review. | Focused JVM tests cover independent-field editing and desktop interaction; broader timer tests are recorded in the protocol. Platform input, usability, product and risk review remain pending; no control effectiveness or risk acceptance is claimed. |
 | [RISK-002](risk-assessment.md#risk-analysis) | [Limitations](../product/intended-use.md#foreseeable-use-and-limitations) | Lifecycle delivery and icon-only stale-progress warning may be misunderstood. At zero, idle presentation hides the warning despite retained interruption. | TP-REQ-002/003/013: stop while running and while Settings holds intent, no automatic recovery, Settings cannot clear warning, explicit Restart. | Reported JVM tests cover stop with held intent and explicit Restart. Zero idle priority and warning restoration after positive reconfiguration need human risk/accessibility review; actual platform delivery remains pending. |
 | [RISK-003](risk-assessment.md#risk-analysis) | [Visual time and audio](../product/intended-use.md#supported-role-of-visual-time-and-optional-audio) | Music and in-app volume controls are excluded from v1 and deferred for future consideration. [M3-DOC-003](../architecture/audio-provider-feasibility-findings.md) records provider policy, platform, data-flow, and testability constraints; no future provider or playback behavior is approved. | No v1 audio behavior to verify. Before v2 audio, review provider/data flows, playback limits/failure, volume, start and completion sound behavior, then verify timer independence and audio behavior. | Deferred; no audio implementation or verification is claimed. |
 | [RISK-004](risk-assessment.md#risk-analysis) | [Users and roles](../product/intended-use.md#users-population-and-roles) | Settings and new timer actions are accessible without a caregiver gate; unintended changes and resets may alter a wait. | TP-REQ-002/005/014 and caregiver usability/risk review of open access, duration edits and manual actions. | Reported JVM tests exercise manual actions and duration changes, not their consequences for users. No protection, control effectiveness or risk acceptance claimed. |
@@ -101,3 +101,4 @@ interruption or process-death/reboot recovery policy or establish effectiveness.
 | 1.9 | Link operator-reported bounded JVM evidence and the zero-duration interruption-warning mismatch; retain platform and human-review gaps. |
 | 1.10 | Trace approved zero idle priority and retained interruption; keep human and platform review pending. |
 | 1.11 | Trace recreation continuity and genuine-background discrimination to RC-002-1 and bounded refactor evidence; retain blocked device and human verification. |
+| 1.12 | Trace the independent-field implementation and focused JVM tests to TP-REQ-001; retain platform, accessibility, usability, and risk-review gaps. |

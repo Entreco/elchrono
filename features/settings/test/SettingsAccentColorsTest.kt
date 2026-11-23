@@ -8,7 +8,7 @@ import kotlin.test.assertTrue
 
 class SettingsAccentColorsTest {
     @Test
-    fun `selected foreground is preserved and keypad labels remain legible`() {
+    fun `selected foreground is preserved and label color remains legible`() {
         assertEquals(16, settingsColorPresets.size)
         assertEquals(16, settingsColorPresets.map { it.id }.distinct().size)
         assertEquals(16, settingsColorPresets.map { it.argb }.distinct().size)
@@ -19,7 +19,7 @@ class SettingsAccentColorsTest {
             val luminances = listOf(foreground.luminance(), colors.onForeground.luminance()).sorted()
             assertTrue(
                 (luminances[1] + 0.05f) / (luminances[0] + 0.05f) >= 4.5f,
-                "Insufficient keypad text contrast for $foreground",
+                "Insufficient accent text contrast for $foreground",
             )
         }
     }

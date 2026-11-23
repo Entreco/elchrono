@@ -7,8 +7,8 @@ Desktop keyboard changes: [PR #73](https://github.com/Entreco/elchrono/pull/73).
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-004 |
-| Revision | 3.2 |
-| Current change review | [PR #78](https://github.com/Entreco/elchrono/pull/78); human acceptance and required specialist review pending |
+| Revision | 3.3 |
+| Current change review | No PR opened yet; human acceptance and required specialist review pending |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Product design, accessibility, and usability: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
@@ -233,7 +233,10 @@ black/white backing so selection remains visible when the swatch and text colors
 match. The swatch remains visible around the indicator. Low-contrast text and
 background choices can still obscure navigation icons; no restriction is added.
 Each of the three color pickers offers the same 16 named presets, with up to
-eight 48 dp targets per row; narrower panels wrap to additional rows. The
+eight 48 dp targets per row; narrower panels wrap to additional rows. Presets
+are grouped by similarity: neutrals from light to dark (white, paper, gray, ink,
+black), then hues in wheel order (yellow, orange, red, pink, purple, navy, blue,
+cyan, teal, green, lime). The
 Rounded font uses the bundled Nunito typeface, distinct from Default; Serif is
 also available alongside Monospace. Saved font and color choices remain
 independent. Ring thickness retains all integer values from 1 to 100 percent
@@ -414,3 +417,4 @@ PR.
 | 3.0 | Describe the expanded responsive palette, distinct fonts and tick-free Ring slider; retain accessibility and platform review gaps. |
 | 3.1 | Specify one-shot states, explicit controls and Settings intent; retain historical prototype behavior and pending review. |
 | 3.2 | Clarify zero idle priority and retained interruption with warning restored on positive reconfiguration; retain accessibility and risk review. |
+| 3.3 | Group color presets by similarity: neutrals light to dark, then hues in wheel order; retain accessibility and human review gaps. |

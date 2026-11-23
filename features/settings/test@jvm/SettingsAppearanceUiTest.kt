@@ -109,8 +109,8 @@ class SettingsAppearanceUiTest {
             SettingsPanel(settings, { settings = it }, {}, true, true)
         }
         val labels = listOf(
-            "Paper", "Ink", "Blue", "Orange", "Green", "Red", "White", "Black",
-            "Gray", "Yellow", "Lime", "Teal", "Cyan", "Navy", "Purple", "Pink",
+            "White", "Paper", "Gray", "Ink", "Black", "Yellow", "Orange", "Red",
+            "Pink", "Purple", "Navy", "Blue", "Cyan", "Teal", "Green", "Lime",
         )
         labels.forEachIndexed { index, label ->
             repeat(3) { picker ->

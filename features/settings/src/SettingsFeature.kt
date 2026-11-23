@@ -413,20 +413,21 @@ private val TimerFont.label: StringResource
 internal data class SettingsColorPreset(val id: String, val label: StringResource, val argb: Long)
 
 internal val settingsColorPresets = listOf(
-    SettingsColorPreset("paper", Strings.string.color_paper, 0xFFF7F7F2),
-    SettingsColorPreset("ink", Strings.string.color_ink, 0xFF17171C),
-    SettingsColorPreset("blue", Strings.string.color_blue, 0xFF5B5BD6),
-    SettingsColorPreset("orange", Strings.string.color_orange, 0xFFE58A3A),
-    SettingsColorPreset("green", Strings.string.color_green, 0xFF3D7A57),
-    SettingsColorPreset("red", Strings.string.color_red, 0xFFC54A4A),
+    // Neutrals from light to dark, then colors around the hue wheel.
     SettingsColorPreset("white", Strings.string.color_white, 0xFFFFFFFF),
-    SettingsColorPreset("black", Strings.string.color_black, 0xFF000000),
+    SettingsColorPreset("paper", Strings.string.color_paper, 0xFFF7F7F2),
     SettingsColorPreset("gray", Strings.string.color_gray, 0xFF808080),
+    SettingsColorPreset("ink", Strings.string.color_ink, 0xFF17171C),
+    SettingsColorPreset("black", Strings.string.color_black, 0xFF000000),
     SettingsColorPreset("yellow", Strings.string.color_yellow, 0xFFF2C94C),
-    SettingsColorPreset("lime", Strings.string.color_lime, 0xFF8CBF3F),
-    SettingsColorPreset("teal", Strings.string.color_teal, 0xFF168A86),
-    SettingsColorPreset("cyan", Strings.string.color_cyan, 0xFF45B8D1),
-    SettingsColorPreset("navy", Strings.string.color_navy, 0xFF273C75),
-    SettingsColorPreset("purple", Strings.string.color_purple, 0xFF9055B5),
+    SettingsColorPreset("orange", Strings.string.color_orange, 0xFFE58A3A),
+    SettingsColorPreset("red", Strings.string.color_red, 0xFFC54A4A),
     SettingsColorPreset("pink", Strings.string.color_pink, 0xFFD66C98),
+    SettingsColorPreset("purple", Strings.string.color_purple, 0xFF9055B5),
+    SettingsColorPreset("navy", Strings.string.color_navy, 0xFF273C75),
+    SettingsColorPreset("blue", Strings.string.color_blue, 0xFF5B5BD6),
+    SettingsColorPreset("cyan", Strings.string.color_cyan, 0xFF45B8D1),
+    SettingsColorPreset("teal", Strings.string.color_teal, 0xFF168A86),
+    SettingsColorPreset("green", Strings.string.color_green, 0xFF3D7A57),
+    SettingsColorPreset("lime", Strings.string.color_lime, 0xFF8CBF3F),
 )

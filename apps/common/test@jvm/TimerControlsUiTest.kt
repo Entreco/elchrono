@@ -139,9 +139,11 @@ class TimerControlsUiTest {
         onRoot().performTouchInput { click(actionCenter) }
         assertFalse(viewModel.uiState.value.isTicking)
         mainClock.advanceTimeBy(1000)
-        mainClock.autoAdvance = true
         onNodeWithContentDescription("Resume").assertIsDisplayed().performClick()
         assertTrue(viewModel.uiState.value.isTicking)
+        viewModel.onTimerAction()
+        assertFalse(viewModel.uiState.value.isTicking)
+        mainClock.autoAdvance = true
     }
 
     @Test

@@ -5,7 +5,7 @@ Settings appearance review: [PR #76](https://github.com/Entreco/elchrono/pull/76
 | Field | Value |
 |---|---|
 | Document ID | M1-DOC-004 |
-| Revision | 1.11 |
+| Revision | 1.12 |
 | Current change review | [PR #78](https://github.com/Entreco/elchrono/pull/78); human acceptance and required specialist review pending |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
@@ -127,6 +127,12 @@ Navigation icons using the chosen text color may be indistinguishable from a
 matching background. Selected swatches use a contrasting backing behind their
 text-colored check, but its recognition, size, focus, and rendering need
 accessibility and usability review; no effectiveness is credited.
+The Android TV candidate adds review scope for predictable focus restoration
+and movement, selected-control semantics, visible focus, and readable
+targets at viewing distance. JVM simulated input and compilation do not verify
+these behaviors on an Android TV renderer or with a remote. Review under
+RISK-005; no control effectiveness, risk disposition, or support readiness is
+claimed.
 
 ## Initial assessment method and criteria
 
@@ -272,7 +278,7 @@ Individual effects cannot be added to calculate the overall post-control score.
 
 | ID | Proposed control | Intended effect and rationale |
 |---|---|---|
-| RC-005-1 | Use consistent non-color-only progress/state cues and accessible action semantics, including icon-only detail 0 and stale-progress meaning. | Intended to reduce ambiguity; action/state distinction, labels, focus, warning and comprehension need human review and verification. No effectiveness is credited. |
+| RC-005-1 | Use consistent non-color-only progress/state cues and accessible action semantics, including icon-only detail 0, stale-progress meaning, and predictable visible focus for TV remote controls. | Intended to reduce ambiguity; action/state distinction, labels, focus, warning, remote navigation and comprehension need human review and verification. No effectiveness is credited. |
 | RC-005-2 | Avoid flashing and unnecessary motion. | Likelihood: reduce distracting presentation that may contribute to misunderstanding. |
 | RC-005-3 | Review themes and interactions with caregivers and representative patients under appropriate consent and safeguards. | Likelihood: identify and correct misunderstandings before release; review alone does not establish an effective control. |
 
@@ -366,3 +372,4 @@ they are not waived by this initial assessment.
 | 1.9 | Reassess proposed timing, interruption, open-access and accessibility controls for explicit actions and one-shot behavior; retain undetermined residual risk. |
 | 1.10 | Record bounded reported JVM evidence and the zero-duration stale-warning mismatch; retain qualified review and undetermined residual risk. |
 | 1.11 | Align risk control with approved zero idle priority while retaining human risk and accessibility review. |
+| 1.12 | Add Android TV remote-focus, selection, and viewing-distance review scope to RISK-005; retain pending verification and risk disposition. |

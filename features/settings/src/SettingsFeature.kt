@@ -28,6 +28,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -39,6 +40,7 @@ import androidx.compose.ui.semantics.semantics
 import nl.entreco.elchrono.core.counter.DurationDigitEntry
 import nl.entreco.elchrono.core.design.NumericKeypad
 import nl.entreco.elchrono.core.design.DesignChoice
+import nl.entreco.elchrono.core.design.elChronoFocusOutline
 import nl.entreco.elchrono.core.design.ChoicePicker
 import nl.entreco.elchrono.core.design.ColorSwatchPicker
 import nl.entreco.elchrono.core.design.DesignColorSwatch
@@ -120,6 +122,7 @@ fun SettingsPanel(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
+                    .then(Modifier.focusProperties { canFocus = false } )
                     .verticalScroll(rememberScrollState())
                     .padding(LocalDimens.current.spaceXL),
             ) {
@@ -234,7 +237,8 @@ fun SettingsScreen(
                         editedText = edited,
                     ).also { publish(it) }
                 },
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.weight(1f)
+                    .then(Modifier.focusProperties { canFocus = false }),
                 readOnly = inputMode.fieldsReadOnly,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 label = { Text(stringResource(Strings.string.hours)) },
@@ -249,7 +253,8 @@ fun SettingsScreen(
                         editedText = edited,
                     ).also { publish(it) }
                 },
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.weight(1f)
+                    .then(Modifier.focusProperties { canFocus = false }),
                 readOnly = inputMode.fieldsReadOnly,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 label = { Text(stringResource(Strings.string.minutes)) },
@@ -368,7 +373,9 @@ fun SettingsScreen(
                 detail = it.roundToInt()
                 publish(allowInvalidDuration = true)
             },
-            modifier = Modifier.semantics { contentDescription = detailLabel },
+            modifier = Modifier
+                .elChronoFocusOutline(MaterialTheme.shapes.small)
+                .semantics { contentDescription = detailLabel },
             valueRange = 0f..12f,
             steps = 11,
             colors = detailColors,
@@ -387,7 +394,10 @@ fun SettingsScreen(
         )
         Text("$detail")
         Spacer(Modifier.height(LocalDimens.current.spaceL))
-        TextButton(onClick = onShowAbout) {
+        TextButton(
+            onClick = onShowAbout,
+            modifier = Modifier.elChronoFocusOutline(MaterialTheme.shapes.small),
+        ) {
             Text(stringResource(Strings.string.about))
         }
 

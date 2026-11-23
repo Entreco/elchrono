@@ -21,7 +21,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -31,20 +30,29 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.input.key.onPreviewKeyEvent
+import androidx.compose.ui.input.key.type
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.clearAndSetSemantics
-import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
@@ -56,7 +64,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
-import com.skydoves.cloudy.CloudyState
 import com.skydoves.cloudy.LiquidGlassDefaults
 import com.skydoves.cloudy.LiquidGlassGlow
 import com.skydoves.cloudy.Sky
@@ -66,6 +73,7 @@ import com.skydoves.cloudy.rememberSky
 import com.skydoves.cloudy.sky
 import kotlinx.coroutines.delay
 import nl.entreco.elchrono.core.counter.TimerStatus
+import nl.entreco.elchrono.core.design.elChronoFocusOutline
 import nl.entreco.elchrono.core.design.ElChronoMotion
 import nl.entreco.elchrono.core.design.ElChronoTheme
 import nl.entreco.elchrono.core.design.LocalDimens
@@ -79,7 +87,6 @@ import nl.entreco.elchrono.core.design.resources.Res as DesignResources
 import nl.entreco.elchrono.core.localization.resources.Res as Strings
 import nl.entreco.elchrono.core.localization.resources.app_title
 import nl.entreco.elchrono.core.localization.resources.back
-import nl.entreco.elchrono.core.localization.resources.glass_effect_unavailable
 import nl.entreco.elchrono.core.localization.resources.hide_settings
 import nl.entreco.elchrono.core.localization.resources.open_settings
 import nl.entreco.elchrono.features.about.AboutFeature
@@ -105,6 +112,7 @@ internal fun AppContent(
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val keyboardAvailable = allowKeyboardInput && isKeyboardAvailable()
     val focusManager = LocalFocusManager.current
+    val focusRequester = remember { FocusRequester() }
     val settingsVisibility = remember { MutableTransitionState(false) }
     settingsVisibility.targetState = state.isPreviewing
     val overlayVisible = settingsVisibility.currentState || settingsVisibility.targetState
@@ -129,6 +137,8 @@ internal fun AppContent(
     }
     LaunchedEffect(state.screen) {
         focusManager.clearFocus()
+        withFrameNanos { }
+        focusRequester.requestFocus()
     }
 
     MaterialTheme(
@@ -143,11 +153,38 @@ internal fun AppContent(
         },
     ) {
         Scaffold(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .onKeyEvent { event ->
+
+                    val direction = when (event.key) {
+                        Key.DirectionUp -> FocusDirection.Up
+                        Key.DirectionDown -> FocusDirection.Down
+                        Key.DirectionLeft -> FocusDirection.Left
+                        Key.DirectionRight -> FocusDirection.Right
+                        else -> null
+                    }
+                    direction != null && focusManager.moveFocus(direction)
+
+                },
             containerColor = Color.Transparent,
             contentColor = MaterialTheme.colorScheme.onSurface,
             topBar = {
-                AppBar(state.screen, Color(state.settings.textColorArgb)) {
+                AppBar(
+                    screen = state.screen,
+                    textColor = Color(state.settings.textColorArgb),
+                    focusRequester = focusRequester,
+                    modifier = if (
+                        !overlayVisible &&
+                        state.presentationSnapshot.status != TimerStatus.NOT_CONFIGURED
+                    ) {
+                        Modifier.onPreviewKeyEvent { event ->
+                            event.type == KeyEventType.KeyDown && event.key == Key.DirectionDown &&
+                                    (focusManager.moveFocus(FocusDirection.Down) ||
+                                            focusManager.moveFocus(FocusDirection.Next))
+                        }
+                    } else Modifier,
+                ) {
                     if (state.screen == AppScreen.TIMER) viewModel.openSettings()
                     else viewModel.onBackPressed()
                 }
@@ -166,6 +203,12 @@ internal fun AppContent(
                         contentPadding.calculateTopPadding(),
                         onTimerAction = viewModel::onTimerAction,
                         controlsEnabled = !overlayVisible,
+                        actionModifier =
+                            Modifier.onPreviewKeyEvent { event ->
+                                event.type == KeyEventType.KeyDown && event.key == Key.DirectionUp &&
+                                        (focusManager.moveFocus(FocusDirection.Up) ||
+                                                focusManager.moveFocus(FocusDirection.Previous))
+                            },
                         bottomInset = contentPadding.calculateBottomPadding(),
                         modifier = Modifier
                             .fillMaxSize()
@@ -189,7 +232,11 @@ internal fun AppContent(
                             Modifier
                                 .fillMaxSize()
                                 .testTag("settings-layer")
-                                .focusProperties { canFocus = state.screen == AppScreen.SETTINGS }
+                                .then(
+                                    if (state.screen != AppScreen.SETTINGS) {
+                                        Modifier.focusProperties { canFocus = false }
+                                    } else Modifier,
+                                )
                                 .then(semantics),
                         ) {
                             SettingsPanel(
@@ -262,30 +309,16 @@ private fun GlassPanel(
     tintAlpha: Float = 0.72f,
     content: @Composable () -> Unit,
 ) {
-    var blurError by remember { mutableStateOf(false) }
     Box(modifier) {
         GlassBackdrop(
             sky = sky,
             background = background,
-            blurError = blurError,
-            onBlurErrorChanged = { blurError = it },
             modifier = Modifier.matchParentSize(),
             backdropRadius = backdropRadius,
             tintAlpha = tintAlpha,
         )
         Column(Modifier.fillMaxSize()) {
             Box(Modifier.weight(1f)) { content() }
-            if (blurError) {
-                Surface(color = MaterialTheme.colorScheme.errorContainer) {
-                    Text(
-                        stringResource(Strings.string.glass_effect_unavailable),
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(LocalDimens.current.spaceM),
-                        color = MaterialTheme.colorScheme.onErrorContainer,
-                    )
-                }
-            }
         }
     }
 }
@@ -294,8 +327,6 @@ private fun GlassPanel(
 private fun GlassBackdrop(
     sky: Sky,
     background: Color,
-    blurError: Boolean,
-    onBlurErrorChanged: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     backdropRadius: Int = 0,
     tintAlpha: Float = 0.72f,
@@ -317,14 +348,8 @@ private fun GlassBackdrop(
                 tint = background.copy(alpha = 0.16f),
                 glow = LiquidGlassGlow(intensity = 0.2f),
             )
-            .cloudy(sky = sky, radius = backdropRadius, shape = shape, onStateChanged = {
-                when (it) {
-                    is CloudyState.Error -> onBlurErrorChanged(true)
-                    is CloudyState.Success -> onBlurErrorChanged(false)
-                    else -> Unit
-                }
-            })
-            .background(background.copy(alpha = if (blurError) 0.95f else tintAlpha), shape),
+            .cloudy(sky = sky, radius = backdropRadius, shape = shape)
+            .background(background.copy(alpha = tintAlpha), shape),
     )
 }
 
@@ -335,19 +360,11 @@ private fun TimerContent(
     onTimerAction: () -> Unit,
     modifier: Modifier = Modifier,
     controlsEnabled: Boolean = true,
+    actionModifier: Modifier = Modifier,
     bottomInset: Dp = 0.dp,
 ) {
     val sky = rememberSky()
-    var blurError by remember { mutableStateOf(false) }
     val snapshot = state.presentationSnapshot
-    val showRemaining = state.settings.detail > 0 && snapshot.remaining != null &&
-        (snapshot.status != TimerStatus.NOT_CONFIGURED || (state.interrupted && !state.isPreviewing))
-    LaunchedEffect(snapshot, state.settings, showRemaining) {
-        if (showRemaining) sky.invalidate()
-    }
-    LaunchedEffect(showRemaining) {
-        if (!showRemaining) blurError = false
-    }
     Box(modifier) {
         TimerFeature(
             snapshot = snapshot,
@@ -361,43 +378,34 @@ private fun TimerContent(
             interrupted = state.interrupted && !state.isPreviewing,
             onTimerAction = onTimerAction,
             controlsEnabled = controlsEnabled,
+            actionModifier = actionModifier,
             topContentInset = topInset,
-            visualizationModifier = if (showRemaining) Modifier.sky(sky) else Modifier,
+            visualizationModifier = Modifier.sky(sky),
             remainingTimeDecoration = { content ->
                 Box {
                     GlassBackdrop(
                         sky = sky,
                         background = Color(state.settings.backgroundColorArgb),
-                        blurError = blurError,
-                        onBlurErrorChanged = { blurError = it },
                         modifier = Modifier.matchParentSize(),
                     )
                     content()
                 }
             },
-            modifier = Modifier.fillMaxSize().padding(bottom = bottomInset),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(bottom = bottomInset),
         )
-        if (blurError && showRemaining) {
-            Surface(
-                modifier = Modifier.align(Alignment.BottomStart).padding(
-                    start = LocalDimens.current.spaceM,
-                    end = 56.dp,
-                    bottom = LocalDimens.current.spaceM,
-                ),
-                color = MaterialTheme.colorScheme.errorContainer,
-            ) {
-                Text(
-                    stringResource(Strings.string.glass_effect_unavailable),
-                    Modifier.padding(LocalDimens.current.spaceM),
-                    color = MaterialTheme.colorScheme.onErrorContainer,
-                )
-            }
-        }
     }
 }
 
 @Composable
-internal fun AppBar(screen: AppScreen, textColor: Color, onNavigate: () -> Unit) {
+internal fun AppBar(
+    screen: AppScreen,
+    textColor: Color,
+    focusRequester: FocusRequester? = null,
+    modifier: Modifier = Modifier,
+    onNavigate: () -> Unit,
+) {
     val (icon, label) = when (screen) {
         AppScreen.TIMER -> DesignResources.drawable.material_settings to Strings.string.open_settings
         AppScreen.SETTINGS -> DesignResources.drawable.material_close to Strings.string.hide_settings
@@ -413,7 +421,13 @@ internal fun AppBar(screen: AppScreen, textColor: Color, onNavigate: () -> Unit)
         ),
         title = { Text(stringResource(Strings.string.app_title)) },
         navigationIcon = {
-            IconButton(onClick = onNavigate) {
+            val buttonModifier = modifier
+                .then(focusRequester?.let { Modifier.focusRequester(it) } ?: Modifier)
+                .elChronoFocusOutline(MaterialTheme.shapes.small)
+            IconButton(
+                onClick = onNavigate,
+                modifier = buttonModifier,
+            ) {
                 Icon(
                     painter = painterResource(icon),
                     contentDescription = description,

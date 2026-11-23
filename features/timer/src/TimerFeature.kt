@@ -14,8 +14,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -49,6 +49,7 @@ import kotlin.math.sin
 import kotlin.time.Duration
 import nl.entreco.elchrono.core.counter.TimerSnapshot
 import nl.entreco.elchrono.core.design.LocalDimens
+import nl.entreco.elchrono.core.design.elChronoFocusOutline
 import nl.entreco.elchrono.core.design.TimerFont
 import nl.entreco.elchrono.core.design.toFontFamily
 import nl.entreco.elchrono.core.design.TimerTheme
@@ -90,6 +91,7 @@ fun TimerFeature(
     visualizationModifier: Modifier = Modifier,
     remainingTimeDecoration: @Composable (@Composable () -> Unit) -> Unit = { content -> content() },
     controlsEnabled: Boolean = true,
+    actionModifier: Modifier = Modifier,
 ) {
     val remaining = snapshot.remaining
     val configuredDuration = snapshot.configuredDuration
@@ -216,17 +218,19 @@ fun TimerFeature(
                 visualState == TimerVisualState.RUNNING -> DesignResources.drawable.material_pause
                 else -> DesignResources.drawable.material_play
             }
-            val actionModifier = Modifier
+            val timerActionModifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(LocalDimens.current.spaceS)
+                .then(actionModifier)
+                .elChronoFocusOutline(MaterialTheme.shapes.small)
                 .testTag("timer-action")
             if (restart && detail > 0) {
-                TextButton(onClick = onTimerAction, modifier = actionModifier.sizeIn(minHeight = 48.dp)) {
+                TextButton(onClick = onTimerAction, modifier = timerActionModifier.sizeIn(minHeight = 48.dp)) {
                     Icon(painterResource(icon), contentDescription = null, tint = Color(textColorArgb))
                     Text(label, color = Color(textColorArgb), fontFamily = font.toFontFamily())
                 }
             } else {
-                IconButton(onClick = onTimerAction, modifier = actionModifier.size(48.dp)) {
+                IconButton(onClick = onTimerAction, modifier = timerActionModifier.size(48.dp)) {
                     Icon(painterResource(icon), contentDescription = label, tint = Color(textColorArgb))
                 }
             }

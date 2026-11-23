@@ -7,7 +7,7 @@ Desktop keyboard changes: [PR #73](https://github.com/Entreco/elchrono/pull/73).
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-002 |
-| Revision | 2.5 |
+| Revision | 2.6 |
 | Current change review | [PR #78](https://github.com/Entreco/elchrono/pull/78); human acceptance and required specialist review pending |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
@@ -140,6 +140,15 @@ legacy save-to-start and automatic reset. They do not verify the superseding
 one-shot, manual-control, Settings-intent or interruption requirements above.
 Full execution of the revised protocol cases and competent human reviews
 remain pending despite the bounded reported JVM evidence above.
+
+### Issue #81 Android TV controls candidate
+
+The candidate retains the shared Material controls and exercises focus with
+simulated keys in JVM Compose tests. These tests do not represent the Android TV
+renderer or a physical remote. Android TV installation, launch, remote/D-pad
+operation, focus visibility, lifecycle, screen-reader behavior, viewing-distance
+readability, and packaging remain unverified. TP-REQ-011 remains blocked, not
+passed; no Android TV support claim is made.
 
 
 ### Settings palette, fonts and Ring slider candidate
@@ -479,3 +488,4 @@ input, screen readers, no-clipping across sizes and human review remain open.
 | 2.3 | Replace planned timer acceptance criteria with one-shot, Settings intent and explicit action/interruption cases; preserve earlier execution history. |
 | 2.4 | Record operator-reported focused JVM, check and build results and bounded test scope; identify the zero-duration interruption-warning mismatch and pending human review. |
 | 2.5 | Align zero idle and retained-interruption criteria with the approved state priority; record parent-agent observed final checks and builds. |
+| 2.6 | Record issue #81's shared-control remote-focus candidate; retain blocked remote, device, usability, and human-review verification. |

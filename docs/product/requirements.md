@@ -7,8 +7,8 @@ Desktop keyboard changes: [PR #73](https://github.com/Entreco/elchrono/pull/73).
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-001 |
-| Revision | 1.9 |
-| Current change review | [PR #78](https://github.com/Entreco/elchrono/pull/78); human acceptance and required specialist review pending |
+| Revision | 2.0 |
+| Current change review | No PR opened yet; human acceptance and required specialist review pending |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Product requirements and accessibility: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
@@ -32,6 +32,10 @@ implementation candidates against this proposed requirements baseline. Issue
 accessibility, offline behavior, and platform support are not established by
 builds or domain tests.
 
+Revision 2.0 specifies the owner-requested replacement of sequential duration
+entry and the app keypad. The existing implementation still uses the previous
+input behavior; this revision does not constitute implementation or verification.
+
 The [intended-use record, M1-DOC-002 revision 1.1](intended-use.md) is a
 candidate whose review/approval gaps remain open. This register does not
 approve that source record, resolve its gaps, expand the intended use, or claim
@@ -52,7 +56,7 @@ exact-revision review and acceptance are recorded in the current review PR.
 
 | ID | Requirement |
 |---|---|
-| REQ-001 | A caregiver shall be able to configure every whole-minute waiting duration from 00:00 through 24:00 using two numeric fields, Hours and Minutes, populated by sequential digits. The first digit enters the minute ones place, the second the minute tens place, and each subsequent digit shifts the existing digits left, moving them into the hour field. Mobile targets shall accept system-keyboard input when a keyboard is available and provide an on-screen numeric keypad otherwise. Desktop shall accept physical-keyboard duration entry without the app's on-screen keypad. Browser and TV targets shall use the on-screen numeric keypad and shall not expose keyboard-based duration entry. |
+| REQ-001 | A caregiver shall be able to configure every whole-minute waiting duration from 00:01 through 24:00 using independently editable, focusable Hours and Minutes numeric fields; 00:00 shall remain available as a non-counting idle configuration. Each field shall accept up to two ASCII digits and select its existing value on focus; an empty field shall immediately contribute zero. Hours shall be clamped to 0–24, minutes to 0–60, and entering 60 minutes shall carry one hour and reset minutes to zero. The combined duration shall be clamped to 24:00 after each edit. A single digit shall remain unpadded while its field is edited and be padded to two digits when focus leaves. Non-digit and overlength edits shall not change the setting. Use platform text input on all targets without the app's numeric keypad. Platform keyboard, accessibility and remote operation require verification; this requirement does not establish TV support. |
 | REQ-002 | Valid Settings changes shall be saved automatically without Save. Opening Settings pauses a running countdown and retains its remaining time; closing with the close icon or Back resumes only if it was running on entry and no interruption revoked that intent. An actual valid duration change immediately resets the engine, paused, to the new full duration while Settings is open; closing resumes that new duration only if the prior running intent remains valid and the new duration is positive. Appearance-only edits, unchanged values and invalid drafts shall not reset it. A manually paused timer stays paused; an unchanged finished timer stays finished at zero; a duration change after finish prepares a paused timer requiring Resume. Initial positive configuration shall offer Resume without auto-start. 00:00 always presents idle and non-counting with no enabled timer action, even when interruption is retained internally; its warning is not shown at zero. After positive duration reconfiguration, the warning returns and explicit Restart is required to clear interruption and begin the full duration. |
 | REQ-003 | A patient shall be able to distinguish running, paused, finished, idle, and interrupted states and understand remaining time without relying on color alone. Interrupted progress shall communicate that it may be stale. Visualizations shall specify numeric remaining time, visual progress, or both, and shall not show a clock face or time of day. State/action comprehension, including text-free detail 0, requires accessibility and usability review. |
 | REQ-004 | The product shall provide Main, Settings, and About screens. Main shall contain the selected timer visualization; Settings shall provide controls for duration and theme and appear over the Timer on compact and expanded windows; About shall contain the company logo, actual version/build details, support information, privacy policy, relevant licences, intended use, and limitations. Unavailable owner-controlled content shall be recorded as unresolved, not fabricated or treated as satisfying this requirement. Music integration and in-app volume controls are excluded from v1. |
@@ -107,7 +111,7 @@ change to intended use.
 | D-06 | Manual pause, resume, and restart controls | Main offers bottom-right Pause while running, Resume while paused, and Restart when finished or interrupted; Restart begins the full configured duration. Actions are available at all detail levels with localized accessible names, icon-only at detail 0. No enabled action is offered at zero configuration. |
 | D-07 | Primary platforms and v1 exclusions | Android TV and Apple TV are the primary product targets. Wear OS and watchOS are outside v1 scope. The browser remains the M5 implementation/verification target; its completion does not establish TV support. TV support requires separate target configuration, packaging, remote/focus, viewing-distance, lifecycle, accessibility, and usability verification. |
 | D-08 | V1 visualization set | The v1 theme choices are Clock, Battery, Fan, and Ring, as shown in the approved demo. Clock is the initial selection, matching the demo; this default is not evidence of user preference. The visual mapping and use of each theme still require application verification and appropriate usability/accessibility review. |
-| D-09 | Settings layout and duration input methods | Show Settings over the Timer at compact and expanded widths. Mobile may use an available system keyboard, with the on-screen keypad as fallback. Desktop uses keyboard entry without the app keypad; browser and TV use the on-screen keypad without keyboard-based duration entry. This does not establish support for unconfigured TV targets. |
+| D-09 | Settings layout and duration input methods | Show Settings over the Timer at compact and expanded widths. Use independently editable Hours and Minutes fields and platform text input rather than the app keypad on all targets. The existing input implementation has not yet been changed; platform keyboard and remote usability require verification. This does not establish support for unconfigured TV targets. |
 | D-10 | Text-free Timer at detail 0 | All visible Timer text remains hidden at detail 0, including interruption warnings; action icons, interrupted/idle cues and accessible state/stale-progress descriptions remain. The changed visual distinction and warning need human accessibility, usability and risk review. |
 | D-11 | Issue #66 appearance refinements | The owner requested global edge-to-edge background, bottom-right icon, demo Battery geometry, stable detail overlays, and Ring thickness. The owner selected a stationary full-window Timer with native blur and left-sliding liquid-glass Settings and About panels, and accepted that a sharp preview is not required while Settings is open. Product, accessibility, usability, risk and exact-head review of this change remain pending. |
 
@@ -161,3 +165,4 @@ does not establish that they were resolved.
 | 1.7 | Supersede timer, Settings and interruption decisions with one-shot completion and explicit controls; retain review and verification gaps. |
 | 1.8 | Specify zero-duration idle priority and retained interruption with warning restored after positive reconfiguration; retain review gaps. |
 | 1.9 | Distinguish configuration recreation from genuine background interruption; require retained session and UI continuity without expanding restart recovery. |
+| 2.0 | Specify independently editable duration fields and platform text input in place of sequential entry and the app keypad; retain implementation, accessibility, usability, risk and platform verification gaps. |

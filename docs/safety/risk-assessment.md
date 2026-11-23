@@ -5,8 +5,8 @@ Settings appearance review: [PR #76](https://github.com/Entreco/elchrono/pull/76
 | Field | Value |
 |---|---|
 | Document ID | M1-DOC-004 |
-| Revision | 1.13 |
-| Current change review | [PR #78](https://github.com/Entreco/elchrono/pull/78); human acceptance and required specialist review pending |
+| Revision | 1.14 |
+| Current change review | No PR opened yet; human acceptance and required specialist review pending |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Software-safety and product-risk review: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
@@ -98,6 +98,13 @@ can understand and verify their selections after closing Settings, and whether
 the overlay, unblurred fallback, and unrestricted colors impair readability
 or focus (RISK-001, RISK-004 and RISK-005). No revised risk acceptance or
 control effectiveness is implied by the owner's design choice.
+
+The proposed replacement of sequential entry and the app keypad requires
+review under RISK-001, RISK-004 and RISK-005: intermediate edits immediately
+change the saved duration and reset the timer, clamping and minute carry may
+be misunderstood, and platform text input may be inaccessible or unavailable
+to remote users. Implementation, usability and platform evidence are pending;
+no risk acceptance or control effectiveness is inferred.
 
 The Settings foreground accent adds review scope for keypad, duration-field,
 and Details slider visibility and operation when foreground and background
@@ -374,3 +381,4 @@ they are not waived by this initial assessment.
 | 1.11 | Align risk control with approved zero idle priority while retaining human risk and accessibility review. |
 | 1.12 | Add Android TV remote-focus, selection, and viewing-distance review scope to RISK-005; retain pending verification and risk disposition. |
 | 1.13 | Exclude configuration recreation from genuine interruption and identify unnecessary stopped waits under RC-002-1; retain platform, UX and risk-review gaps. |
+| 1.14 | Add risk review scope for proposed independent duration entry, immediate changes, carry, clamping and platform input; no risk disposition is inferred. |

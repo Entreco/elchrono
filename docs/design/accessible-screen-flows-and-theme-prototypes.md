@@ -7,7 +7,7 @@ Desktop keyboard changes: [PR #73](https://github.com/Entreco/elchrono/pull/73).
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-004 |
-| Revision | 3.4 |
+| Revision | 3.5 |
 | Current change review | No PR opened yet; human acceptance and required specialist review pending |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
@@ -192,10 +192,11 @@ screen-reader, and human review remain verification work.
 
 ![Historical Settings prototype with a Save action; current Settings saves automatically and does not use Save to start.](settings-about.svg)
 
-The duration entry example follows the candidate sequential-digit rule:
-`205` displays as `02:05`. The configured duration is a whole-minute value
-from 00:00 through 24:00. The examples describe field content, not a
-verification result.
+The proposed duration entry uses separately focused Hours and Minutes fields.
+Each field accepts up to two digits, with 60 minutes carried into hours and
+values clamped as specified by REQ-001. `00:00` is idle; positive waits range
+from `00:01` through `24:00`. The existing implementation and the historical
+prototype still use sequential entry; neither verifies this proposal.
 
 Requirements: REQ-001 (duration entry), REQ-002 (Settings pause, retained intent, and manual controls), REQ-004 (screen content), REQ-005 (v1 access decision),
 and REQ-006 (theme selection). Optional music is deferred to v2.
@@ -205,12 +206,9 @@ Timer, including behind the app bar. Settings is full-width below 600 dp and
 at most 440 dp wide otherwise. About slides over Settings in the same direction
 and uses the same widths. The background Timer is blurred
 where Compose supports native blur and otherwise remains unblurred; it is not
-a sharp or unobstructed preview. Mobile targets accept sequential digits from the system keyboard
-when available and show the reusable numeric keypad as a fallback. Desktop
-uses physical-keyboard entry without the app keypad. Browser and TV use the
-keypad without keyboard-based duration entry; TV support is not established.
-These flows preserve `205` as `02:05`; layout, input, focus,
-accessibility, and no-clipping behavior remain unverified.
+a sharp or unobstructed preview. The proposed fields use platform text input
+without an app keypad. Layout, input, focus, accessibility, remote operation
+and no-clipping behavior remain unverified; TV support is not established.
 
 The Navigation 3 host receives system Back. The Settings layer starts its exit
 when Back completes rather than tracking predictive-back gesture progress;
@@ -225,11 +223,10 @@ separate from their sharp text and controls; the Timer's native blur is
 separate. On Android below API 31 the native Timer blur is not applied;
 Cloudy documents a tint-and-edge fallback instead of refraction through API 32.
 Renderer behavior, fallback and legibility remain subject to verification. The selected
-foreground colors control accents, selected choices, keypad buttons, focused
-duration-field border, label, cursor and selection, and slider thumb and active
-track. Keypad labels use contrasting black or white; keyboard focus outlines
-remain independent. Settings text and input typography use the selected text
-color and font; semantic error colors and keypad contrast are retained. The
+foreground colors control accents, selected choices, focused duration-field
+border, label, cursor and selection, and slider thumb and active track.
+Keyboard focus outlines remain independent. Settings text and input typography
+use the selected text color and font; semantic error colors are retained. The
 Settings, close, and About-back app-bar icons use the selected text color.
 Selected color swatches use a check icon in that color on a contrasting
 black/white backing so selection remains visible when the swatch and text colors
@@ -373,7 +370,7 @@ establish competent risk review, design approval, or verification:
 | D-10: text-free detail 0 | Hide Timer text; retain accessible icon actions and interrupted/idle cues. Human review of distinguishability and warning remains pending. |
 | D-05: interruption recovery | No automatic or persisted recovery; explicit Restart clears the warning and starts full duration. Settings alone cannot clear it. |
 | D-06: manual pause, resume, and restart controls | Main offers Pause, Resume or Restart as applicable at all detail levels. |
-| D-09: Settings layout and duration input | Overlay Settings on the Timer at compact and expanded widths. Mobile uses available system keyboard input and falls back to the shared keypad; desktop uses keyboard entry without the app keypad; browser and TV use the keypad without keyboard-based duration entry. TV support is not established. |
+| D-09: Settings layout and duration input | Overlay Settings on the Timer at compact and expanded widths. The proposed independent fields use platform text input without an app keypad; implementation and platform verification are pending, and TV support is not established. |
 | Visualization appearance | Font and color are proposed as conditional per-visualization settings; option lists, defaults, and persistence remain undecided and require accessibility/usability review. |
 
 The product owner approved the four demo visualizations for the v1 design.
@@ -422,3 +419,4 @@ PR.
 | 3.2 | Clarify zero idle priority and retained interruption with warning restored on positive reconfiguration; retain accessibility and risk review. |
 | 3.3 | Group color presets by similarity: neutrals light to dark, then hues in wheel order; retain accessibility and human review gaps. |
 | 3.4 | Preserve navigation, drafts, scroll and running intent through configuration recreation; retain actual delivery and UX-review gaps. |
+| 3.5 | Describe the proposed independent duration fields and platform text input; retain implementation and verification gaps. |

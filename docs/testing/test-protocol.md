@@ -7,7 +7,7 @@ Desktop keyboard changes: [PR #73](https://github.com/Entreco/elchrono/pull/73).
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-002 |
-| Revision | 2.6 |
+| Revision | 2.7 |
 | Current change review | [PR #78](https://github.com/Entreco/elchrono/pull/78); human acceptance and required specialist review pending |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
@@ -22,7 +22,7 @@ table. See [document controls](../governance/document-control.md#lifecycle-and-a
 ## Purpose and limits
 
 This protocol contains planned test procedures and acceptance criteria for
-[M2-DOC-001, revision 1.8, Product requirements](../product/requirements.md).
+[M2-DOC-001, revision 1.9, Product requirements](../product/requirements.md).
 The exact source revisions and requirement-to-source, risk, design, usability,
 and test relationships are identified in the
 [requirements traceability matrix](../safety/requirements-traceability-matrix.md).
@@ -80,7 +80,57 @@ thicknesses 1-100 using available input methods; the value remains visible
 and no dense ticks or endpoint dots appear. Review the expanded choices and
 remaining unrestricted low-contrast combinations with representative users.
 
+### Configuration recreation continuity
+
+For TP-REQ-002/003/010/014/015, distinguish configuration recreation from
+genuine backgrounding. Existing references to lifecycle stop in those cases
+mean genuine background stop, not an Android configuration-change stop.
+
+1. With an injected clock, start five minutes, advance two minutes, suspend UI
+   refreshes, advance thirty seconds, then refresh. Require 2:30 remaining,
+   Running, no interruption warning, and no reset or Restart requirement.
+   Repeat across the finish boundary: clamp to zero and report completion once.
+1. On a selected authorized Android emulator/device, rotate repeatedly between
+   portrait and landscape while running; also recreate the Activity without
+   killing the process. Verify the retained ViewModel/session identity and
+   remaining-time trajectory. Repeat paused, finished, zero, interrupted, and
+   immediately before completion. A JVM-only lifecycle simulation is insufficient.
+1. Repeat with Settings and About open, after appearance and duration changes.
+   Preserve the screen, applicable scroll position, duration draft and selections.
+   Closing Settings resumes only retained running intent; recreation alone must
+   not revoke it. Check portrait/short landscape, large text, focus, clipping,
+   panel animation, and resize across compact/expanded widths.
+1. Separately test Home, lock, background stop while Settings holds intent, and
+   multi-window transitions. Require the existing genuine-background interruption
+   and explicit-Restart policy; resizing alone must not trigger it. Process-death
+   and reboot recovery are not added by this change.
+
 ## Execution record
+
+### Configuration recreation refactor candidate
+
+Observed in the implementation worktree:
+
+| Command | Result and scope |
+|---|---|
+| `./kotlin test -p jvm -m settings -m counter -m timer` | Passed after the refactor, including save/restore of the duration buffer without republishing a setting, Backspace/keyboard availability, scroll restoration, selected short-landscape bounds, existing appearance interaction, monotonic boundaries and timer presentation. |
+| `./kotlin test -p android -m common` | Passed: 19 tests on the toolchain's local Android JVM backend, including isolated engine ownership and the retained-session/missed-refresh cases. This uses a mockable Android platform JAR, not an emulator or Activity recreation. |
+| `./kotlin build -m android -m androidtv` | Passed for both launchers after wiring the live configuration-change check. No launch or rotation is implied. |
+| `./kotlin build -m browser` | Passed. |
+| `./kotlin build -p jvm -m desktop` | Passed for production desktop and shared JVM dependencies, without selecting the blocked common JVM test module. |
+| `./kotlin test -p jvm -m common -m counter -m settings -m timer` | Blocked in common test compilation by six pre-existing `tvInteractionMode` arguments in `TvControlsUiTest` that do not match `AppContent`. The initial Settings Backspace failure was resolved by enabling focus only on editable duration fields. |
+| `./kotlin build -p jvm` | Failed on the same pre-existing common-test signature mismatch; production sources compiled. |
+| `./kotlin check -m common -m counter -m settings -m timer` | Failed on the same pre-existing common JVM test compilation; partial platform results are not a passing overall check. |
+
+`AppLifecycleTest` adds observer-level regressions for configuration-stop
+exclusion, a subsequent genuine stop, and observer disposal. Those JVM tests
+remain unexecuted because of the common compilation blocker. No Android device
+was connected (`adb devices -l` returned an empty list). The current dependencies
+contain neither an Activity recreation runner nor Robolectric; no new runner,
+SDK package, emulator, or dependency was installed. The device procedure above,
+ViewModel retention under actual recreation, screenshots/no-clipping matrix,
+screen-reader checks, and product/risk/UX review remain pending. No new
+process-termination/reboot recovery or platform support is claimed.
 
 ### One-shot timer and manual controls candidate
 
@@ -489,3 +539,4 @@ input, screen readers, no-clipping across sizes and human review remain open.
 | 2.4 | Record operator-reported focused JVM, check and build results and bounded test scope; identify the zero-duration interruption-warning mismatch and pending human review. |
 | 2.5 | Align zero idle and retained-interruption criteria with the approved state priority; record parent-agent observed final checks and builds. |
 | 2.6 | Record issue #81's shared-control remote-focus candidate; retain blocked remote, device, usability, and human-review verification. |
+| 2.7 | Add configuration-recreation acceptance procedures, observed local refactor results and explicit common-JVM/device verification blockers. |

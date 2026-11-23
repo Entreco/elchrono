@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M3-DOC-007 |
-| Revision | 0.4 |
+| Revision | 0.5 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Cross-platform architecture; browser/desktop; Android/iOS; TV input; provider, privacy, licensing/policy, lifecycle/audio, and accessibility/input scopes: @Entreco, designated by the product owner on 2026-11-19; final exact-head acceptance pending |
@@ -121,11 +121,19 @@ unverified, not implicitly supported or rejected.
   current no-clock presentation. This decision does not authorize diagnosis,
   treatment, monitoring, safety-critical timing, a watch face, or an alarm
   framing.
-- **Timer reliability and lifecycle:** The browser MVP records a hidden-page
-  or page-hide event and pauses when that event is detected after return; it
-  warns that progress may be out of date and does not automatically resume.
-  This behavior has not been product-tested. Other platforms have no lifecycle
-  implementation here. Cross-restart persistence is not provided.
+- **Timer reliability and lifecycle:** The shared shell observes lifecycle stop
+  and marks a running session (including Settings-held intent) interrupted on
+  genuine backgrounding, requiring explicit Restart. Android mobile and TV
+  launchers supply a live `Activity.isChangingConfigurations` check; the shared
+  observer excludes configuration-change stops. The retained Activity
+  ViewModel owns one injected engine, settings, navigation and running intent.
+  UI refresh suspension does not change monotonic elapsed time, and refresh
+  runs immediately when the UI becomes active. Settings selections use that
+  single state source, with a saveable duration buffer and scroll state.
+  Other targets retain their existing lifecycle-stop handling. Device rotation,
+  background delivery, multi-window, accessibility and UX remain unverified;
+  Android JVM tests are not device evidence. Settings persistence does not
+  restore a countdown after process death or device restart.
 - **Audio and provider boundary:** Music remains optional. Timer operation must
   work without internet or music, and audio/provider failures must be explicit
   without interrupting the timer. Do not select a provider or claim a
@@ -177,3 +185,4 @@ unverified, not implicitly supported or rejected.
 | 0.2 | Record Android TV and Apple TV as primary future targets, Wear OS/watchOS outside v1, the owner-approved KMP/Compose implementation basis, and browser MVP evidence without claiming platform support. |
 | 0.3 | Record the candidate Android TV launcher and emulator launch, retaining TV support and verification limitations. |
 | 0.4 | Record the issue #81 shared-control remote-focus candidate; retain the device, remote-input, review, and support gaps. |
+| 0.5 | Document one retained session owner, configuration-stop filtering and saveable UI drafts without adding background execution or restart recovery. |

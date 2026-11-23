@@ -7,7 +7,7 @@ Desktop keyboard changes: [PR #73](https://github.com/Entreco/elchrono/pull/73).
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-001 |
-| Revision | 1.8 |
+| Revision | 1.9 |
 | Current change review | [PR #78](https://github.com/Entreco/elchrono/pull/78); human acceptance and required specialist review pending |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
@@ -67,6 +67,14 @@ exact-revision review and acceptance are recorded in the current review PR.
 | REQ-014 | Valid Settings changes, including duration and Ring thickness, shall immediately update the Timer presentation behind Settings and persist after app close and reopen. The preview uses the full selected duration without advancing the engine; it need not be sharp or unobstructed. An actual valid duration change resets the engine paused as specified by REQ-002; appearance-only changes, unchanged durations and invalid drafts do not. Invalid drafts retain the last valid preview and show an input error. Invalid or stale storage falls back safely to defaults with a surfaced error; legacy selections survive thickness migration. Storage failures are surfaced, not presented as successful saves. Persistence does not imply recovery of a previously running countdown. |
 | REQ-015 | The Timer shall remain a stationary full-window layer behind the app bar, Settings and About. Settings and About shall slide in from and out to the left, with About over Settings. Panels shall fill compact windows and be at most 440 dp wide in expanded windows. Apply native Timer blur where supported and a liquid-glass treatment to the panels without blurring controls; where native blur is unavailable the Timer remains unblurred. Controls shall have labels and applicable browser, keyboard, touch, and assistive-technology semantics without clipping. |
 
+For REQ-002/003/010/014/015, orientation changes, window resizing, and Android
+configuration recreation shall preserve the retained timer session, current
+screen, valid settings, duration draft, and scroll position. Running time
+continues against the same monotonic time source through missed UI refreshes;
+recreation alone shall not pause, reset, mark interrupted, or require Restart.
+A countdown expiring during recreation shall finish at zero once. This does
+not add background execution or process-death/device-restart countdown recovery.
+
 Changing detail shall add or remove decorations without changing any base
 shape's center or bounds at otherwise identical inputs (REQ-003/REQ-013).
 Battery shall retain its shallow horizontal silhouette, visible outline,
@@ -95,7 +103,7 @@ change to intended use.
 | D-02 | Volume controls and limits | No in-app volume controls are included in v1. Reassess if audio is introduced in a later version; this decision does not promise volume controls in v2. |
 | D-03 | Music start behavior and completion sounds | Music integration is deferred to v2; no music start behavior or in-app playback is needed in v1. No completion sound is included in v1; v2 audio behavior requires separate review and requirements. |
 | D-04 | Timer start, Settings opening, and saving | Settings pauses a running countdown and close/Back resumes its remaining time only when its prior running intent remains valid. A valid changed duration immediately resets the paused engine to its new full duration; closing resumes it only for that retained running intent. Appearance-only, invalid and unchanged edits do not reset. Initial positive configuration, manual pause and a duration change after finish require explicit Resume. |
-| D-05 | Interruption detection and recovery | `ON_STOP` while running, or while Settings holds running intent, marks interruption and revokes automatic resume; `ON_START` does not recover. Settings alone, including duration changes, does not clear interruption. At zero show idle without the warning or an action while retaining interruption internally; positive reconfiguration restores the warning and requires explicit Restart to clear it and start the full configured duration. No process-termination or device-restart countdown recovery is promised. Lifecycle delivery and UX require verification and risk review. |
+| D-05 | Interruption detection and recovery | Genuine background `ON_STOP` while running, or while Settings holds running intent, marks interruption and revokes automatic resume; `ON_START` does not recover. Android configuration-change stops are excluded: rotation/recreation preserves the session and retained running intent. Resize alone never interrupts. Settings alone, including duration changes, does not clear genuine interruption. At zero show idle without the warning or an action while retaining interruption internally; positive reconfiguration restores the warning and requires explicit Restart to clear it and start the full configured duration. No process-termination or device-restart countdown recovery is promised. Lifecycle delivery and UX require verification and risk review. |
 | D-06 | Manual pause, resume, and restart controls | Main offers bottom-right Pause while running, Resume while paused, and Restart when finished or interrupted; Restart begins the full configured duration. Actions are available at all detail levels with localized accessible names, icon-only at detail 0. No enabled action is offered at zero configuration. |
 | D-07 | Primary platforms and v1 exclusions | Android TV and Apple TV are the primary product targets. Wear OS and watchOS are outside v1 scope. The browser remains the M5 implementation/verification target; its completion does not establish TV support. TV support requires separate target configuration, packaging, remote/focus, viewing-distance, lifecycle, accessibility, and usability verification. |
 | D-08 | V1 visualization set | The v1 theme choices are Clock, Battery, Fan, and Ring, as shown in the approved demo. Clock is the initial selection, matching the demo; this default is not evidence of user preference. The visual mapping and use of each theme still require application verification and appropriate usability/accessibility review. |
@@ -152,3 +160,4 @@ does not establish that they were resolved.
 | 1.6 | Specify stationary full-window Timer and left-sliding glass Settings and About layers; retain platform and review gaps. |
 | 1.7 | Supersede timer, Settings and interruption decisions with one-shot completion and explicit controls; retain review and verification gaps. |
 | 1.8 | Specify zero-duration idle priority and retained interruption with warning restored after positive reconfiguration; retain review gaps. |
+| 1.9 | Distinguish configuration recreation from genuine background interruption; require retained session and UI continuity without expanding restart recovery. |

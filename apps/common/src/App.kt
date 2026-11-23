@@ -99,8 +99,12 @@ import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
 @Preview
-fun App(allowKeyboardInput: Boolean = false) {
-    ElChronoTheme { AppContent(allowKeyboardInput) }
+fun App(
+    allowKeyboardInput: Boolean = false,
+) {
+    ElChronoTheme {
+        AppContent(allowKeyboardInput)
+    }
 }
 
 @Composable
@@ -113,19 +117,18 @@ internal fun AppContent(
     val keyboardAvailable = allowKeyboardInput && isKeyboardAvailable()
     val focusManager = LocalFocusManager.current
     val focusRequester = remember { FocusRequester() }
-    val settingsVisibility = remember { MutableTransitionState(false) }
+    val settingsVisibility = remember { MutableTransitionState(state.isPreviewing) }
     settingsVisibility.targetState = state.isPreviewing
     val overlayVisible = settingsVisibility.currentState || settingsVisibility.targetState
     val sky = rememberSky()
     val aboutSky = rememberSky()
 
-    LifecycleEventEffect(Lifecycle.Event.ON_STOP) { viewModel.onAppStopped() }
     val ticking = state.isTicking
     LaunchedEffect(lifecycle, ticking) {
         if (ticking) lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
             while (true) {
-                delay(250.milliseconds)
                 viewModel.tick()
+                delay(250.milliseconds)
             }
         }
     }

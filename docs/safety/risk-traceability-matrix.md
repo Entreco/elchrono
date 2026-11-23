@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M1-DOC-009 |
-| Revision | 1.10 |
+| Revision | 1.11 |
 | Current change review | [PR #78](https://github.com/Entreco/elchrono/pull/78); human acceptance and required specialist review pending |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
@@ -18,7 +18,7 @@ Lifecycle status is derived from the branch and PR context; see
 ## Purpose and use
 
 This matrix links the scenarios and proposed controls in
-[M1-DOC-004 revision 1.11](risk-assessment.md#risk-analysis) to intended-use
+[M1-DOC-004 revision 1.13](risk-assessment.md#risk-analysis) to intended-use
 sources, assessment assumptions, and planned verification. Each risk and
 follow-up is owned by the product owner, @Entreco. The M2
 [requirements traceability matrix](requirements-traceability-matrix.md) is the
@@ -26,7 +26,7 @@ authoritative location for requirement-to-risk-to-test links. This M1 matrix
 does not establish that controls are implemented, verified, or effective, or
 that residual risks are acceptable.
 
-The source is [M1-DOC-002 revision 1.1](../product/intended-use.md); its
+The source is [M1-DOC-002 revision 1.2](../product/intended-use.md); its
 exact-revision approval evidence remains unresolved. Focused JVM tests cover
 counter and settings-domain behavior, but do not establish control effectiveness
 or product verification. Update each row with relevant test/review, result,
@@ -64,6 +64,18 @@ establishes control effectiveness or residual-risk acceptability.
 | [RISK-005](risk-assessment.md#risk-analysis) | [Waiting and limitations](../product/intended-use.md#foreseeable-use-and-limitations) | Icon-only actions at detail 0, finished/idle distinction and stale warning need evaluation; unrestricted colors may impair visibility. | TP-REQ-003/013/015: all details/states, focus, accessible names, overlay isolation, clipping and supported inputs; human usability and risk review. | Reported JVM tests exercise actions across details, Tab/Enter, overlay isolation and one compact large-font layout. Zero idle priority, screen readers, complete device matrix, human review and effectiveness remain pending. |
 | [RISK-006](risk-assessment.md#risk-analysis) | [Limitations](../product/intended-use.md#foreseeable-use-and-limitations); [exclusions and claims](../product/intended-use.md#exclusions-and-claims-boundary) | Safety-critical timing and authoritative deadline reliance are excluded. Serious harm is plausible if misused, not a supported use; its likelihood is unmeasured and requires reviewer confirmation. Actual use and public claims have not been observed. | Review requirements, user-facing content, and product claims against intended-use exclusions before release; assess changes against the [qualification record](../regulatory/qualification-and-classification.md) and this risk. Include About's intended-use/limitations copy and all owner-provided content, and the TV target/claims boundary when scope changes. | About copy is aligned to the candidate ordinary-waiting boundary and required content gaps are disclosed; no control or claim review is verified, and required owner sources plus human review remain pending. |
 
+For RISK-001/RISK-002 and RC-002-1, misclassifying configuration recreation as
+backgrounding can stop a valid wait and require an unnecessary Restart. The
+candidate excludes Android configuration stops and retains monotonic session
+state. See [configuration continuity procedures and observed
+limitations](../testing/test-protocol.md#configuration-recreation-refactor-candidate).
+Android JVM domain and Settings save/restore tests passed, but the common
+observer tests cannot run until the pre-existing TV test signature mismatch is
+resolved. Actual rotation/recreation, genuine-background discrimination,
+accessible focus, and human risk/UX review remain pending. This supersedes the
+unqualified stop wording in the earlier RISK-002 row; it does not change genuine
+interruption or process-death/reboot recovery policy or establish effectiveness.
+
 ## Revision history
 
 | Revision | Change |
@@ -88,3 +100,4 @@ establishes control effectiveness or residual-risk acceptability.
 | 1.8 | Trace revised timer and Settings controls to planned verification and preserve historical evidence limitations. |
 | 1.9 | Link operator-reported bounded JVM evidence and the zero-duration interruption-warning mismatch; retain platform and human-review gaps. |
 | 1.10 | Trace approved zero idle priority and retained interruption; keep human and platform review pending. |
+| 1.11 | Trace recreation continuity and genuine-background discrimination to RC-002-1 and bounded refactor evidence; retain blocked device and human verification. |

@@ -24,7 +24,8 @@ import androidx.compose.material3.Slider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.Saver
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -179,19 +180,10 @@ fun SettingsScreen(
         keyboardInputEnabled = keyboardInputEnabled,
         keyboardAvailable = keyboardAvailable,
     )
-    var entry by remember(initialSettings.duration) {
+    var entry by rememberSaveable(stateSaver = DurationEntrySaver) {
         mutableStateOf(DurationDigitEntry.fromDuration(initialSettings.duration))
     }
-    var selectedTheme by remember(initialSettings) {
-        mutableStateOf(initialSettings.theme)
-    }
-    var backgroundColor by remember(initialSettings) { mutableStateOf(initialSettings.backgroundColorArgb) }
-    var foregroundColor by remember(initialSettings) { mutableStateOf(initialSettings.foregroundColorArgb) }
-    var textColor by remember(initialSettings) { mutableStateOf(initialSettings.textColorArgb) }
-    var font by remember(initialSettings) { mutableStateOf(initialSettings.font) }
-    var detail by remember(initialSettings) { mutableStateOf(initialSettings.detail) }
-    var ringThickness by remember(initialSettings) { mutableStateOf(initialSettings.ringThicknessPercent) }
-    val accent = settingsAccentColors(Color(foregroundColor))
+    val accent = settingsAccentColors(Color(initialSettings.foregroundColorArgb))
     val fieldColors = OutlinedTextFieldDefaults.colors(
         focusedBorderColor = accent.foreground,
         focusedLabelColor = accent.foreground,
@@ -202,22 +194,8 @@ fun SettingsScreen(
         ),
     )
 
-    fun publish(updatedEntry: DurationDigitEntry = entry, allowInvalidDuration: Boolean = false) {
-        val duration = updatedEntry.duration ?: if (allowInvalidDuration) initialSettings.duration else null
-        duration?.let {
-            onChange(
-                initialSettings.copy(
-                    duration = it,
-                    theme = selectedTheme,
-                    backgroundColorArgb = backgroundColor,
-                    foregroundColorArgb = foregroundColor,
-                    textColorArgb = textColor,
-                    font = font,
-                    detail = detail,
-                    ringThicknessPercent = ringThickness,
-                ),
-            )
-        }
+    fun publish(updatedEntry: DurationDigitEntry) {
+        updatedEntry.duration?.let { onChange(initialSettings.copy(duration = it)) }
     }
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -238,7 +216,7 @@ fun SettingsScreen(
                     ).also { publish(it) }
                 },
                 modifier = Modifier.weight(1f)
-                    .then(Modifier.focusProperties { canFocus = false }),
+                    .then(Modifier.focusProperties { canFocus = true }),
                 readOnly = inputMode.fieldsReadOnly,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 label = { Text(stringResource(Strings.string.hours)) },
@@ -254,7 +232,7 @@ fun SettingsScreen(
                     ).also { publish(it) }
                 },
                 modifier = Modifier.weight(1f)
-                    .then(Modifier.focusProperties { canFocus = false }),
+                    .then(Modifier.focusProperties { canFocus = true }),
                 readOnly = inputMode.fieldsReadOnly,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 label = { Text(stringResource(Strings.string.minutes)) },
@@ -301,19 +279,16 @@ fun SettingsScreen(
             choices = TimerTheme.entries.map { theme ->
                 DesignChoice(theme, stringResource(theme.label))
             },
-            selected = selectedTheme,
-            onSelected = { theme ->
-                selectedTheme = theme
-                publish(allowInvalidDuration = true)
-            }
+            selected = initialSettings.theme,
+            onSelected = { onChange(initialSettings.copy(theme = it)) },
         )
-        if (selectedTheme == TimerTheme.RING) {
+        if (initialSettings.theme == TimerTheme.RING) {
             Spacer(Modifier.height(LocalDimens.current.spaceXL))
             LabeledSlider(
                 label = stringResource(Strings.string.ring_thickness),
-                value = ringThickness.toFloat(),
-                valueLabel = stringResource(Strings.string.ring_thickness_value, ringThickness),
-                onValueChange = { ringThickness = it.roundToInt(); publish(allowInvalidDuration = true) },
+                value = initialSettings.ringThicknessPercent.toFloat(),
+                valueLabel = stringResource(Strings.string.ring_thickness_value, initialSettings.ringThicknessPercent),
+                onValueChange = { onChange(initialSettings.copy(ringThicknessPercent = it.roundToInt())) },
                 minimumLabel = stringResource(Strings.string.ring_thin),
                 maximumLabel = stringResource(Strings.string.ring_solid),
                 valueRange = 1f..100f,
@@ -328,24 +303,21 @@ fun SettingsScreen(
             DesignColorSwatch(it.id, stringResource(it.label), Color(it.argb))
         }
         Text(stringResource(Strings.string.background), style = MaterialTheme.typography.titleSmall)
-        ColorSwatchPicker(swatches, swatches.firstOrNull { it.color.toArgb().toLong() and 0xffffffffL == backgroundColor }?.id ?: "", onSelected = { id ->
+        ColorSwatchPicker(swatches, swatches.firstOrNull { it.color.toArgb().toLong() and 0xffffffffL == initialSettings.backgroundColorArgb }?.id ?: "", onSelected = { id ->
             val selected = swatches.first { it.id == id }
-            backgroundColor = selected.color.toArgb().toLong() and 0xffffffffL
-            publish(allowInvalidDuration = true)
+            onChange(initialSettings.copy(backgroundColorArgb = selected.color.toArgb().toLong() and 0xffffffffL))
         })
         Spacer(Modifier.height(LocalDimens.current.spaceM))
         Text(stringResource(Strings.string.foreground), style = MaterialTheme.typography.titleSmall)
-        ColorSwatchPicker(swatches, swatches.firstOrNull { it.color.toArgb().toLong() and 0xffffffffL == foregroundColor }?.id ?: "", onSelected = { id ->
+        ColorSwatchPicker(swatches, swatches.firstOrNull { it.color.toArgb().toLong() and 0xffffffffL == initialSettings.foregroundColorArgb }?.id ?: "", onSelected = { id ->
             val selected = swatches.first { it.id == id }
-            foregroundColor = selected.color.toArgb().toLong() and 0xffffffffL
-            publish(allowInvalidDuration = true)
+            onChange(initialSettings.copy(foregroundColorArgb = selected.color.toArgb().toLong() and 0xffffffffL))
         })
         Spacer(Modifier.height(LocalDimens.current.spaceM))
         Text(stringResource(Strings.string.text), style = MaterialTheme.typography.titleSmall)
-        ColorSwatchPicker(swatches, swatches.firstOrNull { it.color.toArgb().toLong() and 0xffffffffL == textColor }?.id ?: "", onSelected = { id ->
+        ColorSwatchPicker(swatches, swatches.firstOrNull { it.color.toArgb().toLong() and 0xffffffffL == initialSettings.textColorArgb }?.id ?: "", onSelected = { id ->
             val selected = swatches.first { it.id == id }
-            textColor = selected.color.toArgb().toLong() and 0xffffffffL
-            publish(allowInvalidDuration = true)
+            onChange(initialSettings.copy(textColorArgb = selected.color.toArgb().toLong() and 0xffffffffL))
         })
         Spacer(Modifier.height(LocalDimens.current.spaceXL))
         Text(stringResource(Strings.string.font), style = MaterialTheme.typography.titleLarge)
@@ -353,11 +325,8 @@ fun SettingsScreen(
             choices = TimerFont.entries.map { fontChoice ->
                 DesignChoice(fontChoice, stringResource(fontChoice.label))
             },
-            selected = font,
-            onSelected = {
-                font = it
-                publish(allowInvalidDuration = true)
-            },
+            selected = initialSettings.font,
+            onSelected = { onChange(initialSettings.copy(font = it)) },
         )
         Spacer(Modifier.height(LocalDimens.current.spaceXL))
         val detailLabel = stringResource(Strings.string.detail)
@@ -368,11 +337,8 @@ fun SettingsScreen(
             activeTickColor = accent.onForeground,
         )
         Slider(
-            value = detail.toFloat(),
-            onValueChange = {
-                detail = it.roundToInt()
-                publish(allowInvalidDuration = true)
-            },
+            value = initialSettings.detail.toFloat(),
+            onValueChange = { onChange(initialSettings.copy(detail = it.roundToInt())) },
             modifier = Modifier
                 .elChronoFocusOutline(MaterialTheme.shapes.small)
                 .semantics { contentDescription = detailLabel },
@@ -380,7 +346,7 @@ fun SettingsScreen(
             steps = 11,
             colors = detailColors,
             track = { state ->
-                if (detail == 0) {
+                if (initialSettings.detail == 0) {
                     SliderDefaults.Track(
                         sliderState = state,
                         colors = detailColors,
@@ -392,7 +358,7 @@ fun SettingsScreen(
                 }
             },
         )
-        Text("$detail")
+        Text("${initialSettings.detail}")
         Spacer(Modifier.height(LocalDimens.current.spaceL))
         TextButton(
             onClick = onShowAbout,
@@ -403,6 +369,11 @@ fun SettingsScreen(
 
     }
 }
+
+private val DurationEntrySaver = Saver<DurationDigitEntry, String>(
+    save = { it.hours.toString().padStart(2, '0') + it.minutes.toString().padStart(2, '0') },
+    restore = { DurationDigitEntry.empty().applyTextEdit("", it) },
+)
 
 private val TimerTheme.label: StringResource
     get() = when (this) {

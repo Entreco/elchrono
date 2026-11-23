@@ -104,7 +104,7 @@ class TimerControlsUiTest {
         val viewModel = viewModel(clock)
         setContent { ElChronoTheme { AppContent(false, viewModel) } }
         onNodeWithContentDescription("Resume").performClick()
-        runOnIdle { viewModel.onAppStopped() }
+        runOnIdle { viewModel.onAppBackgrounded() }
         onNodeWithText("Restart").assertIsDisplayed()
         onNodeWithText("Timer interrupted. Progress may be out of date. Restart to start again.").assertIsDisplayed()
         runOnIdle {

@@ -7,7 +7,7 @@ Desktop keyboard changes: [PR #73](https://github.com/Entreco/elchrono/pull/73).
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-003 |
-| Revision | 4.7 |
+| Revision | 4.8 |
 | Current change review | [PR #78](https://github.com/Entreco/elchrono/pull/78); human acceptance and required specialist review pending |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
@@ -24,8 +24,8 @@ table. See [document controls](../governance/document-control.md#lifecycle-and-a
 This matrix is the authoritative cross-reference between the intended-use
 source, product requirements, risks, design/usability evidence, and test
 protocol. Requirement statements live in
-[M2-DOC-001, revision 1.8](../product/requirements.md); acceptance criteria and
-procedures live in [M2-DOC-002, revision 2.5](../testing/test-protocol.md).
+[M2-DOC-001, revision 1.9](../product/requirements.md); acceptance criteria and
+procedures live in [M2-DOC-002, revision 2.7](../testing/test-protocol.md).
 Do not duplicate those statements or criteria here.
 
 The mappings below are initial and proposed. Design links are included when
@@ -34,12 +34,12 @@ actual evidence is recorded.
 
 | Source record | Revision | Relationship |
 |---|---|---|
-| [M1-DOC-002, intended use](../product/intended-use.md) | 1.1 candidate | Product purpose, roles, use, and limitations |
-| [M2-DOC-001, product requirements](../product/requirements.md) | 1.8 candidate | Stationary Timer and sliding glass overlays; product review pending |
-| [M1-DOC-004, risk assessment](risk-assessment.md) | 1.12 candidate | RISK-001 through RISK-006 traced below; review pending; no control effectiveness or risk reduction claimed |
-| [M1-DOC-009, risk traceability matrix](risk-traceability-matrix.md) | 1.10 candidate | Bounded JVM evidence and planned verification; review pending |
-| [M2-DOC-002, product test protocol](../testing/test-protocol.md) | 2.6 candidate | Bounded one-shot and Android TV candidate evidence; full protocol acceptance pending |
-| [M2-DOC-004, accessible screen flows and theme prototypes](../design/accessible-screen-flows-and-theme-prototypes.md) | 3.2 candidate | Settings appearance, remaining-time glass and stationary Timer; exact-head review pending |
+| [M1-DOC-002, intended use](../product/intended-use.md) | 1.2 candidate | Product purpose, roles, use, and limitations |
+| [M2-DOC-001, product requirements](../product/requirements.md) | 1.9 candidate | Configuration continuity, stationary Timer and sliding glass overlays; product review pending |
+| [M1-DOC-004, risk assessment](risk-assessment.md) | 1.13 candidate | RISK-001 through RISK-006 traced below; review pending; no control effectiveness or risk reduction claimed |
+| [M1-DOC-009, risk traceability matrix](risk-traceability-matrix.md) | 1.11 candidate | Bounded JVM evidence and planned recreation verification; review pending |
+| [M2-DOC-002, product test protocol](../testing/test-protocol.md) | 2.7 candidate | Bounded one-shot, Android TV and recreation-refactor evidence; full protocol acceptance pending |
+| [M2-DOC-004, accessible screen flows and theme prototypes](../design/accessible-screen-flows-and-theme-prototypes.md) | 3.4 candidate | Settings appearance, remaining-time glass and stationary Timer; exact-head review pending |
 | [M2-DOC-005, usability review plan](../usability/usability-plan.md) | 1.2 candidate | Future refinement review scope; no participant session authorized |
 | [M2-DOC-006, usability findings and evidence status](../usability/usability-findings.md) | 1.2 candidate | Retrospective sessions and extended G06 redesign gap |
 | [M3-DOC-007, platform architecture decision and support matrix](../architecture/platform-architecture-and-support-matrix.md) | 0.4 candidate | Retains shared Compose controls, records the remote-focus candidate, evidence limits, and no support commitment |
@@ -62,6 +62,16 @@ actual evidence is recorded.
 | REQ-013 | [Remaining-time use](../product/intended-use.md#supported-role-of-visual-time-and-optional-audio) | RISK-001, RISK-002, RISK-005 | [Detail mapping and actions](../design/accessible-screen-flows-and-theme-prototypes.md#m5-timer-scope-and-detail-mapping); G06 | TP-REQ-013 | Reported JVM Compose tests exercise actions at details 0–12, Tab/Enter, expanded overlay isolation and one compact large-font Restart; full visual matrix, screen readers and human review remain pending. |
 | REQ-014 | [Users and roles](../product/intended-use.md#users-population-and-roles) | RISK-001, RISK-002, RISK-004, RISK-005 | Full-duration preview, paused engine reset only for actual duration change and retained interruption | TP-REQ-014 | Reported JVM ViewModel tests cover changed duration, preview, appearance-only preservation and storage failure. Zero idle priority and warning restoration, complete persistence/platform and human verification require review. |
 | REQ-015 | [Users and roles](../product/intended-use.md#users-population-and-roles) | RISK-005 | Stationary Timer, sliding glass panels and native blur; no-clipping, fallback and assistive-tech evidence pending | TP-REQ-015 | Platform rendering, back gestures, focus and human review remain pending |
+
+For REQ-002/003/010/014/015 and RISK-001/RISK-002/RC-002-1, the
+[configuration recreation candidate](../testing/test-protocol.md#configuration-recreation-refactor-candidate)
+supersedes unconditional stop classification: Android configuration stops do
+not interrupt, while genuine background stops retain the existing policy.
+Observed Android JVM domain tests and Settings save/restore tests are bounded
+evidence; common JVM compilation is blocked by the pre-existing TV test signature
+mismatch. Actual Activity retention, rotation, focus, scroll and no-clipping
+delivery remain unverified. No control effectiveness or human acceptance is
+inferred from compilation or domain results.
 
 ## Reverse coverage
 
@@ -252,3 +262,4 @@ test procedures or acceptance criteria in this matrix.
 | 4.4 | Trace revised requirements, risks, planned tests and usability gaps; distinguish historical results from current verification. |
 | 4.5 | Add bounded operator-reported one-shot timer and action evidence while retaining the zero-warning mismatch and review gaps. |
 | 4.6 | Align traceability with approved zero idle priority and retained interruption; retain human and platform review gaps. |
+| 4.8 | Trace retained session/UI continuity to configuration-recreation procedures and bounded results; retain common JVM compilation and device-review gaps. |

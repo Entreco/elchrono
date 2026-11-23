@@ -5,7 +5,7 @@ Settings appearance review: [PR #76](https://github.com/Entreco/elchrono/pull/76
 | Field | Value |
 |---|---|
 | Document ID | M1-DOC-004 |
-| Revision | 1.12 |
+| Revision | 1.13 |
 | Current change review | [PR #78](https://github.com/Entreco/elchrono/pull/78); human acceptance and required specialist review pending |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
@@ -257,7 +257,7 @@ Individual effects cannot be added to calculate the overall post-control score.
 
 | ID | Proposed control | Intended effect and rationale |
 |---|---|---|
-| RC-002-1 | On lifecycle stop while running or while Settings holds running intent, mark interrupted and revoke resume; do not auto-resume on start. Settings alone never clears interruption. Explicit Restart clears the warning and starts the configured full duration. Do not recover countdown state across process termination or device restart. | Intended to avoid treating stale progress as current; lifecycle delivery and restart behavior require platform verification and qualified review. |
+| RC-002-1 | On genuine background lifecycle stop while running or while Settings holds running intent, mark interrupted and revoke resume; do not auto-resume on start. Exclude Android configuration-change stops and preserve the retained session, monotonic timing and Settings intent through recreation. Settings alone never clears genuine interruption. Explicit Restart clears the warning and starts the configured full duration. Do not recover countdown state across process termination or device restart. | Intended to avoid treating stale progress as current without unnecessarily interrupting an ordinary wait during rotation. Misclassifying recreation can freeze progress and extend waiting (RISK-001/RISK-002). Real lifecycle delivery, completion through recreation, and background discrimination require platform verification and qualified review; no effectiveness is credited. |
 | RC-002-2 | Distinguish running, paused, finished, idle and interrupted; for positive interrupted duration show a stale-progress text warning at detail 1-12 and a distinct visual cue plus accessible description at detail 0. At zero show idle with no warning or action while retaining interruption internally; positive reconfiguration restores the warning and requires Restart. | The warning may reduce reliance on stale progress; icon-only cues, warning and accessibility/usability require review. No effectiveness is credited. |
 
 ### RISK-003 controls
@@ -373,3 +373,4 @@ they are not waived by this initial assessment.
 | 1.10 | Record bounded reported JVM evidence and the zero-duration stale-warning mismatch; retain qualified review and undetermined residual risk. |
 | 1.11 | Align risk control with approved zero idle priority while retaining human risk and accessibility review. |
 | 1.12 | Add Android TV remote-focus, selection, and viewing-distance review scope to RISK-005; retain pending verification and risk disposition. |
+| 1.13 | Exclude configuration recreation from genuine interruption and identify unnecessary stopped waits under RC-002-1; retain platform, UX and risk-review gaps. |

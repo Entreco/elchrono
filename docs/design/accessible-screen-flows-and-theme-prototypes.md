@@ -7,7 +7,7 @@ Desktop keyboard changes: [PR #73](https://github.com/Entreco/elchrono/pull/73).
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-004 |
-| Revision | 3.3 |
+| Revision | 3.4 |
 | Current change review | No PR opened yet; human acceptance and required specialist review pending |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
@@ -127,8 +127,11 @@ full immediately; appearance-only changes and invalid drafts do not. Settings
 alone never clears interruption. Zero duration presents idle without an
 action or stale-progress warning while retaining interruption internally;
 positive reconfiguration restores the warning and requires explicit Restart.
-Restart clears interruption and starts a full countdown; lifecycle stop while Settings holds running intent
-revokes automatic resume. Platform delivery and these transitions remain
+Restart clears interruption and starts a full countdown; genuine background
+lifecycle stop while Settings holds running intent revokes automatic resume.
+Rotation and configuration recreation retain navigation, Settings intent and
+the countdown without a warning or Restart requirement; drafts and scroll
+position are restored without replaying panel entry. Platform delivery and these transitions remain
 unverified. Settings remains unprotected.
 
 | Main element | Proposed presentation and semantics | Requirement / risk links |
@@ -418,3 +421,4 @@ PR.
 | 3.1 | Specify one-shot states, explicit controls and Settings intent; retain historical prototype behavior and pending review. |
 | 3.2 | Clarify zero idle priority and retained interruption with warning restored on positive reconfiguration; retain accessibility and risk review. |
 | 3.3 | Group color presets by similarity: neutrals light to dark, then hues in wheel order; retain accessibility and human review gaps. |
+| 3.4 | Preserve navigation, drafts, scroll and running intent through configuration recreation; retain actual delivery and UX-review gaps. |

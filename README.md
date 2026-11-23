@@ -169,15 +169,16 @@ commands are:
 ```
 
 CI restores Kotlin Toolchain bootstrap and dependency downloads before module
-discovery and saves them after both builds succeed, before tests and checks.
-The workflow explicitly sets `KOTLIN_SHARED_CACHE_DIR` and
-`KOTLIN_CLI_BOOTSTRAP_CACHE_DIR` under the runner's temporary directory. It caches
-only `.m2.cache`, `download.cache`, and `cli`; workspace build outputs, extracted
-caches, telemetry, and temporary download/lock files are excluded.
-Cache keys separate runner OS/architecture and wrapper versions, prefer matching
-dependency configuration, and allow reuse from the same wrapper version after
-dependency changes. Each run attempt saves a new immutable entry so additional
-downloads can be retained. GitHub cache scope and eviction still apply.
+discovery and saves them when the successful job completes. The workflow sets
+`KOTLIN_SHARED_CACHE_DIR` and `KOTLIN_CLI_BOOTSTRAP_CACHE_DIR` per build and test
+step under the runner's temporary directory. It caches only `.m2.cache`,
+`download.cache`, and `cli`; workspace build outputs, extracted caches,
+telemetry, and temporary download/lock files are excluded.
+Cache keys separate runner OS/architecture and Kotlin configuration. They prefer
+an exact match for wrapper and dependency configuration, then fall back to a
+stable entry for the same OS and architecture. GitHub cache scope and eviction
+still apply. Concurrency cancels an obsolete run when newer commits arrive on
+the same branch.
 
 An HTTP `429 Too Many Requests` from Maven Central is a dependency-download
 failure, not a failing application test or proof of an individual artifact-size

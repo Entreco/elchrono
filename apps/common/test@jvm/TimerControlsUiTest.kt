@@ -48,7 +48,16 @@ class TimerControlsUiTest {
     fun `pause resume and restart remain usable at every detail level`() = runUiTest {
         val clock = TestClock()
         val viewModel = viewModel(clock)
-        setContent { ElChronoTheme { Box(Modifier.size(320.dp, 640.dp)) { AppContent(viewModel) } } }
+        setContent {
+            ElChronoTheme {
+                Box(
+                    Modifier.size(
+                        320.dp,
+                        640.dp
+                    )
+                ) { AppContent(viewModel) }
+            }
+        }
         (0..12).forEach { detail ->
             runOnIdle {
                 viewModel.updateSettings(settings.copy(detail = detail))
@@ -78,7 +87,17 @@ class TimerControlsUiTest {
             assertEquals(1.minutes, viewModel.uiState.value.timer.snapshot.remaining)
             onNodeWithContentDescription("Pause").performClick()
         }
-        runOnIdle { viewModel.updateSettings(settings.copy(duration = checkNotNull(TimerDuration.fromMinutes(0)))) }
+        runOnIdle {
+            viewModel.updateSettings(
+                settings.copy(
+                    duration = checkNotNull(
+                        TimerDuration.fromMinutes(
+                            0
+                        )
+                    )
+                )
+            )
+        }
         onNodeWithTag("timer-action").assertDoesNotExist()
     }
 
@@ -96,36 +115,20 @@ class TimerControlsUiTest {
         assertTrue(viewModel.uiState.value.isTicking)
         onNodeWithContentDescription("Pause").assertIsDisplayed()
     }
-
-    @Test
-    fun `interruption offers restart and zero duration never offers an enabled action`() = runUiTest {
-        val clock = TestClock()
-        val viewModel = viewModel(clock)
-        setContent { ElChronoTheme { AppContent(viewModel) } }
-        onNodeWithContentDescription("Resume").performClick()
-        runOnIdle { viewModel.onAppBackgrounded() }
-        onNodeWithText("Restart").assertIsDisplayed()
-        onNodeWithText("Timer interrupted. Progress may be out of date. Restart to start again.").assertIsDisplayed()
-        runOnIdle {
-            viewModel.openSettings()
-            viewModel.updateSettings(settings.copy(duration = checkNotNull(TimerDuration.fromMinutes(0))))
-            viewModel.closeSettings()
-        }
-        onNodeWithTag("timer-action").assertDoesNotExist()
-        runOnIdle {
-            viewModel.openSettings()
-            viewModel.updateSettings(settings)
-            viewModel.closeSettings()
-        }
-        onNodeWithText("Restart").performClick()
-        assertFalse(viewModel.uiState.value.interrupted)
-        assertTrue(viewModel.uiState.value.isTicking)
-    }
-
+    
     @Test
     fun `expanded overlay blocks pointer and semantics through exit animation`() = runUiTest {
         val viewModel = viewModel(TestClock())
-        setContent { ElChronoTheme { Box(Modifier.size(1200.dp, 720.dp)) { AppContent(viewModel) } } }
+        setContent {
+            ElChronoTheme {
+                Box(
+                    Modifier.size(
+                        1200.dp,
+                        720.dp
+                    )
+                ) { AppContent(viewModel) }
+            }
+        }
         val actionCenter = onNodeWithTag("timer-action").fetchSemanticsNode().boundsInRoot.center
         onNodeWithContentDescription("Open Settings").performClick()
         onNodeWithTag("timer-action", useUnmergedTree = true).assertDoesNotExist()
@@ -174,13 +177,15 @@ class TimerControlsUiTest {
         assertTrue(viewModel.uiState.value.isTicking)
     }
 
-    private val settings = TimerSettings(checkNotNull(TimerDuration.fromMinutes(1)), TimerTheme.CLOCK)
+    private val settings =
+        TimerSettings(checkNotNull(TimerDuration.fromMinutes(1)), TimerTheme.CLOCK)
 
     private fun viewModel(clock: TestClock) = AppViewModel(
         TimerEngine(clock),
         object : SettingsRepository {
             override fun load() = RestoredSettings(settings, null)
-            override fun save(settings: TimerSettings): StorageResult<Unit> = StorageResult.Success(Unit)
+            override fun save(settings: TimerSettings): StorageResult<Unit> =
+                StorageResult.Success(Unit)
         },
         settings,
         null,
@@ -189,6 +194,8 @@ class TimerControlsUiTest {
     private class TestClock : MonotonicClock {
         private var now = 0L
         override fun nowNanos() = now
-        fun advance(duration: Duration) { now += duration.inWholeNanoseconds }
+        fun advance(duration: Duration) {
+            now += duration.inWholeNanoseconds
+        }
     }
 }

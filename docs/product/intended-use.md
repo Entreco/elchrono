@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M1-DOC-002 |
-| Revision | 1.1 |
+| Revision | 1.2 |
 | Current change review | [PR #78](https://github.com/Entreco/elchrono/pull/78); human acceptance and required specialist review pending |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
@@ -98,8 +98,10 @@ full duration after a valid duration change. Manual pause and finished states
 remain stopped; a duration change after finish prepares a paused timer. At zero
 the timer stops in a distinct finished state; it does not restart automatically.
 Pause, Resume and Restart are explicit actions. Interruption requires explicit
-Restart, not Settings alone; lifecycle stop while Settings holds running intent
-revokes automatic resume. No countdown recovery across process termination or
+Restart, not Settings alone; genuine background lifecycle stop while Settings
+holds running intent revokes automatic resume. Rotation, resizing, and Android
+configuration recreation shall preserve the session rather than interrupt it;
+this continuity still requires device verification. No countdown recovery across process termination or
 device restart is promised. Settings has no caregiver-protection gate. These
 revised behaviors require product, accessibility, usability and risk review
 and verification; prior evidence does not establish them.
@@ -190,3 +192,4 @@ link applicable identifiers and source sections from the traceability matrix.
 | 0.9 | Align the proposed requirement identifier prefix with REQ-NNN and direct trace links to the M2 requirements traceability matrix |
 | 1.0 | Clarify v1 intended use and exclusions: no music, completion sound, or in-app volume controls; align Settings/completion/interruption scope with the M2 v1 decisions and preserve offline-verification limitations. |
 | 1.1 | Align intended-use behavior with one-shot completion, Settings intent and explicit interruption restart; retain review gaps. |
+| 1.2 | Distinguish configuration recreation from genuine background interruption without expanding countdown recovery or intended use. |

@@ -28,7 +28,7 @@ data class AppUiState(
     val interrupted: Boolean = false,
     val persistenceFailure: String? = null,
 ) {
-    
+
     val screen: AppScreen get() = backStack.last()
     val isTicking: Boolean get() = timer.snapshot.status == TimerStatus.RUNNING && !interrupted && !isPreviewing
     val isPreviewing: Boolean get() = AppScreen.SETTINGS in backStack
@@ -72,7 +72,7 @@ class AppViewModel(
         if (state.screen != AppScreen.TIMER) return
         val timer = timerEngine.pause()
         resumeAfterSettings = state.timer.snapshot.status == TimerStatus.RUNNING &&
-            timer.snapshot.status == TimerStatus.PAUSED && !state.interrupted
+                timer.snapshot.status == TimerStatus.PAUSED && !state.interrupted
         uiState.value = state.copy(backStack = state.backStack + AppScreen.SETTINGS, timer = timer)
     }
 
@@ -128,18 +128,6 @@ class AppViewModel(
             timer = timer,
             settings = settings,
             backStack = TimerBackStack,
-        )
-    }
-
-    fun onAppStopped() {
-        val state = uiState.value
-        if (state.timer.snapshot.status != TimerStatus.RUNNING && !resumeAfterSettings) return
-        resumeAfterSettings = false
-        val timer = timerEngine.pause()
-
-        uiState.value = state.copy(
-            timer = timer,
-            interrupted = timer.snapshot.status == TimerStatus.PAUSED,
         )
     }
 

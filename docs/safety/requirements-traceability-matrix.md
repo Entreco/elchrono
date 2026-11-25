@@ -7,8 +7,8 @@ Desktop keyboard changes: [PR #73](https://github.com/Entreco/elchrono/pull/73).
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-003 |
-| Revision | 4.6 |
-| Current change review | [PR #78](https://github.com/Entreco/elchrono/pull/78); human acceptance and required specialist review pending |
+| Revision | 5.1 |
+| Current change review | No PR opened yet; human acceptance and required specialist review pending |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Requirements and software-safety review: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
@@ -24,8 +24,8 @@ table. See [document controls](../governance/document-control.md#lifecycle-and-a
 This matrix is the authoritative cross-reference between the intended-use
 source, product requirements, risks, design/usability evidence, and test
 protocol. Requirement statements live in
-[M2-DOC-001, revision 1.8](../product/requirements.md); acceptance criteria and
-procedures live in [M2-DOC-002, revision 2.5](../testing/test-protocol.md).
+[M2-DOC-001, revision 2.1](../product/requirements.md); acceptance criteria and
+procedures live in [M2-DOC-002, revision 3.0](../testing/test-protocol.md).
 Do not duplicate those statements or criteria here.
 
 The mappings below are initial and proposed. Design links are included when
@@ -34,21 +34,21 @@ actual evidence is recorded.
 
 | Source record | Revision | Relationship |
 |---|---|---|
-| [M1-DOC-002, intended use](../product/intended-use.md) | 1.1 candidate | Product purpose, roles, use, and limitations |
-| [M2-DOC-001, product requirements](../product/requirements.md) | 1.8 candidate | Stationary Timer and sliding glass overlays; product review pending |
-| [M1-DOC-004, risk assessment](risk-assessment.md) | 1.11 candidate | RISK-001 through RISK-006 traced below; review pending; no control effectiveness or risk reduction claimed |
-| [M1-DOC-009, risk traceability matrix](risk-traceability-matrix.md) | 1.10 candidate | Bounded JVM evidence and planned verification; review pending |
-| [M2-DOC-002, product test protocol](../testing/test-protocol.md) | 2.5 candidate | Bounded one-shot evidence and approved zero idle priority; full protocol acceptance pending |
-| [M2-DOC-004, accessible screen flows and theme prototypes](../design/accessible-screen-flows-and-theme-prototypes.md) | 3.2 candidate | Settings appearance, remaining-time glass and stationary Timer; exact-head review pending |
-| [M2-DOC-005, usability review plan](../usability/usability-plan.md) | 1.2 candidate | Future refinement review scope; no participant session authorized |
+| [M1-DOC-002, intended use](../product/intended-use.md) | 1.2 candidate | Product purpose, roles, use, and limitations |
+| [M2-DOC-001, product requirements](../product/requirements.md) | 2.1 candidate | Independent-field implementation and focused JVM test coverage recorded; platform, accessibility, usability, risk review, and approval remain pending |
+| [M1-DOC-004, risk assessment](risk-assessment.md) | 1.15 candidate | RISK-001 through RISK-006 traced below; review pending; no control effectiveness or risk reduction claimed |
+| [M1-DOC-009, risk traceability matrix](risk-traceability-matrix.md) | 1.12 candidate | Independent-field implementation and focused JVM tests linked; platform and human review remain pending |
+| [M2-DOC-002, product test protocol](../testing/test-protocol.md) | 3.0 candidate | Independent duration-field criteria, bounded JVM execution, and TV-emulator IME observations recorded; broader platform and human verification remain pending |
+| [M2-DOC-004, accessible screen flows and theme prototypes](../design/accessible-screen-flows-and-theme-prototypes.md) | 3.5 candidate | Proposed duration input and Settings design; exact-head review pending |
+| [M2-DOC-005, usability review plan](../usability/usability-plan.md) | 1.4 candidate | Future refinement review scope; no participant session authorized |
 | [M2-DOC-006, usability findings and evidence status](../usability/usability-findings.md) | 1.2 candidate | Retrospective sessions and extended G06 redesign gap |
-| [M3-DOC-007, platform architecture decision and support matrix](../architecture/platform-architecture-and-support-matrix.md) | 0.3 candidate | Retains the configured Kotlin Multiplatform/Compose architecture; records TV priorities, Wear/watch exclusion, evidence limits, and no support commitment |
+| [M3-DOC-007, platform architecture decision and support matrix](../architecture/platform-architecture-and-support-matrix.md) | 0.4 candidate | Retains shared Compose controls, records the remote-focus candidate, evidence limits, and no support commitment |
 
 ## Traceability
 
 | Requirement | Intended-use source | Applicable risks | Design/usability evidence | Test protocol | Verification evidence |
 |---|---|---|---|---|---|
-| [REQ-001](../product/requirements.md#requirement-identification) | [Duration and supported waiting use](../product/intended-use.md#supported-role-of-visual-time-and-optional-audio) | RISK-001 | [Settings duration entry](../design/accessible-screen-flows-and-theme-prototypes.md#settings-screen); planned [U-03](../usability/usability-plan.md#tasks-and-neutral-prompts); session scope [M2-DOC-006](../usability/usability-findings.md#session-scope-and-evidence-provenance), gap G04 | [TP-REQ-001](../testing/test-protocol.md#test-cases) | JVM duration-entry, policy, and desktop Compose interaction tests cover sequential text edits and Backspace. Actual physical-keyboard entry, focus, layout, accessibility, and the zero-duration conflict remain unverified. The Wasm settings test runner previously failed during Skiko WebAssembly instantiation as recorded in M2-DOC-002. |
+| [REQ-001](../product/requirements.md#requirement-identification) | [Duration and supported waiting use](../product/intended-use.md#supported-role-of-visual-time-and-optional-audio) | RISK-001, RISK-004, RISK-005 | [Settings duration entry](../design/accessible-screen-flows-and-theme-prototypes.md#settings-screen); planned [U-03](../usability/usability-plan.md#tasks-and-neutral-prompts); session scope [M2-DOC-006](../usability/usability-findings.md#session-scope-and-evidence-provenance), gap G04 | [TP-REQ-001](../testing/test-protocol.md#test-cases) | Focused JVM unit and Desktop Compose tests cover all allowed durations and full-panel selection/replacement/deletion. Bounded Android TV-emulator IME observations cover numeric entry, deletion without dismissal, and intentional Done dismissal; see the [M2-DOC-002 correction record](../testing/test-protocol.md#tv-keyboard-selection-correction). Other platform keyboards/IME, physical remote operation, accessibility, supported-layout no-clipping and usability remain unverified. Existing common JVM test compilation and the earlier Wasm settings test-runner failure remain limitations. |
 | [REQ-002](../product/requirements.md#requirement-identification) | [Users and roles](../product/intended-use.md#users-population-and-roles) | RISK-001, RISK-002, RISK-004, RISK-005 | [Settings lifecycle and manual actions](../design/accessible-screen-flows-and-theme-prototypes.md#settings-screen); usability gaps G03/G04/G06 | [TP-REQ-002](../testing/test-protocol.md#test-cases) | Operator-reported passing JVM tests cover retained time, actual duration reset, manual pause, finished/initial state, About and lifecycle-stop intent. Zero idle priority and warning restoration require full platform/human review; see [execution record](../testing/test-protocol.md#one-shot-timer-and-manual-controls-candidate). |
 | [REQ-003](../product/requirements.md#requirement-identification) | [Remaining-time use](../product/intended-use.md#supported-role-of-visual-time-and-optional-audio) | RISK-001, RISK-002, RISK-005, RISK-006 | [Main states](../design/accessible-screen-flows-and-theme-prototypes.md#main-screen-and-states); gaps G04-G06 | [TP-REQ-003](../testing/test-protocol.md#test-cases) | Reported JVM state mapping and Compose interaction tests cover several action/state semantics. Zero after interruption renders idle without a warning; full visual matrix, screen-reader, device and human review remain pending. |
 | [REQ-004](../product/requirements.md#requirement-identification) | [Users and roles](../product/intended-use.md#users-population-and-roles); screen/content inventory is M2 product scope in [#22](https://github.com/Entreco/elchrono/issues/22) | RISK-004, RISK-005, RISK-006 | [Main, Settings, and About designs](../design/accessible-screen-flows-and-theme-prototypes.md#screen-flows); Settings overlay; owner-supplied logo; unavailable content remains a blocker; no v1 audio/volume controls | [TP-REQ-004](../testing/test-protocol.md#test-cases) | Prior About and browser checks do not verify the revised overlay. Required version/build, support, privacy, and licence sources remain unavailable, so TP-REQ-004 is blocked. Browser rendering, links, responsive no-clipping, keyboard, screen-reader, and integrated behavior remain unverified. See the #67 candidate execution record in M2-DOC-002. |
@@ -57,11 +57,21 @@ actual evidence is recorded.
 | [REQ-008](../product/requirements.md#requirement-identification) | [Offline use](../product/intended-use.md#supported-role-of-visual-time-and-optional-audio); future audio scope deferred | RISK-003 | Music and volume controls excluded from v1; future audio behavior requires separate review; [M3-DOC-003](../architecture/audio-provider-feasibility-findings.md) records feasibility constraints only | [TP-REQ-008](../testing/test-protocol.md#test-cases) | Network-independence test pending; v2 audio tests deferred |
 | [REQ-009](../product/requirements.md#requirement-identification) | [Exclusions and claims boundary](../product/intended-use.md#exclusions-and-claims-boundary) | RISK-006 | [About screen content](../design/accessible-screen-flows-and-theme-prototypes.md#about-screen); session gap G04 | [TP-REQ-009](../testing/test-protocol.md#test-cases) | Pending |
 | [REQ-010](../product/requirements.md#requirement-identification) | [Limitations](../product/intended-use.md#foreseeable-use-and-limitations) | RISK-001, RISK-005 | One-shot finished at zero and explicit Restart; usability gaps G04/G06 | [TP-REQ-010](../testing/test-protocol.md#test-cases) | Operator-reported passing JVM tests exercise all 1,440 durations, one completion event, no loop and full Restart, plus bounded Compose Restart interaction. Product, device and human review remain pending. |
-| [REQ-011](../product/requirements.md#requirement-identification) | [Roles and ordinary use](../product/intended-use.md#users-population-and-roles); TV viewing/input boundaries | RISK-005, RISK-006 | [TV priority and v1 boundary](../design/accessible-screen-flows-and-theme-prototypes.md#design-principles); TV interaction and platform support remain unverified | [TP-REQ-011](../testing/test-protocol.md#test-cases) | Pending; Android TV has a candidate launcher; Apple TV is unconfigured. No TV support claim is made |
+| [REQ-011](../product/requirements.md#requirement-identification) | [Roles and ordinary use](../product/intended-use.md#users-population-and-roles); TV viewing/input boundaries | RISK-005, RISK-006 | [TV priority and v1 boundary](../design/accessible-screen-flows-and-theme-prototypes.md#design-principles); shared controls with candidate remote focus; physical remote, readability, accessibility, and usability remain unverified | [TP-REQ-011](../testing/test-protocol.md#test-cases) | JVM simulated-input evidence is bounded; no Android TV device was used for this candidate. TP-REQ-011 remains blocked, Apple TV is unconfigured, and no TV support claim is made. See [issue #81 execution record](../testing/test-protocol.md#issue-81-android-tv-controls-candidate). |
 | REQ-012 | [Users and roles](../product/intended-use.md#users-population-and-roles) | RISK-004, RISK-005 | Settings personalization, 16-color palettes, distinct font choices, dot-free Ring track and dot-free detail-zero track; unrestricted-color visibility and human product/accessibility/risk review pending | TP-REQ-012 | Earlier JVM slider and browser observations do not establish acceptance of the expanded palette, new fonts or Ring slider. Platform font rendering, compact layout, keyboard/screen-reader behavior, and human review remain pending. |
 | REQ-013 | [Remaining-time use](../product/intended-use.md#supported-role-of-visual-time-and-optional-audio) | RISK-001, RISK-002, RISK-005 | [Detail mapping and actions](../design/accessible-screen-flows-and-theme-prototypes.md#m5-timer-scope-and-detail-mapping); G06 | TP-REQ-013 | Reported JVM Compose tests exercise actions at details 0–12, Tab/Enter, expanded overlay isolation and one compact large-font Restart; full visual matrix, screen readers and human review remain pending. |
 | REQ-014 | [Users and roles](../product/intended-use.md#users-population-and-roles) | RISK-001, RISK-002, RISK-004, RISK-005 | Full-duration preview, paused engine reset only for actual duration change and retained interruption | TP-REQ-014 | Reported JVM ViewModel tests cover changed duration, preview, appearance-only preservation and storage failure. Zero idle priority and warning restoration, complete persistence/platform and human verification require review. |
 | REQ-015 | [Users and roles](../product/intended-use.md#users-population-and-roles) | RISK-005 | Stationary Timer, sliding glass panels and native blur; no-clipping, fallback and assistive-tech evidence pending | TP-REQ-015 | Platform rendering, back gestures, focus and human review remain pending |
+
+For REQ-002/003/010/014/015 and RISK-001/RISK-002/RC-002-1, the
+[configuration recreation candidate](../testing/test-protocol.md#configuration-recreation-refactor-candidate)
+supersedes unconditional stop classification: Android configuration stops do
+not interrupt, while genuine background stops retain the existing policy.
+Observed Android JVM domain tests and Settings save/restore tests are bounded
+evidence; common JVM compilation is blocked by the pre-existing TV test signature
+mismatch. Actual Activity retention, rotation, focus, scroll and no-clipping
+delivery remain unverified. No control effectiveness or human acceptance is
+inferred from compilation or domain results.
 
 ## Reverse coverage
 
@@ -248,6 +258,11 @@ test procedures or acceptance criteria in this matrix.
 | 4.1 | Trace stationary Timer and sliding glass panel criteria; retain platform and human review gaps. |
 | 4.2 | Trace remaining-time glass, its bounded checks and readability risks; retain fallback, device and human review gaps. |
 | 4.3 | Trace the expanded palette, font choices and tick-free Ring slider to risk review and verification; retain platform and human review gaps. |
+| 4.4 | Trace issue #81's shared-control remote-focus candidate and bounded JVM evidence; retain blocked target verification and support limitations. |
 | 4.4 | Trace revised requirements, risks, planned tests and usability gaps; distinguish historical results from current verification. |
 | 4.5 | Add bounded operator-reported one-shot timer and action evidence while retaining the zero-warning mismatch and review gaps. |
 | 4.6 | Align traceability with approved zero idle priority and retained interruption; retain human and platform review gaps. |
+| 4.8 | Trace retained session/UI continuity to configuration-recreation procedures and bounded results; retain common JVM compilation and device-review gaps. |
+| 4.9 | Trace proposed independent duration entry to tests, usability and risk review; retain implementation and verification gaps. |
+| 5.0 | Record the independent-field implementation candidate and focused JVM test results; retain platform, accessibility, usability, risk-review, and approval gaps. |
+| 5.1 | Trace TV IME selection and deletion corrections to full-panel regression tests and bounded emulator observations; retain platform, accessibility, usability, and approval gaps. |

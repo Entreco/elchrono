@@ -28,13 +28,10 @@
     <string name="open_settings">Open Settings</string>
     <string name="hide_settings">Hide Settings</string>
     <string name="back">Back</string>
-    <string name="glass_effect_unavailable">The glass effect is unavailable. The timer is still available.</string>
     <string name="duration">Duration</string>
     <string name="hours">Hours</string>
     <string name="minutes">Minutes</string>
-    <string name="duration_entry_help">Enter digits in order: minutes first, then hours. For example, 205 is 02 hours and 05 minutes.</string>
-    <string name="invalid_duration">Enter a whole-minute duration from 00:01 through 24:00.</string>
-    <string name="invalid_duration_including_zero">Enter a whole-minute duration from 00:00 through 24:00.</string>
+    <string name="duration_entry_help">Enter hours and minutes in their fields. Each field accepts up to two digits; 60 minutes carries to the next hour.</string>
     <string name="colors">Colors</string>
     <string name="background">Background</string>
     <string name="foreground">Foreground</string>
@@ -71,9 +68,6 @@
     <string name="ring_thin">Thin</string>
     <string name="ring_solid">Solid fill</string>
     <string name="selected_theme_format">Selected: %1$s</string>
-    <string name="save_and_start">Save and start</string>
-    <string name="clear">Clear</string>
-    <string name="delete">Delete</string>
     <string name="brand_wordmark">El Chrono</string>
     <string name="about_logo_description">Entreco logo</string>
     <string name="about_tagline">Visual support for ordinary waiting</string>

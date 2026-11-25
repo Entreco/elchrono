@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -82,7 +83,7 @@ private fun BackButton(
         onClick = onBack,
         modifier = Modifier
             .defaultMinSize(minWidth = 48.dp, minHeight = 48.dp)
-            .elChronoFocusOutline(MaterialTheme.shapes.small)
+            .elChronoFocusOutline(CircleShape)
             .semantics { contentDescription = backLabel },
     ) {
         Text("‹", style = MaterialTheme.typography.titleLarge)

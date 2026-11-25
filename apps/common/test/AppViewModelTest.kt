@@ -6,6 +6,7 @@ import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
+import kotlin.time.Duration.Companion.seconds
 import nl.entreco.elchrono.core.counter.MonotonicClock
 import nl.entreco.elchrono.core.counter.TimerDuration
 import nl.entreco.elchrono.core.counter.TimerEngine
@@ -15,8 +16,75 @@ import nl.entreco.elchrono.core.persistence.TimerSettings
 import nl.entreco.elchrono.core.persistence.SettingsRepository
 import nl.entreco.elchrono.core.persistence.RestoredSettings
 import nl.entreco.elchrono.core.persistence.StorageResult
+import nl.entreco.elchrono.di.appModule
+import org.koin.dsl.koinApplication
+import org.koin.dsl.module
 
 class AppViewModelTest {
+    @Test
+    fun `new viewmodel sessions do not share a running engine`() {
+        val application = koinApplication {
+            modules(
+                appModule,
+                module {
+                    single<SettingsRepository> { StubSettingsRepository(StorageResult.Success(Unit)) }
+                },
+            )
+        }
+        try {
+            val first = application.koin.get<AppViewModel>()
+            first.onTimerAction()
+            val second = application.koin.get<AppViewModel>()
+            assertTrue(first.uiState.value.isTicking)
+            assertFalse(second.uiState.value.isTicking)
+            assertEquals(TimerStatus.PAUSED, second.uiState.value.timer.snapshot.status)
+        } finally {
+            application.close()
+        }
+    }
+
+    @Test
+    fun `missed UI refreshes preserve elapsed time and complete exactly once`() {
+        val clock = TestMonotonicClock()
+        val viewModel = testViewModel(clock)
+        viewModel.onTimerAction()
+        clock.advance(2.minutes)
+        viewModel.tick()
+        clock.advance(30.seconds)
+        viewModel.tick()
+        assertEquals(150.seconds, viewModel.uiState.value.timer.snapshot.remaining)
+        assertTrue(viewModel.uiState.value.isTicking)
+        assertFalse(viewModel.uiState.value.interrupted)
+        clock.advance(3.minutes)
+        viewModel.tick()
+        assertEquals(TimerStatus.FINISHED, viewModel.uiState.value.timer.snapshot.status)
+        assertEquals(Duration.ZERO, viewModel.uiState.value.timer.snapshot.remaining)
+        assertEquals(1, viewModel.uiState.value.timer.completedCycles)
+        repeat(5) { viewModel.tick() }
+        assertEquals(TimerStatus.FINISHED, viewModel.uiState.value.timer.snapshot.status)
+        assertEquals(Duration.ZERO, viewModel.uiState.value.timer.snapshot.remaining)
+    }
+
+    @Test
+    fun `retained session keeps about navigation and settings running intent`() {
+        val clock = TestMonotonicClock()
+        val viewModel = testViewModel(clock)
+        viewModel.onTimerAction()
+        clock.advance(2.minutes)
+        viewModel.openSettings()
+        viewModel.showAbout()
+        clock.advance(30.seconds)
+        viewModel.tick()
+        assertEquals(AppScreen.ABOUT, viewModel.uiState.value.screen)
+        assertEquals(3.minutes, viewModel.uiState.value.timer.snapshot.remaining)
+        assertFalse(viewModel.uiState.value.interrupted)
+        viewModel.onBackPressed()
+        assertEquals(AppScreen.SETTINGS, viewModel.uiState.value.screen)
+        viewModel.onBackPressed()
+        assertTrue(viewModel.uiState.value.isTicking)
+        assertEquals(3.minutes, viewModel.uiState.value.timer.snapshot.remaining)
+    }
+
     @Test
     fun `initial configuration waits for explicit action`() {
         val viewModel = testViewModel()
@@ -169,7 +237,10 @@ class AppViewModelTest {
         viewModel.openSettings()
         viewModel.showAbout()
         viewModel.showAbout()
-        assertEquals(listOf(AppScreen.TIMER, AppScreen.SETTINGS, AppScreen.ABOUT), viewModel.uiState.value.backStack)
+        assertEquals(
+            listOf(AppScreen.TIMER, AppScreen.SETTINGS, AppScreen.ABOUT),
+            viewModel.uiState.value.backStack
+        )
         viewModel.onTimerAction()
         assertFalse(viewModel.uiState.value.isTicking)
         viewModel.onBackPressed()
@@ -180,53 +251,6 @@ class AppViewModelTest {
         viewModel.onBackPressed()
         viewModel.showAbout()
         assertEquals(listOf(AppScreen.TIMER), viewModel.uiState.value.backStack)
-    }
-
-    @Test
-    fun `interruption requires explicit restart and settings cannot clear warning`() {
-        val clock = TestMonotonicClock()
-        val viewModel = testViewModel(clock)
-        viewModel.onTimerAction()
-        clock.advance(2.minutes)
-        viewModel.onAppStopped()
-        clock.advance(20.minutes)
-        viewModel.onAppStopped()
-        viewModel.tick()
-        assertEquals(3.minutes, viewModel.uiState.value.timer.snapshot.remaining)
-        assertTrue(viewModel.uiState.value.interrupted)
-        viewModel.openSettings()
-        viewModel.updateSettings(settings(2))
-        viewModel.closeSettings()
-        assertTrue(viewModel.uiState.value.interrupted)
-        assertFalse(viewModel.uiState.value.isTicking)
-        viewModel.onTimerAction()
-        assertFalse(viewModel.uiState.value.interrupted)
-        assertEquals(2.minutes, viewModel.uiState.value.timer.snapshot.remaining)
-        assertTrue(viewModel.uiState.value.isTicking)
-    }
-
-    @Test
-    fun `stop while settings holds running intent prevents automatic resume`() {
-        val viewModel = testViewModel()
-        viewModel.onTimerAction()
-        viewModel.openSettings()
-        viewModel.onAppStopped()
-        viewModel.closeSettings()
-        assertTrue(viewModel.uiState.value.interrupted)
-        assertFalse(viewModel.uiState.value.isTicking)
-    }
-
-    @Test
-    fun `stopping manual paused or finished timers does not mark interruption`() {
-        val clock = TestMonotonicClock()
-        val viewModel = testViewModel(clock)
-        viewModel.onAppStopped()
-        assertFalse(viewModel.uiState.value.interrupted)
-        viewModel.onTimerAction()
-        clock.advance(5.minutes)
-        viewModel.onAppStopped()
-        assertEquals(TimerStatus.FINISHED, viewModel.uiState.value.timer.snapshot.status)
-        assertFalse(viewModel.uiState.value.interrupted)
     }
 
     @Test
@@ -251,12 +275,19 @@ class AppViewModelTest {
     )
 
     private fun testViewModel(clock: TestMonotonicClock = TestMonotonicClock()) =
-        AppViewModel(TimerEngine(clock), StubSettingsRepository(StorageResult.Success(Unit)), settings(5), null)
+        AppViewModel(
+            TimerEngine(clock),
+            StubSettingsRepository(StorageResult.Success(Unit)),
+            settings(5),
+            null
+        )
 
-    private class StubSettingsRepository(private val saveResult: StorageResult<Unit>) : SettingsRepository {
+    private class StubSettingsRepository(private val saveResult: StorageResult<Unit>) :
+        SettingsRepository {
         override fun load() = RestoredSettings(
             TimerSettings(checkNotNull(TimerDuration.fromMinutes(5)), TimerTheme.CLOCK), null,
         )
+
         override fun save(settings: TimerSettings): StorageResult<Unit> = saveResult
     }
 

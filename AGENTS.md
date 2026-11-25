@@ -29,8 +29,10 @@ the product into a medical device.
 ## Product requirements
 
 - Caregivers select any whole-minute duration from 1 minute to 24 hours using
-  Hours and Minutes fields: sequential digits fill MM first and then shift left
-  into HH (for example, `205` displays `02:05`).
+  independently editable Hours and Minutes fields, using platform text input
+  rather than sequential digit entry or an app-provided keypad. `00:00` is also
+  available as a non-counting idle configuration. REQ-001 defines field editing,
+  clamping, carry, focus, and formatting behavior.
 - Caregivers select from the available timer themes. Include quiet experiences
   and explore geometric experiences such as triangles; final designs require
   usability review rather than assumptions about patient preferences.

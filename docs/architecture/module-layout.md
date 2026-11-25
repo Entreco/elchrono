@@ -18,11 +18,13 @@ depend on the shared `apps/common` application shell. The shell owns the
 Material 3 app scaffold and adaptive pane layout, screen routing,
 Settings visibility and lifecycle coordination through `AppViewModel`, and
 composition of feature UI; it does not own timer-domain behavior or
-feature-screen UI. `core/counter` owns shared, Compose-free duration,
-sequential duration-entry, and countdown logic.
+feature-screen UI. `core/counter` owns shared, Compose-free duration and
+countdown logic.
 `features/timer` owns the countdown and visualization UI;
-`core/design` owns the reusable numeric keypad UI;
-`features/settings` owns duration/theme selection UI and the input-mode policy;
+`core/design` owns reusable design components, including a numeric keypad that
+is not used by Settings;
+`features/settings` owns independent Hours/Minutes field-entry behavior,
+duration/theme selection UI, and its tests;
 `features/about` owns About UI; and `features/music` remains an empty v2
 placeholder.
 
@@ -30,15 +32,11 @@ Features may depend on core libraries, but not on one another. Core modules
 must not depend on features or apps. `core/design` owns shared design types,
 components, and theme assets; `core/localization` owns all user-visible
 strings. Platform lifecycle and keyboard-capability integration stay outside
-core. Android uses the experimental Compose `mediaQuery` API for keyboard
-availability; iOS uses its system keyboard. Desktop enables keyboard entry
-without the app keypad; browser uses keypad-only entry. The pinned Compose
-Desktop [1.12.1 sources](https://repo.maven.apache.org/maven2/org/jetbrains/compose/ui/ui-desktop/1.12.1/ui-desktop-1.12.1-sources.jar)
-expose the experimental media query API but do not provide
-`LocalUiMediaScope`, so the JVM adapter treats keyboard entry as
-available instead of attempting unsupported runtime detection. This is a
-desktop input policy, not evidence that a physical keyboard is connected.
-TV launchers must explicitly use keypad-only entry; no TV support is established.
+core. Settings uses independently editable platform text fields on all
+configured targets and does not display the app keypad or gate field editing
+on keyboard-availability detection. Actual keyboard/IME behavior, accessibility,
+and remote operation require target-specific verification; this does not
+establish support for unconfigured TV targets.
 
 The issue #47 implementation of this boundary is recorded in
 [PR #59](https://github.com/Entreco/elchrono/pull/59).
@@ -70,13 +68,12 @@ Wasm/JS. These compilation targets do not establish TV/watch support.
   event integration. `AppUiState.isTicking` derives whether updates are needed
   from running and interruption state; the lifecycle still gates the UI update
   loop. Common does not contain timer-domain logic or feature-screen UI.
-- Counter owns `TimerDuration`, `DurationDigitEntry`, `MonotonicClock`, and
-  `TimerEngine`, with deterministic tests in the same module.
-- Design owns the shared `NumericKeypad`; its labels are supplied by callers
-  from localization resources.
+- Counter owns `TimerDuration`, `MonotonicClock`, and `TimerEngine`, with
+  deterministic tests in the same module.
+- Design owns the reusable `NumericKeypad`; Settings does not use it.
 - Timer (`TimerFeature`), settings (`SettingsPanel` and `SettingsScreen`), and
-  about own their respective Compose screens; the settings panel container,
-  input-mode policy, and tests belong to settings.
+  about own their respective Compose screens; field-entry behavior and tests
+  belong to settings.
 - Music remains an empty v2 module with no app dependency or production
   behavior.
 
@@ -110,10 +107,11 @@ Verification must cover module discovery and dependency direction, preserved
 platform tests, localized-string formatting, all configured app builds, and
 actual desktop/browser/Android/iOS simulator launches with resources rendered.
 Record observed outcomes separately from unsupported targets or signing limits.
-Counter behavior and settings input policy have focused JVM regression tests.
-Settings also has desktop Compose interaction tests for text input and
-Backspace. Physical-keyboard entry, feature layout/accessibility, and
-interactive browser behavior remain unverified by those tests.
+Counter behavior and independent field-entry logic have focused JVM regression
+tests. Settings also has desktop Compose interaction tests for field editing,
+focus selection, empty input, and Backspace. Physical keyboard/IME behavior on
+each platform, screen-reader and remote operation, feature layout/accessibility,
+and interactive browser behavior remain unverified by those tests.
 
 Historical scaffold verification outcomes (not evidence for the #47 UI):
 

@@ -5,8 +5,8 @@ Settings appearance review: [PR #76](https://github.com/Entreco/elchrono/pull/76
 | Field | Value |
 |---|---|
 | Document ID | M1-DOC-004 |
-| Revision | 1.11 |
-| Current change review | [PR #78](https://github.com/Entreco/elchrono/pull/78); human acceptance and required specialist review pending |
+| Revision | 1.15 |
+| Current change review | No PR opened yet; human acceptance and required specialist review pending |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Software-safety and product-risk review: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
@@ -99,14 +99,20 @@ the overlay, unblurred fallback, and unrestricted colors impair readability
 or focus (RISK-001, RISK-004 and RISK-005). No revised risk acceptance or
 control effectiveness is implied by the owner's design choice.
 
-The Settings foreground accent adds review scope for keypad, duration-field,
-and Details slider visibility and operation when foreground and background
-colors match or have low contrast. Black/white keypad labels do not establish
-that button boundaries, focus, selection, or slider positions are
-distinguishable. REQ-012 permits these combinations without restrictions or
-warnings. Review the resulting Settings interaction and configuration risks
-under RISK-004 and RISK-005; no risk disposition or control effectiveness is
-claimed.
+The independent-field replacement of sequential entry and the app keypad is
+implemented as a candidate and covered by focused JVM tests. It still requires
+review under RISK-001, RISK-004 and RISK-005: intermediate edits immediately
+change the saved duration and reset the timer, clamping and minute carry may
+be misunderstood, and platform text input may be inaccessible or unavailable
+to remote users. Platform and usability evidence and risk review remain
+pending; no risk acceptance or control effectiveness is inferred.
+
+The Settings foreground accent adds review scope for duration-field labels,
+focus and selection, and Details slider visibility and operation when
+foreground and background colors match or have low contrast. REQ-012 permits
+these combinations without restrictions or warnings. Review the resulting
+Settings interaction and configuration risks under RISK-004 and RISK-005; no
+risk disposition or control effectiveness is claimed.
 
 The sliding glass layers and selected Settings font and text color add review
 scope for control legibility, focus, clipping, shader and tint fallback, and
@@ -127,6 +133,12 @@ Navigation icons using the chosen text color may be indistinguishable from a
 matching background. Selected swatches use a contrasting backing behind their
 text-colored check, but its recognition, size, focus, and rendering need
 accessibility and usability review; no effectiveness is credited.
+The Android TV candidate adds review scope for predictable focus restoration
+and movement, selected-control semantics, visible focus, and readable
+targets at viewing distance. JVM simulated input and compilation do not verify
+these behaviors on an Android TV renderer or with a remote. Review under
+RISK-005; no control effectiveness, risk disposition, or support readiness is
+claimed.
 
 ## Initial assessment method and criteria
 
@@ -251,7 +263,7 @@ Individual effects cannot be added to calculate the overall post-control score.
 
 | ID | Proposed control | Intended effect and rationale |
 |---|---|---|
-| RC-002-1 | On lifecycle stop while running or while Settings holds running intent, mark interrupted and revoke resume; do not auto-resume on start. Settings alone never clears interruption. Explicit Restart clears the warning and starts the configured full duration. Do not recover countdown state across process termination or device restart. | Intended to avoid treating stale progress as current; lifecycle delivery and restart behavior require platform verification and qualified review. |
+| RC-002-1 | On genuine background lifecycle stop while running or while Settings holds running intent, mark interrupted and revoke resume; do not auto-resume on start. Exclude Android configuration-change stops and preserve the retained session, monotonic timing and Settings intent through recreation. Settings alone never clears genuine interruption. Explicit Restart clears the warning and starts the configured full duration. Do not recover countdown state across process termination or device restart. | Intended to avoid treating stale progress as current without unnecessarily interrupting an ordinary wait during rotation. Misclassifying recreation can freeze progress and extend waiting (RISK-001/RISK-002). Real lifecycle delivery, completion through recreation, and background discrimination require platform verification and qualified review; no effectiveness is credited. |
 | RC-002-2 | Distinguish running, paused, finished, idle and interrupted; for positive interrupted duration show a stale-progress text warning at detail 1-12 and a distinct visual cue plus accessible description at detail 0. At zero show idle with no warning or action while retaining interruption internally; positive reconfiguration restores the warning and requires Restart. | The warning may reduce reliance on stale progress; icon-only cues, warning and accessibility/usability require review. No effectiveness is credited. |
 
 ### RISK-003 controls
@@ -272,7 +284,7 @@ Individual effects cannot be added to calculate the overall post-control score.
 
 | ID | Proposed control | Intended effect and rationale |
 |---|---|---|
-| RC-005-1 | Use consistent non-color-only progress/state cues and accessible action semantics, including icon-only detail 0 and stale-progress meaning. | Intended to reduce ambiguity; action/state distinction, labels, focus, warning and comprehension need human review and verification. No effectiveness is credited. |
+| RC-005-1 | Use consistent non-color-only progress/state cues and accessible action semantics, including icon-only detail 0, stale-progress meaning, and predictable visible focus for TV remote controls. | Intended to reduce ambiguity; action/state distinction, labels, focus, warning, remote navigation and comprehension need human review and verification. No effectiveness is credited. |
 | RC-005-2 | Avoid flashing and unnecessary motion. | Likelihood: reduce distracting presentation that may contribute to misunderstanding. |
 | RC-005-3 | Review themes and interactions with caregivers and representative patients under appropriate consent and safeguards. | Likelihood: identify and correct misunderstandings before release; review alone does not establish an effective control. |
 
@@ -366,3 +378,7 @@ they are not waived by this initial assessment.
 | 1.9 | Reassess proposed timing, interruption, open-access and accessibility controls for explicit actions and one-shot behavior; retain undetermined residual risk. |
 | 1.10 | Record bounded reported JVM evidence and the zero-duration stale-warning mismatch; retain qualified review and undetermined residual risk. |
 | 1.11 | Align risk control with approved zero idle priority while retaining human risk and accessibility review. |
+| 1.12 | Add Android TV remote-focus, selection, and viewing-distance review scope to RISK-005; retain pending verification and risk disposition. |
+| 1.13 | Exclude configuration recreation from genuine interruption and identify unnecessary stopped waits under RC-002-1; retain platform, UX and risk-review gaps. |
+| 1.14 | Add risk review scope for proposed independent duration entry, immediate changes, carry, clamping and platform input; no risk disposition is inferred. |
+| 1.15 | Record the independent-field implementation candidate and focused JVM test coverage; retain platform, usability, and risk-review gaps without inferring control effectiveness or acceptance. |

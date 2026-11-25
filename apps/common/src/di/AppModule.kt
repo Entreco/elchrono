@@ -10,7 +10,7 @@ import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
 
 val appModule = module {
-    single { TimerEngine() }
+    factory { TimerEngine() }
 
     single<SettingsRepository> {
         platformSettingsRepository(defaultTimerSettings())

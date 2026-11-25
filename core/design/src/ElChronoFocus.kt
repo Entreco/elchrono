@@ -12,7 +12,7 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 
-internal fun Modifier.elChronoFocusOutline(shape: Shape): Modifier = composed {
+fun Modifier.elChronoFocusOutline(shape: Shape): Modifier = composed {
     var hasFocus by remember { mutableStateOf(false) }
     val focusColor = MaterialTheme.colorScheme.tertiary
     onFocusChanged { hasFocus = it.hasFocus }

@@ -7,8 +7,8 @@ Desktop keyboard changes: [PR #73](https://github.com/Entreco/elchrono/pull/73).
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-002 |
-| Revision | 2.5 |
-| Current change review | [PR #78](https://github.com/Entreco/elchrono/pull/78); human acceptance and required specialist review pending |
+| Revision | 3.0 |
+| Current change review | No PR opened yet; human acceptance and required specialist review pending |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Test and product requirements review: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
@@ -22,7 +22,7 @@ table. See [document controls](../governance/document-control.md#lifecycle-and-a
 ## Purpose and limits
 
 This protocol contains planned test procedures and acceptance criteria for
-[M2-DOC-001, revision 1.8, Product requirements](../product/requirements.md).
+[M2-DOC-001, revision 2.1, Product requirements](../product/requirements.md).
 The exact source revisions and requirement-to-source, risk, design, usability,
 and test relationships are identified in the
 [requirements traceability matrix](../safety/requirements-traceability-matrix.md).
@@ -38,7 +38,7 @@ hours. No accessibility conformance baseline is selected by this protocol.
 
 | Test ID | Requirement | Procedure | Acceptance criteria |
 |---|---|---|---|
-| TP-REQ-001 | [REQ-001](../product/requirements.md#requirement-identification) | Enter representative digit sequences through the mobile system-keyboard route, desktop physical keyboard in each field, and on-screen keypad route. Test desktop focus, keyboard navigation, deletion, selection/replacement, non-digit input, and keypad absence at compact and expanded sizes. Confirm browser and TV use the keypad without keyboard-based entry. Test duration boundaries, invalid values, and all whole-minute durations with a controllable input/test harness. | All input routes preserve the sequential mapping: `2`, `20`, `205`, and `2400` display as `00:02`, `00:20`, `02:05`, and `24:00`. Every duration from `00:01` through `24:00` is representable. Minute values above `59` and values above `24:00` cannot be configured as valid durations. On mobile, keypad visibility follows keyboard availability; desktop fields accept physical keyboard input without the app keypad; browser and TV use the keypad and do not expose keyboard-based duration entry. The existing conflict over whether `00:00` is valid remains unresolved; do not mark this test fully passed until the owner reconciles REQ-001, REQ-002, and the 1-minute minimum in project instructions. |
+| TP-REQ-001 | [REQ-001](../product/requirements.md#requirement-identification) | Exercise each field independently via platform text input; test focus selection, keyboard navigation, replacement, cursor and deletion, empty input, paste, non-digits, overlength edits, carry, clamping, recreation and no app keypad at compact and expanded sizes. Test all whole-minute durations and real platform keyboard and TV remote operation where available. | Every positive duration from 00:01 through 24:00 and idle 00:00 is representable. Empty means zero immediately; field input is limited and clamped as specified, 60 minutes carries an hour, and the total never exceeds 24:00. Single-digit editing and blur padding follow REQ-001. Rejected or unchanged edits do not change or reset the setting; actual changes save and reset under REQ-002. Fields are independently focusable and operable without clipping; no app keypad is shown. Earlier sequential-entry tests do not verify these criteria. Focused JVM implementation tests pass; platform input, accessibility, remote results and usability remain pending until observed. |
 | TP-REQ-002 | [REQ-002](../product/requirements.md#requirement-identification) | Use injected time to test running, manually paused, finished, initial positive, zero and interrupted states; open Settings, visit About and close via icon and Back. Exercise actual valid duration changes, unchanged values, appearance-only edits and invalid drafts; advance time while Settings is open. Inject lifecycle stop while Settings retains running intent. | Running pauses without losing time; About return does not resume; closing resumes only retained running intent with remaining time or new full duration after a valid duration change. Changed valid duration immediately resets the engine paused; appearance-only, invalid and unchanged edits do not. Manually paused stays paused; finished stays zero unless duration changes, which prepares paused full duration requiring Resume. Initial positive configuration does not auto-start and offers Resume; zero is idle with no enabled action. Stop during Settings revokes resume and shows interruption. Settings alone never clears interruption. |
 | TP-REQ-003 | [REQ-003](../product/requirements.md#requirement-identification) | For all four shapes and details 0-12 inspect running, paused, finished, idle and interrupted states, progress, accessible names, stale warning, compact/expanded layouts, keyboard, touch and screen-reader output. Trigger lifecycle interruption including while Settings holds running intent. | States and progress are distinguishable without color alone; no clock face or time of day is shown. Detail 0 has no visible Timer text but has accessible icon actions and distinct idle/interrupted cues. Higher details show interruption warning and remaining time. No automatic interruption recovery; explicit Restart clears warning and starts full duration. All shape geometry, Clock labels and Fan bounds remain correct and unclipped. Human review of comprehension and platform delivery remains required. |
 | TP-REQ-004 | [REQ-004](../product/requirements.md#requirement-identification) | Inspect Main, Settings, and About against their required v1 content. At compact and expanded widths confirm Settings overlays Timer; resize across the breakpoint while About is open. Verify the official logo's scaling and accessible name, actual version/build metadata, approved support/privacy/licence information and link destinations, intended-use/limitations copy, navigation back to Settings and Timer, keyboard operation, and screen-reader labels. | Main includes the selected timer visualization. Settings overlays Timer on compact and expanded windows; duration and theme controls are present, with no v1 music or volume controls. About contains all REQ-004 content from authoritative sources; the logo preserves its aspect ratio and is accessible, links work, navigation is correct, and content is readable and not clipped or obscured. A missing source or required item is explicitly recorded as a gap and makes this test blocked, not passed. |
@@ -48,7 +48,7 @@ hours. No accessibility conformance baseline is selected by this protocol.
 | TP-REQ-009 | [REQ-009](../product/requirements.md#requirement-identification) | Review application screens, About content, and external product claims against intended-use exclusions. | No content presents the app as a clock, guarantees a deadline, makes medical claims, or presents it for safety-critical timing. Conflicts in intended purpose, functionality, claims, or markets are escalated before affected work continues. |
 | TP-REQ-010 | [REQ-010](../product/requirements.md#requirement-identification) | With controllable time, test all 1,440 positive durations just before, at and after zero; delay a tick beyond multiple durations, poll repeatedly, pause at boundary and restart. | Zero is clamped, finished is distinct from idle, ticking stops and completion is reported exactly once; no auto-restart or negative remainder occurs. Restart starts the full configured duration. No result is implied by this planned case. |
 | TP-REQ-011 | [REQ-011](../product/requirements.md#requirement-identification) | On each configured target, operate Main, Settings, and About using its supported remote/controller focus model; verify visible focus, predictable navigation, readability at ordinary viewing distance, and non-colour-only cues. Attempt target packaging and lifecycle checks. | Android TV and Apple TV controls are operable without touch, focus is visible and predictable, and content remains readable and complete at the agreed viewing distance. Record target configuration and verification before claiming support; an unconfigured target or unavailable device makes the test blocked, not passed. |
-| TP-REQ-012 | [REQ-012](../product/requirements.md#requirement-identification) | Enumerate detail levels 0-12 in both directions and select colors/fonts across shape changes and temporary hidden controls. Inspect Settings text, input font, accents and Detail track at zero and nonzero; exercise pointer, keyboard and assistive-technology value changes. For each foreground preset inspect keypad buttons and focused fields, including a change while a duration draft is invalid. Inspect matching and low-contrast foreground/background combinations. For each text-color preset inspect the Settings, close and About-back icons and selected swatches, including a swatch matching the text color. | Every detail level and color/font choice is reachable, shape changes do not erase selections, and no contrast restriction or warning is introduced. Applicable Settings colors and font update immediately. App-bar icons and selected swatch checks use the selected text color; the check's backing has at least 4.5:1 contrast against the check for each opaque text-color preset, and the swatch remains recognizable and accessible. At zero the Detail track has no ticks or end dot but retains the thumb, label, value and discrete range; above zero its marks return. Keypad text has at least 4.5:1 contrast against its button and independent keyboard focus remains available. Record visibility limitations for low-contrast combinations and obtain human accessibility and risk review; do not treat unrestricted colors as proof of contrast. |
+| TP-REQ-012 | [REQ-012](../product/requirements.md#requirement-identification) | Enumerate detail levels 0-12 in both directions and select colors/fonts across shape changes and temporary hidden controls. Inspect Settings text, input font, accents and Detail track at zero and nonzero; exercise pointer, keyboard and assistive-technology value changes. For each foreground preset inspect focused fields. Inspect matching and low-contrast foreground/background combinations. For each text-color preset inspect the Settings, close and About-back icons and selected swatches, including a swatch matching the text color. | Every detail level and color/font choice is reachable, shape changes do not erase selections, and no contrast restriction or warning is introduced. Applicable Settings colors and font update immediately. App-bar icons and selected swatch checks use the selected text color; the check's backing has at least 4.5:1 contrast against the check for each opaque text-color preset, and the swatch remains recognizable and accessible. At zero the Detail track has no ticks or end dot but retains the thumb, label, value and discrete range; above zero its marks return. Independent keyboard focus remains available. Record visibility limitations for low-contrast combinations and obtain human accessibility and risk review; do not treat unrestricted colors as proof of contrast. |
 | TP-REQ-013 | [REQ-013](../product/requirements.md#requirement-identification) | Enumerate all shapes, states and details 0-12; test action names, roles, input activation, focus, clipping, and overlay/exit-animation isolation at compact and expanded sizes. Inspect zero and finished separately. | At detail 0 no Timer text, boundaries or Clock labels appear; action icons have localized accessible names, running shows Pause, paused shows Resume, and finished/interrupted show Restart. At 1-12 Restart is visibly labeled; stale warning and remaining text appear as applicable. Hidden Timer controls cannot be focused or activated under overlays. Clock has N evenly spaced duration labels and no boundaries; other shapes have N equal segments, including one at detail 1. Fan stays centered and unclipped. Idle zero has no enabled action or completion semantics. Human review remains pending. |
 | TP-REQ-014 | [REQ-014](../product/requirements.md#requirement-identification) | Test full-duration preview, actual valid duration changes, unchanged values, appearance edits, invalid drafts, persistence, reopen and read/save failures across paused, running-intent, finished and interrupted states. | Preview updates immediately; only an actual valid duration change resets the engine paused to full. Preview does not advance it or clear interruption. Invalid drafts retain last valid preview and show an error; invalid/stale storage defaults safely with surfaced error; failures are not reported as saves. Reopen restores settings, not countdown continuity. Overlay need not expose a sharp preview. |
 | TP-REQ-015 | [REQ-015](../product/requirements.md#requirement-identification) | Measure Timer and panel bounds before, during and after both directions, including interruption, reversal and resizing. Inspect Settings and About at compact and expanded widths, and exercise back, predictive-back cancellation, labels, focus, semantics, scrolling, reduced motion and clipping. Check glass and native blur on supported renderers and fallbacks, including Android below API 31 and API 32. | One full-window Timer remains stationary. Both panels enter from and exit to the left; About overlays Settings. Compact panels fill the width and expanded panels do not exceed 440 dp. Controls remain sharp, labeled and reachable; hidden layers do not leak semantics or focus. Record renderer-specific blur, glass and fallbacks rather than inferring them from compilation. |
@@ -80,7 +80,114 @@ thicknesses 1-100 using available input methods; the value remains visible
 and no dense ticks or endpoint dots appear. Review the expanded choices and
 remaining unrestricted low-contrast combinations with representative users.
 
+### Configuration recreation continuity
+
+For TP-REQ-002/003/010/014/015, distinguish configuration recreation from
+genuine backgrounding. Existing references to lifecycle stop in those cases
+mean genuine background stop, not an Android configuration-change stop.
+
+1. With an injected clock, start five minutes, advance two minutes, suspend UI
+   refreshes, advance thirty seconds, then refresh. Require 2:30 remaining,
+   Running, no interruption warning, and no reset or Restart requirement.
+   Repeat across the finish boundary: clamp to zero and report completion once.
+1. On a selected authorized Android emulator/device, rotate repeatedly between
+   portrait and landscape while running; also recreate the Activity without
+   killing the process. Verify the retained ViewModel/session identity and
+   remaining-time trajectory. Repeat paused, finished, zero, interrupted, and
+   immediately before completion. A JVM-only lifecycle simulation is insufficient.
+1. Repeat with Settings and About open, after appearance and duration changes.
+   Preserve the screen, applicable scroll position, duration draft and selections.
+   Closing Settings resumes only retained running intent; recreation alone must
+   not revoke it. Check portrait/short landscape, large text, focus, clipping,
+   panel animation, and resize across compact/expanded widths.
+1. Separately test Home, lock, background stop while Settings holds intent, and
+   multi-window transitions. Require the existing genuine-background interruption
+   and explicit-Restart policy; resizing alone must not trigger it. Process-death
+   and reboot recovery are not added by this change.
+
 ## Execution record
+
+### Independent duration-fields candidate
+
+| Command | Result and scope |
+|---|---|
+| `./kotlin test -p jvm -m settings` | Passed: 27 tests. The Settings module's field-entry tests cover every allowed duration, ASCII/length validation, empty values, clamping, minute carry, the 24-hour boundary, focus selection, independent desktop field editing, blur padding, no app keypad, and saveable input restoration. This does not verify physical keyboard/IME behavior on each platform, screen-reader use, real TV remote operation, usability, or risk-control effectiveness. |
+| `./kotlin check -m settings` | Passed for the Settings module, including its JVM checks. |
+| `./kotlin build -m browser` | Passed for the browser Wasm app and shared dependencies; no browser interaction or accessibility verification is implied. |
+| `./kotlin build -m android` | Passed for the Android target; no device/IME or accessibility verification is implied. |
+| `./kotlin build -m ios` | Passed for iOS ARM64 and iOS Simulator ARM64 targets; no runtime keyboard or accessibility verification is implied. |
+| `./kotlin build -m desktop` | Passed for the desktop JVM app; interactive field behavior is covered by the Settings Desktop Compose tests above. |
+| `./kotlin build -m common` | Blocked at common JVM test compilation by unresolved `AppBackgroundEffect` references in `AppLifecycleTest` and `onAppBackgrounded` in `TimerControlsUiTest`. Production sources compiled, and the affected browser, Android, iOS, desktop, and Settings targets built separately. |
+
+### TV keyboard selection correction
+
+The duration fields select all text synchronously on focus and retain that
+selection through selection-only IME startup updates until the first text edit.
+Subsequent cursor movement and deletion remain available. The Settings panel no
+longer disables focus for its descendants.
+
+| Command | Result and scope |
+|---|---|
+| `./kotlin test -p jvm -m settings` | Passed: 30 tests, including full-panel focus, pointer activation, IME cursor initialization, replacement, deletion, and cursor movement after the first edit. |
+| `./kotlin check -m settings` | Passed. |
+| `./kotlin run -m android --device-id emulator-5554` | Built, installed, and launched the Android app on the authorized Television (4K) emulator (`sdk_google_atv64_arm64`). This is the mobile Android launcher exercised on a TV emulator, not validation of a dedicated TV release. |
+| `./kotlin test -p jvm -m common --include-classes='*TvControlsUiTest'` | Blocked by the existing common test-compilation references to `AppBackgroundEffect` and `onAppBackgrounded`; the class filter does not bypass compilation of other test sources. |
+
+Using ADB remote-key events on that emulator, the on-screen numeric keyboard
+replaced selected Hours text with `1`, then deleted it to an empty field while
+remaining visible. Minutes accepted consecutive digits as `11`; Done dismissed
+the keyboard intentionally. IME inspection reported selection `0..2` before the
+first edit and `mInputShown=true` after digit entry and deletion. This bounded
+check does not verify physical remotes, other IMEs/devices, Apple TV,
+screen readers, all supported layouts, or representative-user usability.
+Human review and broader platform qualification remain pending.
+
+The subsequent remote-only retest found that the shell moved focus on both
+directional key-down and key-up. The handler now moves focus only on key-down;
+the release cannot skip a second control or move away from a newly focused
+duration field. A regression in `TvControlsUiTest` explicitly separates press
+and release; execution remains blocked by the common compilation errors above.
+After rebuilding with the same Android run command, ADB remote events alone
+(no field taps) opened Settings, moved Down once to Hours with `02` selected,
+and entered `1` using Center while the keyboard stayed open. Remote navigation
+to backspace cleared the field without dismissal; Done then hid the keyboard.
+The earlier tap-assisted observations alone were insufficient to cover this
+reported remote-only path. Physical-controller and other-IME checks remain
+pending.
+
+The Settings/navigation and timer-action focus outlines now use `CircleShape`
+instead of the small rounded-rectangle shape, matching round icon buttons and
+the capsule-shaped labelled Restart button. The shared Settings back icon uses
+the same outline. `./kotlin test -p jvm -m timer -m design` passed, and
+`./kotlin run -m android --device-id emulator-5554` built and launched.
+Screenshots on that emulator confirmed circular, fully visible focus outlines
+around Settings and Play after moving focus with Down. This is a bounded visual
+check, not accessibility or cross-platform approval.
+
+### Configuration recreation refactor candidate
+
+Observed in the implementation worktree:
+
+| Command | Result and scope |
+|---|---|
+| `./kotlin test -p jvm -m settings -m counter -m timer` | Passed after the refactor, including save/restore of the duration buffer without republishing a setting, Backspace/keyboard availability, scroll restoration, selected short-landscape bounds, existing appearance interaction, monotonic boundaries and timer presentation. |
+| `./kotlin test -p android -m common` | Passed: 19 tests on the toolchain's local Android JVM backend, including isolated engine ownership and the retained-session/missed-refresh cases. This uses a mockable Android platform JAR, not an emulator or Activity recreation. |
+| `./kotlin build -m android -m androidtv` | Passed for both launchers after wiring the live configuration-change check. No launch or rotation is implied. |
+| `./kotlin build -m browser` | Passed. |
+| `./kotlin build -p jvm -m desktop` | Passed for production desktop and shared JVM dependencies, without selecting the blocked common JVM test module. |
+| `./kotlin test -p jvm -m common -m counter -m settings -m timer` | Blocked in common test compilation by six pre-existing `tvInteractionMode` arguments in `TvControlsUiTest` that do not match `AppContent`. The initial Settings Backspace failure was resolved by enabling focus only on editable duration fields. |
+| `./kotlin build -p jvm` | Failed on the same pre-existing common-test signature mismatch; production sources compiled. |
+| `./kotlin check -m common -m counter -m settings -m timer` | Failed on the same pre-existing common JVM test compilation; partial platform results are not a passing overall check. |
+
+`AppLifecycleTest` adds observer-level regressions for configuration-stop
+exclusion, a subsequent genuine stop, and observer disposal. Those JVM tests
+remain unexecuted because of the common compilation blocker. No Android device
+was connected (`adb devices -l` returned an empty list). The current dependencies
+contain neither an Activity recreation runner nor Robolectric; no new runner,
+SDK package, emulator, or dependency was installed. The device procedure above,
+ViewModel retention under actual recreation, screenshots/no-clipping matrix,
+screen-reader checks, and product/risk/UX review remain pending. No new
+process-termination/reboot recovery or platform support is claimed.
 
 ### One-shot timer and manual controls candidate
 
@@ -140,6 +247,15 @@ legacy save-to-start and automatic reset. They do not verify the superseding
 one-shot, manual-control, Settings-intent or interruption requirements above.
 Full execution of the revised protocol cases and competent human reviews
 remain pending despite the bounded reported JVM evidence above.
+
+### Issue #81 Android TV controls candidate
+
+The candidate retains the shared Material controls and exercises focus with
+simulated keys in JVM Compose tests. These tests do not represent the Android TV
+renderer or a physical remote. Android TV installation, launch, remote/D-pad
+operation, focus visibility, lifecycle, screen-reader behavior, viewing-distance
+readability, and packaging remain unverified. TP-REQ-011 remains blocked, not
+passed; no Android TV support claim is made.
 
 
 ### Settings palette, fonts and Ring slider candidate
@@ -479,3 +595,8 @@ input, screen readers, no-clipping across sizes and human review remain open.
 | 2.3 | Replace planned timer acceptance criteria with one-shot, Settings intent and explicit action/interruption cases; preserve earlier execution history. |
 | 2.4 | Record operator-reported focused JVM, check and build results and bounded test scope; identify the zero-duration interruption-warning mismatch and pending human review. |
 | 2.5 | Align zero idle and retained-interruption criteria with the approved state priority; record parent-agent observed final checks and builds. |
+| 2.6 | Record issue #81's shared-control remote-focus candidate; retain blocked remote, device, usability, and human-review verification. |
+| 2.7 | Add configuration-recreation acceptance procedures, observed local refactor results and explicit common-JVM/device verification blockers. |
+| 2.8 | Replace duration-entry acceptance criteria with the proposed independent-field behavior; retain historical results and pending platform verification. |
+| 2.9 | Record focused JVM verification of the independent-field implementation; retain platform, accessibility, usability, and human-review gaps. |
+| 3.0 | Record the TV IME selection correction, full-panel regression coverage, and bounded Android TV-emulator input observations; retain integrated-test and platform-review limitations. |

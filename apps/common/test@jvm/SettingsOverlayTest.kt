@@ -41,7 +41,7 @@ class SettingsOverlayTest {
         val viewModel = testViewModel()
         setContent {
             ElChronoTheme {
-                Box(Modifier.size(360.dp, 640.dp)) { AppContent(true, viewModel) }
+                Box(Modifier.size(360.dp, 640.dp)) { AppContent(viewModel) }
             }
         }
         val timerNode = onNodeWithTag("timer-layer").fetchSemanticsNode()
@@ -67,7 +67,7 @@ class SettingsOverlayTest {
         val viewModel = testViewModel()
         setContent {
             ElChronoTheme {
-                Box(Modifier.size(1200.dp, 720.dp)) { AppContent(true, viewModel) }
+                Box(Modifier.size(1200.dp, 720.dp)) { AppContent(viewModel) }
             }
         }
         val timerBounds = onNodeWithTag("timer-layer").fetchSemanticsNode().boundsInRoot
@@ -96,7 +96,7 @@ class SettingsOverlayTest {
         val viewModel = testViewModel()
         setContent {
             ElChronoTheme {
-                Box(Modifier.size(500.dp, 900.dp)) { AppContent(true, viewModel) }
+                Box(Modifier.size(500.dp, 900.dp)) { AppContent(viewModel) }
             }
         }
         val timerBounds = onNodeWithTag("timer-layer").fetchSemanticsNode().boundsInRoot
@@ -118,7 +118,7 @@ class SettingsOverlayTest {
         val viewModel = testViewModel()
         setContent {
             ElChronoTheme {
-                Box(Modifier.size(1200.dp, 720.dp)) { AppContent(true, viewModel) }
+                Box(Modifier.size(1200.dp, 720.dp)) { AppContent(viewModel) }
             }
         }
         onNodeWithContentDescription("Open Settings").performClick()
@@ -143,7 +143,7 @@ class SettingsOverlayTest {
     @Test
     fun `settings fields do not retain keyboard focus behind about`() = runDesktopComposeUiTest {
         val viewModel = testViewModel()
-        setContent { ElChronoTheme { AppContent(true, viewModel) } }
+        setContent { ElChronoTheme { AppContent(viewModel) } }
         onNodeWithContentDescription("Open Settings").performClick()
         onNodeWithText("Hours").performClick()
         runOnIdle { viewModel.showAbout() }
@@ -158,7 +158,7 @@ class SettingsOverlayTest {
         var width by mutableStateOf(500.dp)
         setContent {
             ElChronoTheme {
-                Box(Modifier.size(width, 720.dp)) { AppContent(true, viewModel) }
+                Box(Modifier.size(width, 720.dp)) { AppContent(viewModel) }
             }
         }
         onNodeWithContentDescription("Open Settings").performClick()

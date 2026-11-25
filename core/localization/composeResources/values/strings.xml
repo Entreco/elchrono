@@ -68,8 +68,6 @@
     <string name="ring_thin">Thin</string>
     <string name="ring_solid">Solid fill</string>
     <string name="selected_theme_format">Selected: %1$s</string>
-    <string name="clear">Clear</string>
-    <string name="delete">Delete</string>
     <string name="brand_wordmark">El Chrono</string>
     <string name="about_logo_description">Entreco logo</string>
     <string name="about_tagline">Visual support for ordinary waiting</string>

@@ -48,8 +48,7 @@ fun AboutFeature(modifier: Modifier = Modifier) {
             painter = painterResource(AboutResources.drawable.icon),
             contentDescription = "icon",
             modifier = Modifier
-                .fillMaxWidth(.12f)
-                .aspectRatio(404f / 326f),
+                .fillMaxWidth(.12f),
             contentScale = ContentScale.Fit,
         )
 

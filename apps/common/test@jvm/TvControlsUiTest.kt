@@ -101,6 +101,26 @@ class TvControlsUiTest {
     }
 
     @Test
+    fun `remote key release does not move focus a second time`() = runDesktopComposeUiTest {
+        val viewModel = viewModel()
+        setContent {
+            ElChronoTheme {
+                Box(Modifier.size(1280.dp, 720.dp)) {
+                    AppContent(viewModel)
+                }
+            }
+        }
+        onNodeWithContentDescription("Open Settings").performClick()
+        onNodeWithContentDescription("Hide Settings").assertIsFocused().performKeyInput {
+            keyDown(Key.DirectionDown)
+        }
+        onNodeWithText("Hours").assertIsFocused().performKeyInput {
+            keyUp(Key.DirectionDown)
+        }
+        onNodeWithText("Hours").assertIsFocused()
+    }
+
+    @Test
     fun `remote can move focus between the duration fields`() = runDesktopComposeUiTest {
         val viewModel = viewModel()
         setContent {

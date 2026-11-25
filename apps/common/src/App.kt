@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
@@ -163,7 +164,8 @@ internal fun AppContent(
                         Key.DirectionRight -> FocusDirection.Right
                         else -> null
                     }
-                    direction != null && focusManager.moveFocus(direction)
+                    event.type == KeyEventType.KeyDown &&
+                        direction != null && focusManager.moveFocus(direction)
 
                 },
             containerColor = Color.Transparent,
@@ -420,7 +422,7 @@ internal fun AppBar(
         navigationIcon = {
             val buttonModifier = modifier
                 .then(focusRequester?.let { Modifier.focusRequester(it) } ?: Modifier)
-                .elChronoFocusOutline(MaterialTheme.shapes.small)
+                .elChronoFocusOutline(CircleShape)
             IconButton(
                 onClick = onNavigate,
                 modifier = buttonModifier,

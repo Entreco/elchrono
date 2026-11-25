@@ -7,7 +7,7 @@ Desktop keyboard changes: [PR #73](https://github.com/Entreco/elchrono/pull/73).
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-002 |
-| Revision | 2.9 |
+| Revision | 3.0 |
 | Current change review | No PR opened yet; human acceptance and required specialist review pending |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
@@ -111,7 +111,58 @@ mean genuine background stop, not an Android configuration-change stop.
 
 | Command | Result and scope |
 |---|---|
-| `./kotlin test -p jvm -m settings` | Passed: 26 tests. The Settings module's field-entry tests cover ASCII/length validation, empty values, clamping, minute carry, the 24-hour boundary, focus selection, independent desktop field editing, blur padding, no app keypad, and saveable input restoration. This does not verify physical keyboard/IME behavior on each platform, screen-reader use, real TV remote operation, usability, or risk-control effectiveness. |
+| `./kotlin test -p jvm -m settings` | Passed: 27 tests. The Settings module's field-entry tests cover every allowed duration, ASCII/length validation, empty values, clamping, minute carry, the 24-hour boundary, focus selection, independent desktop field editing, blur padding, no app keypad, and saveable input restoration. This does not verify physical keyboard/IME behavior on each platform, screen-reader use, real TV remote operation, usability, or risk-control effectiveness. |
+| `./kotlin check -m settings` | Passed for the Settings module, including its JVM checks. |
+| `./kotlin build -m browser` | Passed for the browser Wasm app and shared dependencies; no browser interaction or accessibility verification is implied. |
+| `./kotlin build -m android` | Passed for the Android target; no device/IME or accessibility verification is implied. |
+| `./kotlin build -m ios` | Passed for iOS ARM64 and iOS Simulator ARM64 targets; no runtime keyboard or accessibility verification is implied. |
+| `./kotlin build -m desktop` | Passed for the desktop JVM app; interactive field behavior is covered by the Settings Desktop Compose tests above. |
+| `./kotlin build -m common` | Blocked at common JVM test compilation by unresolved `AppBackgroundEffect` references in `AppLifecycleTest` and `onAppBackgrounded` in `TimerControlsUiTest`. Production sources compiled, and the affected browser, Android, iOS, desktop, and Settings targets built separately. |
+
+### TV keyboard selection correction
+
+The duration fields select all text synchronously on focus and retain that
+selection through selection-only IME startup updates until the first text edit.
+Subsequent cursor movement and deletion remain available. The Settings panel no
+longer disables focus for its descendants.
+
+| Command | Result and scope |
+|---|---|
+| `./kotlin test -p jvm -m settings` | Passed: 30 tests, including full-panel focus, pointer activation, IME cursor initialization, replacement, deletion, and cursor movement after the first edit. |
+| `./kotlin check -m settings` | Passed. |
+| `./kotlin run -m android --device-id emulator-5554` | Built, installed, and launched the Android app on the authorized Television (4K) emulator (`sdk_google_atv64_arm64`). This is the mobile Android launcher exercised on a TV emulator, not validation of a dedicated TV release. |
+| `./kotlin test -p jvm -m common --include-classes='*TvControlsUiTest'` | Blocked by the existing common test-compilation references to `AppBackgroundEffect` and `onAppBackgrounded`; the class filter does not bypass compilation of other test sources. |
+
+Using ADB remote-key events on that emulator, the on-screen numeric keyboard
+replaced selected Hours text with `1`, then deleted it to an empty field while
+remaining visible. Minutes accepted consecutive digits as `11`; Done dismissed
+the keyboard intentionally. IME inspection reported selection `0..2` before the
+first edit and `mInputShown=true` after digit entry and deletion. This bounded
+check does not verify physical remotes, other IMEs/devices, Apple TV,
+screen readers, all supported layouts, or representative-user usability.
+Human review and broader platform qualification remain pending.
+
+The subsequent remote-only retest found that the shell moved focus on both
+directional key-down and key-up. The handler now moves focus only on key-down;
+the release cannot skip a second control or move away from a newly focused
+duration field. A regression in `TvControlsUiTest` explicitly separates press
+and release; execution remains blocked by the common compilation errors above.
+After rebuilding with the same Android run command, ADB remote events alone
+(no field taps) opened Settings, moved Down once to Hours with `02` selected,
+and entered `1` using Center while the keyboard stayed open. Remote navigation
+to backspace cleared the field without dismissal; Done then hid the keyboard.
+The earlier tap-assisted observations alone were insufficient to cover this
+reported remote-only path. Physical-controller and other-IME checks remain
+pending.
+
+The Settings/navigation and timer-action focus outlines now use `CircleShape`
+instead of the small rounded-rectangle shape, matching round icon buttons and
+the capsule-shaped labelled Restart button. The shared Settings back icon uses
+the same outline. `./kotlin test -p jvm -m timer -m design` passed, and
+`./kotlin run -m android --device-id emulator-5554` built and launched.
+Screenshots on that emulator confirmed circular, fully visible focus outlines
+around Settings and Play after moving focus with Down. This is a bounded visual
+check, not accessibility or cross-platform approval.
 
 ### Configuration recreation refactor candidate
 
@@ -548,3 +599,4 @@ input, screen readers, no-clipping across sizes and human review remain open.
 | 2.7 | Add configuration-recreation acceptance procedures, observed local refactor results and explicit common-JVM/device verification blockers. |
 | 2.8 | Replace duration-entry acceptance criteria with the proposed independent-field behavior; retain historical results and pending platform verification. |
 | 2.9 | Record focused JVM verification of the independent-field implementation; retain platform, accessibility, usability, and human-review gaps. |
+| 3.0 | Record the TV IME selection correction, full-panel regression coverage, and bounded Android TV-emulator input observations; retain integrated-test and platform-review limitations. |

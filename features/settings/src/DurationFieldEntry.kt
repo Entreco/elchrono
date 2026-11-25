@@ -39,11 +39,6 @@ internal class DurationFieldEntry private constructor(
         )
     }
 
-    override fun equals(other: Any?): Boolean =
-        other is DurationFieldEntry && hours == other.hours && minutes == other.minutes
-
-    override fun hashCode(): Int = 31 * hours + minutes
-
     companion object {
         fun fromDuration(duration: TimerDuration): DurationFieldEntry =
             DurationFieldEntry(duration.hours, duration.minutes)

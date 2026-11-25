@@ -8,13 +8,19 @@ import androidx.compose.runtime.saveable.SaveableStateRegistry
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.semantics.SemanticsProperties
+import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.ExperimentalTestApi
+import androidx.compose.ui.test.assertIsFocused
 import androidx.compose.ui.test.assertTextContains
+import androidx.compose.ui.test.click
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performKeyInput
+import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.test.performTextInput
+import androidx.compose.ui.test.performTextInputSelection
+import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.pressKey
 import androidx.compose.ui.test.v2.runDesktopComposeUiTest
 import androidx.compose.ui.text.TextRange
@@ -26,6 +32,81 @@ import kotlin.test.assertEquals
 
 @OptIn(ExperimentalTestApi::class)
 class DesktopDurationInputTest {
+    @Test
+    fun `IME cursor initialization cannot collapse selection before the first edit`() =
+        runDesktopComposeUiTest {
+            var settings by mutableStateOf(settingsWithDuration(125))
+            setContent { SettingsPanel(settings, { settings = it }, {}) }
+
+            listOf("Hours", "Minutes").forEach { label ->
+                onNodeWithText(label).performSemanticsAction(SemanticsActions.RequestFocus)
+                onNodeWithText(label).performTextInputSelection(TextRange(0))
+                assertEquals(
+                    TextRange(0, 2),
+                    onNodeWithText(label).fetchSemanticsNode().config[SemanticsProperties.TextSelectionRange],
+                )
+                onNodeWithText(label).performKeyInput { pressKey(Key.Backspace) }
+                    .assertIsFocused()
+                assertEquals(
+                    "",
+                    onNodeWithText(label).fetchSemanticsNode().config[SemanticsProperties.EditableText].text,
+                )
+                onNodeWithText(label).performTextInput("4")
+                onNodeWithText(label).assertTextContains("4").assertIsFocused()
+                onNodeWithText(label).performTextInputSelection(TextRange(0))
+                assertEquals(
+                    TextRange(0),
+                    onNodeWithText(label).fetchSemanticsNode().config[SemanticsProperties.TextSelectionRange],
+                )
+            }
+        }
+
+    @Test
+    fun `touch selects all text after cursor placement and repeated activation`() =
+        runDesktopComposeUiTest {
+            var settings by mutableStateOf(settingsWithDuration(125))
+            setContent { SettingsPanel(settings, { settings = it }, {}) }
+
+            listOf("Hours", "Minutes", "Hours").forEach { label ->
+                onNodeWithText(label).performTouchInput { click() }
+                runOnIdle { }
+                onNodeWithText(label).assertIsFocused()
+                assertEquals(
+                    TextRange(0, 2),
+                    onNodeWithText(label).fetchSemanticsNode().config[SemanticsProperties.TextSelectionRange],
+                )
+                onNodeWithText(label).performTextInput("4")
+                onNodeWithText(label).assertTextContains("4").assertIsFocused()
+            }
+        }
+
+    @Test
+    fun `panel fields retain focus select existing text and accept replacement and deletion`() =
+        runDesktopComposeUiTest {
+            var settings by mutableStateOf(settingsWithDuration(125))
+            setContent {
+                SettingsPanel(settings, { settings = it }, {})
+            }
+
+            listOf("Hours", "Minutes").forEach { label ->
+                onNodeWithText(label).performSemanticsAction(SemanticsActions.RequestFocus)
+                onNodeWithText(label).assertIsFocused()
+                assertEquals(
+                    TextRange(0, 2),
+                    onNodeWithText(label).fetchSemanticsNode().config[SemanticsProperties.TextSelectionRange],
+                )
+                onNodeWithText(label).performTextInput("4")
+                onNodeWithText(label).assertIsFocused().assertTextContains("4")
+                onNodeWithText(label).performKeyInput { pressKey(Key.Backspace) }
+                    .assertIsFocused()
+                assertEquals(
+                    "",
+                    onNodeWithText(label).fetchSemanticsNode().config[SemanticsProperties.EditableText].text,
+                )
+            }
+            runOnIdle { assertEquals(0, settings.duration.totalMinutes) }
+        }
+
     @Test
     fun `duration draft restores without republishing a setting`() = runDesktopComposeUiTest {
         val settings = settingsWithDuration(0)

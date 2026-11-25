@@ -95,5 +95,17 @@ class DurationFieldEntryTest {
         )
     }
 
+    @Test
+    fun `every allowed whole minute duration can be entered through the fields`() {
+        (0..TimerDuration.MAX_MINUTES).forEach { totalMinutes ->
+            val expected = duration(totalMinutes)
+            var entry = DurationFieldEntry.fromDuration(duration(0))
+            entry = checkNotNull(entry.editHours(expected.hours.toString())).entry
+            entry = checkNotNull(entry.editMinutes(expected.minutes.toString())).entry
+
+            assertEquals(totalMinutes, entry.duration.totalMinutes)
+        }
+    }
+
     private fun duration(totalMinutes: Int) = checkNotNull(TimerDuration.fromMinutes(totalMinutes))
 }

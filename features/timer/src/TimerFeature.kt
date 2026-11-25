@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -222,7 +223,7 @@ fun TimerFeature(
                 .align(Alignment.BottomEnd)
                 .padding(LocalDimens.current.spaceS)
                 .then(actionModifier)
-                .elChronoFocusOutline(MaterialTheme.shapes.small)
+                .elChronoFocusOutline(CircleShape)
                 .testTag("timer-action")
             if (restart && detail > 0) {
                 TextButton(onClick = onTimerAction, modifier = timerActionModifier.sizeIn(minHeight = 48.dp)) {

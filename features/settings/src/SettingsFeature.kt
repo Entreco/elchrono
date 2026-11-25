@@ -31,7 +31,6 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
@@ -123,7 +122,6 @@ fun SettingsPanel(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .then(Modifier.focusProperties { canFocus = false } )
                     .verticalScroll(rememberScrollState())
                     .padding(LocalDimens.current.spaceXL),
             ) {
@@ -182,24 +180,17 @@ fun SettingsScreen(
         mutableStateOf(TextFieldValue(initialSettings.duration.minutes.toString().padStart(2, '0')))
     }
     var focusedField by remember { mutableStateOf<DurationField?>(null) }
+    // TV IMEs can send a collapsed cursor selection while opening, before the first edit.
+    var replaceOnNextEdit by remember { mutableStateOf<DurationField?>(null) }
     val currentFocusedField = rememberUpdatedState(focusedField)
     val hoursInteractionSource = remember { MutableInteractionSource() }
     val minutesInteractionSource = remember { MutableInteractionSource() }
-    LaunchedEffect(focusedField) {
-        withFrameNanos { }
-        when (focusedField) {
-            DurationField.HOURS ->
-                hoursValue = hoursValue.copy(selection = TextRange(0, hoursValue.text.length))
-            DurationField.MINUTES ->
-                minutesValue = minutesValue.copy(selection = TextRange(0, minutesValue.text.length))
-            null -> Unit
-        }
-    }
     LaunchedEffect(hoursInteractionSource) {
         hoursInteractionSource.interactions.collect { interaction ->
             if (interaction is PressInteraction.Release &&
                 currentFocusedField.value == DurationField.HOURS
             ) {
+                replaceOnNextEdit = DurationField.HOURS
                 hoursValue = hoursValue.copy(selection = TextRange(0, hoursValue.text.length))
             }
         }
@@ -209,6 +200,7 @@ fun SettingsScreen(
             if (interaction is PressInteraction.Release &&
                 currentFocusedField.value == DurationField.MINUTES
             ) {
+                replaceOnNextEdit = DurationField.MINUTES
                 minutesValue = minutesValue.copy(selection = TextRange(0, minutesValue.text.length))
             }
         }
@@ -241,7 +233,12 @@ fun SettingsScreen(
                 value = hoursValue,
                 interactionSource = hoursInteractionSource,
                 onValueChange = { edited ->
-                    entry.editHours(edited.text)?.let { update ->
+                    if (edited.text == hoursValue.text) {
+                        hoursValue = if (replaceOnNextEdit == DurationField.HOURS) {
+                            edited.copy(selection = TextRange(0, edited.text.length))
+                        } else edited
+                    } else entry.editHours(edited.text)?.let { update ->
+                        replaceOnNextEdit = null
                         val durationChanged = update.entry.duration != entry.duration
                         entry = update.entry
                         hoursValue = edited.copy(
@@ -258,10 +255,12 @@ fun SettingsScreen(
                     .onFocusChanged { focusState ->
                         if (focusState.isFocused) {
                             focusedField = DurationField.HOURS
+                            replaceOnNextEdit = DurationField.HOURS
                             val text = entry.hours.toString().padStart(2, '0')
-                            hoursValue = TextFieldValue(text)
+                            hoursValue = TextFieldValue(text, selection = TextRange(0, text.length))
                         } else if (focusedField == DurationField.HOURS) {
                             focusedField = null
+                            replaceOnNextEdit = null
                             hoursValue = TextFieldValue(entry.hours.toString().padStart(2, '0'))
                         }
                     },
@@ -274,7 +273,12 @@ fun SettingsScreen(
                 value = minutesValue,
                 interactionSource = minutesInteractionSource,
                 onValueChange = { edited ->
-                    entry.editMinutes(edited.text)?.let { update ->
+                    if (edited.text == minutesValue.text) {
+                        minutesValue = if (replaceOnNextEdit == DurationField.MINUTES) {
+                            edited.copy(selection = TextRange(0, edited.text.length))
+                        } else edited
+                    } else entry.editMinutes(edited.text)?.let { update ->
+                        replaceOnNextEdit = null
                         val durationChanged = update.entry.duration != entry.duration
                         entry = update.entry
                         minutesValue = edited.copy(
@@ -291,10 +295,12 @@ fun SettingsScreen(
                     .onFocusChanged { focusState ->
                         if (focusState.isFocused) {
                             focusedField = DurationField.MINUTES
+                            replaceOnNextEdit = DurationField.MINUTES
                             val text = entry.minutes.toString().padStart(2, '0')
-                            minutesValue = TextFieldValue(text)
+                            minutesValue = TextFieldValue(text, selection = TextRange(0, text.length))
                         } else if (focusedField == DurationField.MINUTES) {
                             focusedField = null
+                            replaceOnNextEdit = null
                             minutesValue = TextFieldValue(entry.minutes.toString().padStart(2, '0'))
                         }
                     },

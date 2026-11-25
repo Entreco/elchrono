@@ -7,7 +7,7 @@ Desktop keyboard changes: [PR #73](https://github.com/Entreco/elchrono/pull/73).
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-004 |
-| Revision | 3.5 |
+| Revision | 3.6 |
 | Current change review | No PR opened yet; human acceptance and required specialist review pending |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
@@ -370,7 +370,7 @@ establish competent risk review, design approval, or verification:
 | D-10: text-free detail 0 | Hide Timer text; retain accessible icon actions and interrupted/idle cues. Human review of distinguishability and warning remains pending. |
 | D-05: interruption recovery | No automatic or persisted recovery; explicit Restart clears the warning and starts full duration. Settings alone cannot clear it. |
 | D-06: manual pause, resume, and restart controls | Main offers Pause, Resume or Restart as applicable at all detail levels. |
-| D-09: Settings layout and duration input | Overlay Settings on the Timer at compact and expanded widths. The proposed independent fields use platform text input without an app keypad; implementation and platform verification are pending, and TV support is not established. |
+| D-09: Settings layout and duration input | Overlay Settings on the Timer at compact and expanded widths. Use independent Hours/Minutes fields; use platform text input when the keyboard capability is Physical or Virtual, and show a selectable-field numeric keypad when it is None. Keypad focus/editing, target-specific capability reporting, accessibility, and platform verification remain pending; TV support is not established. |
 | Visualization appearance | Font and color are proposed as conditional per-visualization settings; option lists, defaults, and persistence remain undecided and require accessibility/usability review. |
 
 The product owner approved the four demo visualizations for the v1 design.
@@ -420,3 +420,4 @@ PR.
 | 3.3 | Group color presets by similarity: neutrals light to dark, then hues in wheel order; retain accessibility and human review gaps. |
 | 3.4 | Preserve navigation, drafts, scroll and running intent through configuration recreation; retain actual delivery and UX-review gaps. |
 | 3.5 | Describe the proposed independent duration fields and platform text input; retain implementation and verification gaps. |
+| 3.6 | Clarify D-09's keyboard-kind-dependent duration input: use platform text input for Physical/Virtual and the on-screen keypad for None; retain tvOS integration, accessibility, and verification gaps. |

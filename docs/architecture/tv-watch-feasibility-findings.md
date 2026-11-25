@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M3-DOC-002 |
-| Revision | 0.2 |
+| Revision | 0.3 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | TV/watch platform feasibility, interaction/accessibility, and platform-tooling scopes; appointments and competence confirmation pending |
@@ -55,6 +55,31 @@ tvOS or watchOS.
 SDK availability is not evidence that an app target can be built, packaged,
 launched, or supported. No signing configuration, physical TV/watch hardware,
 or platform installation was evaluated.
+
+### Issue #80 follow-up: Apple TV toolchain and Compose integration (2026-11-25)
+
+Xcode 27.2 (build 27B52) reports the tvOS 27.2 SDK and Simulator SDK. The
+installed simulator runtime is tvOS 27.2 (24K150), with two Apple TV 4K
+(4th generation) simulator devices available. The watchOS 27.2 runtime is also
+listed, but watchOS is outside v1 and was not investigated for issue #80.
+
+`./kotlin show modules` reports no Apple TV/tvOS launcher. Running
+`./kotlin build -p tvosSimulatorArm64 -m common` reports `WARN Nothing to
+build` because the configured modules do not declare a tvOS target; its
+successful exit is not compilation evidence. A bounded dependency probe added
+`tvosSimulatorArm64` temporarily to `core/design/module.yaml`, then ran
+`./kotlin build -p tvosSimulatorArm64 -m design`. Resolution failed because
+Compose animation 1.12.1, foundation 1.12.1, material3 1.12.0-alpha03, UI
+1.12.1, and components-resources 1.12.1 do not publish a tvOS simulator
+variant. The temporary configuration change was reverted.
+
+The simulator is available, but no Apple TV app target can be built with the
+current shared Compose dependency graph. Packaging, installation, focus/input,
+lifecycle, accessibility, and usability were not tested. No replacement UI
+framework or separate native feature implementation is authorized by this
+finding; resolve that architectural choice through separate review before
+affected implementation continues. This does not claim support or close
+TP-REQ-011.
 
 ## TV interaction and runtime constraints
 
@@ -168,9 +193,9 @@ requirements, risk, and UX review before implementation.
 | Platform | Assessment | Evidence and next constraint |
 |---|---|---|
 | Android TV | Candidate; unconfigured and unverified | Android supports TV-specific apps, but no usable local TV target was found. D-pad/focus, viewing-distance readability, accessibility, packaging, lifecycle, and audio routing need a TV prototype and test target. |
-| Apple TV | Candidate; unconfigured and unverified | tvOS SDK exists, but no simulator runtime/device or repository target was found. Remote/focus interaction, packaging, accessibility, and runtime behavior need a configured target and test evidence. |
+| Apple TV | Candidate; SDK/runtime/simulator available, app target blocked | Xcode 27.2 provides tvOS 27.2 SDK/runtime and Apple TV 4K simulator devices, but the current Compose dependency graph lacks tvOS variants. No app, package, remote/focus, accessibility, or runtime behavior was built or tested. Resolve the constraint through a separately reviewed integration/architecture decision before implementation. |
 | Wear OS | Candidate; unconfigured and unverified | No usable local watch target was found. Standalone/offline behavior, ambient refresh, long-running activity, state recovery, battery impact, small-screen accessibility, and optional provider limits need further study. |
-| watchOS | Candidate; unconfigured and unverified | watchOS SDK exists, but no simulator runtime/device or repository target was found. Independent operation, background/lifecycle behavior, display semantics, accessibility, and audio/provider options need further study. |
+| watchOS | Candidate; SDK/runtime available, target unconfigured | Xcode provides watchOS 27.2 SDK/runtime; no watchOS target or behavior was evaluated for issue #80. Standalone operation, background/lifecycle behavior, display semantics, accessibility, and audio/provider options need further study; watchOS remains outside v1. |
 
 These assessments are feasibility-only. They do not establish a supported
 platform, minimum OS version, feature parity, release commitment, or M3 gate
@@ -217,3 +242,4 @@ decision.
 |---|---|
 | 0.1 | Record read-only TV/watch tooling evidence, official platform constraints, feasibility status, and unresolved implementation/review gaps for issue #34. |
 | 0.2 | Link M3-DOC-003 provider findings and update TV/watch audio follow-up without claiming a provider path, platform support, or testing. |
+| 0.3 | Add the 2026-11-25 Apple TV SDK/runtime/simulator observation and record the pinned Compose dependency blocker; note the watchOS runtime update without expanding v1 scope or claiming support. |

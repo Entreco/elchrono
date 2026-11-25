@@ -39,7 +39,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.graphics.toArgb
@@ -99,11 +98,9 @@ import nl.entreco.elchrono.core.localization.resources.fan
 import nl.entreco.elchrono.core.localization.resources.hours
 import nl.entreco.elchrono.core.localization.resources.minutes
 import nl.entreco.elchrono.core.localization.resources.ring
-import nl.entreco.elchrono.core.localization.resources.selected_theme_format
 import nl.entreco.elchrono.core.localization.resources.theme
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
-import kotlinx.coroutines.flow.collect
 
 @Composable
 fun SettingsPanel(
@@ -144,6 +141,7 @@ fun SettingsPanel(
         }
     }
 }
+
 @Composable
 internal fun SettingsAppearanceTheme(settings: TimerSettings, content: @Composable () -> Unit) {
     val backgroundColor = Color(settings.backgroundColorArgb)
@@ -155,7 +153,8 @@ internal fun SettingsAppearanceTheme(settings: TimerSettings, content: @Composab
         ).copy(
             primary = accent.foreground,
             onPrimary = accent.onForeground,
-            secondaryContainer = accent.foreground.copy(alpha = 0.2f).compositeOver(backgroundColor),
+            secondaryContainer = accent.foreground.copy(alpha = 0.2f)
+                .compositeOver(backgroundColor),
             onSecondaryContainer = Color(settings.textColorArgb),
         ),
         typography = MaterialTheme.typography.withFontFamily(settings.font.toFontFamily()),
@@ -246,12 +245,20 @@ fun SettingsScreen(
                             selection = if (update.text == edited.text) edited.selection
                             else TextRange(update.text.length),
                         )
-                        minutesValue = TextFieldValue(update.entry.minutes.toString().padStart(2, '0'))
+                        minutesValue =
+                            TextFieldValue(update.entry.minutes.toString().padStart(2, '0'))
                         if (durationChanged) publish(update.entry)
                     }
                 },
-                modifier = Modifier.weight(1f)
+                modifier = Modifier
+                    .weight(1f)
                     .focusProperties { canFocus = true }
+                    // Remote/arrow Right leaves Hours only at its end, keeping caret movement inside it.
+                    .onPreviewKeyEvent { event ->
+                        event.type == KeyEventType.KeyDown && event.key == Key.DirectionRight &&
+                                hoursValue.selection.max == hoursValue.text.length &&
+                                focusManager.moveFocus(FocusDirection.Right)
+                    }
                     .onFocusChanged { focusState ->
                         if (focusState.isFocused) {
                             focusedField = DurationField.HOURS
@@ -290,14 +297,22 @@ fun SettingsScreen(
                         if (durationChanged) publish(update.entry)
                     }
                 },
-                modifier = Modifier.weight(1f)
+                modifier = Modifier
+                    .weight(1f)
                     .focusProperties { canFocus = true }
+                    // Remote/arrow Left leaves Minutes only at its start, keeping caret movement inside it.
+                    .onPreviewKeyEvent { event ->
+                        event.type == KeyEventType.KeyDown && event.key == Key.DirectionLeft &&
+                                minutesValue.selection.min == 0 &&
+                                focusManager.moveFocus(FocusDirection.Left)
+                    }
                     .onFocusChanged { focusState ->
                         if (focusState.isFocused) {
                             focusedField = DurationField.MINUTES
                             replaceOnNextEdit = DurationField.MINUTES
                             val text = entry.minutes.toString().padStart(2, '0')
-                            minutesValue = TextFieldValue(text, selection = TextRange(0, text.length))
+                            minutesValue =
+                                TextFieldValue(text, selection = TextRange(0, text.length))
                         } else if (focusedField == DurationField.MINUTES) {
                             focusedField = null
                             replaceOnNextEdit = null
@@ -330,7 +345,10 @@ fun SettingsScreen(
             LabeledSlider(
                 label = stringResource(Strings.string.ring_thickness),
                 value = initialSettings.ringThicknessPercent.toFloat(),
-                valueLabel = stringResource(Strings.string.ring_thickness_value, initialSettings.ringThicknessPercent),
+                valueLabel = stringResource(
+                    Strings.string.ring_thickness_value,
+                    initialSettings.ringThicknessPercent
+                ),
                 onValueChange = { onChange(initialSettings.copy(ringThicknessPercent = it.roundToInt())) },
                 minimumLabel = stringResource(Strings.string.ring_thin),
                 maximumLabel = stringResource(Strings.string.ring_solid),
@@ -346,22 +364,49 @@ fun SettingsScreen(
             DesignColorSwatch(it.id, stringResource(it.label), Color(it.argb))
         }
         Text(stringResource(Strings.string.background), style = MaterialTheme.typography.titleSmall)
-        ColorSwatchPicker(swatches, swatches.firstOrNull { it.color.toArgb().toLong() and 0xffffffffL == initialSettings.backgroundColorArgb }?.id ?: "", onSelected = { id ->
-            val selected = swatches.first { it.id == id }
-            onChange(initialSettings.copy(backgroundColorArgb = selected.color.toArgb().toLong() and 0xffffffffL))
-        })
+        ColorSwatchPicker(
+            swatches,
+            swatches.firstOrNull {
+                it.color.toArgb().toLong() and 0xffffffffL == initialSettings.backgroundColorArgb
+            }?.id ?: "",
+            onSelected = { id ->
+                val selected = swatches.first { it.id == id }
+                onChange(
+                    initialSettings.copy(
+                        backgroundColorArgb = selected.color.toArgb().toLong() and 0xffffffffL
+                    )
+                )
+            })
         Spacer(Modifier.height(LocalDimens.current.spaceM))
         Text(stringResource(Strings.string.foreground), style = MaterialTheme.typography.titleSmall)
-        ColorSwatchPicker(swatches, swatches.firstOrNull { it.color.toArgb().toLong() and 0xffffffffL == initialSettings.foregroundColorArgb }?.id ?: "", onSelected = { id ->
-            val selected = swatches.first { it.id == id }
-            onChange(initialSettings.copy(foregroundColorArgb = selected.color.toArgb().toLong() and 0xffffffffL))
-        })
+        ColorSwatchPicker(
+            swatches,
+            swatches.firstOrNull {
+                it.color.toArgb().toLong() and 0xffffffffL == initialSettings.foregroundColorArgb
+            }?.id ?: "",
+            onSelected = { id ->
+                val selected = swatches.first { it.id == id }
+                onChange(
+                    initialSettings.copy(
+                        foregroundColorArgb = selected.color.toArgb().toLong() and 0xffffffffL
+                    )
+                )
+            })
         Spacer(Modifier.height(LocalDimens.current.spaceM))
         Text(stringResource(Strings.string.text), style = MaterialTheme.typography.titleSmall)
-        ColorSwatchPicker(swatches, swatches.firstOrNull { it.color.toArgb().toLong() and 0xffffffffL == initialSettings.textColorArgb }?.id ?: "", onSelected = { id ->
-            val selected = swatches.first { it.id == id }
-            onChange(initialSettings.copy(textColorArgb = selected.color.toArgb().toLong() and 0xffffffffL))
-        })
+        ColorSwatchPicker(
+            swatches,
+            swatches.firstOrNull {
+                it.color.toArgb().toLong() and 0xffffffffL == initialSettings.textColorArgb
+            }?.id ?: "",
+            onSelected = { id ->
+                val selected = swatches.first { it.id == id }
+                onChange(
+                    initialSettings.copy(
+                        textColorArgb = selected.color.toArgb().toLong() and 0xffffffffL
+                    )
+                )
+            })
         Spacer(Modifier.height(LocalDimens.current.spaceXL))
         Text(stringResource(Strings.string.font), style = MaterialTheme.typography.titleLarge)
         ChoicePicker(

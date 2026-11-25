@@ -6,7 +6,7 @@ Desktop keyboard changes: [PR #73](https://github.com/Entreco/elchrono/pull/73).
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-003 |
-| Revision | 5.3 |
+| Revision | 5.4 |
 | Current change review | Issue #82 verification update; human acceptance and required specialist review pending |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
@@ -23,8 +23,8 @@ table. See [document controls](../governance/document-control.md#lifecycle-and-a
 This matrix is the authoritative cross-reference between the intended-use
 source, product requirements, risks, design/usability evidence, and test
 protocol. Requirement statements live in
-[M2-DOC-001, revision 2.2](../product/requirements.md); acceptance criteria and
-procedures live in [M2-DOC-002, revision 3.2](../testing/test-protocol.md).
+[M2-DOC-001, revision 2.3](../product/requirements.md); acceptance criteria and
+procedures live in [M2-DOC-002, revision 3.3](../testing/test-protocol.md).
 Do not duplicate those statements or criteria here.
 
 The mappings below are initial and proposed. Design links are included when
@@ -34,12 +34,12 @@ actual evidence is recorded.
 | Source record | Revision | Relationship |
 |---|---|---|
 | [M1-DOC-002, intended use](../product/intended-use.md) | 1.2 candidate | Product purpose, roles, use, and limitations |
-| [M2-DOC-001, product requirements](../product/requirements.md) | 2.1 candidate | Independent-field implementation and focused JVM test coverage recorded; platform, accessibility, usability, risk review, and approval remain pending |
-| [M1-DOC-004, risk assessment](risk-assessment.md) | 1.15 candidate | RISK-001 through RISK-006 traced below; review pending; no control effectiveness or risk reduction claimed |
-| [M1-DOC-009, risk traceability matrix](risk-traceability-matrix.md) | 1.12 candidate | Independent-field implementation and focused JVM tests linked; platform and human review remain pending |
-| [M2-DOC-002, product test protocol](../testing/test-protocol.md) | 3.0 candidate | Independent duration-field criteria, bounded JVM execution, and TV-emulator IME observations recorded; broader platform and human verification remain pending |
+| [M2-DOC-001, product requirements](../product/requirements.md) | 2.3 candidate | Adds startup background behavior; platform, accessibility, usability, risk review, and approval remain pending |
+| [M1-DOC-004, risk assessment](risk-assessment.md) | 1.16 candidate | RISK-001 through RISK-006 traced below; review pending; no control effectiveness or risk reduction claimed |
+| [M1-DOC-009, risk traceability matrix](risk-traceability-matrix.md) | 1.13 candidate | Startup and settings-restoration risks linked; platform and human review remain pending |
+| [M2-DOC-002, product test protocol](../testing/test-protocol.md) | 3.3 candidate | Startup and settings-restoration criteria and bounded local evidence; broader platform and human verification remain pending |
 | [M2-DOC-004, accessible screen flows and theme prototypes](../design/accessible-screen-flows-and-theme-prototypes.md) | 3.5 candidate | Proposed duration input and Settings design; exact-head review pending |
-| [M2-DOC-005, usability review plan](../usability/usability-plan.md) | 1.4 candidate | Future refinement review scope; no participant session authorized |
+| [M2-DOC-005, usability review plan](../usability/usability-plan.md) | 1.6 candidate | Future refinement review scope; no participant session authorized |
 | [M2-DOC-006, usability findings and evidence status](../usability/usability-findings.md) | 1.2 candidate | Retrospective sessions and extended G06 redesign gap |
 | [M3-DOC-007, platform architecture decision and support matrix](../architecture/platform-architecture-and-support-matrix.md) | 0.4 candidate | Retains shared Compose controls, records the remote-focus candidate, evidence limits, and no support commitment |
 
@@ -61,6 +61,7 @@ actual evidence is recorded.
 | REQ-013 | [Remaining-time use](../product/intended-use.md#supported-role-of-visual-time-and-optional-audio) | RISK-001, RISK-002, RISK-005 | [Detail mapping and actions](../design/accessible-screen-flows-and-theme-prototypes.md#m5-timer-scope-and-detail-mapping); G06 | TP-REQ-013 | Reported JVM Compose tests exercise actions at details 0–12, Tab/Enter, expanded overlay isolation and one compact large-font Restart; full visual matrix, screen readers and human review remain pending. |
 | REQ-014 | [Users and roles](../product/intended-use.md#users-population-and-roles) | RISK-001, RISK-002, RISK-004, RISK-005 | Full-duration preview, paused engine reset only for actual duration change and retained interruption | TP-REQ-014 | Reported JVM ViewModel tests cover changed duration, preview, appearance-only preservation and storage failure. Zero idle priority and warning restoration, complete persistence/platform and human verification require review. |
 | REQ-015 | [Users and roles](../product/intended-use.md#users-population-and-roles) | RISK-005 | Stationary Timer, sliding glass panels and native blur; no-clipping, fallback and assistive-tech evidence pending | TP-REQ-015 | Platform rendering, back gestures, focus and human review remain pending |
+| REQ-016 | [Users and roles](../product/intended-use.md#users-population-and-roles) | RISK-001, RISK-002, RISK-004, RISK-005 | Quiet startup fallback and validated restored background; system-owned surfaces may differ | TP-REQ-016 | JVM persistence tests and platform compilation do not establish launch-frame behavior. Platform runtime, accessibility, usability, and human risk review remain pending. |
 
 For REQ-002/003/010/014/015 and RISK-001/RISK-002/RC-002-1, the
 [configuration recreation candidate](../testing/test-protocol.md#configuration-recreation-refactor-candidate)
@@ -107,11 +108,11 @@ rationale.
 
 | Risk | Linked requirements |
 |---|---|
-| RISK-001 | REQ-001, REQ-002, REQ-003, REQ-010, REQ-013, REQ-014 |
-| RISK-002 | REQ-002, REQ-003, REQ-013, REQ-014 |
+| RISK-001 | REQ-001, REQ-002, REQ-003, REQ-010, REQ-013, REQ-014, REQ-016 |
+| RISK-002 | REQ-002, REQ-003, REQ-013, REQ-014, REQ-016 |
 | RISK-003 | REQ-008; REQ-010 if audio is added in v2 |
-| RISK-004 | REQ-002, REQ-004, REQ-005, REQ-006, REQ-012, REQ-014 |
-| RISK-005 | REQ-002, REQ-003, REQ-004, REQ-006, REQ-010, REQ-011, REQ-012, REQ-013, REQ-014, REQ-015 |
+| RISK-004 | REQ-002, REQ-004, REQ-005, REQ-006, REQ-012, REQ-014, REQ-016 |
+| RISK-005 | REQ-002, REQ-003, REQ-004, REQ-006, REQ-010, REQ-011, REQ-012, REQ-013, REQ-014, REQ-015, REQ-016 |
 | RISK-006 | REQ-003, REQ-004, REQ-009, REQ-011 |
 
 | Planned test | Linked requirement |
@@ -130,6 +131,7 @@ rationale.
 | TP-REQ-013 | REQ-013 |
 | TP-REQ-014 | REQ-014 |
 | TP-REQ-015 | REQ-015 |
+| TP-REQ-016 | REQ-016 |
 
 REQ-007 was retired before approval and is not an active requirement; it has
 no planned test. No test result is implied by these planned links.
@@ -267,3 +269,4 @@ test procedures or acceptance criteria in this matrix.
 | 5.1 | Trace TV IME selection and deletion corrections to full-panel regression tests and bounded emulator observations; retain platform, accessibility, usability, and approval gaps. |
 | 5.2 | Align traceability to the keyboard-kind-dependent REQ-001 input rule and record the Apple TV target blocker and pending platform verification. |
 | 5.3 | Record issue #82 Android TV APK-build and bounded JVM input evidence while retaining blocked device verification, Apple TV integration, and human-review gaps. |
+| 5.4 | Trace startup appearance and settings restoration to REQ-016 and TP-REQ-016; retain platform and human-review gaps. |

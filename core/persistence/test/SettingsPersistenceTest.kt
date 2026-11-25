@@ -96,6 +96,15 @@ class SettingsPersistenceTest {
     }
 
     @Test
+    fun `invalid record does not leak its selected background into restored settings`() {
+        val defaults = settings(6).copy(backgroundColorArgb = 0xFF151517)
+        val storage = StubSettingsStorage(serialized = "bad|RING|4294967295|0|0|DEFAULT|6")
+        val restored = DefaultSettingsRepository(storage, defaults).load()
+        assertEquals(defaults, restored.settings)
+        assertTrue(restored.storageFailure != null)
+    }
+
+    @Test
     fun `storage failures are surfaced`() {
         val defaults = settings(6)
         val storage = StubSettingsStorage(loadFailure = "Storage unavailable")

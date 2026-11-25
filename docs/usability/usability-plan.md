@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-005 |
-| Revision | 1.5 |
+| Revision | 1.6 |
 | Current change review | No PR opened yet; human acceptance and required specialist review pending |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
@@ -19,11 +19,11 @@ table. See [document controls](../governance/document-control.md#lifecycle-and-a
 
 This plan describes a proposed, safeguarded usability review of El Chrono's
 screen and timer-visualization prototypes. It is grounded in the proposed
-[requirements register, M2-DOC-001 revision 2.2](../product/requirements.md),
-the [test protocol, M2-DOC-002 revision 3.1](../testing/test-protocol.md), the
-[requirements traceability matrix, M2-DOC-003 revision 5.2](../safety/requirements-traceability-matrix.md),
+[requirements register, M2-DOC-001 revision 2.3](../product/requirements.md),
+the [test protocol, M2-DOC-002 revision 3.3](../testing/test-protocol.md), the
+[requirements traceability matrix, M2-DOC-003 revision 5.4](../safety/requirements-traceability-matrix.md),
 the [screen-flow and theme-prototype record, M2-DOC-004 revision 3.6](../design/accessible-screen-flows-and-theme-prototypes.md),
-and [risk assessment, M1-DOC-004 revision 1.15](../safety/risk-assessment.md).
+and [risk assessment, M1-DOC-004 revision 1.16](../safety/risk-assessment.md).
 The product owner approved the four demo visualizations for the v1 theme
 selector; this plan does not claim their usability or representative-user
 preference.
@@ -239,3 +239,4 @@ iteration, not validation of caregiver workflows or waiver of M2 gates.
 | 1.3 | Plan neutral review of independent fields, carry, clamping and immediate duration changes; no session is authorized. |
 | 1.4 | Align product, test, traceability, and risk references with the current independent-field implementation candidate; all participant review remains pending. |
 | 1.5 | Align the requirement, protocol, traceability, and design references with keyboard-kind-dependent duration entry; plan neutral review of the no-keyboard keypad without claiming usability evidence. |
+| 1.6 | Align requirements, protocol, traceability, and risk references with the startup-background candidate; no usability session is authorized. |

@@ -136,6 +136,19 @@ unverified, not implicitly supported or rejected.
   background delivery, multi-window, accessibility and UX remain unverified;
   Android JVM tests are not device evidence. Settings persistence does not
   restore a countdown after process death or device restart.
+- **Startup and settings storage:** Android mobile and TV use app-private
+  SharedPreferences; iOS uses NSUserDefaults; desktop uses Java Preferences;
+  the browser uses localStorage. They hold the existing complete settings
+  record, not patient data or countdown progress. Android backup and OS
+  preference synchronization follow platform policy; persistence and backup
+  have not been independently verified on every target. System-owned Android
+  and iOS launch surfaces use static `#151517` rather than a runtime preference;
+  the app applies the validated background when its process can read it.
+  Browser HTML uses the same dark fallback until Kotlin/Wasm loads. A selected
+  light color can therefore follow a dark system surface. Desktop native
+  window and OS behavior, as well as startup transitions on all targets,
+  require observation. Storage errors are exposed in Settings; startup
+  fallback is not evidence that saving succeeded. No support claim follows.
 - **Audio and provider boundary:** Music remains optional. Timer operation must
   work without internet or music, and audio/provider failures must be explicit
   without interrupting the timer. Do not select a provider or claim a

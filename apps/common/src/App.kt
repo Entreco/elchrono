@@ -100,17 +100,21 @@ import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
 @Preview
-fun App() {
+fun App(onBackgroundChanged: (Long) -> Unit = {}) {
     ElChronoTheme {
-        AppContent()
+        AppContent(onBackgroundChanged = onBackgroundChanged)
     }
 }
 
 @Composable
 internal fun AppContent(
     viewModel: AppViewModel = koinViewModel(),
+    onBackgroundChanged: (Long) -> Unit = {},
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
+    LaunchedEffect(state.settings.backgroundColorArgb) {
+        onBackgroundChanged(state.settings.backgroundColorArgb)
+    }
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val focusManager = LocalFocusManager.current
     val focusRequester = remember { FocusRequester() }
@@ -168,7 +172,7 @@ internal fun AppContent(
                         direction != null && focusManager.moveFocus(direction)
 
                 },
-            containerColor = Color.Transparent,
+            containerColor = Color(state.settings.backgroundColorArgb),
             contentColor = MaterialTheme.colorScheme.onSurface,
             topBar = {
                 AppBar(

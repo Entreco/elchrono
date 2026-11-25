@@ -5,7 +5,7 @@ Settings appearance review: [PR #76](https://github.com/Entreco/elchrono/pull/76
 | Field | Value |
 |---|---|
 | Document ID | M1-DOC-004 |
-| Revision | 1.15 |
+| Revision | 1.16 |
 | Current change review | No PR opened yet; human acceptance and required specialist review pending |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
@@ -84,6 +84,14 @@ semantics, detail representations, and storage-read/save failures. These
 scenarios remain covered through RISK-004 and RISK-005; no post-control risk
 rating or acceptability disposition is claimed until implementation and
 human review evidence are available.
+
+Issue #95 adds startup review scope: a static system launch surface may differ
+from the user's chosen color, and a storage failure or stale value may produce
+an unexpected appearance or duration. Under RISK-001, RISK-002, RISK-004 and
+RISK-005, verify that failures are surfaced, a restarted process does not
+restore or start a countdown, and transitions do not interfere with use.
+Platform first-frame observations and qualified human review remain pending;
+no risk reduction or acceptance is inferred.
 
 The current timer redesign adds review scope for mistaken Pause/Resume/Restart
 actions, accidental restart and duration resets, Settings-held running intent,
@@ -382,3 +390,4 @@ they are not waived by this initial assessment.
 | 1.13 | Exclude configuration recreation from genuine interruption and identify unnecessary stopped waits under RC-002-1; retain platform, UX and risk-review gaps. |
 | 1.14 | Add risk review scope for proposed independent duration entry, immediate changes, carry, clamping and platform input; no risk disposition is inferred. |
 | 1.15 | Record the independent-field implementation candidate and focused JVM test coverage; retain platform, usability, and risk-review gaps without inferring control effectiveness or acceptance. |
+| 1.16 | Add startup transitions and native settings restoration to risk-review scope; retain platform and human-review gaps. |

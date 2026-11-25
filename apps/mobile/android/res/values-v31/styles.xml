@@ -1,0 +1,6 @@
+<resources>
+    <style name="ElChronoLaunchTheme" parent="@android:style/Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">#151517</item>
+        <item name="android:windowSplashScreenBackground">#151517</item>
+    </style>
+</resources>

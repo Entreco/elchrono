@@ -10,6 +10,11 @@ The Android TV candidate uses the same Material controls as the other targets,
 with shared focus indicators and remote focus navigation. Installation, launch,
 and physical-remote verification on an Android TV remain pending.
 
-Apple TV remains unconfigured. Kotlin/Native exposes tvOS targets, but the
-shared Compose UI and Kotlin Toolchain application path need a compatible,
-reviewed tvOS integration. Mobile builds do not establish television support.
+Apple TV remains without an app target. Xcode 27.2 has the tvOS 27.2 SDK,
+simulator runtime, and Apple TV 4K simulator devices, but a bounded Kotlin
+Toolchain build probe found that the current Compose animation, foundation,
+Material 3, UI, and resources dependencies do not publish tvOS variants. The
+shared Compose app therefore cannot currently be configured or built for tvOS
+without a separately reviewed architecture/integration decision. No Apple TV
+package, remote-focus behavior, or runtime launch has been verified. Mobile
+builds and simulator availability do not establish television support.

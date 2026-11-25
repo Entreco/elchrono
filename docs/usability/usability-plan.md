@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-005 |
-| Revision | 1.4 |
+| Revision | 1.5 |
 | Current change review | No PR opened yet; human acceptance and required specialist review pending |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
@@ -19,10 +19,10 @@ table. See [document controls](../governance/document-control.md#lifecycle-and-a
 
 This plan describes a proposed, safeguarded usability review of El Chrono's
 screen and timer-visualization prototypes. It is grounded in the proposed
-[requirements register, M2-DOC-001 revision 2.1](../product/requirements.md),
-the [test protocol, M2-DOC-002 revision 2.9](../testing/test-protocol.md), the
-[requirements traceability matrix, M2-DOC-003 revision 5.0](../safety/requirements-traceability-matrix.md),
-the [screen-flow and theme-prototype record, M2-DOC-004 revision 3.5](../design/accessible-screen-flows-and-theme-prototypes.md),
+[requirements register, M2-DOC-001 revision 2.2](../product/requirements.md),
+the [test protocol, M2-DOC-002 revision 3.1](../testing/test-protocol.md), the
+[requirements traceability matrix, M2-DOC-003 revision 5.2](../safety/requirements-traceability-matrix.md),
+the [screen-flow and theme-prototype record, M2-DOC-004 revision 3.6](../design/accessible-screen-flows-and-theme-prototypes.md),
 and [risk assessment, M1-DOC-004 revision 1.15](../safety/risk-assessment.md).
 The product owner approved the four demo visualizations for the v1 theme
 selector; this plan does not claim their usability or representative-user
@@ -160,7 +160,7 @@ meaning in their own terms where safely paraphrasable.
 |---|---|---|---|
 | U-01 | Patient participant; same-progress examples from the Clock, Battery, Hand fan, and Ring demo | “What do you think this shows?” “What makes you think that?” “What do you think will happen next?” Ask before explaining the intended meaning. | Interpretation of remaining duration, progress direction, ambiguity with a clock/time of day, and differences between shapes. Do not treat a preference as a usability result. |
 | U-02 | Patient participant; running, paused, finished, interrupted and idle at detail 0 and 1-12 | Ask what each display shows, what each action will do and whether progress can be trusted. Do not teach the answer first. | Comprehension of state/action differences, icon-only actions and stale warning; static materials do not verify transitions. |
-| U-03 | Caregiver participant; proposed independent duration fields | Ask how they would enter a short duration, a duration with hours, 60 minutes and the maximum duration; explore what they expect when clearing a field or making an intermediate edit. | Comprehension of field selection, carry, clamping, idle zero and automatic intermediate changes; the historical demo does not implement or verify the new REQ-001. |
+| U-03 | Caregiver participant; proposed independent duration fields and no-keyboard keypad | Ask how they would enter a short duration, a duration with hours, 60 minutes and the maximum duration using platform text input when available and the on-screen keypad when no keyboard is available; explore clearing, field selection and intermediate edits. | Comprehension of field selection, input-mode changes, carry, clamping, idle zero and automatic intermediate changes; the historical demo does not implement or verify the revised REQ-001. |
 | U-04 | Caregiver and patient participants as appropriate; Main/Settings flow | Ask how they would change duration or appearance and what they expect on return for a running, paused or finished timer. Explore unprotected Settings and manual controls without prompting. | Understanding retained intent, immediate duration reset, unchanged/appearance edits and open access; not risk acceptance. |
 | U-05 | Caregiver participant; four demo shapes in a counterbalanced order where feasible | “What do you notice?” “Is any option easier or harder to understand?” “Would you choose one for this wait? Why or why not?” “Is there anything you would avoid?” | Individual reactions and reasons, including no preference or mixed preference. Do not generalize to all users or prescribe a fixed theme set. |
 | U-06 | Patient participant; chosen prototype at a comfortable viewing size | Ask what text, progress, and state information is noticeable; offer the participant's preferred zoom, communication, or assistive method if available. “Is anything difficult to see, understand, or use?” | Observed barriers and accommodations. The artifacts are not instrumented for assistive technology; do not claim screen-reader, keyboard, touch, or conformance verification unless separately performed and recorded. |
@@ -238,3 +238,4 @@ iteration, not validation of caregiver workflows or waiver of M2 gates.
 | 1.2 | Plan neutral review of one-shot completion, Settings intent, manual actions and interruption; no session is authorized. |
 | 1.3 | Plan neutral review of independent fields, carry, clamping and immediate duration changes; no session is authorized. |
 | 1.4 | Align product, test, traceability, and risk references with the current independent-field implementation candidate; all participant review remains pending. |
+| 1.5 | Align the requirement, protocol, traceability, and design references with keyboard-kind-dependent duration entry; plan neutral review of the no-keyboard keypad without claiming usability evidence. |

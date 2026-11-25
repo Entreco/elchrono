@@ -26,7 +26,6 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
-import androidx.compose.ui.test.v2.runDesktopComposeUiTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -44,7 +43,7 @@ import nl.entreco.elchrono.core.persistence.StorageResult
 @OptIn(ExperimentalTestApi::class)
 class SettingsAppearanceUiTest {
     @Test
-    fun `font choices resolve to distinct families`() = runDesktopComposeUiTest {
+    fun `font choices resolve to distinct families`() = runUiTest {
         var families = emptyList<FontFamily>()
         setContent {
             val resolved = TimerFont.entries.map { it.toFontFamily() }
@@ -58,7 +57,7 @@ class SettingsAppearanceUiTest {
     }
 
     @Test
-    fun `swatches use at most eight columns and keep accessible targets on narrow widths`() = runDesktopComposeUiTest {
+    fun `swatches use at most eight columns and keep accessible targets on narrow widths`() = runUiTest {
         var width by mutableStateOf(384.dp)
         var targetPixels = 0f
         val swatches = settingsColorPresets.map { DesignColorSwatch(it.id, it.id, Color(it.argb)) }
@@ -82,7 +81,7 @@ class SettingsAppearanceUiTest {
     }
 
     @Test
-    fun `rounded and serif fonts render differently from default`() = runDesktopComposeUiTest {
+    fun `rounded and serif fonts render differently from default`() = runUiTest {
         var font by mutableStateOf(TimerFont.DEFAULT)
         setContent {
             Text("00:12 Rounded timer", fontFamily = font.toFontFamily(), fontSize = 32.sp)
@@ -101,7 +100,7 @@ class SettingsAppearanceUiTest {
     }
 
     @Test
-    fun `all named presets select independently in each color picker`() = runDesktopComposeUiTest {
+    fun `all named presets select independently in each color picker`() = runUiTest {
         var settings by mutableStateOf(
             TimerSettings(checkNotNull(TimerDuration.fromMinutes(10)), TimerTheme.CLOCK),
         )
@@ -158,7 +157,7 @@ class SettingsAppearanceUiTest {
     }
 
     @Test
-    fun `appearance theme recomposes with the selected colors and font`() = runDesktopComposeUiTest {
+    fun `appearance theme recomposes with the selected colors and font`() = runUiTest {
         var settings by mutableStateOf(
             TimerSettings(checkNotNull(TimerDuration.fromMinutes(10)), TimerTheme.CLOCK),
         )
@@ -197,7 +196,7 @@ class SettingsAppearanceUiTest {
     }
 
     @Test
-    fun `appearance controls publish changes and preserve earlier selections`() = runDesktopComposeUiTest {
+    fun `appearance controls publish changes and preserve earlier selections`() = runUiTest {
         var settings by mutableStateOf(
             TimerSettings(checkNotNull(TimerDuration.fromMinutes(10)), TimerTheme.CLOCK),
         )
@@ -225,7 +224,7 @@ class SettingsAppearanceUiTest {
     }
 
     @Test
-    fun `selected swatch check uses text color with contrasting backing`() = runDesktopComposeUiTest {
+    fun `selected swatch check uses text color with contrasting backing`() = runUiTest {
         val presets = settingsColorPresets.map { Color(it.argb) }
         var color by mutableStateOf(presets.first())
         var selected by mutableStateOf("matching")

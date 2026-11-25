@@ -101,9 +101,7 @@ import kotlin.time.Duration.Companion.milliseconds
 @Composable
 @Preview
 fun App() {
-    ElChronoTheme {
-        AppContent()
-    }
+    ElChronoTheme { AppContent() }
 }
 
 @Composable
@@ -165,7 +163,7 @@ internal fun AppContent(
                         else -> null
                     }
                     event.type == KeyEventType.KeyDown &&
-                        direction != null && focusManager.moveFocus(direction)
+                            direction != null && focusManager.moveFocus(direction)
 
                 },
             containerColor = Color.Transparent,

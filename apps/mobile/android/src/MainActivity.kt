@@ -15,9 +15,7 @@ class MainActivity : ComponentActivity() {
         ComposeUiFlags.isMediaQueryIntegrationEnabled = true
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
-        setContent {
-            App()
-        }
+        setContent { App() }
     }
 }
 

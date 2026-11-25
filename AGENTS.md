@@ -241,14 +241,13 @@ requires it; check links, command accuracy, and the diff.
 
 Pull requests and pushes to `main` run `.github/workflows/ci.yml` on
 `ubuntu-24.04` with Java 17. It discovers modules, builds JVM and browser Wasm
-targets in separate invocations, and runs JVM tests for common, counter,
-design, settings, and localization modules and checks:
+targets in separate invocations, and runs checks (whose built-in `tests` check
+includes JVM tests) for common, counter, design, settings, and localization:
 
 ```sh
 ./kotlin show modules
 ./kotlin build -p jvm
 ./kotlin build -m browser
-./kotlin test -p jvm -m common -m counter -m design -m settings -m localization
 ./kotlin check -m common -m counter -m design -m settings -m localization
 ```
 

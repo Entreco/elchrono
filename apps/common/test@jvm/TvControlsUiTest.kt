@@ -15,8 +15,9 @@ import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performKeyInput
 import androidx.compose.ui.test.performSemanticsAction
+import androidx.compose.ui.test.assertTextContains
+import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.pressKey
-import androidx.compose.ui.test.v2.runDesktopComposeUiTest
 import androidx.compose.ui.unit.dp
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -35,7 +36,7 @@ import nl.entreco.elchrono.core.persistence.TimerSettings
 class TvControlsUiTest {
 
     @Test
-    fun `remote moves between app bar and timer action`() = runDesktopComposeUiTest {
+    fun `remote moves between app bar and timer action`() = runUiTest {
         mainClock.autoAdvance = false
         val viewModel = viewModel()
         setContent {
@@ -57,7 +58,7 @@ class TvControlsUiTest {
     }
 
     @Test
-    fun `remote activates the focused timer action`() = runDesktopComposeUiTest {
+    fun `remote activates the focused timer action`() = runUiTest {
         val viewModel = viewModel()
         setContent {
             ElChronoTheme {
@@ -83,7 +84,7 @@ class TvControlsUiTest {
     }
 
     @Test
-    fun `settings expose editable duration fields without an app keypad`() = runDesktopComposeUiTest {
+    fun `settings expose editable duration fields without an app keypad`() = runUiTest {
         val viewModel = viewModel()
         setContent {
             ElChronoTheme {
@@ -101,7 +102,7 @@ class TvControlsUiTest {
     }
 
     @Test
-    fun `remote key release does not move focus a second time`() = runDesktopComposeUiTest {
+    fun `remote key release does not move focus a second time`() = runUiTest {
         val viewModel = viewModel()
         setContent {
             ElChronoTheme {
@@ -121,7 +122,7 @@ class TvControlsUiTest {
     }
 
     @Test
-    fun `remote can move focus between the duration fields`() = runDesktopComposeUiTest {
+    fun `remote can move focus between the duration fields`() = runUiTest {
         val viewModel = viewModel()
         setContent {
             ElChronoTheme {
@@ -133,11 +134,31 @@ class TvControlsUiTest {
         onNodeWithContentDescription("Open Settings").performClick()
         onNodeWithText("Hours").performSemanticsAction(SemanticsActions.RequestFocus)
         onNodeWithText("Hours").assertIsFocused().performKeyInput { pressKey(Key.DirectionRight) }
-        onNodeWithText("Minutes").assertIsFocused()
+        onNodeWithText("Minutes").assertIsFocused().performKeyInput { pressKey(Key.DirectionLeft) }
+        onNodeWithText("Hours").assertIsFocused()
     }
 
     @Test
-    fun `remote selects theme and adjusts slider without moving focus`() = runDesktopComposeUiTest {
+    fun `arrow keys move the caret inside a duration field before leaving it`() = runUiTest {
+        val viewModel = viewModel()
+        setContent {
+            ElChronoTheme {
+                Box(Modifier.size(1280.dp, 720.dp)) {
+                    AppContent(viewModel)
+                }
+            }
+        }
+        onNodeWithContentDescription("Open Settings").performClick()
+        val minutes = onNodeWithText("Minutes")
+        minutes.performSemanticsAction(SemanticsActions.RequestFocus)
+        minutes.performTextInput("5")
+        minutes.assertTextContains("5").performKeyInput { pressKey(Key.DirectionLeft) }
+        minutes.assertIsFocused().performKeyInput { pressKey(Key.DirectionLeft) }
+        onNodeWithText("Hours").assertIsFocused()
+    }
+
+    @Test
+    fun `remote selects theme and adjusts slider without moving focus`() = runUiTest {
         val viewModel = viewModel()
         setContent {
             ElChronoTheme {
@@ -160,7 +181,7 @@ class TvControlsUiTest {
     }
 
     @Test
-    fun `remote returns from about to settings`() = runDesktopComposeUiTest {
+    fun `remote returns from about to settings`() = runUiTest {
         val viewModel = viewModel()
         setContent {
             ElChronoTheme {

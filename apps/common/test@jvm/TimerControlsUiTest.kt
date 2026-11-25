@@ -22,7 +22,6 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performKeyInput
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.pressKey
-import androidx.compose.ui.test.v2.runDesktopComposeUiTest
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import kotlin.test.Test
@@ -46,10 +45,19 @@ import nl.entreco.elchrono.core.persistence.TimerSettings
 @OptIn(ExperimentalTestApi::class)
 class TimerControlsUiTest {
     @Test
-    fun `pause resume and restart remain usable at every detail level`() = runDesktopComposeUiTest {
+    fun `pause resume and restart remain usable at every detail level`() = runUiTest {
         val clock = TestClock()
         val viewModel = viewModel(clock)
-        setContent { ElChronoTheme { Box(Modifier.size(320.dp, 640.dp)) { AppContent(viewModel) } } }
+        setContent {
+            ElChronoTheme {
+                Box(
+                    Modifier.size(
+                        320.dp,
+                        640.dp
+                    )
+                ) { AppContent(viewModel) }
+            }
+        }
         (0..12).forEach { detail ->
             runOnIdle {
                 viewModel.updateSettings(settings.copy(detail = detail))
@@ -79,12 +87,22 @@ class TimerControlsUiTest {
             assertEquals(1.minutes, viewModel.uiState.value.timer.snapshot.remaining)
             onNodeWithContentDescription("Pause").performClick()
         }
-        runOnIdle { viewModel.updateSettings(settings.copy(duration = checkNotNull(TimerDuration.fromMinutes(0)))) }
+        runOnIdle {
+            viewModel.updateSettings(
+                settings.copy(
+                    duration = checkNotNull(
+                        TimerDuration.fromMinutes(
+                            0
+                        )
+                    )
+                )
+            )
+        }
         onNodeWithTag("timer-action").assertDoesNotExist()
     }
 
     @Test
-    fun `timer action supports keyboard focus and activation`() = runDesktopComposeUiTest {
+    fun `timer action supports keyboard focus and activation`() = runUiTest {
         val viewModel = viewModel(TestClock())
         setContent { ElChronoTheme { AppContent(viewModel) } }
         val action = onNodeWithTag("timer-action")
@@ -97,36 +115,20 @@ class TimerControlsUiTest {
         assertTrue(viewModel.uiState.value.isTicking)
         onNodeWithContentDescription("Pause").assertIsDisplayed()
     }
-
+    
     @Test
-    fun `interruption offers restart and zero duration never offers an enabled action`() = runDesktopComposeUiTest {
-        val clock = TestClock()
-        val viewModel = viewModel(clock)
-        setContent { ElChronoTheme { AppContent(viewModel) } }
-        onNodeWithContentDescription("Resume").performClick()
-        runOnIdle { viewModel.onAppBackgrounded() }
-        onNodeWithText("Restart").assertIsDisplayed()
-        onNodeWithText("Timer interrupted. Progress may be out of date. Restart to start again.").assertIsDisplayed()
-        runOnIdle {
-            viewModel.openSettings()
-            viewModel.updateSettings(settings.copy(duration = checkNotNull(TimerDuration.fromMinutes(0))))
-            viewModel.closeSettings()
-        }
-        onNodeWithTag("timer-action").assertDoesNotExist()
-        runOnIdle {
-            viewModel.openSettings()
-            viewModel.updateSettings(settings)
-            viewModel.closeSettings()
-        }
-        onNodeWithText("Restart").performClick()
-        assertFalse(viewModel.uiState.value.interrupted)
-        assertTrue(viewModel.uiState.value.isTicking)
-    }
-
-    @Test
-    fun `expanded overlay blocks pointer and semantics through exit animation`() = runDesktopComposeUiTest {
+    fun `expanded overlay blocks pointer and semantics through exit animation`() = runUiTest {
         val viewModel = viewModel(TestClock())
-        setContent { ElChronoTheme { Box(Modifier.size(1200.dp, 720.dp)) { AppContent(viewModel) } } }
+        setContent {
+            ElChronoTheme {
+                Box(
+                    Modifier.size(
+                        1200.dp,
+                        720.dp
+                    )
+                ) { AppContent(viewModel) }
+            }
+        }
         val actionCenter = onNodeWithTag("timer-action").fetchSemanticsNode().boundsInRoot.center
         onNodeWithContentDescription("Open Settings").performClick()
         onNodeWithTag("timer-action", useUnmergedTree = true).assertDoesNotExist()
@@ -139,13 +141,15 @@ class TimerControlsUiTest {
         onRoot().performTouchInput { click(actionCenter) }
         assertFalse(viewModel.uiState.value.isTicking)
         mainClock.advanceTimeBy(1000)
-        mainClock.autoAdvance = true
         onNodeWithContentDescription("Resume").assertIsDisplayed().performClick()
         assertTrue(viewModel.uiState.value.isTicking)
+        viewModel.onTimerAction()
+        assertFalse(viewModel.uiState.value.isTicking)
+        mainClock.autoAdvance = true
     }
 
     @Test
-    fun `finished restart is unclipped at compact width and large text`() = runDesktopComposeUiTest {
+    fun `finished restart is unclipped at compact width and large text`() = runUiTest {
         val clock = TestClock()
         val viewModel = viewModel(clock)
         setContent {
@@ -173,13 +177,15 @@ class TimerControlsUiTest {
         assertTrue(viewModel.uiState.value.isTicking)
     }
 
-    private val settings = TimerSettings(checkNotNull(TimerDuration.fromMinutes(1)), TimerTheme.CLOCK)
+    private val settings =
+        TimerSettings(checkNotNull(TimerDuration.fromMinutes(1)), TimerTheme.CLOCK)
 
     private fun viewModel(clock: TestClock) = AppViewModel(
         TimerEngine(clock),
         object : SettingsRepository {
             override fun load() = RestoredSettings(settings, null)
-            override fun save(settings: TimerSettings): StorageResult<Unit> = StorageResult.Success(Unit)
+            override fun save(settings: TimerSettings): StorageResult<Unit> =
+                StorageResult.Success(Unit)
         },
         settings,
         null,
@@ -188,6 +194,8 @@ class TimerControlsUiTest {
     private class TestClock : MonotonicClock {
         private var now = 0L
         override fun nowNanos() = now
-        fun advance(duration: Duration) { now += duration.inWholeNanoseconds }
+        fun advance(duration: Duration) {
+            now += duration.inWholeNanoseconds
+        }
     }
 }

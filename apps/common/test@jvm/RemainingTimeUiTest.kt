@@ -17,7 +17,6 @@ import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.v2.runDesktopComposeUiTest
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
@@ -39,7 +38,7 @@ import nl.entreco.elchrono.core.persistence.TimerSettings
 @OptIn(ExperimentalTestApi::class)
 class RemainingTimeUiTest {
     @Test
-    fun `remaining time is centered and unclipped across themes and sizes`() = runDesktopComposeUiTest {
+    fun `remaining time is centered and unclipped across themes and sizes`() = runUiTest {
         val initial = settings(1)
         val viewModel = AppViewModel(TimerEngine(), TestRepository(initial), initial, null)
         var width by mutableStateOf(320.dp)
@@ -106,7 +105,7 @@ class RemainingTimeUiTest {
     }
 
     @Test
-    fun `glass is absent for detail zero and idle`() = runDesktopComposeUiTest {
+    fun `glass is absent for detail zero and idle`() = runUiTest {
         val initial = settings(1)
         val viewModel = AppViewModel(TimerEngine(), TestRepository(initial), initial, null)
         setContent { ElChronoTheme { AppContent(viewModel) } }
@@ -124,7 +123,7 @@ class RemainingTimeUiTest {
     }
 
     @Test
-    fun `glass backdrop follows changes to the visualization`() = runDesktopComposeUiTest {
+    fun `glass backdrop follows changes to the visualization`() = runUiTest {
         val initial = settings(60).copy(
             theme = TimerTheme.BATTERY,
             backgroundColorArgb = 0xFF000000,

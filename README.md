@@ -156,20 +156,20 @@ The CI workflow needs no repository secrets and requests only `contents: read`.
 
 `.github/workflows/ci.yml` runs for pull requests and pushes to `main` on
 `ubuntu-24.04` with Java 17. It discovers all declared modules, builds the JVM
-targets and browser Wasm target in separate invocations, and runs common,
-counter, design, settings, and localization JVM tests and checks. The exact CI
-commands are:
+targets and browser Wasm target in separate invocations, and runs checks for
+common, counter, design, settings, and localization. `./kotlin check` runs the
+built-in `tests` check, which includes those modules' JVM tests, so CI does not
+run a separate `./kotlin test` step. The exact CI commands are:
 
 ```sh
 ./kotlin show modules
 ./kotlin build -p jvm
 ./kotlin build -m browser
-./kotlin test -p jvm -m common -m counter -m design -m settings -m localization
 ./kotlin check -m common -m counter -m design -m settings -m localization
 ```
 
 CI restores Kotlin Toolchain bootstrap and dependency downloads before module
-discovery and saves them after both builds succeed, before tests and checks.
+discovery and saves them after both builds succeed, before checks.
 The workflow explicitly sets `KOTLIN_SHARED_CACHE_DIR` and
 `KOTLIN_CLI_BOOTSTRAP_CACHE_DIR` under the runner's temporary directory. It caches
 only `.m2.cache`, `download.cache`, and `cli`; workspace build outputs, extracted

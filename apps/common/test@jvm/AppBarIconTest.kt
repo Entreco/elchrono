@@ -10,7 +10,6 @@ import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.v2.runDesktopComposeUiTest
 import kotlin.test.Test
 import kotlin.test.assertTrue
 import nl.entreco.elchrono.core.design.ElChronoTheme
@@ -18,7 +17,7 @@ import nl.entreco.elchrono.core.design.ElChronoTheme
 @OptIn(ExperimentalTestApi::class)
 class AppBarIconTest {
     @Test
-    fun `navigation icons render the current text color and keep their actions`() = runDesktopComposeUiTest {
+    fun `navigation icons render the current text color and keep their actions`() = runUiTest {
         var screen by mutableStateOf(AppScreen.TIMER)
         var color by mutableStateOf(Color(0xFF3D7A57))
         var clicks = 0

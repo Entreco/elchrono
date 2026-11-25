@@ -5,7 +5,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.ExperimentalTestApi
-import androidx.compose.ui.test.v2.runDesktopComposeUiTest
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
@@ -16,7 +15,7 @@ import kotlin.test.assertEquals
 @OptIn(ExperimentalTestApi::class)
 class AppLifecycleTest {
     @Test
-    fun `configuration stop is ignored but a later real stop is delivered`() = runDesktopComposeUiTest {
+    fun `configuration stop is ignored but a later real stop is delivered`() = runUiTest {
         val owner = TestLifecycleOwner()
         var configurationChange = false
         var interruptions = 0
@@ -40,7 +39,7 @@ class AppLifecycleTest {
     }
 
     @Test
-    fun `disposing composition unregisters the background observer`() = runDesktopComposeUiTest {
+    fun `disposing composition unregisters the background observer`() = runUiTest {
         val owner = TestLifecycleOwner()
         var visible by mutableStateOf(true)
         var interruptions = 0

@@ -17,7 +17,6 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performScrollTo
-import androidx.compose.ui.test.v2.runDesktopComposeUiTest
 import androidx.compose.ui.unit.dp
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -29,7 +28,7 @@ import nl.entreco.elchrono.core.persistence.TimerSettings
 @OptIn(ExperimentalTestApi::class)
 class SettingsStateRestorationUiTest {
     @Test
-    fun `settings restore scroll and keep controls reachable after landscape resize`() = runDesktopComposeUiTest {
+    fun `settings restore scroll and keep controls reachable after landscape resize`() = runUiTest {
         var registry by mutableStateOf(SaveableStateRegistry(null) { true })
         var visible by mutableStateOf(true)
         var landscape by mutableStateOf(false)

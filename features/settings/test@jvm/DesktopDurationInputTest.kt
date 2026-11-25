@@ -22,7 +22,6 @@ import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.performTextInputSelection
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.pressKey
-import androidx.compose.ui.test.v2.runDesktopComposeUiTest
 import androidx.compose.ui.text.TextRange
 import nl.entreco.elchrono.core.counter.TimerDuration
 import nl.entreco.elchrono.core.design.TimerTheme
@@ -34,7 +33,7 @@ import kotlin.test.assertEquals
 class DesktopDurationInputTest {
     @Test
     fun `IME cursor initialization cannot collapse selection before the first edit`() =
-        runDesktopComposeUiTest {
+        runUiTest {
             var settings by mutableStateOf(settingsWithDuration(125))
             setContent { SettingsPanel(settings, { settings = it }, {}) }
 
@@ -63,7 +62,7 @@ class DesktopDurationInputTest {
 
     @Test
     fun `touch selects all text after cursor placement and repeated activation`() =
-        runDesktopComposeUiTest {
+        runUiTest {
             var settings by mutableStateOf(settingsWithDuration(125))
             setContent { SettingsPanel(settings, { settings = it }, {}) }
 
@@ -82,7 +81,7 @@ class DesktopDurationInputTest {
 
     @Test
     fun `panel fields retain focus select existing text and accept replacement and deletion`() =
-        runDesktopComposeUiTest {
+        runUiTest {
             var settings by mutableStateOf(settingsWithDuration(125))
             setContent {
                 SettingsPanel(settings, { settings = it }, {})
@@ -108,7 +107,7 @@ class DesktopDurationInputTest {
         }
 
     @Test
-    fun `duration draft restores without republishing a setting`() = runDesktopComposeUiTest {
+    fun `duration draft restores without republishing a setting`() = runUiTest {
         val settings = settingsWithDuration(0)
         var registry by mutableStateOf(SaveableStateRegistry(null) { true })
         var visible by mutableStateOf(true)
@@ -146,7 +145,7 @@ class DesktopDurationInputTest {
 
     @Test
     fun `fields edit independently select on focus and pad on blur without an app keypad`() =
-        runDesktopComposeUiTest {
+        runUiTest {
             var settings by mutableStateOf(settingsWithDuration(125))
             setContent {
                 SettingsScreen(
@@ -178,7 +177,7 @@ class DesktopDurationInputTest {
 
     @Test
     fun `empty focused field immediately contributes zero and pads when focus leaves`() =
-        runDesktopComposeUiTest {
+        runUiTest {
             var settings by mutableStateOf(settingsWithDuration(125))
             setContent {
                 SettingsScreen(
@@ -199,7 +198,7 @@ class DesktopDurationInputTest {
         }
 
     @Test
-    fun `desktop fields accept backspace key events`() = runDesktopComposeUiTest {
+    fun `desktop fields accept backspace key events`() = runUiTest {
         var settings by mutableStateOf(settingsWithDuration(125))
         setContent {
             SettingsScreen(

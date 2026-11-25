@@ -22,7 +22,6 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performKeyInput
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.pressKey
-import androidx.compose.ui.test.v2.runDesktopComposeUiTest
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import kotlin.test.Test
@@ -46,7 +45,7 @@ import nl.entreco.elchrono.core.persistence.TimerSettings
 @OptIn(ExperimentalTestApi::class)
 class TimerControlsUiTest {
     @Test
-    fun `pause resume and restart remain usable at every detail level`() = runDesktopComposeUiTest {
+    fun `pause resume and restart remain usable at every detail level`() = runUiTest {
         val clock = TestClock()
         val viewModel = viewModel(clock)
         setContent { ElChronoTheme { Box(Modifier.size(320.dp, 640.dp)) { AppContent(viewModel) } } }
@@ -84,7 +83,7 @@ class TimerControlsUiTest {
     }
 
     @Test
-    fun `timer action supports keyboard focus and activation`() = runDesktopComposeUiTest {
+    fun `timer action supports keyboard focus and activation`() = runUiTest {
         val viewModel = viewModel(TestClock())
         setContent { ElChronoTheme { AppContent(viewModel) } }
         val action = onNodeWithTag("timer-action")
@@ -99,7 +98,7 @@ class TimerControlsUiTest {
     }
 
     @Test
-    fun `interruption offers restart and zero duration never offers an enabled action`() = runDesktopComposeUiTest {
+    fun `interruption offers restart and zero duration never offers an enabled action`() = runUiTest {
         val clock = TestClock()
         val viewModel = viewModel(clock)
         setContent { ElChronoTheme { AppContent(viewModel) } }
@@ -124,7 +123,7 @@ class TimerControlsUiTest {
     }
 
     @Test
-    fun `expanded overlay blocks pointer and semantics through exit animation`() = runDesktopComposeUiTest {
+    fun `expanded overlay blocks pointer and semantics through exit animation`() = runUiTest {
         val viewModel = viewModel(TestClock())
         setContent { ElChronoTheme { Box(Modifier.size(1200.dp, 720.dp)) { AppContent(viewModel) } } }
         val actionCenter = onNodeWithTag("timer-action").fetchSemanticsNode().boundsInRoot.center
@@ -147,7 +146,7 @@ class TimerControlsUiTest {
     }
 
     @Test
-    fun `finished restart is unclipped at compact width and large text`() = runDesktopComposeUiTest {
+    fun `finished restart is unclipped at compact width and large text`() = runUiTest {
         val clock = TestClock()
         val viewModel = viewModel(clock)
         setContent {

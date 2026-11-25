@@ -14,7 +14,6 @@ import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performSemanticsAction
-import androidx.compose.ui.test.v2.runDesktopComposeUiTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -31,7 +30,7 @@ import nl.entreco.elchrono.core.persistence.TimerSettings
 @OptIn(ExperimentalTestApi::class)
 class DetailSliderUiTest {
     @Test
-    fun `ring thickness retains all values without visible track dots`() = runDesktopComposeUiTest {
+    fun `ring thickness retains all values without visible track dots`() = runUiTest {
         var settings by mutableStateOf(
             TimerSettings(checkNotNull(TimerDuration.fromMinutes(10)), TimerTheme.RING),
         )
@@ -57,7 +56,7 @@ class DetailSliderUiTest {
     }
 
     @Test
-    fun `all detail levels remain selectable and announced across zero`() = runDesktopComposeUiTest {
+    fun `all detail levels remain selectable and announced across zero`() = runUiTest {
         var settings by mutableStateOf(
             TimerSettings(checkNotNull(TimerDuration.fromMinutes(10)), TimerTheme.CLOCK),
         )
@@ -84,7 +83,7 @@ class DetailSliderUiTest {
     }
 
     @Test
-    fun `zero track has no visible dots and nonzero track restores them`() = runDesktopComposeUiTest {
+    fun `zero track has no visible dots and nonzero track restores them`() = runUiTest {
         var settings by mutableStateOf(
             TimerSettings(checkNotNull(TimerDuration.fromMinutes(10)), TimerTheme.CLOCK, detail = 0),
         )

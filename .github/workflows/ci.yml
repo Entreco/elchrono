@@ -61,13 +61,20 @@ jobs:
           KOTLIN_SHARED_CACHE_DIR: ${{ runner.temp }}/kotlin-cache
           KOTLIN_CLI_BOOTSTRAP_CACHE_DIR: ${{ runner.temp }}/kotlin-cache/cli
 
-      - name: Run JVM tests
-        run: ./kotlin test -p jvm -m common -m counter -m design -m settings -m localization
-        env:
-          KOTLIN_SHARED_CACHE_DIR: ${{ runner.temp }}/kotlin-cache
-          KOTLIN_CLI_BOOTSTRAP_CACHE_DIR: ${{ runner.temp }}/kotlin-cache/cli
+      - name: Save Kotlin downloads
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            ${{ runner.temp }}/kotlin-cache/.m2.cache
+            ${{ runner.temp }}/kotlin-cache/download.cache
+            ${{ runner.temp }}/kotlin-cache/cli
+            !${{ runner.temp }}/kotlin-cache/**/*.tmp
+            !${{ runner.temp }}/kotlin-cache/**/*.part
+            !${{ runner.temp }}/kotlin-cache/**/*.lock
+            !${{ runner.temp }}/kotlin-cache/cli/download-*.bin
+          key: ${{ steps.kotlin-cache.outputs.cache-primary-key }}
 
-      - name: Run checks
+      - name: Run checks (includes JVM tests)
         run: ./kotlin check -m common -m counter -m design -m settings -m localization
         env:
           KOTLIN_SHARED_CACHE_DIR: ${{ runner.temp }}/kotlin-cache

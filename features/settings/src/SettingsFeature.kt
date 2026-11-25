@@ -35,6 +35,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.focus.focusProperties
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onPreviewKeyEvent
+import androidx.compose.ui.input.key.type
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
@@ -180,6 +187,7 @@ fun SettingsScreen(
         mutableStateOf(TextFieldValue(initialSettings.duration.minutes.toString().padStart(2, '0')))
     }
     var focusedField by remember { mutableStateOf<DurationField?>(null) }
+    val focusManager = LocalFocusManager.current
     // TV IMEs can send a collapsed cursor selection while opening, before the first edit.
     var replaceOnNextEdit by remember { mutableStateOf<DurationField?>(null) }
     val currentFocusedField = rememberUpdatedState(focusedField)
@@ -252,6 +260,12 @@ fun SettingsScreen(
                 },
                 modifier = Modifier.weight(1f)
                     .focusProperties { canFocus = true }
+                    // Remote/arrow Right leaves Hours only at its end, keeping caret movement inside it.
+                    .onPreviewKeyEvent { event ->
+                        event.type == KeyEventType.KeyDown && event.key == Key.DirectionRight &&
+                            hoursValue.selection.max == hoursValue.text.length &&
+                            focusManager.moveFocus(FocusDirection.Right)
+                    }
                     .onFocusChanged { focusState ->
                         if (focusState.isFocused) {
                             focusedField = DurationField.HOURS
@@ -292,6 +306,12 @@ fun SettingsScreen(
                 },
                 modifier = Modifier.weight(1f)
                     .focusProperties { canFocus = true }
+                    // Remote/arrow Left leaves Minutes only at its start, keeping caret movement inside it.
+                    .onPreviewKeyEvent { event ->
+                        event.type == KeyEventType.KeyDown && event.key == Key.DirectionLeft &&
+                            minutesValue.selection.min == 0 &&
+                            focusManager.moveFocus(FocusDirection.Left)
+                    }
                     .onFocusChanged { focusState ->
                         if (focusState.isFocused) {
                             focusedField = DurationField.MINUTES

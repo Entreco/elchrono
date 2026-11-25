@@ -18,7 +18,6 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performKeyInput
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.pressKey
-import androidx.compose.ui.test.v2.runDesktopComposeUiTest
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.unit.dp
@@ -37,7 +36,7 @@ import kotlin.test.assertTrue
 @OptIn(ExperimentalTestApi::class)
 class SettingsOverlayTest {
     @Test
-    fun `compact navigation overlays the stationary timer`() = runDesktopComposeUiTest {
+    fun `compact navigation overlays the stationary timer`() = runUiTest {
         val viewModel = testViewModel()
         setContent {
             ElChronoTheme {
@@ -63,7 +62,7 @@ class SettingsOverlayTest {
     }
 
     @Test
-    fun `expanded settings slide from left without moving timer`() = runDesktopComposeUiTest {
+    fun `expanded settings slide from left without moving timer`() = runUiTest {
         val viewModel = testViewModel()
         setContent {
             ElChronoTheme {
@@ -92,7 +91,7 @@ class SettingsOverlayTest {
     }
 
     @Test
-    fun `compact width fills the window and rapid reopening reverses exit`() = runDesktopComposeUiTest {
+    fun `compact width fills the window and rapid reopening reverses exit`() = runUiTest {
         val viewModel = testViewModel()
         setContent {
             ElChronoTheme {
@@ -114,7 +113,7 @@ class SettingsOverlayTest {
     }
 
     @Test
-    fun `about slides left over settings and leaves the timer stationary`() = runDesktopComposeUiTest {
+    fun `about slides left over settings and leaves the timer stationary`() = runUiTest {
         val viewModel = testViewModel()
         setContent {
             ElChronoTheme {
@@ -141,7 +140,7 @@ class SettingsOverlayTest {
     }
 
     @Test
-    fun `settings fields do not retain keyboard focus behind about`() = runDesktopComposeUiTest {
+    fun `settings fields do not retain keyboard focus behind about`() = runUiTest {
         val viewModel = testViewModel()
         setContent { ElChronoTheme { AppContent(viewModel) } }
         onNodeWithContentDescription("Open Settings").performClick()
@@ -153,7 +152,7 @@ class SettingsOverlayTest {
     }
 
     @Test
-    fun `resizing with about open keeps navigation and panel width`() = runDesktopComposeUiTest {
+    fun `resizing with about open keeps navigation and panel width`() = runUiTest {
         val viewModel = testViewModel()
         var width by mutableStateOf(500.dp)
         setContent {

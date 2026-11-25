@@ -3,13 +3,13 @@
 | Field | Value |
 |---|---|
 | Document ID | M3-DOC-002 |
-| Revision | 0.3 |
+| Revision | 0.4 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | TV/watch platform feasibility, interaction/accessibility, and platform-tooling scopes; appointments and competence confirmation pending |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#34](https://github.com/Entreco/elchrono/issues/34); provider feasibility follow-up [#36](https://github.com/Entreco/elchrono/issues/36) |
-| Review PR | Revision 0.1 in [PR #43](https://github.com/Entreco/elchrono/pull/43); revision 0.2 in [PR #49](https://github.com/Entreco/elchrono/pull/49); required reviews and human acceptance pending |
+| Review PR | Revision 0.1 in [PR #43](https://github.com/Entreco/elchrono/pull/43); revision 0.2 in [PR #49](https://github.com/Entreco/elchrono/pull/49); issue #82 update: [draft PR #92](https://github.com/Entreco/elchrono/pull/92); required reviews and human acceptance pending |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](../governance/document-control.md#lifecycle-and-approval).
@@ -17,22 +17,26 @@ table. See [document controls](../governance/document-control.md#lifecycle-and-a
 ## Purpose and limits
 
 This record assesses the feasibility and constraints of Android TV, Apple TV,
-Wear OS, and watchOS using repository configuration, read-only local toolchain
-inspection, and official platform guidance reviewed on 2026-11-18. It does not
-configure targets, install SDK packages, accept licenses, launch or alter
-devices, or establish product support.
+Wear OS, and watchOS using repository configuration, local toolchain/build
+evidence, and official platform guidance. Its original read-only inspection was
+reviewed on 2026-11-18; the dated follow-ups below record later bounded checks.
+It does not install SDK packages, accept licenses, launch or alter devices, or
+establish product support.
 
-El Chrono remains non-medical visual waiting-time support. The current app is a
-starter shell, not a timer. This assessment does not select timer interruption,
-background recovery, pause/reset, volume, provider, companion-app, or other
-product behavior. The application must not present a clock face or time of day;
-this is not a proposal to build a watch face or complication.
+El Chrono remains non-medical visual waiting-time support. Platform-specific
+timer behavior remains subject to verification. This assessment does not select
+timer interruption, background recovery, pause/reset, volume, provider,
+companion-app, or other product behavior. The application must not present a
+clock face or time of day; this is not a proposal to build a watch face or
+complication.
 
 ## Evidence method and environment
 
-All local checks were read-only and run on macOS 26.6.2 (build 25G83, arm64).
-No TV/watch build or launch was attempted because the repository declares no
-such targets. The checks were:
+The base feasibility checks were read-only and run on macOS 26.6.2 (build
+25G83, arm64). At that time the repository declared no TV/watch targets. Issue
+#81 subsequently added the Android TV candidate module; the issue #82 follow-up
+below records its bounded build/package attempt. No TV emulator or physical
+device was launched or altered. The base checks were:
 
 - `./kotlin show modules`
 - `xcodebuild -version` and `xcodebuild -showsdks`
@@ -40,16 +44,15 @@ such targets. The checks were:
 - `sdkmanager --list_installed`, `avdmanager list avd`,
   `emulator -list-avds`, and `adb devices -l`
 
-The reserved `apps/television` and `apps/watch` directories contain README
-files only. Neither directory is registered in `project.yaml` or discovered by
-the Kotlin Toolchain. Discovered app modules include Android and iOS, but not
-tvOS or watchOS.
+`apps/television/androidtv` is registered and discovered as the Android TV
+candidate module. The `apps/watch` directory remains a README-only placeholder;
+neither tvOS nor watchOS is configured or discovered by the Kotlin Toolchain.
 
 | Platform | Local tooling and target evidence | Result and limitation |
 |---|---|---|
-| Android TV | Android SDK command-line tools are on PATH. `avdmanager list avd` reported only `Foldable`, whose Google APIs arm64-v8a system image is missing; `emulator -list-avds` listed only `Foldable`; `adb devices -l` listed no devices. `sdkmanager --list_installed` emitted a shell warning and loading progress but no installed-package entries in the captured output. | No usable TV emulator or connected test device was available. Installed Android TV packages could not be confirmed from the package-list output. No TV module or launch command is configured. |
-| Apple TV | Xcode 27.2 (build 27B52) lists tvOS 27.2 and the tvOS Simulator SDK in `xcodebuild -showsdks`. | `xcrun simctl list runtimes` and `xcrun simctl list devices available` showed iOS runtimes/devices only, with no tvOS runtime or Apple TV simulator. No tvOS module or launch command is configured. |
-| Wear OS | Same Android SDK/AVD/device inspection as Android TV. | No usable Wear OS emulator or connected test device was available; installed Wear OS packages could not be confirmed. No Wear OS module or launch command is configured. |
+| Android TV | Kotlin Toolchain 0.13.0; Android command-line tools 20.0; ADB 37.0.0-14910828; emulator 37.1.11.0. On 2026-11-25, `./kotlin build -m androidtv` succeeded and generated a debug APK. `emulator -list-avds` listed `Television_4K`, but `avdmanager list avd` reported its Android TV arm64-v8a system image missing; `adb devices -l` listed no devices. | Candidate package generation only. No usable AVD or connected test device was available; installation, launch, D-pad/remote focus, lifecycle, accessibility, and viewing-distance behavior remain unverified. |
+| Apple TV | Xcode 27.2 (build 27B52) lists tvOS 27.2 SDK and Simulator SDK; the tvOS 27.2 runtime and two Apple TV 4K simulator devices were available on 2026-11-25. | No tvOS module or app target is configured. The current shared Compose dependencies lack tvOS variants, so no package or launch was possible without a separately reviewed architecture/integration decision. |
+| Wear OS | The base 2026-11-18 Android SDK/AVD/device inspection found only a `Foldable` AVD profile, whose Google APIs arm64-v8a image was missing; no device was connected. | No usable Wear OS emulator or connected test device was available; installed Wear OS packages could not be confirmed. No Wear OS module or launch command is configured. |
 | watchOS | Xcode 27.2 lists watchOS 27.2 and the watchOS Simulator SDK in `xcodebuild -showsdks`. | The available simulator runtime/device lists showed iOS only, with no watchOS runtime or Apple Watch simulator. No watchOS module or launch command is configured. |
 
 SDK availability is not evidence that an app target can be built, packaged,
@@ -171,7 +174,7 @@ The platform-specific audio evidence and remaining work are:
 
 | Platform | Evidence and limitation | Follow-up |
 |---|---|---|
-| Android TV | Output may route through TV speakers, HDMI, or Bluetooth; routes/formats can change and unsupported output can fail. This does not establish YouTube/Spotify support. | M3-DOC-003 records provider constraints but no TV-specific integration or test evidence; retain the unconfigured/unverified status. |
+| Android TV | Output may route through TV speakers, HDMI, or Bluetooth; routes/formats can change and unsupported output can fail. This does not establish YouTube/Spotify support. | M3-DOC-003 records provider constraints but no TV-specific integration or test evidence; retain candidate-only status and no provider support claim. |
 | Apple TV | No Apple TV target, test runtime, or device was available; provider playback, audio routing, and background behavior were not verified. | M3-DOC-003 records no established tvOS provider path; retain the unconfigured/unverified status. |
 | Wear OS | Standalone status matters if a provider or phone connection is needed; no watch output route or provider SDK was tested. The timer's core/offline operation cannot depend on a paired phone or provider. | M3-DOC-003 distinguishes Spotify Connect routing from a Wear OS SDK; no direct integration or companion decision is established. |
 | watchOS | Independent app design is recommended by Apple, but no watchOS target or test runtime was available; provider playback and connectivity were not verified. | M3-DOC-003 records no established watchOS provider path; retain the unconfigured/unverified status. |
@@ -192,7 +195,7 @@ requirements, risk, and UX review before implementation.
 
 | Platform | Assessment | Evidence and next constraint |
 |---|---|---|
-| Android TV | Candidate; unconfigured and unverified | Android supports TV-specific apps, but no usable local TV target was found. D-pad/focus, viewing-distance readability, accessibility, packaging, lifecycle, and audio routing need a TV prototype and test target. |
+| Android TV | Configured candidate; APK build demonstrated, runtime unverified | The module and debug APK build succeed, but the available AVD is missing its Android TV system image and no device is connected. D-pad/focus, viewing-distance readability, accessibility, lifecycle, and audio routing still need a usable TV target and review. |
 | Apple TV | Candidate; SDK/runtime/simulator available, app target blocked | Xcode 27.2 provides tvOS 27.2 SDK/runtime and Apple TV 4K simulator devices, but the current Compose dependency graph lacks tvOS variants. No app, package, remote/focus, accessibility, or runtime behavior was built or tested. Resolve the constraint through a separately reviewed integration/architecture decision before implementation. |
 | Wear OS | Candidate; unconfigured and unverified | No usable local watch target was found. Standalone/offline behavior, ambient refresh, long-running activity, state recovery, battery impact, small-screen accessibility, and optional provider limits need further study. |
 | watchOS | Candidate; SDK/runtime available, target unconfigured | Xcode provides watchOS 27.2 SDK/runtime; no watchOS target or behavior was evaluated for issue #80. Standalone operation, background/lifecycle behavior, display semantics, accessibility, and audio/provider options need further study; watchOS remains outside v1. |
@@ -243,3 +246,4 @@ decision.
 | 0.1 | Record read-only TV/watch tooling evidence, official platform constraints, feasibility status, and unresolved implementation/review gaps for issue #34. |
 | 0.2 | Link M3-DOC-003 provider findings and update TV/watch audio follow-up without claiming a provider path, platform support, or testing. |
 | 0.3 | Add the 2026-11-25 Apple TV SDK/runtime/simulator observation and record the pinned Compose dependency blocker; note the watchOS runtime update without expanding v1 scope or claiming support. |
+| 0.4 | Update the Android TV candidate configuration and record issue #82's successful APK build plus the missing AVD image, absent device, and unverified runtime/input behavior. |

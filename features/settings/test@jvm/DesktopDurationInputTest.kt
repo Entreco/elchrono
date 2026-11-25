@@ -216,6 +216,28 @@ class DesktopDurationInputTest {
         runOnIdle { assertEquals(120, settings.duration.totalMinutes) }
     }
 
+    @Test
+    fun `directional keys move between duration fields only at their outer edges`() =
+        runDesktopComposeUiTest {
+            var settings by mutableStateOf(settingsWithDuration(125))
+            setContent {
+                SettingsScreen(
+                    initialSettings = settings,
+                    onChange = { settings = it },
+                    onShowAbout = {},
+                )
+            }
+
+            onNodeWithText("Hours").performSemanticsAction(SemanticsActions.RequestFocus)
+            onNodeWithText("Hours").performTextInputSelection(TextRange(2))
+            onNodeWithText("Hours").performKeyInput { pressKey(Key.DirectionRight) }
+            onNodeWithText("Minutes").assertIsFocused()
+
+            onNodeWithText("Minutes").performTextInputSelection(TextRange(0))
+            onNodeWithText("Minutes").performKeyInput { pressKey(Key.DirectionLeft) }
+            onNodeWithText("Hours").assertIsFocused()
+        }
+
     private fun settingsWithDuration(totalMinutes: Int) = TimerSettings(
         checkNotNull(TimerDuration.fromMinutes(totalMinutes)),
         TimerTheme.CLOCK,

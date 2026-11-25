@@ -7,8 +7,8 @@ Desktop keyboard changes: [PR #73](https://github.com/Entreco/elchrono/pull/73).
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-002 |
-| Revision | 3.1 |
-| Current change review | No PR opened yet; human acceptance and required specialist review pending |
+| Revision | 3.2 |
+| Current change review | Issue #82 verification update; human acceptance and required specialist review pending |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Test and product requirements review: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
@@ -256,6 +256,34 @@ renderer or a physical remote. Android TV installation, launch, remote/D-pad
 operation, focus visibility, lifecycle, screen-reader behavior, viewing-distance
 readability, and packaging remain unverified. TP-REQ-011 remains blocked, not
 passed; no Android TV support claim is made.
+
+### Issue #82 TV packaging and support evidence
+
+On 2026-11-25, the local environment was macOS 26.6.2 (arm64), Kotlin Toolchain
+0.13.0, Android command-line tools 20.0, ADB 37.0.0-14910828, and Android
+emulator 37.1.11.0. `./kotlin show modules` listed the `androidtv` module.
+`./kotlin build -m androidtv` completed successfully and generated
+`build/tasks/_androidtv_buildAndroidDebug/gradle-project-debug.apk`. The first
+build attempt exposed missing Compose focus/key imports and focus-manager
+access in Settings duration fields; these were corrected before the successful
+rerun.
+
+`./kotlin test -p jvm -m settings` passed all 31 tests, including a new
+directional-key test that moves between duration fields only at their outer
+edges. This JVM result does not verify Android TV rendering or remote input.
+`emulator -list-avds` listed `Television_4K`, but `avdmanager list avd`
+reported that the profile could not load because its Android TV arm64-v8a
+system image is missing. `adb devices -l` listed no connected devices. The APK
+was not installed or launched; Main, Settings, About, transient controls,
+remote focus, lifecycle, viewing-distance readability, and accessibility were
+not exercised on a TV target.
+
+The Apple TV target remains unconfigured: the current Compose UI dependency
+graph has no tvOS variants, as recorded under [issue #80](#issue-80-apple-tv-target-feasibility).
+No Apple TV package, launch, or remote-focus behavior was verified. TP-REQ-011
+therefore remains blocked, not passed, for TV support evidence. Accessibility,
+usability, risk, and other required human reviews remain pending; no TV support
+claim is made.
 
 ### Issue #80 Apple TV target feasibility
 
@@ -626,3 +654,4 @@ input, screen readers, no-clipping across sizes and human review remain open.
 | 2.9 | Record focused JVM verification of the independent-field implementation; retain platform, accessibility, usability, and human-review gaps. |
 | 3.0 | Record the TV IME selection correction, full-panel regression coverage, and bounded Android TV-emulator input observations; retain integrated-test and platform-review limitations. |
 | 3.1 | Make duration-entry verification conditional on keyboard availability and record the tvOS Compose dependency blocker, installed simulator evidence, and pending Apple TV verification without claiming support. |
+| 3.2 | Record issue #82 Android TV APK generation, the missing AVD image and absent connected target, bounded JVM duration-field focus testing, and blocked target/human verification without claiming support. |

@@ -7,7 +7,7 @@ Desktop keyboard changes: [PR #73](https://github.com/Entreco/elchrono/pull/73).
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-002 |
-| Revision | 3.2 |
+| Revision | 3.3 |
 | Current change review | Issue #82 verification update; human acceptance and required specialist review pending |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
@@ -22,7 +22,7 @@ table. See [document controls](../governance/document-control.md#lifecycle-and-a
 ## Purpose and limits
 
 This protocol contains planned test procedures and acceptance criteria for
-[M2-DOC-001, revision 2.2, Product requirements](../product/requirements.md).
+[M2-DOC-001, revision 2.3, Product requirements](../product/requirements.md).
 The exact source revisions and requirement-to-source, risk, design, usability,
 and test relationships are identified in the
 [requirements traceability matrix](../safety/requirements-traceability-matrix.md).
@@ -52,6 +52,42 @@ hours. No accessibility conformance baseline is selected by this protocol.
 | TP-REQ-013 | [REQ-013](../product/requirements.md#requirement-identification) | Enumerate all shapes, states and details 0-12; test action names, roles, input activation, focus, clipping, and overlay/exit-animation isolation at compact and expanded sizes. Inspect zero and finished separately. | At detail 0 no Timer text, boundaries or Clock labels appear; action icons have localized accessible names, running shows Pause, paused shows Resume, and finished/interrupted show Restart. At 1-12 Restart is visibly labeled; stale warning and remaining text appear as applicable. Hidden Timer controls cannot be focused or activated under overlays. Clock has N evenly spaced duration labels and no boundaries; other shapes have N equal segments, including one at detail 1. Fan stays centered and unclipped. Idle zero has no enabled action or completion semantics. Human review remains pending. |
 | TP-REQ-014 | [REQ-014](../product/requirements.md#requirement-identification) | Test full-duration preview, actual valid duration changes, unchanged values, appearance edits, invalid drafts, persistence, reopen and read/save failures across paused, running-intent, finished and interrupted states. | Preview updates immediately; only an actual valid duration change resets the engine paused to full. Preview does not advance it or clear interruption. Invalid drafts retain last valid preview and show an error; invalid/stale storage defaults safely with surfaced error; failures are not reported as saves. Reopen restores settings, not countdown continuity. Overlay need not expose a sharp preview. |
 | TP-REQ-015 | [REQ-015](../product/requirements.md#requirement-identification) | Measure Timer and panel bounds before, during and after both directions, including interruption, reversal and resizing. Inspect Settings and About at compact and expanded widths, and exercise back, predictive-back cancellation, labels, focus, semantics, scrolling, reduced motion and clipping. Check glass and native blur on supported renderers and fallbacks, including Android below API 31 and API 32. | One full-window Timer remains stationary. Both panels enter from and exit to the left; About overlays Settings. Compact panels fill the width and expanded panels do not exceed 440 dp. Controls remain sharp, labeled and reachable; hidden layers do not leak semantics or focus. Record renderer-specific blur, glass and fallbacks rather than inferring them from compilation. |
+| TP-REQ-016 | [REQ-016](../product/requirements.md#requirement-identification) | On every configured target, record cold and warm starts, first run, full process restart, and recreation with default, saved dark and saved light backgrounds. Record first visible system-owned and app-owned frames; corrupt or deny storage and observe feedback. Confirm all settings restore and the previous countdown does not resume or start. | App-owned startup surfaces match the validated background as early as supported; configurable system-owned surfaces use the dark default. A static system-to-selected-color transition is allowed and recorded. First run or invalid/unavailable storage uses the default; storage errors are visible. Restart does not recover or auto-start a countdown. Unavailable targets or missing recordings are blocked, not passed. |
+
+### Issue #95 startup candidate evidence
+
+On the local macOS host with Kotlin Toolchain 0.13.0 and Xcode 27.2:
+
+- `./kotlin test -p jvm -m persistence` passed 13 tests, including a new
+  Java Preferences instance restoring a complete record, an access-denial
+  failure, and backing-store read/write
+  failure. `./kotlin test -p iosSimulatorArm64 -m persistence` passed the
+  shared cases and two isolated NSUserDefaults cases; linker cache warnings
+  were emitted. These are not app process-restart tests.
+- `./kotlin test -p iosSimulatorArm64 -m common --include-classes
+  'nl.entreco.elchrono.AppViewModelTest'` passed, including a fresh-engine
+  test showing that saved settings restore while a previous running countdown
+  does not. This exercises an in-memory storage stub, not OS process restart.
+- `./kotlin build -m browser -m desktop -m android -m androidtv` and
+  `./kotlin build -m ios -p iosSimulatorArm64` succeeded. An iPhone 18 Pro
+  iOS 27.0 simulator launch rendered the default timer; a settled screenshot
+  sampled `#151517` through the lower edge after the shared Scaffold fix.
+  The first launch attempt and one destination lookup failed; later retries
+  succeeded. A later launch with an NSUserDefaults command-line argument for
+  valid light settings rendered `#F7F7F2` through the screen edges; an invalid
+  argument rendered `#151517`. These arguments simulate stored records and do
+  not verify durable saves, first frames, or physical-device behavior.
+  Desktop launched a window on macOS. A headless Chrome 158 screenshot captured
+  the dark browser loading surface, but not the rendered timer or a saved
+  background; startup-frame behavior remains unverified.
+- `./kotlin check -m persistence -m common` failed because pre-existing common
+  JVM tests refer to missing `AppBackgroundEffect` and `onAppBackgrounded`
+  APIs. The same references and absent definitions are present on the base
+  branch. `./kotlin check -m persistence` completed successfully.
+- No Android or Android TV device was connected. Cold and warm launch
+  recordings, saved-color reload, failed-storage UI behavior, lifecycle
+  recreation, non-recovery of a prior countdown, accessibility and human risk
+  review remain open on relevant targets. TP-REQ-014/016 are not passed.
 
 For TP-REQ-003 and TP-REQ-013, inspect the centered remaining-time glass
 surface at detail 1-12 across all four themes, one-minute and 24-hour values,
@@ -655,3 +691,4 @@ input, screen readers, no-clipping across sizes and human review remain open.
 | 3.0 | Record the TV IME selection correction, full-panel regression coverage, and bounded Android TV-emulator input observations; retain integrated-test and platform-review limitations. |
 | 3.1 | Make duration-entry verification conditional on keyboard availability and record the tvOS Compose dependency blocker, installed simulator evidence, and pending Apple TV verification without claiming support. |
 | 3.2 | Record issue #82 Android TV APK generation, the missing AVD image and absent connected target, bounded JVM duration-field focus testing, and blocked target/human verification without claiming support. |
+| 3.3 | Add startup-background and settings-restoration criteria and bounded local evidence; retain platform and human-review blockers. |

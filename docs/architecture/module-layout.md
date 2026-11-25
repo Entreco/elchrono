@@ -41,9 +41,12 @@ establish support for unconfigured TV targets.
 The issue #47 implementation of this boundary is recorded in
 [PR #59](https://github.com/Entreco/elchrono/pull/59).
 
-No `core/prefs` module is added: cross-restart persistence has not been
-specified or approved. Current settings live only in app memory; add local
-storage only against an approved persistence requirement.
+No separate `core/prefs` module is added. `core/persistence` owns the shared
+settings record and validation; launchers supply Android application storage,
+while platform implementations use local preferences on iOS and desktop and
+localStorage in the browser. REQ-014 specifies settings persistence, not
+countdown recovery. Platform storage and first-launch behavior require
+verification; the existence of these implementations is not release evidence.
 
 The shared libraries target JVM, Android, iOS ARM64, iOS simulator ARM64, and
 Wasm/JS. These compilation targets do not establish TV/watch support.

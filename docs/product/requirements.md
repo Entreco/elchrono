@@ -7,7 +7,7 @@ Desktop keyboard changes: [PR #73](https://github.com/Entreco/elchrono/pull/73).
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-001 |
-| Revision | 2.2 |
+| Revision | 2.3 |
 | Current change review | No PR opened yet; human acceptance and required specialist review pending |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
@@ -73,6 +73,7 @@ exact-revision review and acceptance are recorded in the current review PR.
 | REQ-013 | At detail 0, hide extra segment boundaries, Clock duration labels, and all visible Timer text, including interruption warnings; retain interrupted and idle cues. The bottom-right timer action shall be available at every detail level: Pause with a pause icon when running, Resume with a play icon when paused, and Restart when finished or interrupted. At detail 0 actions are icon-only with localized accessible names; at detail 1-12 Restart is visibly labeled. Accessible descriptions shall identify all states and stale interrupted progress. At detail 1-12, Clock shows that number of evenly spaced duration labels around its continuous disk without segment boundaries; other shapes show that number of equal visual segments, including one continuous segment at level 1. Clock labels show whole seconds for configured durations below ten minutes and compact minutes otherwise, with a unit label. Remaining-time text is shown at detail 1-12. No clock-face markings or time-of-day information shall be added. |
 | REQ-014 | Valid Settings changes, including duration and Ring thickness, shall immediately update the Timer presentation behind Settings and persist after app close and reopen. The preview uses the full selected duration without advancing the engine; it need not be sharp or unobstructed. An actual valid duration change resets the engine paused as specified by REQ-002; appearance-only changes, unchanged durations and invalid drafts do not. Invalid drafts retain the last valid preview and show an input error. Invalid or stale storage falls back safely to defaults with a surfaced error; legacy selections survive thickness migration. Storage failures are surfaced, not presented as successful saves. Persistence does not imply recovery of a previously running countdown. |
 | REQ-015 | The Timer shall remain a stationary full-window layer behind the app bar, Settings and About. Settings and About shall slide in from and out to the left, with About over Settings. Panels shall fill compact windows and be at most 440 dp wide in expanded windows. Apply native Timer blur where supported and a liquid-glass treatment to the panels without blurring controls; where native blur is unavailable the Timer remains unblurred. Controls shall have labels and applicable browser, keyboard, touch, and assistive-technology semantics without clipping. |
+| REQ-016 | On configured targets, app-owned startup surfaces shall use the restored valid background as soon as the platform permits, before the Timer presentation. Where a system-owned launch surface cannot access stored settings, use a quiet solid dark default where configurable; a transition to a different selected color is permitted. On first run or failed/invalid storage use the default dark background, and surface storage failures as required by REQ-014. Startup appearance shall not start or recover a previous countdown. |
 
 For REQ-002/003/010/014/015, orientation changes, window resizing, and Android
 configuration recreation shall preserve the retained timer session, current
@@ -171,3 +172,4 @@ does not establish that they were resolved.
 | 2.0 | Specify independently editable duration fields and platform text input in place of sequential entry and the app keypad; retain implementation, accessibility, usability, risk and platform verification gaps. |
 | 2.1 | Record the independent-field implementation candidate and focused JVM test coverage; retain platform, accessibility, usability, risk-review, and requirement-approval gaps. |
 | 2.2 | Make duration entry conditional on keyboard availability: platform text input for physical/virtual keyboards and the app keypad when none is available; retain platform verification and Apple TV integration gaps. |
+| 2.3 | Add the startup-background requirement and static system-surface limitation; retain platform verification and review gaps. |

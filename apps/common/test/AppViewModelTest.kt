@@ -16,11 +16,39 @@ import nl.entreco.elchrono.core.persistence.TimerSettings
 import nl.entreco.elchrono.core.persistence.SettingsRepository
 import nl.entreco.elchrono.core.persistence.RestoredSettings
 import nl.entreco.elchrono.core.persistence.StorageResult
+import nl.entreco.elchrono.core.persistence.DefaultSettingsRepository
+import nl.entreco.elchrono.core.persistence.SettingsStorage
 import nl.entreco.elchrono.di.appModule
 import org.koin.dsl.koinApplication
 import org.koin.dsl.module
 
 class AppViewModelTest {
+    @Test
+    fun `new session restores settings but not running countdown`() {
+        var stored: String? = null
+        val storage = object : SettingsStorage {
+            override fun load() = StorageResult.Success(stored)
+            override fun save(serialized: String): StorageResult<Unit> {
+                stored = serialized
+                return StorageResult.Success(Unit)
+            }
+        }
+        val defaults = settings(5)
+        val repository = DefaultSettingsRepository(storage, defaults)
+        val first = AppViewModel(TimerEngine(), repository, defaults, null)
+        val selected = defaults.copy(backgroundColorArgb = 0xFFF7F7F2)
+        first.updateSettings(selected)
+        first.onTimerAction()
+        assertTrue(first.uiState.value.isTicking)
+
+        val restored = DefaultSettingsRepository(storage, defaults).load()
+        val reopened = AppViewModel(TimerEngine(), repository, restored.settings, restored.storageFailure)
+        assertEquals(selected, reopened.uiState.value.settings)
+        assertEquals(TimerStatus.PAUSED, reopened.uiState.value.timer.snapshot.status)
+        assertEquals(5.minutes, reopened.uiState.value.timer.snapshot.remaining)
+        assertFalse(reopened.uiState.value.isTicking)
+    }
+
     @Test
     fun `new viewmodel sessions do not share a running engine`() {
         val application = koinApplication {

@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M1-DOC-009 |
-| Revision | 1.12 |
+| Revision | 1.13 |
 | Current change review | [PR #78](https://github.com/Entreco/elchrono/pull/78); human acceptance and required specialist review pending |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
@@ -18,7 +18,7 @@ Lifecycle status is derived from the branch and PR context; see
 ## Purpose and use
 
 This matrix links the scenarios and proposed controls in
-[M1-DOC-004 revision 1.15](risk-assessment.md#risk-analysis) to intended-use
+[M1-DOC-004 revision 1.16](risk-assessment.md#risk-analysis) to intended-use
 sources, assessment assumptions, and planned verification. Each risk and
 follow-up is owned by the product owner, @Entreco. The M2
 [requirements traceability matrix](requirements-traceability-matrix.md) is the
@@ -48,6 +48,11 @@ background/readability, stable detail geometry, Battery silhouette, Ring
 thickness, and cue interpretation to TP-REQ-003/013/015. Pure JVM tests and
 bounded browser observations do not establish comprehension, control
 effectiveness, or risk acceptance; human review remains pending.
+
+Issue #95 adds TP-REQ-016 startup and persisted-background checks to
+RISK-001, RISK-002, RISK-004 and RISK-005, alongside TP-REQ-014 for
+settings restoration and storage failures. System-owned transitions,
+real-device behavior and human risk review remain unverified.
 
 Each risk ID links to the assessment table; the
 [control tables](risk-assessment.md#risk-controls) identify the proposed
@@ -102,3 +107,4 @@ interruption or process-death/reboot recovery policy or establish effectiveness.
 | 1.10 | Trace approved zero idle priority and retained interruption; keep human and platform review pending. |
 | 1.11 | Trace recreation continuity and genuine-background discrimination to RC-002-1 and bounded refactor evidence; retain blocked device and human verification. |
 | 1.12 | Trace the independent-field implementation and focused JVM tests to TP-REQ-001; retain platform, accessibility, usability, and risk-review gaps. |
+| 1.13 | Trace startup background and settings restoration to TP-REQ-014/016 and retain runtime and risk-review gaps. |

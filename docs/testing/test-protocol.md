@@ -7,14 +7,14 @@ Desktop keyboard changes: [PR #73](https://github.com/Entreco/elchrono/pull/73).
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-002 |
-| Revision | 3.3 |
-| Current change review | Issue #82 verification update; human acceptance and required specialist review pending |
+| Revision | 3.5 |
+| Current change review | Issue #93 Android build/package evidence update; draft PR #97; human acceptance and required specialist review pending |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Test and product requirements review: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#25](https://github.com/Entreco/elchrono/issues/25) |
-| Review PR | Prior baselines: [PR #27](https://github.com/Entreco/elchrono/pull/27), [PR #31](https://github.com/Entreco/elchrono/pull/31), [PR #32](https://github.com/Entreco/elchrono/pull/32), and [PR #41](https://github.com/Entreco/elchrono/pull/41); issue #47 review: [PR #59](https://github.com/Entreco/elchrono/pull/59); #67 candidate: [draft PR #68](https://github.com/Entreco/elchrono/pull/68); #66 review: [draft PR #70](https://github.com/Entreco/elchrono/pull/70); Settings foreground: [PR #72](https://github.com/Entreco/elchrono/pull/72); issue #82 update: [draft PR #92](https://github.com/Entreco/elchrono/pull/92); final exact-head acceptance pending |
+| Review PR | Prior baselines: [PR #27](https://github.com/Entreco/elchrono/pull/27), [PR #31](https://github.com/Entreco/elchrono/pull/31), [PR #32](https://github.com/Entreco/elchrono/pull/32), and [PR #41](https://github.com/Entreco/elchrono/pull/41); issue #47 review: [PR #59](https://github.com/Entreco/elchrono/pull/59); #67 candidate: [draft PR #68](https://github.com/Entreco/elchrono/pull/68); #66 review: [draft PR #70](https://github.com/Entreco/elchrono/pull/70); Settings foreground: [PR #72](https://github.com/Entreco/elchrono/pull/72); issue #82 update: [draft PR #92](https://github.com/Entreco/elchrono/pull/92); issue #93 evidence: [draft PR #97](https://github.com/Entreco/elchrono/pull/97); final exact-head acceptance pending |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](../governance/document-control.md#lifecycle-and-approval).
@@ -655,6 +655,40 @@ exceptions were already noted in the baseline. This is not a full protocol
 pass: all shapes, colors, fallback renderers, invalid-draft updates, physical
 input, screen readers, no-clipping across sizes and human review remain open.
 
+### Issue #93 Android mobile release-readiness evidence
+
+This execution record captures build and packaging evidence only. It does not
+verify timer requirements, establish Android support, or satisfy the physical-
+device and release gates in issue #93.
+
+| Field | Observed value |
+|---|---|
+| Source revision | `8b62299f99f3262fab0b7e9d44c1a624f6bb52ed` (`feat/93-android-release-readiness`; clean at execution) |
+| Host and toolchain | macOS 26.7.3 build 25G342, arm64; Kotlin Toolchain 0.13.0 (`abc7a5f`, 2026-10-01); Android command-line tools 20.0, ADB 37.0.0-14910828, emulator 37.1.11.0 |
+| Effective Android settings | Application ID and namespace `nl.entreco.elchrono`; user-visible label `El Chrono`; `minSdk 24`, `compileSdk 37`, `targetSdk 37`, build tools 37.0.0, `versionCode 1`, `versionName unspecified`; signing disabled. SDK/version values are toolchain defaults, not approved release decisions. |
+| Manifest permissions | No `<uses-permission>` declaration in `apps/mobile/android/src/AndroidManifest.xml`; the merged package manifest was not inspected. |
+
+| Check | Exact command | Result |
+|---|---|---|
+| Android build | `./kotlin build -m android` | Passed from the feature worktree. |
+| Release-format package task | `./kotlin package -m android --format aab` | Passed using the default release variant; produced an unsigned AAB, not a signed release candidate. |
+| Package signature | `jarsigner -verify -verbose -certs build/tasks/_android_bundleAndroid/gradle-project-release.aab` | `jar is unsigned.` No release signing configuration or credentials were used. |
+| Device inventory | `adb devices -l`; `emulator -list-avds`; `avdmanager list avd` | No connected devices. The only AVD is `Television_4K`, which cannot load because its Android TV system image is missing; it is not an Android phone/tablet test target. |
+
+The local AAB at
+`build/tasks/_android_bundleAndroid/gradle-project-release.aab` had SHA-256
+`dcd3c22d77c0bf105021383f7c87230363b94969ee2b676769e87ca782c216c2` during
+this run. The artifact remains a local build output and is not included in the
+repository or PR.
+
+No approved minimum Android version or product version is established. The
+unsigned AAB was not installed or launched. Physical-device install/update,
+runtime behavior, touch and accessibility, lifecycle/recovery, offline
+operation, privacy and licence content, and the per-platform release decision
+remain unverified. `sdkmanager --list_installed` did not return a usable package
+inventory in this environment; the successful build/package and effective
+settings above do not establish device coverage or platform support.
+
 ## Revision history
 
 | Revision | Change |
@@ -692,3 +726,5 @@ input, screen readers, no-clipping across sizes and human review remain open.
 | 3.1 | Make duration-entry verification conditional on keyboard availability and record the tvOS Compose dependency blocker, installed simulator evidence, and pending Apple TV verification without claiming support. |
 | 3.2 | Record issue #82 Android TV APK generation, the missing AVD image and absent connected target, bounded JVM duration-field focus testing, and blocked target/human verification without claiming support. |
 | 3.3 | Add startup-background and settings-restoration criteria and bounded local evidence; retain platform and human-review blockers. |
+| 3.4 | Record issue #93 Android build and unsigned AAB evidence, effective scaffold settings, and blocked physical-device/release verification without claiming support or readiness. |
+| 3.5 | Link the issue #93 execution record to draft PR #97; human acceptance and required reviews remain pending. |

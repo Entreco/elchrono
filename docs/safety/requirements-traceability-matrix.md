@@ -6,8 +6,8 @@ Desktop keyboard changes: [PR #73](https://github.com/Entreco/elchrono/pull/73).
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-003 |
-| Revision | 5.4 |
-| Current change review | Issue #82 verification update; human acceptance and required specialist review pending |
+| Revision | 5.5 |
+| Current change review | Issue #93 Android build/package evidence update; human acceptance and required specialist review pending |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Requirements and software-safety review: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
@@ -24,7 +24,7 @@ This matrix is the authoritative cross-reference between the intended-use
 source, product requirements, risks, design/usability evidence, and test
 protocol. Requirement statements live in
 [M2-DOC-001, revision 2.3](../product/requirements.md); acceptance criteria and
-procedures live in [M2-DOC-002, revision 3.3](../testing/test-protocol.md).
+procedures live in [M2-DOC-002, revision 3.4](../testing/test-protocol.md).
 Do not duplicate those statements or criteria here.
 
 The mappings below are initial and proposed. Design links are included when
@@ -37,11 +37,12 @@ actual evidence is recorded.
 | [M2-DOC-001, product requirements](../product/requirements.md) | 2.3 candidate | Adds startup background behavior; platform, accessibility, usability, risk review, and approval remain pending |
 | [M1-DOC-004, risk assessment](risk-assessment.md) | 1.16 candidate | RISK-001 through RISK-006 traced below; review pending; no control effectiveness or risk reduction claimed |
 | [M1-DOC-009, risk traceability matrix](risk-traceability-matrix.md) | 1.13 candidate | Startup and settings-restoration risks linked; platform and human review remain pending |
-| [M2-DOC-002, product test protocol](../testing/test-protocol.md) | 3.3 candidate | Startup and settings-restoration criteria and bounded local evidence; broader platform and human verification remain pending |
+| [M2-DOC-002, product test protocol](../testing/test-protocol.md) | 3.4 candidate | Startup/restoration criteria plus Android build/package evidence; broader platform and human verification remain pending |
 | [M2-DOC-004, accessible screen flows and theme prototypes](../design/accessible-screen-flows-and-theme-prototypes.md) | 3.5 candidate | Proposed duration input and Settings design; exact-head review pending |
 | [M2-DOC-005, usability review plan](../usability/usability-plan.md) | 1.6 candidate | Future refinement review scope; no participant session authorized |
 | [M2-DOC-006, usability findings and evidence status](../usability/usability-findings.md) | 1.2 candidate | Retrospective sessions and extended G06 redesign gap |
-| [M3-DOC-007, platform architecture decision and support matrix](../architecture/platform-architecture-and-support-matrix.md) | 0.4 candidate | Retains shared Compose controls, records the remote-focus candidate, evidence limits, and no support commitment |
+| [M3-DOC-006, build/version/release conventions](../architecture/build-release-versioning.md) | 0.2 candidate | Records Android scaffold configuration and unsigned package evidence; release identity, support, and approval remain unresolved |
+| [M3-DOC-007, platform architecture decision and support matrix](../architecture/platform-architecture-and-support-matrix.md) | 0.8 candidate | Retains shared Compose controls, records Android build/package evidence and its limits, and makes no support commitment |
 
 ## Traceability
 
@@ -72,6 +73,11 @@ evidence; common JVM compilation is blocked by the pre-existing TV test signatur
 mismatch. Actual Activity retention, rotation, focus, scroll and no-clipping
 delivery remain unverified. No control effectiveness or human acceptance is
 inferred from compilation or domain results.
+
+Issue #93's [Android build and unsigned AAB execution record](../testing/test-protocol.md#issue-93-android-mobile-release-readiness-evidence)
+is configuration and packaging evidence only. It does not verify any behavioral
+requirement or establish Android platform support; device, accessibility,
+lifecycle, and release evidence remain pending.
 
 ## Reverse coverage
 
@@ -270,3 +276,4 @@ test procedures or acceptance criteria in this matrix.
 | 5.2 | Align traceability to the keyboard-kind-dependent REQ-001 input rule and record the Apple TV target blocker and pending platform verification. |
 | 5.3 | Record issue #82 Android TV APK-build and bounded JVM input evidence while retaining blocked device verification, Apple TV integration, and human-review gaps. |
 | 5.4 | Trace startup appearance and settings restoration to REQ-016 and TP-REQ-016; retain platform and human-review gaps. |
+| 5.5 | Link Android configuration and build/package evidence to platform/release records without claiming requirement verification, platform support, or release readiness. |

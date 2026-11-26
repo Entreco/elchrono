@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | Document ID | M3-DOC-006 |
-| Revision | 0.1 |
+| Revision | 0.2 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Architecture/build, platform release, and configuration-control scopes; appointments and competence confirmation pending |
@@ -30,11 +30,12 @@ because this record proposes a convention.
 
 ## Observed configuration
 
-The following configuration was observed on 2026-11-18:
+The baseline below was observed on 2026-11-18. Android settings were rechecked
+for issue #93 on 2026-11-26:
 
 | Surface | Current source/tool output | Evidence limit |
 |---|---|---|
-| Android | Effective Kotlin Toolchain settings report `versionCode: 1` and `versionName: unspecified` defaults; application ID is `nl.entreco.elchrono`. | These are toolchain defaults, not an approved product version or release build number. |
+| Android | Effective Kotlin Toolchain settings report application ID/namespace `nl.entreco.elchrono`, label `El Chrono`, `minSdk: 24`, `compileSdk: 37`, `targetSdk: 37`, build tools `37.0.0`, `versionCode: 1`, and `versionName: unspecified`; signing is disabled. `apps/mobile/android/src/AndroidManifest.xml` declares no permissions. | SDK and version values are defaults, not approved product/release decisions. The source manifest was inspected; the merged package manifest and actual runtime permissions were not verified. The built release-variant AAB is unsigned and is not a release candidate. |
 | iOS | Xcode project sets `MARKETING_VERSION = 1.0` and `CURRENT_PROJECT_VERSION = 1`; `Info.plist` maps them to `CFBundleShortVersionString` and `CFBundleVersion`. | Scaffold values only; not a release baseline. |
 | Desktop | Kotlin Toolchain supports JAR and executable-JAR packaging; current desktop proof was tested on macOS only. | No application product-version field or cross-OS package baseline was established. |
 | Browser | Kotlin Toolchain package help lists `jar`, `executable-jar`, `aab`, and `maven-central-bundle`; it exposes no browser deployment package format. | Browser development-server output is not a verified distributable or offline package. |
@@ -112,6 +113,9 @@ platform release approval are distinct gates.
 - Android package settings currently rely on `versionCode: 1` and
   `versionName: unspecified` defaults. A reviewed configuration change is
   required before distribution.
+- Issue #93's Android build and AAB packaging tasks passed on 2026-11-26, but
+  the resulting AAB is unsigned and no physical-device installation or launch
+  was possible; see the linked test-protocol execution record.
 - iOS scaffold values are `1.0` and `1`; signing/archive/export, store
   delivery, and release verification are not established here.
 - Desktop executable-JAR packaging was observed in the macOS feasibility work,
@@ -139,7 +143,9 @@ conformity claim, or certification claim.
   [`apps/mobile/ios/module.xcodeproj/project.pbxproj`](../../apps/mobile/ios/module.xcodeproj/project.pbxproj),
   and [`apps/mobile/ios/src/Info.plist`](../../apps/mobile/ios/src/Info.plist).
 - `./kotlin show settings -m android -m ios` and `./kotlin package --help`,
-  inspected on 2026-11-18.
+  inspected on 2026-11-18; `./kotlin show settings -m android`, the Android
+  build, and AAB packaging rechecked on 2026-11-26. See the issue #93
+  [execution record](../testing/test-protocol.md#issue-93-android-mobile-release-readiness-evidence).
 - [M3-DOC-001 — browser and desktop feasibility findings](platform-feasibility-findings.md)
   and [M3-DOC-002 — TV and watch feasibility findings](tv-watch-feasibility-findings.md).
 - [M1-DOC-001 — document controls](../governance/document-control.md),
@@ -151,3 +157,4 @@ conformity claim, or certification claim.
 | Revision | Change |
 |---|---|
 | 0.1 | Propose build/version/artifact identification conventions for issue #38; document current scaffold values and unresolved platform packaging/release evidence. |
+| 0.2 | Recheck Android package identity, effective default SDK/version settings, permissions declaration, and unsigned AAB status for issue #93 without approving release values or support. |

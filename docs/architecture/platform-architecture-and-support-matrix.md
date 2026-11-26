@@ -3,13 +3,13 @@
 | Field | Value |
 |---|---|
 | Document ID | M3-DOC-007 |
-| Revision | 0.8 |
+| Revision | 0.9 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Cross-platform architecture; browser/desktop; Android/iOS; TV input; provider, privacy, licensing/policy, lifecycle/audio, and accessibility/input scopes: @Entreco, designated by the product owner on 2026-11-19; final exact-head acceptance pending |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#39](https://github.com/Entreco/elchrono/issues/39) |
-| Review PR | Prior baseline: [PR #54](https://github.com/Entreco/elchrono/pull/54); issue #47 update: [PR #59](https://github.com/Entreco/elchrono/pull/59); issue #82 update: [draft PR #92](https://github.com/Entreco/elchrono/pull/92); final exact-head acceptance pending |
+| Review PR | Prior baseline: [PR #54](https://github.com/Entreco/elchrono/pull/54); issue #47 update: [PR #59](https://github.com/Entreco/elchrono/pull/59); issue #82 update: [draft PR #92](https://github.com/Entreco/elchrono/pull/92); issue #93 update: [draft PR #97](https://github.com/Entreco/elchrono/pull/97); final exact-head acceptance pending |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](../governance/document-control.md#lifecycle-and-approval).
@@ -204,3 +204,4 @@ unverified, not implicitly supported or rejected.
 | 0.6 | Record the installed tvOS simulator environment and issue #80 Compose dependency blocker; retain Apple TV as unconfigured and make no support claim. |
 | 0.7 | Record issue #82 Android TV APK-build evidence and the unavailable AVD/device, preserving blocked runtime verification and no-support status. |
 | 0.8 | Record issue #93 Android build and unsigned AAB packaging evidence while retaining blocked device verification, undecided support baseline, and no release claim. |
+| 0.9 | Link the issue #93 support-matrix evidence to draft PR #97; required reviews and human acceptance remain pending. |

@@ -6,14 +6,14 @@ Desktop keyboard changes: [PR #73](https://github.com/Entreco/elchrono/pull/73).
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-003 |
-| Revision | 5.5 |
-| Current change review | Issue #93 Android build/package evidence update; human acceptance and required specialist review pending |
+| Revision | 5.6 |
+| Current change review | Issue #93 Android build/package evidence update; draft PR #97; human acceptance and required specialist review pending |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Requirements and software-safety review: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#25](https://github.com/Entreco/elchrono/issues/25); provider-feasibility trace update in [#36](https://github.com/Entreco/elchrono/issues/36); platform architecture trace update in [#39](https://github.com/Entreco/elchrono/issues/39) |
-| Review PR | Prior baselines: revision 1.4 in [PR #29](https://github.com/Entreco/elchrono/pull/29), revision 1.7 in [PR #30](https://github.com/Entreco/elchrono/pull/30), revision 1.8 in [PR #31](https://github.com/Entreco/elchrono/pull/31), revision 2.2 in [PR #32](https://github.com/Entreco/elchrono/pull/32), revision 2.3 in [PR #41](https://github.com/Entreco/elchrono/pull/41), revision 2.4 in [PR #49](https://github.com/Entreco/elchrono/pull/49), and revision 2.5 in [PR #54](https://github.com/Entreco/elchrono/pull/54); issue #47 review: [PR #59](https://github.com/Entreco/elchrono/pull/59); #67 candidate: [draft PR #68](https://github.com/Entreco/elchrono/pull/68); #66 review: [draft PR #70](https://github.com/Entreco/elchrono/pull/70); Settings foreground: [PR #72](https://github.com/Entreco/elchrono/pull/72); issue #82 update: [draft PR #92](https://github.com/Entreco/elchrono/pull/92); final exact-head acceptance pending |
+| Review PR | Prior baselines: revision 1.4 in [PR #29](https://github.com/Entreco/elchrono/pull/29), revision 1.7 in [PR #30](https://github.com/Entreco/elchrono/pull/30), revision 1.8 in [PR #31](https://github.com/Entreco/elchrono/pull/31), revision 2.2 in [PR #32](https://github.com/Entreco/elchrono/pull/32), revision 2.3 in [PR #41](https://github.com/Entreco/elchrono/pull/41), revision 2.4 in [PR #49](https://github.com/Entreco/elchrono/pull/49), and revision 2.5 in [PR #54](https://github.com/Entreco/elchrono/pull/54); issue #47 review: [PR #59](https://github.com/Entreco/elchrono/pull/59); #67 candidate: [draft PR #68](https://github.com/Entreco/elchrono/pull/68); #66 review: [draft PR #70](https://github.com/Entreco/elchrono/pull/70); Settings foreground: [PR #72](https://github.com/Entreco/elchrono/pull/72); issue #82 update: [draft PR #92](https://github.com/Entreco/elchrono/pull/92); issue #93 evidence: [draft PR #97](https://github.com/Entreco/elchrono/pull/97); final exact-head acceptance pending |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](../governance/document-control.md#lifecycle-and-approval).
@@ -24,7 +24,7 @@ This matrix is the authoritative cross-reference between the intended-use
 source, product requirements, risks, design/usability evidence, and test
 protocol. Requirement statements live in
 [M2-DOC-001, revision 2.3](../product/requirements.md); acceptance criteria and
-procedures live in [M2-DOC-002, revision 3.4](../testing/test-protocol.md).
+procedures live in [M2-DOC-002, revision 3.5](../testing/test-protocol.md).
 Do not duplicate those statements or criteria here.
 
 The mappings below are initial and proposed. Design links are included when
@@ -37,12 +37,12 @@ actual evidence is recorded.
 | [M2-DOC-001, product requirements](../product/requirements.md) | 2.3 candidate | Adds startup background behavior; platform, accessibility, usability, risk review, and approval remain pending |
 | [M1-DOC-004, risk assessment](risk-assessment.md) | 1.16 candidate | RISK-001 through RISK-006 traced below; review pending; no control effectiveness or risk reduction claimed |
 | [M1-DOC-009, risk traceability matrix](risk-traceability-matrix.md) | 1.13 candidate | Startup and settings-restoration risks linked; platform and human review remain pending |
-| [M2-DOC-002, product test protocol](../testing/test-protocol.md) | 3.4 candidate | Startup/restoration criteria plus Android build/package evidence; broader platform and human verification remain pending |
+| [M2-DOC-002, product test protocol](../testing/test-protocol.md) | 3.5 candidate | Startup/restoration criteria plus Android build/package evidence; broader platform and human verification remain pending |
 | [M2-DOC-004, accessible screen flows and theme prototypes](../design/accessible-screen-flows-and-theme-prototypes.md) | 3.5 candidate | Proposed duration input and Settings design; exact-head review pending |
 | [M2-DOC-005, usability review plan](../usability/usability-plan.md) | 1.6 candidate | Future refinement review scope; no participant session authorized |
 | [M2-DOC-006, usability findings and evidence status](../usability/usability-findings.md) | 1.2 candidate | Retrospective sessions and extended G06 redesign gap |
-| [M3-DOC-006, build/version/release conventions](../architecture/build-release-versioning.md) | 0.2 candidate | Records Android scaffold configuration and unsigned package evidence; release identity, support, and approval remain unresolved |
-| [M3-DOC-007, platform architecture decision and support matrix](../architecture/platform-architecture-and-support-matrix.md) | 0.8 candidate | Retains shared Compose controls, records Android build/package evidence and its limits, and makes no support commitment |
+| [M3-DOC-006, build/version/release conventions](../architecture/build-release-versioning.md) | 0.3 candidate | Records Android scaffold configuration and unsigned package evidence; release identity, support, and approval remain unresolved |
+| [M3-DOC-007, platform architecture decision and support matrix](../architecture/platform-architecture-and-support-matrix.md) | 0.9 candidate | Retains shared Compose controls, records Android build/package evidence and its limits, and makes no support commitment |
 
 ## Traceability
 
@@ -277,3 +277,4 @@ test procedures or acceptance criteria in this matrix.
 | 5.3 | Record issue #82 Android TV APK-build and bounded JVM input evidence while retaining blocked device verification, Apple TV integration, and human-review gaps. |
 | 5.4 | Trace startup appearance and settings restoration to REQ-016 and TP-REQ-016; retain platform and human-review gaps. |
 | 5.5 | Link Android configuration and build/package evidence to platform/release records without claiming requirement verification, platform support, or release readiness. |
+| 5.6 | Link the issue #93 Android execution record and source documents to draft PR #97; verification and release gaps remain explicit. |

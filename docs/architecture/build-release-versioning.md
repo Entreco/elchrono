@@ -3,13 +3,13 @@
 | Field | Value |
 |---|---|
 | Document ID | M3-DOC-006 |
-| Revision | 0.2 |
+| Revision | 0.3 |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Architecture/build, platform release, and configuration-control scopes; appointments and competence confirmation pending |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#38](https://github.com/Entreco/elchrono/issues/38) |
-| Review PR | [PR #52](https://github.com/Entreco/elchrono/pull/52); required specialist reviews and human acceptance pending |
+| Review PR | [PR #52](https://github.com/Entreco/elchrono/pull/52); issue #93 update: [draft PR #97](https://github.com/Entreco/elchrono/pull/97); required specialist reviews and human acceptance pending |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](../governance/document-control.md#lifecycle-and-approval).
@@ -158,3 +158,4 @@ conformity claim, or certification claim.
 |---|---|
 | 0.1 | Propose build/version/artifact identification conventions for issue #38; document current scaffold values and unresolved platform packaging/release evidence. |
 | 0.2 | Recheck Android package identity, effective default SDK/version settings, permissions declaration, and unsigned AAB status for issue #93 without approving release values or support. |
+| 0.3 | Link the issue #93 Android configuration evidence to draft PR #97; required review and release decisions remain pending. |

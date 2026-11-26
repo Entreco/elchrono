@@ -7,14 +7,14 @@ Desktop keyboard changes: [PR #73](https://github.com/Entreco/elchrono/pull/73).
 | Field | Value |
 |---|---|
 | Document ID | M2-DOC-002 |
-| Revision | 3.4 |
-| Current change review | Issue #93 Android build/package evidence update; human acceptance and required specialist review pending |
+| Revision | 3.5 |
+| Current change review | Issue #93 Android build/package evidence update; draft PR #97; human acceptance and required specialist review pending |
 | Document owner | @Entreco |
 | Author | Copilot; human accountability remains with the owner |
 | Required reviewers | Test and product requirements review: @Entreco, designated by the product owner; exact-revision acceptance and findings disposition are recorded in the review PR |
 | Approver | @Entreco, after required reviews and findings resolution |
 | Related issue | [#25](https://github.com/Entreco/elchrono/issues/25) |
-| Review PR | Prior baselines: [PR #27](https://github.com/Entreco/elchrono/pull/27), [PR #31](https://github.com/Entreco/elchrono/pull/31), [PR #32](https://github.com/Entreco/elchrono/pull/32), and [PR #41](https://github.com/Entreco/elchrono/pull/41); issue #47 review: [PR #59](https://github.com/Entreco/elchrono/pull/59); #67 candidate: [draft PR #68](https://github.com/Entreco/elchrono/pull/68); #66 review: [draft PR #70](https://github.com/Entreco/elchrono/pull/70); Settings foreground: [PR #72](https://github.com/Entreco/elchrono/pull/72); issue #82 update: [draft PR #92](https://github.com/Entreco/elchrono/pull/92); final exact-head acceptance pending |
+| Review PR | Prior baselines: [PR #27](https://github.com/Entreco/elchrono/pull/27), [PR #31](https://github.com/Entreco/elchrono/pull/31), [PR #32](https://github.com/Entreco/elchrono/pull/32), and [PR #41](https://github.com/Entreco/elchrono/pull/41); issue #47 review: [PR #59](https://github.com/Entreco/elchrono/pull/59); #67 candidate: [draft PR #68](https://github.com/Entreco/elchrono/pull/68); #66 review: [draft PR #70](https://github.com/Entreco/elchrono/pull/70); Settings foreground: [PR #72](https://github.com/Entreco/elchrono/pull/72); issue #82 update: [draft PR #92](https://github.com/Entreco/elchrono/pull/92); issue #93 evidence: [draft PR #97](https://github.com/Entreco/elchrono/pull/97); final exact-head acceptance pending |
 
 Lifecycle status is derived from the branch and PR context, not stored in this
 table. See [document controls](../governance/document-control.md#lifecycle-and-approval).
@@ -727,3 +727,4 @@ settings above do not establish device coverage or platform support.
 | 3.2 | Record issue #82 Android TV APK generation, the missing AVD image and absent connected target, bounded JVM duration-field focus testing, and blocked target/human verification without claiming support. |
 | 3.3 | Add startup-background and settings-restoration criteria and bounded local evidence; retain platform and human-review blockers. |
 | 3.4 | Record issue #93 Android build and unsigned AAB evidence, effective scaffold settings, and blocked physical-device/release verification without claiming support or readiness. |
+| 3.5 | Link the issue #93 execution record to draft PR #97; human acceptance and required reviews remain pending. |
